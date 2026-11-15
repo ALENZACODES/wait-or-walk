@@ -1,0 +1,4324 @@
+{
+ "trainedThrough": "2026-09-30",
+ "trainedFrom": "2025-01-01",
+ "delays": 16548,
+ "longMinutes": 10,
+ "halfLifeDays": 180,
+ "calibrationDays": 91,
+ "intercept": -1.066565,
+ "weights": {
+  "group=medical": 0.325153,
+  "group=track_person": 1.022082,
+  "group=injury_track": 2.905388,
+  "group=security": -0.043283,
+  "group=alarm": -1.720839,
+  "group=fire": 2.623282,
+  "group=doors": -1.355832,
+  "group=weather": -0.264978,
+  "group=power": -0.438028,
+  "group=cleaning": -2.543292,
+  "group=signals": -0.412821,
+  "group=track": 0.249229,
+  "group=train": -0.859132,
+  "group=operations": -1.040009,
+  "group=other": -1.012352,
+  "station=Bathurst": -0.013677,
+  "station=Bay": 0.20921,
+  "station=Bayview": -0.06377,
+  "station=Bessarion": 0.098088,
+  "station=Bloor": -0.969254,
+  "station=Broadview": 0.217038,
+  "station=Castle Frank": 0.577065,
+  "station=Cedarvale": 0.170288,
+  "station=Chester": 0.254279,
+  "station=Christie": 0.35608,
+  "station=College": 0.449197,
+  "station=Coxwell": -0.374127,
+  "station=Davisville": -0.045554,
+  "station=Don Mills": -0.133379,
+  "station=Donlands": -0.182054,
+  "station=Downsview Park": 0.030786,
+  "station=Dufferin": 0.081184,
+  "station=Dundas West": -0.015125,
+  "station=Dupont": 0.423367,
+  "station=Eglinton": 0.00472,
+  "station=Finch": -1.027426,
+  "station=Finch West": -0.04663,
+  "station=Glencairn": 0.262298,
+  "station=Greenwood": 0.182554,
+  "station=High Park": -0.506655,
+  "station=Highway 407": 0.434523,
+  "station=Islington": 0.231077,
+  "station=Jane": -0.166785,
+  "station=Keele": -0.225723,
+  "station=Kennedy": -0.647356,
+  "station=King": -0.074142,
+  "station=Kipling": -0.730583,
+  "station=Lansdowne": -0.014513,
+  "station=Lawrence": 0.453952,
+  "station=Lawrence West": 0.009933,
+  "station=Leslie": -0.311291,
+  "station=Main Street": -0.008458,
+  "station=Museum": 0.079292,
+  "station=North York Centre": 0.016414,
+  "station=Old Mill": 0.401322,
+  "station=Osgoode": -0.00292,
+  "station=Ossington": -0.092488,
+  "station=Pape": 0.060271,
+  "station=Pioneer Village": -0.25415,
+  "station=Queen": -0.142414,
+  "station=Queen's Park": -0.240099,
+  "station=Rosedale": 0.090748,
+  "station=Royal York": -0.117673,
+  "station=Runnymede": -0.033032,
+  "station=Sheppard West": 0.164441,
+  "station=Sheppard-Yonge": -0.075524,
+  "station=Sherbourne": 0.151873,
+  "station=Spadina": 0.263923,
+  "station=St Andrew": 0.115541,
+  "station=St Clair": -0.035862,
+  "station=St Clair West": 0.074672,
+  "station=St George": -0.046757,
+  "station=St Patrick": 0.235806,
+  "station=Summerhill": 0.105223,
+  "station=TMU": -0.26133,
+  "station=Union": 0.038836,
+  "station=Vaughan Metropolitan Centre": -0.974807,
+  "station=Victoria Park": -0.06449,
+  "station=Warden": 0.053087,
+  "station=Wellesley": -0.10733,
+  "station=Wilson": 0.126212,
+  "station=Woodbine": 0.490215,
+  "station=Yonge": -0.614341,
+  "station=York Mills": 0.224588,
+  "station=York University": 0.258175,
+  "station=Yorkdale": 0.361068,
+  "station=Other": 0.577328,
+  "line=YU": -0.199196,
+  "line=BD": -0.06982,
+  "line=SHP": -0.016032,
+  "time=night": 0.396937,
+  "time=am_peak": -0.430265,
+  "time=midday": -0.228988,
+  "time=pm_peak": -0.139821,
+  "time=evening": 0.11709,
+  "weekend": 0.206637
+ },
+ "platt": {
+  "a": 1.020621,
+  "b": -0.320091
+ },
+ "groups": {
+  "medical": {
+   "label": "Medical emergency",
+   "delays": 1971,
+   "medianMinutes": 6.0,
+   "recentShareLong": 0.227
+  },
+  "track_person": {
+   "label": "Person at track level",
+   "delays": 563,
+   "medianMinutes": 9.0,
+   "recentShareLong": 0.407
+  },
+  "injury_track": {
+   "label": "Personal injury at track level",
+   "delays": 34,
+   "medianMinutes": 84.0,
+   "recentShareLong": 0.75
+  },
+  "security": {
+   "label": "Security or police incident",
+   "delays": 3193,
+   "medianMinutes": 5.0,
+   "recentShareLong": 0.177
+  },
+  "alarm": {
+   "label": "Passenger alarm",
+   "delays": 1435,
+   "medianMinutes": 4.0,
+   "recentShareLong": 0.031
+  },
+  "fire": {
+   "label": "Fire or smoke",
+   "delays": 94,
+   "medianMinutes": 26.5,
+   "recentShareLong": 0.917
+  },
+  "doors": {
+   "label": "Door problem",
+   "delays": 1955,
+   "medianMinutes": 4.0,
+   "recentShareLong": 0.045
+  },
+  "weather": {
+   "label": "Weather",
+   "delays": 413,
+   "medianMinutes": 4.0,
+   "recentShareLong": 0.062
+  },
+  "power": {
+   "label": "Power problem",
+   "delays": 58,
+   "medianMinutes": 4.0,
+   "recentShareLong": 0.4
+  },
+  "cleaning": {
+   "label": "Cleaning or unsanitary train",
+   "delays": 1005,
+   "medianMinutes": 4.0,
+   "recentShareLong": 0.012
+  },
+  "signals": {
+   "label": "Signal problem",
+   "delays": 687,
+   "medianMinutes": 5.0,
+   "recentShareLong": 0.134
+  },
+  "track": {
+   "label": "Track or switch problem",
+   "delays": 911,
+   "medianMinutes": 6.0,
+   "recentShareLong": 0.278
+  },
+  "train": {
+   "label": "Train mechanical problem",
+   "delays": 1318,
+   "medianMinutes": 4.0,
+   "recentShareLong": 0.068
+  },
+  "operations": {
+   "label": "Operator or service management",
+   "delays": 2264,
+   "medianMinutes": 4.0,
+   "recentShareLong": 0.047
+  },
+  "other": {
+   "label": "Other or not stated",
+   "delays": 647,
+   "medianMinutes": 4.0,
+   "recentShareLong": 0.049
+  }
+ },
+ "stations": [
+  {
+   "name": "Bathurst",
+   "label": "Bathurst",
+   "lines": [
+    "BD"
+   ],
+   "lat": 43.6658,
+   "lon": -79.41144,
+   "nearby": [
+    {
+     "route": "7",
+     "name": "Bathurst",
+     "kind": "bus",
+     "stop": "Bathurst Station",
+     "metres": 40,
+     "night": false
+    },
+    {
+     "route": "307",
+     "name": "Bathurst",
+     "kind": "bus",
+     "stop": "Bathurst Station",
+     "metres": 40,
+     "night": true
+    },
+    {
+     "route": "511",
+     "name": "Bathurst",
+     "kind": "streetcar",
+     "stop": "Bathurst St at Bloor St West",
+     "metres": 60,
+     "night": false
+    },
+    {
+     "route": "300",
+     "name": "Bloor-Danforth",
+     "kind": "bus",
+     "stop": "Bloor St West at Bathurst St",
+     "metres": 70,
+     "night": true
+    }
+   ]
+  },
+  {
+   "name": "Bay",
+   "label": "Bay",
+   "lines": [
+    "BD"
+   ],
+   "lat": 43.67,
+   "lon": -79.39094,
+   "nearby": [
+    {
+     "route": "300",
+     "name": "Bloor-Danforth",
+     "kind": "bus",
+     "stop": "Bloor St West at Bay St West Side",
+     "metres": 80,
+     "night": true
+    },
+    {
+     "route": "19",
+     "name": "Bay",
+     "kind": "bus",
+     "stop": "Bay St at Bloor St West - Bay Station",
+     "metres": 100,
+     "night": false
+    },
+    {
+     "route": "13",
+     "name": "Avenue Rd",
+     "kind": "bus",
+     "stop": "Avenue Rd at Bloor St West North Side",
+     "metres": 280,
+     "night": false
+    }
+   ]
+  },
+  {
+   "name": "Bayview",
+   "label": "Bayview",
+   "lines": [
+    "SHP"
+   ],
+   "lat": 43.76691,
+   "lon": -79.38672,
+   "nearby": [
+    {
+     "route": "185",
+     "name": "Sheppard Central",
+     "kind": "bus",
+     "stop": "Sheppard Ave East at Bayview Ave East Side - Bayview Station",
+     "metres": 60,
+     "night": false
+    },
+    {
+     "route": "385",
+     "name": "Sheppard East",
+     "kind": "bus",
+     "stop": "Sheppard Ave East at Bayview Ave East Side - Bayview Station",
+     "metres": 60,
+     "night": true
+    },
+    {
+     "route": "11",
+     "name": "Bayview",
+     "kind": "bus",
+     "stop": "Bayview Ave at Sheppard Ave East North Side - Bayview Station",
+     "metres": 100,
+     "night": false
+    }
+   ]
+  },
+  {
+   "name": "Bessarion",
+   "label": "Bessarion",
+   "lines": [
+    "SHP"
+   ],
+   "lat": 43.76925,
+   "lon": -79.37633,
+   "nearby": [
+    {
+     "route": "185",
+     "name": "Sheppard Central",
+     "kind": "bus",
+     "stop": "Sheppard Ave East at Bessarion Rd East Side - Bessarion Station",
+     "metres": 20,
+     "night": false
+    },
+    {
+     "route": "385",
+     "name": "Sheppard East",
+     "kind": "bus",
+     "stop": "Sheppard Ave East at Bessarion Rd East Side - Bessarion Station",
+     "metres": 20,
+     "night": true
+    }
+   ]
+  },
+  {
+   "name": "Bloor",
+   "label": "Bloor-Yonge (Line 1)",
+   "lines": [
+    "YU"
+   ],
+   "lat": 43.67055,
+   "lon": -79.38565,
+   "nearby": [
+    {
+     "route": "300",
+     "name": "Bloor-Danforth",
+     "kind": "bus",
+     "stop": "Bloor St East at Yonge St East Side",
+     "metres": 50,
+     "night": true
+    },
+    {
+     "route": "320",
+     "name": "Yonge",
+     "kind": "bus",
+     "stop": "Yonge St at Bloor St East North Side - Bloor Station",
+     "metres": 100,
+     "night": true
+    },
+    {
+     "route": "97",
+     "name": "Yonge",
+     "kind": "bus",
+     "stop": "Yonge St at Bloor St East North Side - Bloor Station",
+     "metres": 100,
+     "night": false
+    }
+   ]
+  },
+  {
+   "name": "Broadview",
+   "label": "Broadview",
+   "lines": [
+    "BD"
+   ],
+   "lat": 43.6767,
+   "lon": -79.35884,
+   "nearby": [
+    {
+     "route": "87",
+     "name": "Cosburn",
+     "kind": "bus",
+     "stop": "Broadview Station",
+     "metres": 20,
+     "night": false
+    },
+    {
+     "route": "25",
+     "name": "Don Mills",
+     "kind": "bus",
+     "stop": "Broadview Station",
+     "metres": 30,
+     "night": false
+    },
+    {
+     "route": "305",
+     "name": "Dundas",
+     "kind": "streetcar",
+     "stop": "Broadview Ave at Danforth Ave",
+     "metres": 40,
+     "night": true
+    },
+    {
+     "route": "304",
+     "name": "King",
+     "kind": "streetcar",
+     "stop": "Broadview Ave at Danforth Ave",
+     "metres": 40,
+     "night": true
+    },
+    {
+     "route": "505",
+     "name": "Dundas",
+     "kind": "streetcar",
+     "stop": "Broadview Ave at Danforth Ave",
+     "metres": 40,
+     "night": false
+    },
+    {
+     "route": "504",
+     "name": "King",
+     "kind": "streetcar",
+     "stop": "Broadview Ave at Danforth Ave",
+     "metres": 40,
+     "night": false
+    },
+    {
+     "route": "300",
+     "name": "Bloor-Danforth",
+     "kind": "bus",
+     "stop": "Danforth Ave at Broadview Ave",
+     "metres": 50,
+     "night": true
+    },
+    {
+     "route": "925",
+     "name": "Don Mills Express",
+     "kind": "bus",
+     "stop": "Broadview Station",
+     "metres": 50,
+     "night": false
+    },
+    {
+     "route": "62",
+     "name": "Mortimer",
+     "kind": "bus",
+     "stop": "Broadview Station",
+     "metres": 70,
+     "night": false
+    },
+    {
+     "route": "8",
+     "name": "Broadview",
+     "kind": "bus",
+     "stop": "Broadview Station",
+     "metres": 70,
+     "night": false
+    },
+    {
+     "route": "322",
+     "name": "Coxwell",
+     "kind": "bus",
+     "stop": "Broadview Ave at Erindale Ave",
+     "metres": 80,
+     "night": true
+    }
+   ]
+  },
+  {
+   "name": "Castle Frank",
+   "label": "Castle Frank",
+   "lines": [
+    "BD"
+   ],
+   "lat": 43.6738,
+   "lon": -79.36894,
+   "nearby": [
+    {
+     "route": "94",
+     "name": "Wellesley",
+     "kind": "bus",
+     "stop": "Castle Frank Station",
+     "metres": 20,
+     "night": false
+    },
+    {
+     "route": "65",
+     "name": "Parliament",
+     "kind": "bus",
+     "stop": "Castle Frank Station",
+     "metres": 40,
+     "night": false
+    },
+    {
+     "route": "300",
+     "name": "Bloor-Danforth",
+     "kind": "bus",
+     "stop": "Castle Frank Station",
+     "metres": 70,
+     "night": true
+    },
+    {
+     "route": "365",
+     "name": "Parliament",
+     "kind": "bus",
+     "stop": "Parliament St at Bloor St East",
+     "metres": 290,
+     "night": true
+    }
+   ]
+  },
+  {
+   "name": "Cedarvale",
+   "label": "Cedarvale",
+   "lines": [
+    "YU"
+   ],
+   "lat": 43.7,
+   "lon": -79.43649,
+   "nearby": [
+    {
+     "route": "34",
+     "name": "Eglinton",
+     "kind": "bus",
+     "stop": "Cedarvale Station",
+     "metres": 40,
+     "night": true
+    },
+    {
+     "route": "334",
+     "name": "Eglinton",
+     "kind": "bus",
+     "stop": "Cedarvale Station",
+     "metres": 40,
+     "night": true
+    },
+    {
+     "route": "90",
+     "name": "Vaughan",
+     "kind": "bus",
+     "stop": "Cedarvale Station",
+     "metres": 50,
+     "night": false
+    },
+    {
+     "route": "363",
+     "name": "Ossington",
+     "kind": "bus",
+     "stop": "Cedarvale Station",
+     "metres": 60,
+     "night": true
+    },
+    {
+     "route": "63",
+     "name": "Ossington",
+     "kind": "bus",
+     "stop": "Cedarvale Station",
+     "metres": 80,
+     "night": false
+    },
+    {
+     "route": "109",
+     "name": "Ranee",
+     "kind": "bus",
+     "stop": "Cedarvale Station",
+     "metres": 90,
+     "night": false
+    },
+    {
+     "route": "164",
+     "name": "Castlefield",
+     "kind": "bus",
+     "stop": "Cedarvale Station",
+     "metres": 90,
+     "night": false
+    },
+    {
+     "route": "5",
+     "name": "Line 5 Eglinton",
+     "kind": "streetcar",
+     "stop": "Cedarvale Station Westbound Platform",
+     "metres": 110,
+     "night": false
+    }
+   ]
+  },
+  {
+   "name": "Chester",
+   "label": "Chester",
+   "lines": [
+    "BD"
+   ],
+   "lat": 43.6783,
+   "lon": -79.35252,
+   "nearby": [
+    {
+     "route": "300",
+     "name": "Bloor-Danforth",
+     "kind": "bus",
+     "stop": "Danforth Ave at Chester Ave",
+     "metres": 90,
+     "night": true
+    }
+   ]
+  },
+  {
+   "name": "Christie",
+   "label": "Christie",
+   "lines": [
+    "BD"
+   ],
+   "lat": 43.6643,
+   "lon": -79.41814,
+   "nearby": [
+    {
+     "route": "126",
+     "name": "Christie",
+     "kind": "bus",
+     "stop": "Christie Station",
+     "metres": 40,
+     "night": false
+    },
+    {
+     "route": "300",
+     "name": "Bloor-Danforth",
+     "kind": "bus",
+     "stop": "Bloor St West at Christie St",
+     "metres": 90,
+     "night": true
+    }
+   ]
+  },
+  {
+   "name": "College",
+   "label": "College",
+   "lines": [
+    "YU"
+   ],
+   "lat": 43.6608,
+   "lon": -79.38289,
+   "nearby": [
+    {
+     "route": "306",
+     "name": "Carlton",
+     "kind": "streetcar",
+     "stop": "College St at Yonge St - College Station",
+     "metres": 60,
+     "night": true
+    },
+    {
+     "route": "506",
+     "name": "Carlton",
+     "kind": "streetcar",
+     "stop": "College St at Yonge St - College Station",
+     "metres": 60,
+     "night": false
+    },
+    {
+     "route": "97",
+     "name": "Yonge",
+     "kind": "bus",
+     "stop": "Yonge St at College St - College Station",
+     "metres": 80,
+     "night": false
+    },
+    {
+     "route": "320",
+     "name": "Yonge",
+     "kind": "bus",
+     "stop": "Yonge St at College St - College Station",
+     "metres": 80,
+     "night": true
+    },
+    {
+     "route": "19",
+     "name": "Bay",
+     "kind": "bus",
+     "stop": "Bay St at College St",
+     "metres": 220,
+     "night": false
+    }
+   ]
+  },
+  {
+   "name": "Coxwell",
+   "label": "Coxwell",
+   "lines": [
+    "BD"
+   ],
+   "lat": 43.6844,
+   "lon": -79.32284,
+   "nearby": [
+    {
+     "route": "70",
+     "name": "O'Connor",
+     "kind": "bus",
+     "stop": "Coxwell Station",
+     "metres": 40,
+     "night": false
+    },
+    {
+     "route": "22",
+     "name": "Coxwell",
+     "kind": "bus",
+     "stop": "Coxwell Station",
+     "metres": 40,
+     "night": false
+    },
+    {
+     "route": "404",
+     "name": "East York",
+     "kind": "bus",
+     "stop": "Coxwell Station",
+     "metres": 50,
+     "night": false
+    },
+    {
+     "route": "300",
+     "name": "Bloor-Danforth",
+     "kind": "bus",
+     "stop": "Danforth Ave at Coxwell Ave",
+     "metres": 120,
+     "night": true
+    },
+    {
+     "route": "322",
+     "name": "Coxwell",
+     "kind": "bus",
+     "stop": "Coxwell Ave at Danforth Ave",
+     "metres": 120,
+     "night": true
+    }
+   ]
+  },
+  {
+   "name": "Davisville",
+   "label": "Davisville",
+   "lines": [
+    "YU"
+   ],
+   "lat": 43.69765,
+   "lon": -79.39709,
+   "nearby": [
+    {
+     "route": "14",
+     "name": "Glencairn",
+     "kind": "bus",
+     "stop": "Davisville Station",
+     "metres": 20,
+     "night": false
+    },
+    {
+     "route": "28",
+     "name": "Bayview South",
+     "kind": "bus",
+     "stop": "Davisville Station",
+     "metres": 20,
+     "night": false
+    },
+    {
+     "route": "11",
+     "name": "Bayview",
+     "kind": "bus",
+     "stop": "Davisville Station",
+     "metres": 20,
+     "night": false
+    },
+    {
+     "route": "320",
+     "name": "Yonge",
+     "kind": "bus",
+     "stop": "Yonge St at Chaplin Cres",
+     "metres": 90,
+     "night": true
+    },
+    {
+     "route": "97",
+     "name": "Yonge",
+     "kind": "bus",
+     "stop": "Yonge St at Chaplin Cres",
+     "metres": 90,
+     "night": false
+    }
+   ]
+  },
+  {
+   "name": "Don Mills",
+   "label": "Don Mills",
+   "lines": [
+    "SHP"
+   ],
+   "lat": 43.7754,
+   "lon": -79.34639,
+   "nearby": [
+    {
+     "route": "85",
+     "name": "Sheppard East",
+     "kind": "bus",
+     "stop": "Don Mills Station",
+     "metres": 30,
+     "night": false
+    },
+    {
+     "route": "904",
+     "name": "Don Mills-Scarborough Express",
+     "kind": "bus",
+     "stop": "Don Mills Station",
+     "metres": 50,
+     "night": false
+    },
+    {
+     "route": "985",
+     "name": "Sheppard East Express",
+     "kind": "bus",
+     "stop": "Don Mills Station",
+     "metres": 50,
+     "night": false
+    },
+    {
+     "route": "10",
+     "name": "Van Horne",
+     "kind": "bus",
+     "stop": "Don Mills Station",
+     "metres": 60,
+     "night": false
+    },
+    {
+     "route": "169",
+     "name": "Huntingwood",
+     "kind": "bus",
+     "stop": "Don Mills Station",
+     "metres": 70,
+     "night": false
+    },
+    {
+     "route": "325",
+     "name": "Don Mills",
+     "kind": "bus",
+     "stop": "Don Mills Rd at Sheppard Ave East North Side",
+     "metres": 70,
+     "night": true
+    },
+    {
+     "route": "185",
+     "name": "Sheppard Central",
+     "kind": "bus",
+     "stop": "Don Mills Rd at Sheppard Ave East North Side",
+     "metres": 70,
+     "night": false
+    },
+    {
+     "route": "25",
+     "name": "Don Mills",
+     "kind": "bus",
+     "stop": "Don Mills Rd at Sheppard Ave East North Side",
+     "metres": 70,
+     "night": false
+    },
+    {
+     "route": "167",
+     "name": "Pharmacy North",
+     "kind": "bus",
+     "stop": "Don Mills Station",
+     "metres": 70,
+     "night": false
+    },
+    {
+     "route": "925",
+     "name": "Don Mills Express",
+     "kind": "bus",
+     "stop": "Don Mills Rd at Sheppard Ave East",
+     "metres": 80,
+     "night": false
+    },
+    {
+     "route": "385",
+     "name": "Sheppard East",
+     "kind": "bus",
+     "stop": "Sheppard Ave East at Don Mills Rd",
+     "metres": 90,
+     "night": true
+    },
+    {
+     "route": "24",
+     "name": "Victoria Park",
+     "kind": "bus",
+     "stop": "Sheppard Ave East at Parkway Forest Dr West Side",
+     "metres": 100,
+     "night": false
+    }
+   ]
+  },
+  {
+   "name": "Donlands",
+   "label": "Donlands",
+   "lines": [
+    "BD"
+   ],
+   "lat": 43.68105,
+   "lon": -79.33834,
+   "nearby": [
+    {
+     "route": "83",
+     "name": "Jones",
+     "kind": "bus",
+     "stop": "Donlands Station",
+     "metres": 30,
+     "night": false
+    },
+    {
+     "route": "51",
+     "name": "Leslie",
+     "kind": "bus",
+     "stop": "Donlands Station",
+     "metres": 50,
+     "night": false
+    },
+    {
+     "route": "300",
+     "name": "Bloor-Danforth",
+     "kind": "bus",
+     "stop": "Danforth Ave at Donlands Ave",
+     "metres": 110,
+     "night": true
+    }
+   ]
+  },
+  {
+   "name": "Downsview Park",
+   "label": "Downsview Park",
+   "lines": [
+    "YU"
+   ],
+   "lat": 43.75331,
+   "lon": -79.47869,
+   "nearby": [
+    {
+     "route": "101",
+     "name": "Downsview Park",
+     "kind": "bus",
+     "stop": "Downsview Park Trail at Downsview Park Station",
+     "metres": 100,
+     "night": false
+    },
+    {
+     "route": "108",
+     "name": "Driftwood",
+     "kind": "bus",
+     "stop": "Sheppard Ave West at Vitti St - Downsview Park Station",
+     "metres": 170,
+     "night": false
+    },
+    {
+     "route": "106",
+     "name": "Sentinel",
+     "kind": "bus",
+     "stop": "Sheppard Ave West at Vitti St - Downsview Park Station",
+     "metres": 170,
+     "night": false
+    },
+    {
+     "route": "84",
+     "name": "Sheppard West",
+     "kind": "bus",
+     "stop": "Sheppard Ave West at Vitti St - Downsview Park Station",
+     "metres": 170,
+     "night": false
+    },
+    {
+     "route": "984",
+     "name": "Sheppard West Express",
+     "kind": "bus",
+     "stop": "Sheppard Ave West at Vitti St - Downsview Park Station",
+     "metres": 170,
+     "night": false
+    },
+    {
+     "route": "384",
+     "name": "Sheppard West",
+     "kind": "bus",
+     "stop": "Sheppard Ave West at Vitti St - Downsview Park Station",
+     "metres": 170,
+     "night": true
+    }
+   ]
+  },
+  {
+   "name": "Dufferin",
+   "label": "Dufferin",
+   "lines": [
+    "BD"
+   ],
+   "lat": 43.6607,
+   "lon": -79.43479,
+   "nearby": [
+    {
+     "route": "29",
+     "name": "Dufferin",
+     "kind": "bus",
+     "stop": "Dufferin St at Bloor St West - Dufferin Station",
+     "metres": 70,
+     "night": false
+    },
+    {
+     "route": "329",
+     "name": "Dufferin",
+     "kind": "bus",
+     "stop": "Dufferin St at Bloor St West - Dufferin Station",
+     "metres": 70,
+     "night": true
+    },
+    {
+     "route": "929",
+     "name": "Dufferin Express",
+     "kind": "bus",
+     "stop": "Dufferin St at Bloor St West - Dufferin Station",
+     "metres": 70,
+     "night": false
+    },
+    {
+     "route": "300",
+     "name": "Bloor-Danforth",
+     "kind": "bus",
+     "stop": "Bloor St West at Dufferin St",
+     "metres": 90,
+     "night": true
+    },
+    {
+     "route": "402",
+     "name": "Parkdale",
+     "kind": "bus",
+     "stop": "Bloor St West at Dufferin St West Side",
+     "metres": 110,
+     "night": false
+    }
+   ]
+  },
+  {
+   "name": "Dundas West",
+   "label": "Dundas West",
+   "lines": [
+    "BD"
+   ],
+   "lat": 43.6573,
+   "lon": -79.45194,
+   "nearby": [
+    {
+     "route": "168",
+     "name": "Symington",
+     "kind": "bus",
+     "stop": "Edna Ave at Dundas St West",
+     "metres": 90,
+     "night": false
+    },
+    {
+     "route": "304",
+     "name": "King",
+     "kind": "streetcar",
+     "stop": "Edna Ave at Dundas St West",
+     "metres": 90,
+     "night": true
+    },
+    {
+     "route": "340",
+     "name": "Junction",
+     "kind": "bus",
+     "stop": "Edna Ave at Dundas St West",
+     "metres": 90,
+     "night": true
+    },
+    {
+     "route": "305",
+     "name": "Dundas",
+     "kind": "streetcar",
+     "stop": "Edna Ave at Dundas St West",
+     "metres": 90,
+     "night": true
+    },
+    {
+     "route": "504",
+     "name": "King",
+     "kind": "streetcar",
+     "stop": "Edna Ave at Dundas St West",
+     "metres": 90,
+     "night": false
+    },
+    {
+     "route": "505",
+     "name": "Dundas",
+     "kind": "streetcar",
+     "stop": "Edna Ave at Dundas St West",
+     "metres": 90,
+     "night": false
+    },
+    {
+     "route": "40",
+     "name": "Junction-Dundas West",
+     "kind": "bus",
+     "stop": "Edna Ave at Dundas St West",
+     "metres": 90,
+     "night": false
+    },
+    {
+     "route": "300",
+     "name": "Bloor-Danforth",
+     "kind": "bus",
+     "stop": "Bloor St West at Dundas St West - Bloor GO Station",
+     "metres": 100,
+     "night": true
+    },
+    {
+     "route": "402",
+     "name": "Parkdale",
+     "kind": "bus",
+     "stop": "Bloor St West at Dundas St West - Bloor GO Station",
+     "metres": 100,
+     "night": false
+    }
+   ]
+  },
+  {
+   "name": "Dupont",
+   "label": "Dupont",
+   "lines": [
+    "YU"
+   ],
+   "lat": 43.67435,
+   "lon": -79.40689,
+   "nearby": [
+    {
+     "route": "127",
+     "name": "Davenport",
+     "kind": "bus",
+     "stop": "Spadina Rd at Dupont St - Dupont Station",
+     "metres": 40,
+     "night": false
+    },
+    {
+     "route": "26",
+     "name": "Dupont",
+     "kind": "bus",
+     "stop": "Dupont St at Spadina Rd East Side - Dupont Station",
+     "metres": 50,
+     "night": false
+    }
+   ]
+  },
+  {
+   "name": "Eglinton",
+   "label": "Eglinton",
+   "lines": [
+    "YU"
+   ],
+   "lat": 43.7056,
+   "lon": -79.39864,
+   "nearby": [
+    {
+     "route": "34",
+     "name": "Eglinton",
+     "kind": "bus",
+     "stop": "Eglinton Station",
+     "metres": 40,
+     "night": true
+    },
+    {
+     "route": "334",
+     "name": "Eglinton",
+     "kind": "bus",
+     "stop": "Eglinton Station",
+     "metres": 40,
+     "night": true
+    },
+    {
+     "route": "354",
+     "name": "Lawrence East",
+     "kind": "bus",
+     "stop": "Eglinton Station",
+     "metres": 50,
+     "night": true
+    },
+    {
+     "route": "103",
+     "name": "Mount Pleasant North",
+     "kind": "bus",
+     "stop": "Eglinton Station",
+     "metres": 70,
+     "night": false
+    },
+    {
+     "route": "320",
+     "name": "Yonge",
+     "kind": "bus",
+     "stop": "Eglinton Station",
+     "metres": 70,
+     "night": true
+    },
+    {
+     "route": "97",
+     "name": "Yonge",
+     "kind": "bus",
+     "stop": "Opposite 2190 Yonge St",
+     "metres": 70,
+     "night": false
+    },
+    {
+     "route": "13",
+     "name": "Avenue Rd",
+     "kind": "bus",
+     "stop": "2190 Yonge St",
+     "metres": 70,
+     "night": false
+    },
+    {
+     "route": "61",
+     "name": "Avenue Rd North",
+     "kind": "bus",
+     "stop": "2190 Yonge St",
+     "metres": 70,
+     "night": false
+    },
+    {
+     "route": "74",
+     "name": "Mount Pleasant",
+     "kind": "bus",
+     "stop": "2190 Yonge St",
+     "metres": 70,
+     "night": false
+    },
+    {
+     "route": "5",
+     "name": "Line 5 Eglinton",
+     "kind": "streetcar",
+     "stop": "Eglinton Station Eastbound Platform",
+     "metres": 90,
+     "night": false
+    }
+   ]
+  },
+  {
+   "name": "Finch",
+   "label": "Finch",
+   "lines": [
+    "YU"
+   ],
+   "lat": 43.7805,
+   "lon": -79.41549,
+   "nearby": [
+    {
+     "route": "60",
+     "name": "Steeles West",
+     "kind": "bus",
+     "stop": "Finch Station",
+     "metres": 50,
+     "night": false
+    },
+    {
+     "route": "960",
+     "name": "Steeles West Express",
+     "kind": "bus",
+     "stop": "Finch Station",
+     "metres": 50,
+     "night": false
+    },
+    {
+     "route": "42",
+     "name": "Cummer",
+     "kind": "bus",
+     "stop": "Finch Station",
+     "metres": 50,
+     "night": false
+    },
+    {
+     "route": "320",
+     "name": "Yonge",
+     "kind": "bus",
+     "stop": "Finch Station",
+     "metres": 50,
+     "night": true
+    },
+    {
+     "route": "97",
+     "name": "Yonge",
+     "kind": "bus",
+     "stop": "Finch Station",
+     "metres": 60,
+     "night": false
+    },
+    {
+     "route": "125",
+     "name": "Drewry",
+     "kind": "bus",
+     "stop": "Finch Station",
+     "metres": 60,
+     "night": false
+    },
+    {
+     "route": "53",
+     "name": "Steeles East",
+     "kind": "bus",
+     "stop": "Finch Station",
+     "metres": 70,
+     "night": false
+    },
+    {
+     "route": "939",
+     "name": "Finch Express",
+     "kind": "bus",
+     "stop": "Finch Station",
+     "metres": 70,
+     "night": false
+    },
+    {
+     "route": "953",
+     "name": "Steeles East Express",
+     "kind": "bus",
+     "stop": "Finch Station",
+     "metres": 70,
+     "night": false
+    },
+    {
+     "route": "39",
+     "name": "Finch East",
+     "kind": "bus",
+     "stop": "Finch Station",
+     "metres": 80,
+     "night": true
+    },
+    {
+     "route": "36",
+     "name": "Finch West",
+     "kind": "bus",
+     "stop": "Finch Station",
+     "metres": 80,
+     "night": true
+    },
+    {
+     "route": "336",
+     "name": "Finch West",
+     "kind": "bus",
+     "stop": "Finch Station",
+     "metres": 80,
+     "night": true
+    },
+    {
+     "route": "339",
+     "name": "Finch East",
+     "kind": "bus",
+     "stop": "Finch Ave East at Yonge St East Side",
+     "metres": 90,
+     "night": true
+    }
+   ]
+  },
+  {
+   "name": "Finch West",
+   "label": "Finch West",
+   "lines": [
+    "YU"
+   ],
+   "lat": 43.76486,
+   "lon": -79.49112,
+   "nearby": [
+    {
+     "route": "939",
+     "name": "Finch Express",
+     "kind": "bus",
+     "stop": "Finch West Station",
+     "metres": 20,
+     "night": false
+    },
+    {
+     "route": "107",
+     "name": "Alness-Chesswood",
+     "kind": "bus",
+     "stop": "Finch West Station",
+     "metres": 30,
+     "night": false
+    },
+    {
+     "route": "36",
+     "name": "Finch West",
+     "kind": "bus",
+     "stop": "Finch West Station",
+     "metres": 40,
+     "night": true
+    },
+    {
+     "route": "336",
+     "name": "Finch West",
+     "kind": "bus",
+     "stop": "Finch West Station",
+     "metres": 40,
+     "night": true
+    },
+    {
+     "route": "101",
+     "name": "Downsview Park",
+     "kind": "bus",
+     "stop": "Finch West Station",
+     "metres": 60,
+     "night": false
+    },
+    {
+     "route": "41",
+     "name": "Keele",
+     "kind": "bus",
+     "stop": "Keele St at Four Winds Dr - Finch West Station",
+     "metres": 70,
+     "night": false
+    },
+    {
+     "route": "341",
+     "name": "Keele",
+     "kind": "bus",
+     "stop": "Keele St at Four Winds Dr - Finch West Station",
+     "metres": 70,
+     "night": true
+    },
+    {
+     "route": "941",
+     "name": "Keele Express",
+     "kind": "bus",
+     "stop": "Keele St at Four Winds Dr - Finch West Station",
+     "metres": 70,
+     "night": false
+    },
+    {
+     "route": "6",
+     "name": "Line 6 Finch West",
+     "kind": "streetcar",
+     "stop": "Finch West Station LRT Platform",
+     "metres": 170,
+     "night": false
+    }
+   ]
+  },
+  {
+   "name": "Glencairn",
+   "label": "Glencairn",
+   "lines": [
+    "YU"
+   ],
+   "lat": 43.7086,
+   "lon": -79.44054,
+   "nearby": [
+    {
+     "route": "14",
+     "name": "Glencairn",
+     "kind": "bus",
+     "stop": "Glencairn Station",
+     "metres": 110,
+     "night": false
+    },
+    {
+     "route": "109",
+     "name": "Ranee",
+     "kind": "bus",
+     "stop": "Marlee Ave at Viewmount Ave",
+     "metres": 260,
+     "night": false
+    }
+   ]
+  },
+  {
+   "name": "Greenwood",
+   "label": "Greenwood",
+   "lines": [
+    "BD"
+   ],
+   "lat": 43.6827,
+   "lon": -79.33084,
+   "nearby": [
+    {
+     "route": "31",
+     "name": "Greenwood",
+     "kind": "bus",
+     "stop": "Greenwood Station",
+     "metres": 40,
+     "night": true
+    },
+    {
+     "route": "300",
+     "name": "Bloor-Danforth",
+     "kind": "bus",
+     "stop": "Danforth Ave at Linnsmore Cres",
+     "metres": 110,
+     "night": true
+    },
+    {
+     "route": "51",
+     "name": "Leslie",
+     "kind": "bus",
+     "stop": "Danforth Ave at Greenwood Ave",
+     "metres": 200,
+     "night": false
+    }
+   ]
+  },
+  {
+   "name": "High Park",
+   "label": "High Park",
+   "lines": [
+    "BD"
+   ],
+   "lat": 43.6537,
+   "lon": -79.46784,
+   "nearby": [
+    {
+     "route": "30",
+     "name": "High Park North",
+     "kind": "bus",
+     "stop": "High Park Station",
+     "metres": 120,
+     "night": true
+    },
+    {
+     "route": "189",
+     "name": "Stockyards",
+     "kind": "bus",
+     "stop": "High Park Station",
+     "metres": 160,
+     "night": false
+    },
+    {
+     "route": "300",
+     "name": "Bloor-Danforth",
+     "kind": "bus",
+     "stop": "Bloor St West at Colborne Lodge Dr",
+     "metres": 200,
+     "night": true
+    }
+   ]
+  },
+  {
+   "name": "Highway 407",
+   "label": "Highway 407",
+   "lines": [
+    "YU"
+   ],
+   "lat": 43.78336,
+   "lon": -79.52345,
+   "nearby": []
+  },
+  {
+   "name": "Islington",
+   "label": "Islington",
+   "lines": [
+    "BD"
+   ],
+   "lat": 43.6454,
+   "lon": -79.52414,
+   "nearby": [
+    {
+     "route": "110",
+     "name": "Islington South",
+     "kind": "bus",
+     "stop": "Islington Ave at Bloor St West North Side",
+     "metres": 40,
+     "night": false
+    },
+    {
+     "route": "37",
+     "name": "Islington",
+     "kind": "bus",
+     "stop": "Islington Ave at Bloor St West North Side",
+     "metres": 40,
+     "night": true
+    },
+    {
+     "route": "337",
+     "name": "Islington",
+     "kind": "bus",
+     "stop": "Islington Ave at Bloor St West North Side",
+     "metres": 40,
+     "night": true
+    },
+    {
+     "route": "50",
+     "name": "Burnhamthorpe",
+     "kind": "bus",
+     "stop": "Islington Ave at Bloor St West North Side",
+     "metres": 40,
+     "night": false
+    },
+    {
+     "route": "937",
+     "name": "Islington Express",
+     "kind": "bus",
+     "stop": "Islington Ave at Bloor St West North Side",
+     "metres": 40,
+     "night": false
+    },
+    {
+     "route": "300",
+     "name": "Bloor-Danforth",
+     "kind": "bus",
+     "stop": "Bloor St West at Islington Ave West Side",
+     "metres": 100,
+     "night": true
+    },
+    {
+     "route": "149",
+     "name": "Etobicoke-Bloor",
+     "kind": "bus",
+     "stop": "Bloor St West at Islington Ave",
+     "metres": 100,
+     "night": false
+    },
+    {
+     "route": "40",
+     "name": "Junction-Dundas West",
+     "kind": "bus",
+     "stop": "25 Mabelle Ave",
+     "metres": 230,
+     "night": false
+    }
+   ]
+  },
+  {
+   "name": "Jane",
+   "label": "Jane",
+   "lines": [
+    "BD"
+   ],
+   "lat": 43.64995,
+   "lon": -79.48374,
+   "nearby": [
+    {
+     "route": "26",
+     "name": "Dupont",
+     "kind": "bus",
+     "stop": "Jane Station",
+     "metres": 10,
+     "night": false
+    },
+    {
+     "route": "935",
+     "name": "Jane Express",
+     "kind": "bus",
+     "stop": "Jane Station",
+     "metres": 20,
+     "night": false
+    },
+    {
+     "route": "55",
+     "name": "Warren Park",
+     "kind": "bus",
+     "stop": "Jane Station",
+     "metres": 30,
+     "night": false
+    },
+    {
+     "route": "149",
+     "name": "Etobicoke-Bloor",
+     "kind": "bus",
+     "stop": "Jane Station",
+     "metres": 30,
+     "night": false
+    },
+    {
+     "route": "27",
+     "name": "Jane South",
+     "kind": "bus",
+     "stop": "Jane Station",
+     "metres": 40,
+     "night": false
+    },
+    {
+     "route": "335",
+     "name": "Jane",
+     "kind": "bus",
+     "stop": "Jane Station",
+     "metres": 40,
+     "night": true
+    },
+    {
+     "route": "300",
+     "name": "Bloor-Danforth",
+     "kind": "bus",
+     "stop": "Bloor St West at Jane St",
+     "metres": 70,
+     "night": true
+    }
+   ]
+  },
+  {
+   "name": "Keele",
+   "label": "Keele",
+   "lines": [
+    "BD"
+   ],
+   "lat": 43.6555,
+   "lon": -79.45954,
+   "nearby": [
+    {
+     "route": "41",
+     "name": "Keele",
+     "kind": "bus",
+     "stop": "Keele Station",
+     "metres": 10,
+     "night": false
+    },
+    {
+     "route": "341",
+     "name": "Keele",
+     "kind": "bus",
+     "stop": "Keele Station",
+     "metres": 10,
+     "night": true
+    },
+    {
+     "route": "941",
+     "name": "Keele Express",
+     "kind": "bus",
+     "stop": "Keele Station",
+     "metres": 10,
+     "night": false
+    },
+    {
+     "route": "80",
+     "name": "Queensway",
+     "kind": "bus",
+     "stop": "Keele Station",
+     "metres": 20,
+     "night": false
+    },
+    {
+     "route": "989",
+     "name": "Weston Express",
+     "kind": "bus",
+     "stop": "Keele Station",
+     "metres": 30,
+     "night": false
+    },
+    {
+     "route": "89",
+     "name": "Weston",
+     "kind": "bus",
+     "stop": "Keele Station",
+     "metres": 30,
+     "night": false
+    },
+    {
+     "route": "300",
+     "name": "Bloor-Danforth",
+     "kind": "bus",
+     "stop": "Keele Station",
+     "metres": 30,
+     "night": true
+    },
+    {
+     "route": "189",
+     "name": "Stockyards",
+     "kind": "bus",
+     "stop": "Keele St at Bloor St West - Keele Station",
+     "metres": 40,
+     "night": false
+    }
+   ]
+  },
+  {
+   "name": "Kennedy",
+   "label": "Kennedy",
+   "lines": [
+    "BD"
+   ],
+   "lat": 43.73232,
+   "lon": -79.26425,
+   "nearby": [
+    {
+     "route": "905",
+     "name": "Eglinton East Express",
+     "kind": "bus",
+     "stop": "Kennedy Station - Platform A",
+     "metres": 20,
+     "night": false
+    },
+    {
+     "route": "986",
+     "name": "Scarborough Express",
+     "kind": "bus",
+     "stop": "Kennedy Station - Platform A",
+     "metres": 20,
+     "night": false
+    },
+    {
+     "route": "154",
+     "name": "Curran Hall",
+     "kind": "bus",
+     "stop": "Kennedy Station - Platform A",
+     "metres": 40,
+     "night": false
+    },
+    {
+     "route": "86",
+     "name": "Scarborough",
+     "kind": "bus",
+     "stop": "Kennedy Station - Platform A",
+     "metres": 40,
+     "night": false
+    },
+    {
+     "route": "5",
+     "name": "Line 5 Eglinton",
+     "kind": "streetcar",
+     "stop": "Kennedy Station LRT Platform",
+     "metres": 60,
+     "night": false
+    },
+    {
+     "route": "12",
+     "name": "Kingston Rd",
+     "kind": "bus",
+     "stop": "Kennedy Station - Platform A",
+     "metres": 60,
+     "night": false
+    },
+    {
+     "route": "116",
+     "name": "Morningside",
+     "kind": "bus",
+     "stop": "Kennedy Station - Platform A",
+     "metres": 60,
+     "night": false
+    },
+    {
+     "route": "21",
+     "name": "Brimley",
+     "kind": "bus",
+     "stop": "Kennedy Station Drop-off Platform",
+     "metres": 60,
+     "night": false
+    },
+    {
+     "route": "20",
+     "name": "Cliffside",
+     "kind": "bus",
+     "stop": "Kennedy Station Drop-off Platform",
+     "metres": 60,
+     "night": false
+    },
+    {
+     "route": "38",
+     "name": "Highland Creek",
+     "kind": "bus",
+     "stop": "Kennedy Station Drop-off Platform",
+     "metres": 60,
+     "night": true
+    },
+    {
+     "route": "113",
+     "name": "Danforth",
+     "kind": "bus",
+     "stop": "Kennedy Station Drop-off Platform",
+     "metres": 60,
+     "night": false
+    },
+    {
+     "route": "131",
+     "name": "Nugget",
+     "kind": "bus",
+     "stop": "Kennedy Station Drop-off Platform",
+     "metres": 60,
+     "night": false
+    },
+    {
+     "route": "133",
+     "name": "Neilson",
+     "kind": "bus",
+     "stop": "Kennedy Station Drop-off Platform",
+     "metres": 60,
+     "night": false
+    },
+    {
+     "route": "129",
+     "name": "Mccowan North",
+     "kind": "bus",
+     "stop": "Kennedy Station Drop-off Platform",
+     "metres": 60,
+     "night": false
+    },
+    {
+     "route": "43",
+     "name": "Kennedy",
+     "kind": "bus",
+     "stop": "Kennedy Station Drop-off Platform",
+     "metres": 60,
+     "night": false
+    },
+    {
+     "route": "57",
+     "name": "Midland",
+     "kind": "bus",
+     "stop": "Kennedy Station Drop-off Platform",
+     "metres": 60,
+     "night": false
+    },
+    {
+     "route": "938",
+     "name": "Highland Creek Express",
+     "kind": "bus",
+     "stop": "Kennedy Station Drop-off Platform",
+     "metres": 60,
+     "night": false
+    },
+    {
+     "route": "903",
+     "name": "Kennedy-Progress Express",
+     "kind": "bus",
+     "stop": "Kennedy Station Drop-off Platform",
+     "metres": 60,
+     "night": false
+    },
+    {
+     "route": "943",
+     "name": "Kennedy Express",
+     "kind": "bus",
+     "stop": "Kennedy Station Drop-off Platform",
+     "metres": 60,
+     "night": false
+    },
+    {
+     "route": "386",
+     "name": "Scarborough",
+     "kind": "bus",
+     "stop": "Kennedy Station - Platform B",
+     "metres": 70,
+     "night": true
+    },
+    {
+     "route": "334",
+     "name": "Eglinton",
+     "kind": "bus",
+     "stop": "Kennedy Station - Platform B",
+     "metres": 70,
+     "night": true
+    },
+    {
+     "route": "300",
+     "name": "Bloor-Danforth",
+     "kind": "bus",
+     "stop": "Kennedy Station - Platform B",
+     "metres": 70,
+     "night": true
+    },
+    {
+     "route": "34",
+     "name": "Eglinton",
+     "kind": "bus",
+     "stop": "Kennedy Station - Platform A",
+     "metres": 80,
+     "night": true
+    },
+    {
+     "route": "343",
+     "name": "Kennedy",
+     "kind": "bus",
+     "stop": "Kennedy Station - Platform B",
+     "metres": 120,
+     "night": true
+    }
+   ]
+  },
+  {
+   "name": "King",
+   "label": "King",
+   "lines": [
+    "YU"
+   ],
+   "lat": 43.64905,
+   "lon": -79.37789,
+   "nearby": [
+    {
+     "route": "320",
+     "name": "Yonge",
+     "kind": "bus",
+     "stop": "Yonge St at King St East - King Station",
+     "metres": 10,
+     "night": true
+    },
+    {
+     "route": "97",
+     "name": "Yonge",
+     "kind": "bus",
+     "stop": "Yonge St at King St West - King Station",
+     "metres": 20,
+     "night": false
+    },
+    {
+     "route": "504",
+     "name": "King",
+     "kind": "streetcar",
+     "stop": "King St West at Yonge St West Side - King Station",
+     "metres": 50,
+     "night": false
+    },
+    {
+     "route": "503",
+     "name": "Kingston Rd",
+     "kind": "streetcar",
+     "stop": "King St West at Yonge St West Side - King Station",
+     "metres": 50,
+     "night": false
+    },
+    {
+     "route": "304",
+     "name": "King",
+     "kind": "streetcar",
+     "stop": "King St West at Yonge St West Side - King Station",
+     "metres": 50,
+     "night": true
+    },
+    {
+     "route": "19",
+     "name": "Bay",
+     "kind": "bus",
+     "stop": "Yonge St at Wellington St West",
+     "metres": 120,
+     "night": false
+    },
+    {
+     "route": "301",
+     "name": "Queen",
+     "kind": "streetcar",
+     "stop": "Adelaide St West at Yonge St - King Station",
+     "metres": 150,
+     "night": true
+    },
+    {
+     "route": "501",
+     "name": "Queen",
+     "kind": "streetcar",
+     "stop": "Adelaide St West at Yonge St - King Station",
+     "metres": 150,
+     "night": false
+    },
+    {
+     "route": "121",
+     "name": "Esplanade-River",
+     "kind": "bus",
+     "stop": "Yonge St at Front St East",
+     "metres": 270,
+     "night": false
+    }
+   ]
+  },
+  {
+   "name": "Kipling",
+   "label": "Kipling",
+   "lines": [
+    "BD"
+   ],
+   "lat": 43.63752,
+   "lon": -79.53579,
+   "nearby": [
+    {
+     "route": "945",
+     "name": "Kipling Express",
+     "kind": "bus",
+     "stop": "Kipling Station",
+     "metres": 10,
+     "night": false
+    },
+    {
+     "route": "45",
+     "name": "Kipling",
+     "kind": "bus",
+     "stop": "Kipling Station",
+     "metres": 10,
+     "night": false
+    },
+    {
+     "route": "300",
+     "name": "Bloor-Danforth",
+     "kind": "bus",
+     "stop": "Kipling Station",
+     "metres": 10,
+     "night": true
+    },
+    {
+     "route": "149",
+     "name": "Etobicoke-Bloor",
+     "kind": "bus",
+     "stop": "Kipling Station",
+     "metres": 10,
+     "night": false
+    },
+    {
+     "route": "900",
+     "name": "Airport Express",
+     "kind": "bus",
+     "stop": "Kipling Station",
+     "metres": 10,
+     "night": false
+    },
+    {
+     "route": "46",
+     "name": "Martin Grove",
+     "kind": "bus",
+     "stop": "Kipling Station",
+     "metres": 20,
+     "night": false
+    },
+    {
+     "route": "145",
+     "name": "Belfield",
+     "kind": "bus",
+     "stop": "Kipling Station",
+     "metres": 20,
+     "night": false
+    },
+    {
+     "route": "123",
+     "name": "Sherway",
+     "kind": "bus",
+     "stop": "Kipling Station",
+     "metres": 30,
+     "night": false
+    },
+    {
+     "route": "112",
+     "name": "West Mall",
+     "kind": "bus",
+     "stop": "Kipling Station",
+     "metres": 50,
+     "night": false
+    },
+    {
+     "route": "111",
+     "name": "East Mall",
+     "kind": "bus",
+     "stop": "Kipling Station",
+     "metres": 70,
+     "night": false
+    },
+    {
+     "route": "44",
+     "name": "Kipling South",
+     "kind": "bus",
+     "stop": "Kipling Station",
+     "metres": 90,
+     "night": false
+    },
+    {
+     "route": "944",
+     "name": "Kipling South Express",
+     "kind": "bus",
+     "stop": "Kipling Station",
+     "metres": 90,
+     "night": false
+    },
+    {
+     "route": "40",
+     "name": "Junction-Dundas West",
+     "kind": "bus",
+     "stop": "Kipling Station",
+     "metres": 100,
+     "night": false
+    },
+    {
+     "route": "49",
+     "name": "Bloor West",
+     "kind": "bus",
+     "stop": "Kipling Station",
+     "metres": 100,
+     "night": false
+    },
+    {
+     "route": "345",
+     "name": "Kipling",
+     "kind": "bus",
+     "stop": "Aukland Rd at Kipling GO Station",
+     "metres": 100,
+     "night": true
+    },
+    {
+     "route": "927",
+     "name": "Highway 27 Express",
+     "kind": "bus",
+     "stop": "Kipling Station",
+     "metres": 140,
+     "night": false
+    }
+   ]
+  },
+  {
+   "name": "Lansdowne",
+   "label": "Lansdowne",
+   "lines": [
+    "BD"
+   ],
+   "lat": 43.65928,
+   "lon": -79.44247,
+   "nearby": [
+    {
+     "route": "47",
+     "name": "Lansdowne",
+     "kind": "bus",
+     "stop": "Lansdowne Ave at Wade Ave - Lansdowne Station",
+     "metres": 40,
+     "night": false
+    },
+    {
+     "route": "300",
+     "name": "Bloor-Danforth",
+     "kind": "bus",
+     "stop": "Bloor St West at Lansdowne Ave",
+     "metres": 90,
+     "night": true
+    },
+    {
+     "route": "402",
+     "name": "Parkdale",
+     "kind": "bus",
+     "stop": "Bloor St West at Lansdowne Ave",
+     "metres": 90,
+     "night": false
+    }
+   ]
+  },
+  {
+   "name": "Lawrence",
+   "label": "Lawrence",
+   "lines": [
+    "YU"
+   ],
+   "lat": 43.72595,
+   "lon": -79.40239,
+   "nearby": [
+    {
+     "route": "952",
+     "name": "Lawrence West Express",
+     "kind": "bus",
+     "stop": "Lawrence Station",
+     "metres": 40,
+     "night": false
+    },
+    {
+     "route": "52",
+     "name": "Lawrence West",
+     "kind": "bus",
+     "stop": "Lawrence Station",
+     "metres": 40,
+     "night": false
+    },
+    {
+     "route": "11",
+     "name": "Bayview",
+     "kind": "bus",
+     "stop": "Lawrence Station",
+     "metres": 60,
+     "night": false
+    },
+    {
+     "route": "320",
+     "name": "Yonge",
+     "kind": "bus",
+     "stop": "Yonge St at Lawrence Ave East North Side - Lawrence Station",
+     "metres": 70,
+     "night": true
+    },
+    {
+     "route": "97",
+     "name": "Yonge",
+     "kind": "bus",
+     "stop": "Yonge St at Lawrence Ave East North Side - Lawrence Station",
+     "metres": 70,
+     "night": false
+    },
+    {
+     "route": "352",
+     "name": "Lawrence West",
+     "kind": "bus",
+     "stop": "Lawrence Ave at Yonge St - Lawrence Station",
+     "metres": 90,
+     "night": true
+    },
+    {
+     "route": "162",
+     "name": "Lawrence-Donway",
+     "kind": "bus",
+     "stop": "Lawrence Ave at Yonge St - Lawrence Station",
+     "metres": 90,
+     "night": false
+    }
+   ]
+  },
+  {
+   "name": "Lawrence West",
+   "label": "Lawrence West",
+   "lines": [
+    "YU"
+   ],
+   "lat": 43.71527,
+   "lon": -79.44391,
+   "nearby": [
+    {
+     "route": "952",
+     "name": "Lawrence West Express",
+     "kind": "bus",
+     "stop": "Lawrence West Station",
+     "metres": 40,
+     "night": false
+    },
+    {
+     "route": "52",
+     "name": "Lawrence West",
+     "kind": "bus",
+     "stop": "Lawrence West Station",
+     "metres": 40,
+     "night": false
+    },
+    {
+     "route": "109",
+     "name": "Ranee",
+     "kind": "bus",
+     "stop": "Lawrence West Station",
+     "metres": 40,
+     "night": false
+    },
+    {
+     "route": "59",
+     "name": "Maple Leaf",
+     "kind": "bus",
+     "stop": "Lawrence West Station",
+     "metres": 40,
+     "night": false
+    },
+    {
+     "route": "400",
+     "name": "Lawrence Manor",
+     "kind": "bus",
+     "stop": "Lawrence West Station",
+     "metres": 50,
+     "night": false
+    },
+    {
+     "route": "352",
+     "name": "Lawrence West",
+     "kind": "bus",
+     "stop": "Lawrence West Station",
+     "metres": 80,
+     "night": true
+    }
+   ]
+  },
+  {
+   "name": "Leslie",
+   "label": "Leslie",
+   "lines": [
+    "SHP"
+   ],
+   "lat": 43.7713,
+   "lon": -79.36589,
+   "nearby": [
+    {
+     "route": "185",
+     "name": "Sheppard Central",
+     "kind": "bus",
+     "stop": "Sheppard Ave East at Old Leslie St - Leslie Station",
+     "metres": 60,
+     "night": false
+    },
+    {
+     "route": "385",
+     "name": "Sheppard East",
+     "kind": "bus",
+     "stop": "Sheppard Ave East at Old Leslie St - Leslie Station",
+     "metres": 60,
+     "night": true
+    },
+    {
+     "route": "51",
+     "name": "Leslie",
+     "kind": "bus",
+     "stop": "Old Leslie St at 1200 Sheppard Ave East",
+     "metres": 110,
+     "night": false
+    },
+    {
+     "route": "151",
+     "name": "Leslie North",
+     "kind": "bus",
+     "stop": "Old Leslie St at 1200 Sheppard Ave East",
+     "metres": 110,
+     "night": false
+    }
+   ]
+  },
+  {
+   "name": "Main Street",
+   "label": "Main Street",
+   "lines": [
+    "BD"
+   ],
+   "lat": 43.6891,
+   "lon": -79.30154,
+   "nearby": [
+    {
+     "route": "87",
+     "name": "Cosburn",
+     "kind": "bus",
+     "stop": "Main Street Station",
+     "metres": 10,
+     "night": false
+    },
+    {
+     "route": "113",
+     "name": "Danforth",
+     "kind": "bus",
+     "stop": "Main Street Station",
+     "metres": 10,
+     "night": false
+    },
+    {
+     "route": "20",
+     "name": "Cliffside",
+     "kind": "bus",
+     "stop": "Main Street Station",
+     "metres": 10,
+     "night": false
+    },
+    {
+     "route": "135",
+     "name": "Gerrard",
+     "kind": "bus",
+     "stop": "Main Street Station",
+     "metres": 20,
+     "night": false
+    },
+    {
+     "route": "62",
+     "name": "Mortimer",
+     "kind": "bus",
+     "stop": "Main Street Station",
+     "metres": 20,
+     "night": false
+    },
+    {
+     "route": "64",
+     "name": "Main",
+     "kind": "bus",
+     "stop": "Main Street Station",
+     "metres": 30,
+     "night": false
+    },
+    {
+     "route": "23",
+     "name": "Dawes",
+     "kind": "bus",
+     "stop": "Main Street Station",
+     "metres": 30,
+     "night": false
+    },
+    {
+     "route": "306",
+     "name": "Carlton",
+     "kind": "streetcar",
+     "stop": "Main Street Station",
+     "metres": 30,
+     "night": true
+    },
+    {
+     "route": "506",
+     "name": "Carlton",
+     "kind": "streetcar",
+     "stop": "Main Street Station",
+     "metres": 30,
+     "night": false
+    },
+    {
+     "route": "300",
+     "name": "Bloor-Danforth",
+     "kind": "bus",
+     "stop": "Danforth Ave at Main St",
+     "metres": 90,
+     "night": true
+    }
+   ]
+  },
+  {
+   "name": "Museum",
+   "label": "Museum",
+   "lines": [
+    "YU"
+   ],
+   "lat": 43.6666,
+   "lon": -79.39319,
+   "nearby": [
+    {
+     "route": "13",
+     "name": "Avenue Rd",
+     "kind": "bus",
+     "stop": "Queen's Park at Charles St West - Museum Station",
+     "metres": 60,
+     "night": false
+    },
+    {
+     "route": "94",
+     "name": "Wellesley",
+     "kind": "bus",
+     "stop": "Queen's Park Cres West at Hoskin Ave",
+     "metres": 120,
+     "night": false
+    },
+    {
+     "route": "300",
+     "name": "Bloor-Danforth",
+     "kind": "bus",
+     "stop": "Bloor St West at Queens Park",
+     "metres": 240,
+     "night": true
+    }
+   ]
+  },
+  {
+   "name": "North York Centre",
+   "label": "North York Centre",
+   "lines": [
+    "YU"
+   ],
+   "lat": 43.76795,
+   "lon": -79.41254,
+   "nearby": [
+    {
+     "route": "320",
+     "name": "Yonge",
+     "kind": "bus",
+     "stop": "Yonge St at North York Blvd",
+     "metres": 120,
+     "night": true
+    },
+    {
+     "route": "97",
+     "name": "Yonge",
+     "kind": "bus",
+     "stop": "Yonge St at North York Blvd",
+     "metres": 120,
+     "night": false
+    }
+   ]
+  },
+  {
+   "name": "Old Mill",
+   "label": "Old Mill",
+   "lines": [
+    "BD"
+   ],
+   "lat": 43.64975,
+   "lon": -79.49414,
+   "nearby": [
+    {
+     "route": "149",
+     "name": "Etobicoke-Bloor",
+     "kind": "bus",
+     "stop": "Bloor St West at Old Mill Trail",
+     "metres": 80,
+     "night": false
+    },
+    {
+     "route": "300",
+     "name": "Bloor-Danforth",
+     "kind": "bus",
+     "stop": "Bloor St West at Old Mill Trail",
+     "metres": 80,
+     "night": true
+    },
+    {
+     "route": "66",
+     "name": "Prince Edward",
+     "kind": "bus",
+     "stop": "Old Mill Station",
+     "metres": 90,
+     "night": false
+    }
+   ]
+  },
+  {
+   "name": "Osgoode",
+   "label": "Osgoode",
+   "lines": [
+    "YU"
+   ],
+   "lat": 43.6511,
+   "lon": -79.38669,
+   "nearby": [
+    {
+     "route": "301",
+     "name": "Queen",
+     "kind": "streetcar",
+     "stop": "Queen St West at University Ave - Osgoode Station",
+     "metres": 40,
+     "night": true
+    },
+    {
+     "route": "501",
+     "name": "Queen",
+     "kind": "streetcar",
+     "stop": "Queen St West at University Ave - Osgoode Station",
+     "metres": 40,
+     "night": false
+    }
+   ]
+  },
+  {
+   "name": "Ossington",
+   "label": "Ossington",
+   "lines": [
+    "BD"
+   ],
+   "lat": 43.6622,
+   "lon": -79.42699,
+   "nearby": [
+    {
+     "route": "161",
+     "name": "Rogers Rd",
+     "kind": "bus",
+     "stop": "Ossington Station",
+     "metres": 20,
+     "night": false
+    },
+    {
+     "route": "94",
+     "name": "Wellesley",
+     "kind": "bus",
+     "stop": "Ossington Station",
+     "metres": 30,
+     "night": false
+    },
+    {
+     "route": "63",
+     "name": "Ossington",
+     "kind": "bus",
+     "stop": "Ossington Station",
+     "metres": 40,
+     "night": false
+    },
+    {
+     "route": "363",
+     "name": "Ossington",
+     "kind": "bus",
+     "stop": "Ossington Ave at Bloor St West",
+     "metres": 100,
+     "night": true
+    },
+    {
+     "route": "300",
+     "name": "Bloor-Danforth",
+     "kind": "bus",
+     "stop": "Bloor St West at Ossington Ave",
+     "metres": 110,
+     "night": true
+    }
+   ]
+  },
+  {
+   "name": "Pape",
+   "label": "Pape",
+   "lines": [
+    "BD"
+   ],
+   "lat": 43.6798,
+   "lon": -79.34494,
+   "nearby": [
+    {
+     "route": "100",
+     "name": "Flemingdon Park",
+     "kind": "bus",
+     "stop": "Pape Station",
+     "metres": 10,
+     "night": false
+    },
+    {
+     "route": "325",
+     "name": "Don Mills",
+     "kind": "bus",
+     "stop": "Pape Station",
+     "metres": 20,
+     "night": true
+    },
+    {
+     "route": "72",
+     "name": "Pape",
+     "kind": "bus",
+     "stop": "Pape Station",
+     "metres": 20,
+     "night": false
+    },
+    {
+     "route": "300",
+     "name": "Bloor-Danforth",
+     "kind": "bus",
+     "stop": "Danforth Ave at Pape Ave",
+     "metres": 90,
+     "night": true
+    }
+   ]
+  },
+  {
+   "name": "Pioneer Village",
+   "label": "Pioneer Village",
+   "lines": [
+    "YU"
+   ],
+   "lat": 43.77675,
+   "lon": -79.50935,
+   "nearby": [
+    {
+     "route": "60",
+     "name": "Steeles West",
+     "kind": "bus",
+     "stop": "Pioneer Village Station",
+     "metres": 10,
+     "night": false
+    },
+    {
+     "route": "353",
+     "name": "Steeles",
+     "kind": "bus",
+     "stop": "Pioneer Village Station",
+     "metres": 10,
+     "night": true
+    },
+    {
+     "route": "84",
+     "name": "Sheppard West",
+     "kind": "bus",
+     "stop": "Pioneer Village Station",
+     "metres": 10,
+     "night": false
+    },
+    {
+     "route": "960",
+     "name": "Steeles West Express",
+     "kind": "bus",
+     "stop": "Pioneer Village Station",
+     "metres": 30,
+     "night": false
+    },
+    {
+     "route": "935",
+     "name": "Jane Express",
+     "kind": "bus",
+     "stop": "Pioneer Village Station",
+     "metres": 30,
+     "night": false
+    },
+    {
+     "route": "106",
+     "name": "Sentinel",
+     "kind": "bus",
+     "stop": "Pioneer Village Station",
+     "metres": 30,
+     "night": false
+    },
+    {
+     "route": "41",
+     "name": "Keele",
+     "kind": "bus",
+     "stop": "Pioneer Village Station",
+     "metres": 40,
+     "night": false
+    },
+    {
+     "route": "335",
+     "name": "Jane",
+     "kind": "bus",
+     "stop": "Pioneer Village Station",
+     "metres": 40,
+     "night": true
+    },
+    {
+     "route": "35",
+     "name": "Jane",
+     "kind": "bus",
+     "stop": "Pioneer Village Station",
+     "metres": 40,
+     "night": true
+    },
+    {
+     "route": "108",
+     "name": "Driftwood",
+     "kind": "bus",
+     "stop": "Pioneer Village Station",
+     "metres": 50,
+     "night": false
+    },
+    {
+     "route": "166",
+     "name": "Toryork",
+     "kind": "bus",
+     "stop": "Pioneer Village Station",
+     "metres": 60,
+     "night": false
+    },
+    {
+     "route": "341",
+     "name": "Keele",
+     "kind": "bus",
+     "stop": "230 Ian MacDonald Blvd",
+     "metres": 200,
+     "night": true
+    }
+   ]
+  },
+  {
+   "name": "Queen",
+   "label": "Queen",
+   "lines": [
+    "YU"
+   ],
+   "lat": 43.65275,
+   "lon": -79.37939,
+   "nearby": [
+    {
+     "route": "320",
+     "name": "Yonge",
+     "kind": "bus",
+     "stop": "Yonge St at Queen St West - Queen Station",
+     "metres": 30,
+     "night": true
+    },
+    {
+     "route": "97",
+     "name": "Yonge",
+     "kind": "bus",
+     "stop": "Yonge St at Queen St West - Queen Station",
+     "metres": 30,
+     "night": false
+    },
+    {
+     "route": "501",
+     "name": "Queen",
+     "kind": "streetcar",
+     "stop": "Richmond St West at Yonge St - Queen Station",
+     "metres": 120,
+     "night": false
+    },
+    {
+     "route": "301",
+     "name": "Queen",
+     "kind": "streetcar",
+     "stop": "Richmond St West at Yonge St - Queen Station",
+     "metres": 120,
+     "night": true
+    },
+    {
+     "route": "19",
+     "name": "Bay",
+     "kind": "bus",
+     "stop": "Bay St at Queen St West",
+     "metres": 200,
+     "night": false
+    }
+   ]
+  },
+  {
+   "name": "Queen's Park",
+   "label": "Queen's Park",
+   "lines": [
+    "YU"
+   ],
+   "lat": 43.6599,
+   "lon": -79.39049,
+   "nearby": [
+    {
+     "route": "506",
+     "name": "Carlton",
+     "kind": "streetcar",
+     "stop": "College St at Queen's Park - Queen's Park Station",
+     "metres": 30,
+     "night": false
+    },
+    {
+     "route": "306",
+     "name": "Carlton",
+     "kind": "streetcar",
+     "stop": "College St at Queen's Park - Queen's Park Station",
+     "metres": 30,
+     "night": true
+    },
+    {
+     "route": "13",
+     "name": "Avenue Rd",
+     "kind": "bus",
+     "stop": "University Ave at College St - Queen's Park Station",
+     "metres": 30,
+     "night": false
+    }
+   ]
+  },
+  {
+   "name": "Rosedale",
+   "label": "Rosedale",
+   "lines": [
+    "YU"
+   ],
+   "lat": 43.67665,
+   "lon": -79.38834,
+   "nearby": [
+    {
+     "route": "82",
+     "name": "Rosedale",
+     "kind": "bus",
+     "stop": "Rosedale Station",
+     "metres": 50,
+     "night": false
+    },
+    {
+     "route": "320",
+     "name": "Yonge",
+     "kind": "bus",
+     "stop": "Yonge St at Crescent Rd - Rosedale Station",
+     "metres": 90,
+     "night": true
+    },
+    {
+     "route": "97",
+     "name": "Yonge",
+     "kind": "bus",
+     "stop": "Yonge St at Crescent Rd - Rosedale Station",
+     "metres": 90,
+     "night": false
+    }
+   ]
+  },
+  {
+   "name": "Royal York",
+   "label": "Royal York",
+   "lines": [
+    "BD"
+   ],
+   "lat": 43.64845,
+   "lon": -79.50959,
+   "nearby": [
+    {
+     "route": "48",
+     "name": "Rathburn",
+     "kind": "bus",
+     "stop": "Royal York Station",
+     "metres": 120,
+     "night": false
+    },
+    {
+     "route": "73",
+     "name": "Royal York",
+     "kind": "bus",
+     "stop": "Royal York Station",
+     "metres": 130,
+     "night": false
+    },
+    {
+     "route": "315",
+     "name": "Evans-Brown'S Line",
+     "kind": "bus",
+     "stop": "Royal York Station",
+     "metres": 140,
+     "night": true
+    },
+    {
+     "route": "15",
+     "name": "Evans",
+     "kind": "bus",
+     "stop": "Royal York Station",
+     "metres": 140,
+     "night": false
+    },
+    {
+     "route": "76",
+     "name": "Royal York South",
+     "kind": "bus",
+     "stop": "Royal York Station",
+     "metres": 140,
+     "night": false
+    },
+    {
+     "route": "373",
+     "name": "Royal York",
+     "kind": "bus",
+     "stop": "Royal York Station",
+     "metres": 140,
+     "night": true
+    },
+    {
+     "route": "300",
+     "name": "Bloor-Danforth",
+     "kind": "bus",
+     "stop": "Bloor St West at Royal York Rd",
+     "metres": 170,
+     "night": true
+    },
+    {
+     "route": "149",
+     "name": "Etobicoke-Bloor",
+     "kind": "bus",
+     "stop": "Bloor St West at Royal York Rd",
+     "metres": 170,
+     "night": false
+    }
+   ]
+  },
+  {
+   "name": "Runnymede",
+   "label": "Runnymede",
+   "lines": [
+    "BD"
+   ],
+   "lat": 43.6519,
+   "lon": -79.47584,
+   "nearby": [
+    {
+     "route": "79",
+     "name": "Scarlett Rd",
+     "kind": "bus",
+     "stop": "Runnymede Station",
+     "metres": 20,
+     "night": false
+    },
+    {
+     "route": "71",
+     "name": "Runnymede",
+     "kind": "bus",
+     "stop": "Runnymede Station",
+     "metres": 20,
+     "night": false
+    },
+    {
+     "route": "77",
+     "name": "Swansea",
+     "kind": "bus",
+     "stop": "Runnymede Station",
+     "metres": 30,
+     "night": false
+    },
+    {
+     "route": "300",
+     "name": "Bloor-Danforth",
+     "kind": "bus",
+     "stop": "Bloor St West at Runnymede Rd",
+     "metres": 80,
+     "night": true
+    }
+   ]
+  },
+  {
+   "name": "Sheppard West",
+   "label": "Sheppard West",
+   "lines": [
+    "YU"
+   ],
+   "lat": 43.74968,
+   "lon": -79.46239,
+   "nearby": [
+    {
+     "route": "104",
+     "name": "Faywood",
+     "kind": "bus",
+     "stop": "Sheppard West Station",
+     "metres": 20,
+     "night": false
+    },
+    {
+     "route": "84",
+     "name": "Sheppard West",
+     "kind": "bus",
+     "stop": "Sheppard West Station",
+     "metres": 20,
+     "night": false
+    },
+    {
+     "route": "329",
+     "name": "Dufferin",
+     "kind": "bus",
+     "stop": "Sheppard West Station",
+     "metres": 20,
+     "night": true
+    },
+    {
+     "route": "105",
+     "name": "Dufferin North",
+     "kind": "bus",
+     "stop": "Sheppard West Station",
+     "metres": 20,
+     "night": false
+    },
+    {
+     "route": "984",
+     "name": "Sheppard West Express",
+     "kind": "bus",
+     "stop": "Sheppard West Station",
+     "metres": 40,
+     "night": false
+    },
+    {
+     "route": "108",
+     "name": "Driftwood",
+     "kind": "bus",
+     "stop": "Sheppard West Station",
+     "metres": 50,
+     "night": false
+    },
+    {
+     "route": "106",
+     "name": "Sentinel",
+     "kind": "bus",
+     "stop": "Sheppard West Station",
+     "metres": 60,
+     "night": false
+    },
+    {
+     "route": "107",
+     "name": "Alness-Chesswood",
+     "kind": "bus",
+     "stop": "Sheppard Ave West at Dufferin St - Sheppard West Station",
+     "metres": 100,
+     "night": false
+    },
+    {
+     "route": "384",
+     "name": "Sheppard West",
+     "kind": "bus",
+     "stop": "Sheppard Ave West at Dufferin St - Sheppard West Station",
+     "metres": 100,
+     "night": true
+    }
+   ]
+  },
+  {
+   "name": "Sheppard-Yonge",
+   "label": "Sheppard-Yonge",
+   "lines": [
+    "SHP",
+    "YU"
+   ],
+   "lat": 43.76128,
+   "lon": -79.41052,
+   "nearby": [
+    {
+     "route": "385",
+     "name": "Sheppard East",
+     "kind": "bus",
+     "stop": "Sheppard Ave East at Yonge St",
+     "metres": 40,
+     "night": true
+    },
+    {
+     "route": "185",
+     "name": "Sheppard Central",
+     "kind": "bus",
+     "stop": "Sheppard Ave East at Yonge St East Side",
+     "metres": 70,
+     "night": false
+    },
+    {
+     "route": "320",
+     "name": "Yonge",
+     "kind": "bus",
+     "stop": "Yonge St at Sheppard Ave West - Sheppard Station",
+     "metres": 70,
+     "night": true
+    },
+    {
+     "route": "384",
+     "name": "Sheppard West",
+     "kind": "bus",
+     "stop": "Yonge St at Sheppard Ave West - Sheppard Station",
+     "metres": 70,
+     "night": true
+    },
+    {
+     "route": "97",
+     "name": "Yonge",
+     "kind": "bus",
+     "stop": "Yonge St at Sheppard Ave West - Sheppard Station",
+     "metres": 70,
+     "night": false
+    },
+    {
+     "route": "98",
+     "name": "Willowdale-Senlac",
+     "kind": "bus",
+     "stop": "Sheppard-Yonge Station",
+     "metres": 120,
+     "night": false
+    },
+    {
+     "route": "84",
+     "name": "Sheppard West",
+     "kind": "bus",
+     "stop": "Sheppard-Yonge Station",
+     "metres": 130,
+     "night": false
+    },
+    {
+     "route": "984",
+     "name": "Sheppard West Express",
+     "kind": "bus",
+     "stop": "Sheppard-Yonge Station",
+     "metres": 160,
+     "night": false
+    }
+   ]
+  },
+  {
+   "name": "Sherbourne",
+   "label": "Sherbourne",
+   "lines": [
+    "BD"
+   ],
+   "lat": 43.67214,
+   "lon": -79.37617,
+   "nearby": [
+    {
+     "route": "300",
+     "name": "Bloor-Danforth",
+     "kind": "bus",
+     "stop": "Bloor St East at Sherbourne St East Side",
+     "metres": 30,
+     "night": true
+    },
+    {
+     "route": "75",
+     "name": "Sherbourne",
+     "kind": "bus",
+     "stop": "Sherbourne St at Bloor St East - Sherbourne Station",
+     "metres": 40,
+     "night": false
+    }
+   ]
+  },
+  {
+   "name": "Spadina",
+   "label": "Spadina",
+   "lines": [
+    "BD",
+    "YU"
+   ],
+   "lat": 43.66837,
+   "lon": -79.40489,
+   "nearby": [
+    {
+     "route": "127",
+     "name": "Davenport",
+     "kind": "bus",
+     "stop": "Spadina Rd at Lowther Ave",
+     "metres": 60,
+     "night": false
+    },
+    {
+     "route": "306",
+     "name": "Carlton",
+     "kind": "streetcar",
+     "stop": "Spadina Station",
+     "metres": 140,
+     "night": true
+    },
+    {
+     "route": "506",
+     "name": "Carlton",
+     "kind": "streetcar",
+     "stop": "Spadina Station",
+     "metres": 140,
+     "night": false
+    },
+    {
+     "route": "310",
+     "name": "Spadina",
+     "kind": "streetcar",
+     "stop": "Spadina Station",
+     "metres": 160,
+     "night": true
+    },
+    {
+     "route": "510",
+     "name": "Spadina",
+     "kind": "streetcar",
+     "stop": "Spadina Station",
+     "metres": 160,
+     "night": false
+    },
+    {
+     "route": "300",
+     "name": "Bloor-Danforth",
+     "kind": "bus",
+     "stop": "Bloor St West at Spadina Rd",
+     "metres": 210,
+     "night": true
+    }
+   ]
+  },
+  {
+   "name": "St Andrew",
+   "label": "St Andrew",
+   "lines": [
+    "YU"
+   ],
+   "lat": 43.64765,
+   "lon": -79.38479,
+   "nearby": [
+    {
+     "route": "304",
+     "name": "King",
+     "kind": "streetcar",
+     "stop": "King St West at York St - St Andrew Station",
+     "metres": 90,
+     "night": true
+    },
+    {
+     "route": "503",
+     "name": "Kingston Rd",
+     "kind": "streetcar",
+     "stop": "King St West at York St - St Andrew Station",
+     "metres": 90,
+     "night": false
+    },
+    {
+     "route": "504",
+     "name": "King",
+     "kind": "streetcar",
+     "stop": "King St West at York St - St Andrew Station",
+     "metres": 90,
+     "night": false
+    },
+    {
+     "route": "501",
+     "name": "Queen",
+     "kind": "streetcar",
+     "stop": "York St at King St West North Side",
+     "metres": 120,
+     "night": false
+    },
+    {
+     "route": "301",
+     "name": "Queen",
+     "kind": "streetcar",
+     "stop": "York St at King St West North Side",
+     "metres": 120,
+     "night": true
+    }
+   ]
+  },
+  {
+   "name": "St Clair",
+   "label": "St Clair",
+   "lines": [
+    "YU"
+   ],
+   "lat": 43.68805,
+   "lon": -79.39329,
+   "nearby": [
+    {
+     "route": "312",
+     "name": "St Clair",
+     "kind": "streetcar",
+     "stop": "St Clair Station",
+     "metres": 40,
+     "night": true
+    },
+    {
+     "route": "320",
+     "name": "Yonge",
+     "kind": "bus",
+     "stop": "Yonge St at St Clair Ave East - St. Clair Station",
+     "metres": 50,
+     "night": true
+    },
+    {
+     "route": "97",
+     "name": "Yonge",
+     "kind": "bus",
+     "stop": "Yonge St at St Clair Ave East - St. Clair Station",
+     "metres": 50,
+     "night": false
+    },
+    {
+     "route": "74",
+     "name": "Mount Pleasant",
+     "kind": "bus",
+     "stop": "St Clair Station",
+     "metres": 60,
+     "night": false
+    },
+    {
+     "route": "88",
+     "name": "South Leaside",
+     "kind": "bus",
+     "stop": "St Clair Station",
+     "metres": 80,
+     "night": false
+    },
+    {
+     "route": "512",
+     "name": "St Clair",
+     "kind": "streetcar",
+     "stop": "St Clair Ave West at Yonge St West Side",
+     "metres": 110,
+     "night": false
+    }
+   ]
+  },
+  {
+   "name": "St Clair West",
+   "label": "St Clair West",
+   "lines": [
+    "YU"
+   ],
+   "lat": 43.68455,
+   "lon": -79.41564,
+   "nearby": [
+    {
+     "route": "512",
+     "name": "St Clair",
+     "kind": "streetcar",
+     "stop": "St Clair West Station",
+     "metres": 10,
+     "night": false
+    },
+    {
+     "route": "126",
+     "name": "Christie",
+     "kind": "bus",
+     "stop": "St Clair West Station",
+     "metres": 40,
+     "night": false
+    },
+    {
+     "route": "33",
+     "name": "Forest Hill",
+     "kind": "bus",
+     "stop": "St Clair West Station",
+     "metres": 40,
+     "night": true
+    },
+    {
+     "route": "90",
+     "name": "Vaughan",
+     "kind": "bus",
+     "stop": "St Clair West Station",
+     "metres": 50,
+     "night": false
+    },
+    {
+     "route": "312",
+     "name": "St Clair",
+     "kind": "streetcar",
+     "stop": "St Clair Ave West at Bathurst St East Side",
+     "metres": 220,
+     "night": true
+    },
+    {
+     "route": "7",
+     "name": "Bathurst",
+     "kind": "bus",
+     "stop": "Bathurst St at St Clair Ave West",
+     "metres": 270,
+     "night": false
+    },
+    {
+     "route": "307",
+     "name": "Bathurst",
+     "kind": "bus",
+     "stop": "Bathurst St at St Clair Ave West",
+     "metres": 270,
+     "night": true
+    }
+   ]
+  },
+  {
+   "name": "St George",
+   "label": "St George",
+   "lines": [
+    "BD",
+    "YU"
+   ],
+   "lat": 43.6684,
+   "lon": -79.39881,
+   "nearby": [
+    {
+     "route": "26",
+     "name": "Dupont",
+     "kind": "bus",
+     "stop": "St George Station",
+     "metres": 70,
+     "night": false
+    },
+    {
+     "route": "300",
+     "name": "Bloor-Danforth",
+     "kind": "bus",
+     "stop": "Bloor St West at Bedford Rd West Side - St. George Station",
+     "metres": 90,
+     "night": true
+    }
+   ]
+  },
+  {
+   "name": "St Patrick",
+   "label": "St Patrick",
+   "lines": [
+    "YU"
+   ],
+   "lat": 43.65465,
+   "lon": -79.38819,
+   "nearby": [
+    {
+     "route": "305",
+     "name": "Dundas",
+     "kind": "streetcar",
+     "stop": "Dundas St West at University Ave - St Patrick Station",
+     "metres": 40,
+     "night": true
+    },
+    {
+     "route": "505",
+     "name": "Dundas",
+     "kind": "streetcar",
+     "stop": "Dundas St West at University Ave - St Patrick Station",
+     "metres": 40,
+     "night": false
+    },
+    {
+     "route": "13",
+     "name": "Avenue Rd",
+     "kind": "bus",
+     "stop": "Elm St at University Ave East Side",
+     "metres": 200,
+     "night": false
+    }
+   ]
+  },
+  {
+   "name": "Summerhill",
+   "label": "Summerhill",
+   "lines": [
+    "YU"
+   ],
+   "lat": 43.6827,
+   "lon": -79.39099,
+   "nearby": [
+    {
+     "route": "320",
+     "name": "Yonge",
+     "kind": "bus",
+     "stop": "Yonge St at Shaftesbury Ave North Side - Summerhill Station",
+     "metres": 60,
+     "night": true
+    },
+    {
+     "route": "97",
+     "name": "Yonge",
+     "kind": "bus",
+     "stop": "Yonge St at Shaftesbury Ave North Side - Summerhill Station",
+     "metres": 60,
+     "night": false
+    }
+   ]
+  },
+  {
+   "name": "TMU",
+   "label": "TMU",
+   "lines": [
+    "YU"
+   ],
+   "lat": 43.65655,
+   "lon": -79.38099,
+   "nearby": [
+    {
+     "route": "320",
+     "name": "Yonge",
+     "kind": "bus",
+     "stop": "Yonge St at Dundas St West - TMU Station",
+     "metres": 10,
+     "night": true
+    },
+    {
+     "route": "97",
+     "name": "Yonge",
+     "kind": "bus",
+     "stop": "Yonge St at Dundas St West - TMU Station",
+     "metres": 10,
+     "night": false
+    },
+    {
+     "route": "505",
+     "name": "Dundas",
+     "kind": "streetcar",
+     "stop": "Dundas St East at Yonge St - TMU Station",
+     "metres": 20,
+     "night": false
+    },
+    {
+     "route": "306",
+     "name": "Carlton",
+     "kind": "streetcar",
+     "stop": "Dundas St East at Yonge St - TMU Station",
+     "metres": 20,
+     "night": true
+    },
+    {
+     "route": "506",
+     "name": "Carlton",
+     "kind": "streetcar",
+     "stop": "Dundas St East at Yonge St - TMU Station",
+     "metres": 20,
+     "night": false
+    },
+    {
+     "route": "305",
+     "name": "Dundas",
+     "kind": "streetcar",
+     "stop": "Dundas St East at Yonge St - TMU Station",
+     "metres": 20,
+     "night": true
+    },
+    {
+     "route": "19",
+     "name": "Bay",
+     "kind": "bus",
+     "stop": "Bay St at Dundas St West",
+     "metres": 240,
+     "night": false
+    }
+   ]
+  },
+  {
+   "name": "Union",
+   "label": "Union",
+   "lines": [
+    "YU"
+   ],
+   "lat": 43.6457,
+   "lon": -79.38059,
+   "nearby": [
+    {
+     "route": "310",
+     "name": "Spadina",
+     "kind": "streetcar",
+     "stop": "Union Station",
+     "metres": 110,
+     "night": true
+    },
+    {
+     "route": "509",
+     "name": "Harbourfront",
+     "kind": "streetcar",
+     "stop": "Union Station",
+     "metres": 110,
+     "night": false
+    },
+    {
+     "route": "510",
+     "name": "Spadina",
+     "kind": "streetcar",
+     "stop": "Union Station",
+     "metres": 110,
+     "night": false
+    },
+    {
+     "route": "114",
+     "name": "Queens Quay East",
+     "kind": "bus",
+     "stop": "Bay St at Front St West South Side - Union Station",
+     "metres": 130,
+     "night": false
+    },
+    {
+     "route": "121",
+     "name": "Esplanade-River",
+     "kind": "bus",
+     "stop": "Bay St at Front St West South Side - Union Station",
+     "metres": 130,
+     "night": false
+    },
+    {
+     "route": "320",
+     "name": "Yonge",
+     "kind": "bus",
+     "stop": "Bay St at Front St West South Side - Union Station",
+     "metres": 130,
+     "night": true
+    },
+    {
+     "route": "19",
+     "name": "Bay",
+     "kind": "bus",
+     "stop": "Front St West at Bay St",
+     "metres": 150,
+     "night": false
+    },
+    {
+     "route": "97",
+     "name": "Yonge",
+     "kind": "bus",
+     "stop": "Front St West at Bay St",
+     "metres": 150,
+     "night": false
+    }
+   ]
+  },
+  {
+   "name": "Vaughan Metropolitan Centre",
+   "label": "Vaughan Metropolitan Centre",
+   "lines": [
+    "YU"
+   ],
+   "lat": 43.79402,
+   "lon": -79.52791,
+   "nearby": []
+  },
+  {
+   "name": "Victoria Park",
+   "label": "Victoria Park",
+   "lines": [
+    "BD"
+   ],
+   "lat": 43.6949,
+   "lon": -79.28868,
+   "nearby": [
+    {
+     "route": "24",
+     "name": "Victoria Park",
+     "kind": "bus",
+     "stop": "Victoria Park Station",
+     "metres": 50,
+     "night": false
+    },
+    {
+     "route": "12",
+     "name": "Kingston Rd",
+     "kind": "bus",
+     "stop": "Victoria Park Station",
+     "metres": 60,
+     "night": false
+    },
+    {
+     "route": "924",
+     "name": "Victoria Park Express",
+     "kind": "bus",
+     "stop": "Victoria Park Station",
+     "metres": 70,
+     "night": false
+    },
+    {
+     "route": "404",
+     "name": "East York",
+     "kind": "bus",
+     "stop": "Victoria Park Station",
+     "metres": 90,
+     "night": false
+    },
+    {
+     "route": "117",
+     "name": "Birchmount South",
+     "kind": "bus",
+     "stop": "Victoria Park Station",
+     "metres": 90,
+     "night": false
+    },
+    {
+     "route": "324",
+     "name": "Victoria Park",
+     "kind": "bus",
+     "stop": "Victoria Park Ave at Victoria Park Station",
+     "metres": 90,
+     "night": true
+    },
+    {
+     "route": "67",
+     "name": "Pharmacy",
+     "kind": "bus",
+     "stop": "Victoria Park Station",
+     "metres": 100,
+     "night": false
+    },
+    {
+     "route": "300",
+     "name": "Bloor-Danforth",
+     "kind": "bus",
+     "stop": "Victoria Park Station",
+     "metres": 100,
+     "night": true
+    }
+   ]
+  },
+  {
+   "name": "Warden",
+   "label": "Warden",
+   "lines": [
+    "BD"
+   ],
+   "lat": 43.71155,
+   "lon": -79.27893,
+   "nearby": [
+    {
+     "route": "102",
+     "name": "Markham Rd",
+     "kind": "bus",
+     "stop": "Warden Station",
+     "metres": 120,
+     "night": false
+    },
+    {
+     "route": "117",
+     "name": "Birchmount South",
+     "kind": "bus",
+     "stop": "Warden Station",
+     "metres": 120,
+     "night": false
+    },
+    {
+     "route": "8",
+     "name": "Broadview",
+     "kind": "bus",
+     "stop": "Warden Station",
+     "metres": 120,
+     "night": false
+    },
+    {
+     "route": "9",
+     "name": "Bellamy",
+     "kind": "bus",
+     "stop": "Warden Station",
+     "metres": 120,
+     "night": false
+    },
+    {
+     "route": "902",
+     "name": "Markham Rd Express",
+     "kind": "bus",
+     "stop": "Warden Station",
+     "metres": 120,
+     "night": false
+    },
+    {
+     "route": "968",
+     "name": "Warden Express",
+     "kind": "bus",
+     "stop": "Warden Station",
+     "metres": 130,
+     "night": false
+    },
+    {
+     "route": "68",
+     "name": "Warden",
+     "kind": "bus",
+     "stop": "Warden Station",
+     "metres": 130,
+     "night": false
+    },
+    {
+     "route": "17",
+     "name": "Birchmount",
+     "kind": "bus",
+     "stop": "Warden Station",
+     "metres": 170,
+     "night": false
+    },
+    {
+     "route": "135",
+     "name": "Gerrard",
+     "kind": "bus",
+     "stop": "Warden Station",
+     "metres": 170,
+     "night": false
+    },
+    {
+     "route": "69",
+     "name": "Warden South",
+     "kind": "bus",
+     "stop": "Warden Station",
+     "metres": 170,
+     "night": false
+    },
+    {
+     "route": "16",
+     "name": "Mccowan",
+     "kind": "bus",
+     "stop": "Warden Station",
+     "metres": 170,
+     "night": false
+    }
+   ]
+  },
+  {
+   "name": "Wellesley",
+   "label": "Wellesley",
+   "lines": [
+    "YU"
+   ],
+   "lat": 43.66555,
+   "lon": -79.38364,
+   "nearby": [
+    {
+     "route": "94",
+     "name": "Wellesley",
+     "kind": "bus",
+     "stop": "Wellesley Station",
+     "metres": 30,
+     "night": false
+    },
+    {
+     "route": "506",
+     "name": "Carlton",
+     "kind": "streetcar",
+     "stop": "Wellesley St East at Yonge St",
+     "metres": 90,
+     "night": false
+    },
+    {
+     "route": "306",
+     "name": "Carlton",
+     "kind": "streetcar",
+     "stop": "Wellesley St East at Yonge St",
+     "metres": 90,
+     "night": true
+    },
+    {
+     "route": "320",
+     "name": "Yonge",
+     "kind": "bus",
+     "stop": "Yonge St at Wellesley St East - Wellesley Station",
+     "metres": 100,
+     "night": true
+    },
+    {
+     "route": "97",
+     "name": "Yonge",
+     "kind": "bus",
+     "stop": "Yonge St at Wellesley St East - Wellesley Station",
+     "metres": 100,
+     "night": false
+    }
+   ]
+  },
+  {
+   "name": "Wilson",
+   "label": "Wilson",
+   "lines": [
+    "YU"
+   ],
+   "lat": 43.73445,
+   "lon": -79.45004,
+   "nearby": [
+    {
+     "route": "120",
+     "name": "Calvington",
+     "kind": "bus",
+     "stop": "Wilson Station",
+     "metres": 60,
+     "night": false
+    },
+    {
+     "route": "101",
+     "name": "Downsview Park",
+     "kind": "bus",
+     "stop": "Wilson Station",
+     "metres": 60,
+     "night": false
+    },
+    {
+     "route": "160",
+     "name": "Bathurst North",
+     "kind": "bus",
+     "stop": "Wilson Station",
+     "metres": 60,
+     "night": false
+    },
+    {
+     "route": "118",
+     "name": "Thistle Down",
+     "kind": "bus",
+     "stop": "Wilson Station",
+     "metres": 70,
+     "night": false
+    },
+    {
+     "route": "329",
+     "name": "Dufferin",
+     "kind": "bus",
+     "stop": "Wilson Station",
+     "metres": 70,
+     "night": true
+    },
+    {
+     "route": "29",
+     "name": "Dufferin",
+     "kind": "bus",
+     "stop": "Wilson Station",
+     "metres": 70,
+     "night": false
+    },
+    {
+     "route": "929",
+     "name": "Dufferin Express",
+     "kind": "bus",
+     "stop": "Wilson Station",
+     "metres": 70,
+     "night": false
+    },
+    {
+     "route": "104",
+     "name": "Faywood",
+     "kind": "bus",
+     "stop": "Wilson Station",
+     "metres": 70,
+     "night": false
+    },
+    {
+     "route": "96",
+     "name": "Wilson",
+     "kind": "bus",
+     "stop": "Wilson Station",
+     "metres": 70,
+     "night": false
+    },
+    {
+     "route": "165",
+     "name": "Weston Rd North",
+     "kind": "bus",
+     "stop": "Wilson Station",
+     "metres": 80,
+     "night": false
+    },
+    {
+     "route": "119",
+     "name": "Torbarrie",
+     "kind": "bus",
+     "stop": "Wilson Station",
+     "metres": 80,
+     "night": false
+    },
+    {
+     "route": "996",
+     "name": "Wilson Express",
+     "kind": "bus",
+     "stop": "Wilson Station",
+     "metres": 90,
+     "night": false
+    },
+    {
+     "route": "184",
+     "name": "Ancaster Park",
+     "kind": "bus",
+     "stop": "Wilson Station",
+     "metres": 100,
+     "night": false
+    },
+    {
+     "route": "396",
+     "name": "Wilson",
+     "kind": "bus",
+     "stop": "Wilson Ave at Billy Bishop Way",
+     "metres": 270,
+     "night": true
+    }
+   ]
+  },
+  {
+   "name": "Woodbine",
+   "label": "Woodbine",
+   "lines": [
+    "BD"
+   ],
+   "lat": 43.6865,
+   "lon": -79.31314,
+   "nearby": [
+    {
+     "route": "91",
+     "name": "Woodbine",
+     "kind": "bus",
+     "stop": "Woodbine Station",
+     "metres": 50,
+     "night": false
+    },
+    {
+     "route": "93",
+     "name": "Parkview Hills",
+     "kind": "bus",
+     "stop": "Woodbine Station",
+     "metres": 50,
+     "night": false
+    },
+    {
+     "route": "92",
+     "name": "Woodbine South",
+     "kind": "bus",
+     "stop": "Woodbine Station",
+     "metres": 70,
+     "night": false
+    },
+    {
+     "route": "300",
+     "name": "Bloor-Danforth",
+     "kind": "bus",
+     "stop": "Danforth Ave at Woodbine Ave",
+     "metres": 90,
+     "night": true
+    }
+   ]
+  },
+  {
+   "name": "Yonge",
+   "label": "Bloor-Yonge (Line 2)",
+   "lines": [
+    "BD"
+   ],
+   "lat": 43.67102,
+   "lon": -79.38637,
+   "nearby": [
+    {
+     "route": "320",
+     "name": "Yonge",
+     "kind": "bus",
+     "stop": "Yonge St at Bloor St East North Side - Bloor Station",
+     "metres": 50,
+     "night": true
+    },
+    {
+     "route": "97",
+     "name": "Yonge",
+     "kind": "bus",
+     "stop": "Yonge St at Bloor St East North Side - Bloor Station",
+     "metres": 50,
+     "night": false
+    },
+    {
+     "route": "300",
+     "name": "Bloor-Danforth",
+     "kind": "bus",
+     "stop": "Bloor St East at Yonge St",
+     "metres": 80,
+     "night": true
+    },
+    {
+     "route": "19",
+     "name": "Bay",
+     "kind": "bus",
+     "stop": "Bay St at Cumberland St - Bay Station",
+     "metres": 270,
+     "night": false
+    }
+   ]
+  },
+  {
+   "name": "York Mills",
+   "label": "York Mills",
+   "lines": [
+    "YU"
+   ],
+   "lat": 43.74385,
+   "lon": -79.40609,
+   "nearby": [
+    {
+     "route": "320",
+     "name": "Yonge",
+     "kind": "bus",
+     "stop": "Yonge St at York Mills Rd",
+     "metres": 30,
+     "night": true
+    },
+    {
+     "route": "97",
+     "name": "Yonge",
+     "kind": "bus",
+     "stop": "Yonge St at York Mills Rd",
+     "metres": 30,
+     "night": false
+    },
+    {
+     "route": "396",
+     "name": "Wilson",
+     "kind": "bus",
+     "stop": "York Mills Rd at Yonge St East Side",
+     "metres": 40,
+     "night": true
+    },
+    {
+     "route": "96",
+     "name": "Wilson",
+     "kind": "bus",
+     "stop": "York Mills Rd at Yonge St East Side",
+     "metres": 40,
+     "night": false
+    },
+    {
+     "route": "996",
+     "name": "Wilson Express",
+     "kind": "bus",
+     "stop": "York Mills Rd at Yonge St East Side",
+     "metres": 40,
+     "night": false
+    },
+    {
+     "route": "165",
+     "name": "Weston Rd North",
+     "kind": "bus",
+     "stop": "Wilson Ave at Yonge St",
+     "metres": 90,
+     "night": false
+    },
+    {
+     "route": "95",
+     "name": "York Mills",
+     "kind": "bus",
+     "stop": "York Mills Rd at Old York Mills Rd",
+     "metres": 110,
+     "night": false
+    },
+    {
+     "route": "395",
+     "name": "York Mills",
+     "kind": "bus",
+     "stop": "York Mills Rd at Old York Mills Rd",
+     "metres": 110,
+     "night": true
+    },
+    {
+     "route": "122",
+     "name": "Graydon Hall",
+     "kind": "bus",
+     "stop": "York Mills Rd at Old York Mills Rd",
+     "metres": 110,
+     "night": false
+    },
+    {
+     "route": "115",
+     "name": "Silver Hills",
+     "kind": "bus",
+     "stop": "York Mills Rd at Old York Mills Rd",
+     "metres": 110,
+     "night": false
+    },
+    {
+     "route": "78",
+     "name": "St Andrews",
+     "kind": "bus",
+     "stop": "York Mills Rd at Old York Mills Rd",
+     "metres": 110,
+     "night": false
+    },
+    {
+     "route": "995",
+     "name": "York Mills Express",
+     "kind": "bus",
+     "stop": "York Mills Station",
+     "metres": 160,
+     "night": false
+    }
+   ]
+  },
+  {
+   "name": "York University",
+   "label": "York University",
+   "lines": [
+    "YU"
+   ],
+   "lat": 43.7741,
+   "lon": -79.49989,
+   "nearby": [
+    {
+     "route": "41",
+     "name": "Keele",
+     "kind": "bus",
+     "stop": "Ian MacDonald Blvd at The Chimneystack Rd",
+     "metres": 240,
+     "night": false
+    },
+    {
+     "route": "335",
+     "name": "Jane",
+     "kind": "bus",
+     "stop": "Ian MacDonald Blvd at The Chimneystack Rd",
+     "metres": 270,
+     "night": true
+    },
+    {
+     "route": "341",
+     "name": "Keele",
+     "kind": "bus",
+     "stop": "Ian MacDonald Blvd at The Chimneystack Rd",
+     "metres": 270,
+     "night": true
+    }
+   ]
+  },
+  {
+   "name": "Yorkdale",
+   "label": "Yorkdale",
+   "lines": [
+    "YU"
+   ],
+   "lat": 43.7246,
+   "lon": -79.44749,
+   "nearby": [
+    {
+     "route": "109",
+     "name": "Ranee",
+     "kind": "bus",
+     "stop": "Ranee Ave at Varna Dr West Side",
+     "metres": 130,
+     "night": false
+    },
+    {
+     "route": "18",
+     "name": "Caledonia",
+     "kind": "bus",
+     "stop": "Yorkdale Rd at GO Terminal - Yorkdale Station",
+     "metres": 180,
+     "night": false
+    }
+   ]
+  }
+ ],
+ "source": "City of Toronto Open Data: TTC Subway Delay Data since 2025 and TTC Routes and Schedules (GTFS). Open Government Licence Toronto."
+}

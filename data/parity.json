@@ -1,0 +1,242 @@
+[
+ {
+  "group": "track",
+  "station": "Sheppard West",
+  "line": "YU",
+  "time": "am_peak",
+  "weekend": true,
+  "p": 0.194977
+ },
+ {
+  "group": "security",
+  "station": "Osgoode",
+  "line": "YU",
+  "time": "midday",
+  "weekend": true,
+  "p": 0.156841
+ },
+ {
+  "group": "track",
+  "station": "High Park",
+  "line": "BD",
+  "time": "midday",
+  "weekend": false,
+  "p": 0.121708
+ },
+ {
+  "group": "doors",
+  "station": "Dundas West",
+  "line": "BD",
+  "time": "am_peak",
+  "weekend": false,
+  "p": 0.03495
+ },
+ {
+  "group": "alarm",
+  "station": "Eglinton",
+  "line": "YU",
+  "time": "midday",
+  "weekend": true,
+  "p": 0.032727
+ },
+ {
+  "group": "doors",
+  "station": "Highway 407",
+  "line": "YU",
+  "time": "night",
+  "weekend": false,
+  "p": 0.104599
+ },
+ {
+  "group": "doors",
+  "station": "Coxwell",
+  "line": "BD",
+  "time": "am_peak",
+  "weekend": false,
+  "p": 0.02449
+ },
+ {
+  "group": "medical",
+  "station": "Main Street",
+  "line": "BD",
+  "time": "evening",
+  "weekend": false,
+  "p": 0.261695
+ },
+ {
+  "group": "doors",
+  "station": "Queen's Park",
+  "line": "YU",
+  "time": "pm_peak",
+  "weekend": false,
+  "p": 0.032815
+ },
+ {
+  "group": "signals",
+  "station": "Sheppard West",
+  "line": "YU",
+  "time": "pm_peak",
+  "weekend": false,
+  "p": 0.118349
+ },
+ {
+  "group": "weather",
+  "station": "Rosedale",
+  "line": "YU",
+  "time": "midday",
+  "weekend": true,
+  "p": 0.140326
+ },
+ {
+  "group": "operations",
+  "station": "Don Mills",
+  "line": "SHP",
+  "time": "am_peak",
+  "weekend": false,
+  "p": 0.044714
+ },
+ {
+  "group": "security",
+  "station": "Kipling",
+  "line": "BD",
+  "time": "midday",
+  "weekend": false,
+  "p": 0.075617
+ },
+ {
+  "group": "train",
+  "station": "Lansdowne",
+  "line": "BD",
+  "time": "pm_peak",
+  "weekend": false,
+  "p": 0.074864
+ },
+ {
+  "group": "track_person",
+  "station": "Bay",
+  "line": "BD",
+  "time": "pm_peak",
+  "weekend": false,
+  "p": 0.409525
+ },
+ {
+  "group": "medical",
+  "station": "Warden",
+  "line": "BD",
+  "time": "evening",
+  "weekend": false,
+  "p": 0.274011
+ },
+ {
+  "group": "medical",
+  "station": "Lawrence",
+  "line": "YU",
+  "time": "am_peak",
+  "weekend": false,
+  "p": 0.221677
+ },
+ {
+  "group": "medical",
+  "station": "College",
+  "line": "YU",
+  "time": "pm_peak",
+  "weekend": true,
+  "p": 0.320072
+ },
+ {
+  "group": "medical",
+  "station": "St Andrew",
+  "line": "YU",
+  "time": "am_peak",
+  "weekend": false,
+  "p": 0.167799
+ },
+ {
+  "group": "weather",
+  "station": "Royal York",
+  "line": "BD",
+  "time": "midday",
+  "weekend": false,
+  "p": 0.108693
+ },
+ {
+  "group": "security",
+  "station": "Broadview",
+  "line": "BD",
+  "time": "night",
+  "weekend": false,
+  "p": 0.289575
+ },
+ {
+  "group": "doors",
+  "station": "Museum",
+  "line": "YU",
+  "time": "evening",
+  "weekend": false,
+  "p": 0.057578
+ },
+ {
+  "group": "alarm",
+  "station": "Woodbine",
+  "line": "BD",
+  "time": "evening",
+  "weekend": false,
+  "p": 0.06809
+ },
+ {
+  "group": "fire",
+  "station": "High Park",
+  "line": "BD",
+  "time": "midday",
+  "weekend": true,
+  "p": 0.65871
+ },
+ {
+  "group": "security",
+  "station": "Castle Frank",
+  "line": "BD",
+  "time": "pm_peak",
+  "weekend": true,
+  "p": 0.295894
+ },
+ {
+  "group": "security",
+  "station": "Vaughan Metropolitan Centre",
+  "line": "YU",
+  "time": "evening",
+  "weekend": false,
+  "p": 0.073677
+ },
+ {
+  "group": "security",
+  "station": "Bay",
+  "line": "BD",
+  "time": "midday",
+  "weekend": true,
+  "p": 0.208602
+ },
+ {
+  "group": "track",
+  "station": "Yorkdale",
+  "line": "YU",
+  "time": "am_peak",
+  "weekend": true,
+  "p": 0.22841
+ },
+ {
+  "group": "other",
+  "station": "Chester",
+  "line": "BD",
+  "time": "evening",
+  "weekend": false,
+  "p": 0.105826
+ },
+ {
+  "group": "medical",
+  "station": "Davisville",
+  "line": "YU",
+  "time": "pm_peak",
+  "weekend": false,
+  "p": 0.18705
+ }
+]

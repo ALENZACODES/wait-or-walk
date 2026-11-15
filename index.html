@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wait or Walk · Will this TTC subway delay last?</title>
+<meta name="description" content="Paste a TTC subway alert and see the chance the delay lasts 10 minutes or more, why, and which buses and streetcars stop nearby.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the tool</a>
+<header>
+  <h1>Wait or Walk</h1>
+  <p class="lede">The subway just stopped. Will it be two minutes or twenty? Paste the TTC alert, or pick the details, and get the chance this delay lasts 10 minutes or more, learned from 21 months of TTC delay records, plus the buses and streetcars a short walk away.</p>
+</header>
+<main id="main">
+  <section class="card" aria-labelledby="in-h">
+    <h2 id="in-h">The delay</h2>
+    <label for="alert">Paste the alert <span class="hint">(from the TTC site, app or a platform screen)</span></label>
+    <textarea id="alert" rows="3" placeholder="Line 1: No service between St Clair and Lawrence due to a medical emergency."></textarea>
+    <div class="samples" role="group" aria-label="Example alerts">
+      <span>Examples:</span>
+      <button type="button" data-alert="Line 1 Yonge-University: Minor delays at Union while we deal with a passenger alarm.">Passenger alarm at Union</button>
+      <button type="button" data-alert="Line 2 Bloor-Danforth: Delays at Kipling due to a person at track level.">Person at track level, Kipling</button>
+      <button type="button" data-alert="Line 1: Shuttle buses running between St. George and Union due to a fire investigation.">Fire investigation, St George</button>
+    </div>
+    <p id="readNote" class="note" role="status" aria-live="polite"></p>
+    <div class="grid">
+      <label>Line <select id="line"><option value="YU">Line 1 Yonge-University</option><option value="BD">Line 2 Bloor-Danforth</option><option value="SHP">Line 4 Sheppard</option></select></label>
+      <label>Station <select id="station"></select></label>
+      <label>Cause <select id="group"></select></label>
+      <label>Time <select id="time"><option value="night">Overnight (before 6 a.m.)</option><option value="am_peak">Morning rush (6 to 10 a.m.)</option><option value="midday">Midday (10 a.m. to 4 p.m.)</option><option value="pm_peak">Evening rush (4 to 8 p.m.)</option><option value="evening">Evening (8 p.m. on)</option></select></label>
+      <label class="check"><input type="checkbox" id="weekend"> Weekend</label>
+    </div>
+  </section>
+
+  <section class="card result" aria-labelledby="out-h" aria-live="polite">
+    <h2 id="out-h">The call</h2>
+    <div class="big"><span id="pct">--</span><span class="pctlab">chance it lasts<br>10 minutes or more</span></div>
+    <p id="advice" class="advice"></p>
+    <p id="typical" class="typical"></p>
+    <h3>Why</h3>
+    <ul id="why"></ul>
+  </section>
+
+  <section class="card" aria-labelledby="pb-h">
+    <h2 id="pb-h">Plan B within 300 metres of <span id="pbStation"></span></h2>
+    <ul id="planb" class="planb"></ul>
+    <p class="small">Stops and routes from the TTC schedule published Oct 20, 2026. Straight line distance from the station centre. Check <a href="https://www.ttc.ca/service-alerts">TTC service alerts</a> for shuttle buses.</p>
+  </section>
+
+  <section class="card" aria-labelledby="m-h">
+    <h2 id="m-h">How good is it?</h2>
+    <p>The model is a logistic regression trained on every subway delay the TTC logged from January 2025 to September 2026 (open data). It only uses what an alert tells you: the cause, the station, the line, the time and the day. Newer delays count more, and the forecast is recalibrated on the latest three months, because long delays became rarer in 2026.</p>
+    <p>Tested on months it never saw, against a simple rule that only looks at the cause:</p>
+    <table id="metrics"><caption class="sr">Test results</caption><thead><tr><th scope="col">Test months</th><th scope="col">Method</th><th scope="col">Ranking (AUC, higher is better)</th><th scope="col">Log loss (lower is better)</th><th scope="col">Average forecast vs actual</th></tr></thead><tbody></tbody></table>
+    <h3>Share of delays lasting 10 minutes or more, by month</h3>
+    <div id="trend" class="trend" role="img" aria-label="Monthly share of long delays"></div>
+    <p class="small">Limits: the cause list follows TTC delay codes grouped into the words alerts use, so an alert with an unusual cause reads as "other". Rare causes (fire, personal injury) rest on few cases. This is an estimate to help you decide, not a promise.</p>
+  </section>
+</main>
+<footer>Made by John Khan in Toronto, Ontario. Data: City of Toronto Open Data (TTC Subway Delay Data since 2025; TTC Routes and Schedules), Open Government Licence Toronto. <a href="https://github.com/ALENZACODES/wait-or-walk">Source code</a></footer>
+<script src="logic.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
