@@ -1,8 +1,8 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1794776923,
- "feedTimestamp": 1794776924,
+ "fetchedAt": 1794786841,
+ "feedTimestamp": 1794786842,
  "alerts": [
   {
    "id": "71415",
@@ -129,6 +129,12 @@
    "station": "Cedarvale",
    "kind": "elevator",
    "header": "Cedarvale: Elevator ELV01-A out of service between Line 5 platform, Line 1 southbound platform/west concourse, and upper concourse while we perform maintenance."
+  },
+  {
+   "id": "80388",
+   "station": "Downsview Park",
+   "kind": "escalator",
+   "header": "Downsview Park: Escalator 10S4E out of service from Vitti St east side entrance to concourse due to a technical problem."
   }
  ]
 }
