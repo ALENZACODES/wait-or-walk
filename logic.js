@@ -110,7 +110,7 @@
 
   // Risk bands for the chance that a comparable logged incident delayed service 10 minutes or more.
   function advice(p) {
-    if (p >= 0.35) return { level: 'high', title: 'High risk of a long delay', text: 'Incidents like this often run long. See the wait or switch line below.' };
+    if (p >= 0.35) return { level: 'high', title: 'High risk of a long delay', text: 'Incidents like this often run long. See the verdict below.' };
     if (p >= 0.15) return { level: 'moderate', title: 'Moderate risk of a long delay', text: 'Know your other route and check the alert again in a few minutes.' };
     return { level: 'low', title: 'Low risk of a long delay', text: 'Comparable incidents rarely held up service 10 minutes or more. Waiting is usually reasonable.' };
   }

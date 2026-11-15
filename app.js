@@ -80,7 +80,7 @@
     const g = model.groups[x.group];
     $('#typical').textContent = `This cause: ${g.delays.toLocaleString('en-CA')} logged delays, ${g.longDelays.toLocaleString('en-CA')} of them 10 minutes or more; half were over in ${g.medianMinutes} minutes or less.`;
     const share = g.longDelays / g.delays;
-    $('#reconcile').textContent = `Why ${pct(p)} and not ${pct(share)}: ${pct(share)} is every logged delay with this cause since January 2025 (${g.longDelays.toLocaleString('en-CA')} of ${g.delays.toLocaleString('en-CA')}). The estimate adjusts that for the station, the line, the time of day and the drop in long delays in 2026${g.recentShareLong !== null && g.recentDelays ? ` (in the latest 91 days, ${pct(g.recentShareLong)} of ${g.recentDelays} delays with this cause ran 10 minutes or more)` : ''}.`;
+    $('#reconcile').textContent = `${u && u.elapsed ? `The chance of 10+ minutes from the start is ${pct(p)}. ` : ''}Why ${pct(p)} and not ${pct(share)}: ${pct(share)} is every logged delay with this cause since January 2025 (${g.longDelays.toLocaleString('en-CA')} of ${g.delays.toLocaleString('en-CA')}). The estimate adjusts that for the station, the line, the time of day and the drop in long delays in 2026${g.recentShareLong !== null && g.recentDelays ? ` (in the latest 91 days, ${pct(g.recentShareLong)} of ${g.recentDelays} delays with this cause ran 10 minutes or more)` : ''}.`;
     const sd = (model.stationDelays || {})[x.station] || 0;
     const rare = [];
     if (g.delays < RARE) rare.push(`only ${g.delays} logged delays have this cause`);
@@ -319,7 +319,7 @@
       live = L; const now = Date.now() / 1000;
       const act = L.alerts.filter((a) => !a.end || a.end > now);
       const age = Math.round((now - L.fetchedAt) / 60);
-      $('#liveSum').textContent = `TTC subway alerts: ${act.length} in the copy saved at ${when(L.fetchedAt)}`;
+      $('#liveSum').textContent = `TTC subway alerts (${act.length}), copied ${when(L.fetchedAt)}`;
       $('#liveList').innerHTML = act.length ? act.map((a, i) => `<li><span>${esc(a.header)}</span> <button type="button" data-live="${i}">Use this alert</button></li>`).join('') : '<li>No subway alerts in the latest copy.</li>';
       $('#liveList').querySelectorAll('[data-live]').forEach((b) => b.addEventListener('click', () => { setSim(false); $('#alert').value = act[+b.dataset.live].header; readAlert(); savedDest(); }));
       $('#liveNote').textContent = `Copied from the TTC's open GTFS Realtime feed (Open Government Licence Toronto). The copy updates within about 30 minutes when the alerts change, and scheduled runs can be late${age > 120 ? `; this copy is ${Math.round(age / 60)} hours old` : ''}. For the newest alert, paste it from the TTC.`;

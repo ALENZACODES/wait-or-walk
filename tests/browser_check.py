@@ -139,7 +139,7 @@ with sync_playwright() as p:
     q = b.new_page(viewport={'width': 1280, 'height': 900}); q.clock.set_fixed_time('2026-11-15T20:30:00Z')
     q.route('**/data/live_alerts.json*', lambda r: r.fulfill(status=200, content_type='application/json', body=json.dumps(fx)))
     q.goto(URL); q.wait_for_selector('#live:not([hidden])', timeout=8000); q.click('#liveSum')
-    check('saved at 2:49 p.m. on Nov 15, 2026' in q.inner_text('#liveSum') and 'Open Government Licence Toronto' in q.inner_text('#liveNote'), f'alerts copy shows when it was saved ({q.inner_text("#liveSum")})')
+    check('copied 2:49 p.m. on Nov 15, 2026' in q.inner_text('#liveSum') and 'Open Government Licence Toronto' in q.inner_text('#liveNote'), f'alerts copy shows when it was copied ({q.inner_text("#liveSum")})')
     q.click('[data-live="0"]'); q.wait_for_timeout(300)
     check(q.input_value('#station') == 'Museum' and q.input_value('#group') == 'medical' and q.is_visible('#pct'), 'one tap on a copied alert fills it and shows a number')
     q.close()
