@@ -18,7 +18,7 @@ Each test is trained only on earlier data. On Jul to Sep 2026 (2,248 delays): AU
 No accounts, no tracking and no data leaves the browser. The forecast is labelled as an estimate, rare causes are flagged as resting on few cases, and the tool always shows the alternative routes so the decision stays with the rider.
 
 ## Challenges I ran into
-The drift was the big one: a model that looked fine on 2025 data was wrong on 2026. Matching station names was the other: the delay log writes "BLOOR STATION", "YONGE BD STATION" and old names like "DUNDAS", while the schedule uses "Bloor Station", "Yonge Station" and "TMU Station", so I built a mapping and checked that 92% of delays land on a real station.
+The drift was the big one: a model that looked fine on 2025 data was wrong on 2026. Matching station names was the other: the delay log writes "BLOOR STATION", "YONGE BD STATION" and old names like "DUNDAS", while the schedule uses "Bloor Station", "Yonge Station" and "TMU Station", so I built a mapping and checked that 99% of delays land on a real station.
 
 ## What I learned
 Calibration matters as much as ranking for a tool people act on, and the honest baseline is the one to beat. Here the cause alone gets most of the way.
