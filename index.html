@@ -11,7 +11,8 @@
 <a class="skip" href="#main">Skip to the tool</a>
 <header>
   <h1>Wait or Walk</h1>
-  <p class="lede">The subway just stopped. Will it be two minutes or twenty? Paste the TTC alert and see how often comparable incidents in 21 months of TTC delay records held up subway service 10 minutes or more, plus the buses and streetcars a short walk away that head where you are going.</p>
+  <p class="lede short">Paste a TTC subway alert: see the risk it runs 10 minutes or more, and scheduled buses and streetcars nearby.</p>
+  <p class="lede long">The subway just stopped. Will it be two minutes or twenty? Paste the TTC alert and see how often comparable incidents in 21 months of TTC delay records held up subway service 10 minutes or more, plus the buses and streetcars a short walk away that head where you are going.</p>
 </header>
 <main id="main">
   <div id="loading" class="card status" role="status">Loading the delay model and schedule…</div>
@@ -29,9 +30,12 @@
       <span>Examples:</span>
       <button type="button" data-alert="Line 1 Yonge-University: Minor delays at Union while we deal with a passenger alarm.">Passenger alarm at Union</button>
       <button type="button" data-alert="Line 2 Bloor-Danforth: Delays at Kipling due to a person at track level.">Person at track level, Kipling</button>
-      <button type="button" data-alert="Line 1: Shuttle buses running between St. George and Union due to a fire investigation.">Fire investigation, St George</button>
+      <button type="button" data-alert="Line 1: Trains are bypassing St. George while we investigate a fire.">Fire investigation, St George</button>
+      <button type="button" data-alert="Trains are not stopping at Bloor-Yonge due to a security incident.">Security at Bloor-Yonge (no line given)</button>
     </div>
+    <p id="example" class="example" hidden>Showing an example. Paste your own alert to replace it.</p>
     <p id="readNote" class="note" role="status" aria-live="polite"></p>
+    <div id="choice" class="choice" hidden></div>
     <ul id="flags" class="flags"></ul>
   </section>
 
@@ -42,20 +46,20 @@
       <div class="big"><span id="pct">--</span><span class="pctlab">of comparable logged incidents delayed subway service 10 minutes or more</span></div>
       <p id="advice" class="advice"></p>
       <p id="adviceText" class="adviceText"></p>
+      <p id="drift" class="drift"></p>
       <p id="typical" class="typical"></p>
       <p id="rare" class="rare" hidden></p>
       <h3>Why</h3>
       <ul id="why"></ul>
-      <p id="drift" class="small"></p>
     </div>
   </section>
 
   <section class="card" aria-labelledby="pb-h">
-    <h2 id="pb-h">3. Plan B</h2>
+    <h2 id="pb-h">3. Plan B: scheduled alternatives</h2>
     <label for="dest">Where are you headed? <span class="hint">(optional, the nearest subway station)</span></label>
     <select id="dest"></select>
     <div id="planbOut"></div>
-    <p class="small">Routes, directions and stops from the TTC schedule published Oct 20, 2026, using each route's regular stop patterns. A stop counts as near a station within 300 metres, straight line. The schedule cannot tell you about detours or shuttle buses, so check <a href="https://www.ttc.ca/service-alerts">TTC service alerts</a>.</p>
+    <p class="small">These are scheduled alternatives, not verified fastest routes. Routes, directions and stops come from the TTC schedule published Oct 20, 2026, using each route's regular stop patterns; a stop counts as near a station within 300 metres, straight line. The schedule cannot tell you about detours, crowding or shuttle buses, so check <a href="https://www.ttc.ca/service-alerts">TTC service alerts</a>. Five journeys were <a href="https://github.com/ALENZACODES/wait-or-walk/blob/main/docs/plan-b-checks.md">checked by hand against the schedule</a>; it has not been tested with riders.</p>
   </section>
 
   <section class="card" aria-labelledby="d-h">
@@ -74,14 +78,17 @@
     <h2 id="m-h">How good is it?</h2>
     <p><b>What the number means.</b> The TTC logs each incident with the minutes it delayed subway service. The number above is the estimated chance that an incident like this one, logged with more than 0 minutes of delay, delayed service 10 minutes or more. It is not your own remaining wait, which also depends on where you are and how service is restored. Records with 0 minutes of delay (<span id="zeroCount"></span> of them) are left out.</p>
     <p><b>How it was made.</b> A logistic regression on every subway delay the TTC logged from January 2025 to September 2026 (open data), using only what an alert tells you: the cause, the station, the line, the time and the day. Newer delays count more. The base model is trained on everything up to <span id="baseThrough"></span>, then its output is recalibrated on the next three months (<span id="calOn"></span>) and shipped as is, with no refit.</p>
-    <p><b>Tested on months it never saw.</b> Each test below runs that exact process: the base model stops three months before the test, the recalibration uses those three months, and the test months are touched only once, for scoring.</p>
-    <div class="tablewrap" tabindex="0" role="region" aria-label="Test results, scrolls sideways on small screens">
-    <table id="metrics"><caption class="sr">Test results</caption><thead><tr><th scope="col">Test months</th><th scope="col">Method</th><th scope="col">Ranking (AUC, higher is better)</th><th scope="col">Log loss (lower is better)</th><th scope="col">Average forecast vs actual</th></tr></thead><tbody></tbody></table>
-    </div>
-    <p id="metricsNote" class="small"></p>
-    <h3>Calibration on the untouched test months</h3>
+    <p><b>Out of time evaluation periods not used for fitting.</b> Each period below runs that exact process: the base model stops three months before the period, the recalibration uses those three months, and the period itself is never used for fitting.</p>
+    <h3>Calibration over the three evaluation periods</h3>
     <div id="calib" class="calib"></div>
     <p id="calibNote" class="small"></p>
+    <details id="tableDetails" class="tabledetails">
+    <summary>Full results table for the three evaluation periods</summary>
+    <div class="tablewrap" tabindex="0" role="region" aria-label="Test results, scrolls sideways on small screens">
+    <table id="metrics"><caption class="sr">Test results</caption><thead><tr><th scope="col">Evaluation period</th><th scope="col">Method</th><th scope="col">Ranking (AUC, higher is better)</th><th scope="col">Log loss (lower is better)</th><th scope="col">Average forecast vs actual</th></tr></thead><tbody></tbody></table>
+    </div>
+    </details>
+    <p id="metricsNote" class="small"></p>
     <h3>Share of delays lasting 10 minutes or more, by month</h3>
     <div id="trend" class="trend" role="img" aria-label="Monthly share of long delays"></div>
     <p id="trendNote" class="small"></p>

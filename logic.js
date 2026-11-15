@@ -82,7 +82,7 @@
 
   function readAlert(text, model) {
     const t = ' ' + String(text || '').toLowerCase().replace(/st\.\s/g, 'st ').replace(/\s+/g, ' ') + ' ';
-    const out = { group: null, station: null, line: null, found: [], flags: [] };
+    const out = { group: null, station: null, line: null, found: [], flags: [], choice: null };
     if (/line 1\b|yonge.university|\byus?\b/.test(t)) out.line = 'YU';
     else if (/line 2\b|bloor.danforth|\bbd\b/.test(t)) out.line = 'BD';
     else if (/line 4\b|sheppard line/.test(t)) out.line = 'SHP';
@@ -97,15 +97,34 @@
     }
     for (const [alias, name] of Object.entries(STATION_ALIASES)) {
       const i = ts.search(new RegExp('[^a-z]' + alias + '[^a-z]'));
-      if (i >= 0) cands.push({ i, len: alias.length + 1, name: name || (out.line === 'BD' ? 'Yonge' : 'Bloor') });
+      if (i >= 0) cands.push({ i, len: alias.length + 1, name: name || (out.line === 'BD' ? 'Yonge' : 'Bloor'), byAlias: !name });
     }
     cands.sort((a, b) => a.i - b.i || b.len - a.len);
-    if (cands.length) out.station = cands[0].name;
+    const byAlias = new Set(cands.filter((c) => c.byAlias).map((c) => c.name));
     const distinct = [...new Set(cands.map((c) => c.name))];
-    if (distinct.length > 1) out.flags.push({ field: 'station', text: `The alert names more than one station. Used the first one, ${labelFor(model, out.station)}.` });
-    if (out.station && (out.station === 'Bloor' || out.station === 'Yonge') && !out.line) out.flags.push({ field: 'station', text: 'Bloor-Yonge serves two lines and the alert does not say which. Check the line.' });
-    if (!out.line && out.station) { const s = model.stations.find((x) => x.name === out.station); if (s && s.lines.length === 1) out.line = s.lines[0]; else if (s) out.flags.push({ field: 'line', text: `${s.label} serves more than one line. Pick the line.` }); }
-    if (out.line && out.station) { const s = model.stations.find((x) => x.name === out.station); if (s && !s.lines.includes(out.line)) out.flags.push({ field: 'station', text: `${s.label} is not on ${LABELS[out.line]}. Check the station.` }); }
+    const st = (n) => model.stations.find((x) => x.name === n);
+    const opt = (n, l, showLine) => { const s = st(n); const lab = s ? s.label : n; return { station: n, line: l || null, label: showLine && l && !/Line \d/.test(lab) ? `${lab} on ${LABELS[l]}` : lab }; };
+    const LORDER = ['YU', 'BD', 'SHP'];
+    // Expand one named station into the options a rider could mean.
+    const expand = (n) => {
+      if (byAlias.has(n) && !out.line) return [opt('Bloor', 'YU'), opt('Yonge', 'BD')];
+      const s = st(n);
+      if (out.line) return [opt(n, out.line)];
+      if (s && s.lines.length > 1) return s.lines.slice().sort((a, b) => LORDER.indexOf(a) - LORDER.indexOf(b)).map((l) => opt(n, l, true));
+      return [opt(n, s ? s.lines[0] : null)];
+    };
+    const options = distinct.flatMap(expand);
+    if (options.length === 1) {
+      out.station = options[0].station;
+      if (!out.line) out.line = options[0].line;
+    } else if (options.length > 1) {
+      let text;
+      if (distinct.length > 1) text = 'The alert names more than one station. Which one is the delay at?';
+      else if (byAlias.size) text = 'Bloor-Yonge serves two lines and the alert does not say which. Which line?';
+      else text = `${st(distinct[0]).label} serves more than one line. Which line?`;
+      out.choice = { text, options };
+    }
+    if (out.line && out.station) { const s = st(out.station); if (s && !s.lines.includes(out.line)) out.flags.push({ field: 'station', text: `${s.label} is not on ${LABELS[out.line]}. Check the station.` }); }
     for (const k of ['line', 'station', 'group']) if (out[k]) out.found.push(k);
     return out;
   }
@@ -171,6 +190,25 @@
     return out;
   }
 
+  // Page state helpers, kept here so the rules are tested without a browser.
+  // state: { line, station, group, derived: Set of fields read from the alert, pending: choice or null }
+  function applyAlert(state, r) {
+    const next = { ...state, derived: new Set(state.derived), pending: r ? r.choice : null };
+    for (const k of ['line', 'station', 'group']) {
+      if (!r) { if (next.derived.has(k)) next[k] = ''; next.derived.delete(k); continue; }
+      next[k] = r[k] || '';
+      if (r[k]) next.derived.add(k); else next.derived.delete(k);
+    }
+    return next;
+  }
+  function chooseOption(state, o) {
+    const next = { ...state, derived: new Set(state.derived), pending: null, station: o.station };
+    if (o.line) next.line = o.line;
+    next.derived.add('station'); if (o.line) next.derived.add('line');
+    return next;
+  }
+  function canForecast(state) { return !state.pending && !!(state.line && state.station && state.group); }
+
   function torontoNow(date) {
     const f = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Toronto', hour: 'numeric', hourCycle: 'h23', weekday: 'short' }).formatToParts(date || new Date());
     const hour = Number(f.find((p) => p.type === 'hour').value);
@@ -178,5 +216,5 @@
     return { hour, weekend: wd === 'Sat' || wd === 'Sun' };
   }
 
-  return { predict, explain, advice, readAlert, planB, timeBucket, torontoNow, labelFor, LABELS };
+  return { predict, explain, advice, readAlert, planB, applyAlert, chooseOption, canForecast, timeBucket, torontoNow, labelFor, LABELS };
 });

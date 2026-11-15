@@ -54,3 +54,19 @@ footer { max-width: 980px; margin: 0 auto; padding: 18px 20px 30px; color: #555;
 .calib svg { width: 100%; max-width: 420px; height: auto; display: block; }
 .calib text { font-size: 11px; fill: #444; } .calib .ax { stroke: #888; } .calib .diag { stroke: #aaa; stroke-dasharray: 4 4; } .calib circle { fill: var(--blue); fill-opacity: .8; }
 @media (max-width: 600px) { header { padding: 18px 14px 2px; } main { padding: 4px 12px 16px; } .card { padding: 14px 12px; } h1 { font-size: 1.8rem; } .planb { grid-template-columns: 1fr; } .big { align-items: flex-start; } }
+.lede.short { display: none; }
+.example { margin: 6px 0 0; font-size: .9rem; color: #444; background: var(--soft); padding: 4px 8px; border-radius: 6px; }
+.choice { border: 2px solid var(--red); border-radius: 8px; padding: 8px 12px; margin: 8px 0; background: #fff8f8; }
+.choice p { margin: 0 0 6px; } .choice .opts { display: flex; flex-wrap: wrap; gap: 8px; }
+.choice button { font-weight: 600; border-color: var(--red); color: var(--red); }
+.drift { background: var(--soft); border-radius: 6px; padding: 6px 10px; margin: 8px 0; font-size: .95rem; }
+.drift-n { font-weight: 800; color: var(--blue); }
+.result.flash { animation: flash 0.9s ease-out; }
+@keyframes flash { from { box-shadow: 0 0 0 4px rgba(153,0,0,.35); } to { box-shadow: 0 0 0 0 rgba(153,0,0,0); } }
+.tabledetails { margin: 10px 0; } .tabledetails summary { cursor: pointer; font-weight: 600; color: var(--blue); padding: 6px 0; }
+@media (max-width: 700px) {
+  .lede.long { display: none; } .lede.short { display: block; font-size: .95rem; }
+  header { padding: 12px 12px 0; } h1 { font-size: 1.5rem; margin: 0 0 2px; }
+  #alert { min-height: 0; } .samples { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; } .samples button { white-space: nowrap; font-size: .9rem; }
+  .samples > span { display: none; } main .card { margin: 10px 0; } label[for="alert"] .hint { display: none; }
+}

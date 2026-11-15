@@ -2,6 +2,8 @@
   const $ = (s) => document.querySelector(s);
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   let model = null, planb = null;
+  let state = { line: '', station: '', group: '', derived: new Set(), pending: null };
+  const sync = () => { $('#line').value = state.line; $('#station').value = state.station; $('#group').value = state.group; ['line', 'station', 'group'].forEach((k) => tag(k, state.derived.has(k))); };
   const pct = (p) => Math.round(p * 100) + '%';
   const RARE = 100;
   const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -21,16 +23,18 @@
     $('#weekend').checked = now.weekend;
   }
 
-  const current = () => ({ line: $('#line').value, station: $('#station').value, group: $('#group').value, time: $('#time').value, weekend: $('#weekend').checked });
+  const current = () => ({ line: state.line, station: state.station, group: state.group, time: $('#time').value, weekend: $('#weekend').checked });
   const tag = (k, on) => { document.querySelector(`.tag[data-for="${k}"]`).hidden = !on; };
 
   function render() {
     const x = current();
     const s = model.stations.find((t) => t.name === x.station);
-    if (s && !x.line && s.lines.length === 1) { x.line = s.lines[0]; $('#line').value = x.line; }
-    renderPlanB(s);
-    const ready = x.station && x.group && x.line;
+    if (s && !x.line && s.lines.length === 1 && !state.pending) { state.line = x.line = s.lines[0]; $('#line').value = x.line; }
+    renderChoice();
+    renderPlanB(state.pending ? null : s);
+    const ready = WaitOrWalk.canForecast(state);
     $('#empty').hidden = !!ready; $('#callBody').hidden = !ready;
+    if (state.pending) { $('#empty').textContent = 'No number yet: the alert could mean more than one place. Pick one under the alert to see the call.'; $('.result').className = 'card result'; return; }
     if (!ready) {
       const miss = [!x.station && 'station', !x.line && 'line', !x.group && 'cause'].filter(Boolean);
       $('#empty').textContent = (x.station || x.group || x.line) ? `Choose the ${miss.length > 1 ? miss.slice(0, -1).join(', ') + ' and ' + miss[miss.length - 1] : miss[0]} under “Check the details” to see the call.` : 'Paste an alert above, or choose the station and cause under “Check the details”.';
@@ -53,7 +57,7 @@
     $('#rare').textContent = rare.length ? `Rough estimate: ${rare.join(' and ')}, so treat this number as a guide.` : '';
     if (s && !s.lines.includes(x.line)) { $('#rare').hidden = false; $('#rare').textContent = `${s.label} is not on ${LINE[x.line]}. Check the line and station.`; }
     $('#why').innerHTML = WaitOrWalk.explain(model, x).map((e) => `<li class="${e.up ? 'up' : 'down'}">${esc(e.text)}.</li>`).join('');
-    $('#drift').textContent = `Drift correction: before recalibration the model said ${pct(raw)}. Long delays became rarer in 2026, so the recalibration on ${span(model.calibratedOn)} adjusts it to ${pct(p)}.`;
+    $('#drift').innerHTML = `<b>Drift correction:</b> <span class="drift-n">${pct(raw)}</span> before recalibration, <span class="drift-n">${pct(p)}</span> after. Long delays became rarer in 2026, so the shipped model is recalibrated on ${span(model.calibratedOn)}.`;
   }
 
   function routeLine(r, extra) {
@@ -69,13 +73,13 @@
     let html = '';
     if (d && d.name !== s.name) {
       if (r.direct.length) html += `<h3>Goes from ${esc(s.label)} to near ${esc(d.label)}</h3><ul class="planb">${r.direct.map((x) => routeLine(x, `<br><span class="meta">Get off at ${esc(x.alight)}</span>`)).join('')}</ul>`;
-      if (r.via.length) html += `<h3>${r.direct.length ? 'Also: ride' : 'No single route goes there. Ride'} past the delay, then take the subway</h3><ul class="planb">${r.via.map((x) => routeLine(x, `<br><span class="meta">Change to ${LINE[x.line]} at ${esc(WaitOrWalk.labelFor(model, x.transfer))}</span>`)).join('')}</ul>`;
+      if (r.via.length) html += `<h3>${r.direct.length ? 'Also: ride' : 'No single scheduled route goes there. Ride'} past the delay, then take the subway</h3><ul class="planb">${r.via.map((x) => routeLine(x, `<br><span class="meta">Change to ${LINE[x.line]} at ${esc(WaitOrWalk.labelFor(model, x.transfer))}</span>`)).join('')}</ul>`;
       if (!r.direct.length && !r.via.length) {
         const all = WaitOrWalk.planB(planb, s.name, '');
         html += `<p>No bus or streetcar from ${esc(s.label)} reaches ${esc(d.label)}, or a station on the way, in the schedule. Routes near ${esc(s.label)} in every direction:</p>` + listAll(all);
       }
     } else {
-      html += `<h3>Within 300 metres of ${esc(s.label)}, by direction</h3>` + listAll(r);
+      html += `<h3>Scheduled routes within 300 metres of ${esc(s.label)}, by direction</h3>` + listAll(r);
     }
     const nights = [...new Set(r.night.map((x) => x.route))];
     if (nights.length) html += `<p class="small"><b>Overnight:</b> ${nights.length > 1 ? `Blue Night routes ${nights.join(', ')} also stop` : `Blue Night route ${nights[0]} also stops`} here.</p>`;
@@ -87,17 +91,21 @@
     return `<ul class="planb">${r.all.slice(0, 10).map((x) => routeLine(x, x.directions.map((q) => `<br><span class="dir">${esc(q.heading)}</span>${q.next ? ` <span class="meta">next subway: ${esc(WaitOrWalk.labelFor(model, q.next))}</span>` : ''}`).join(''))).join('')}</ul>`;
   }
 
+  function renderChoice() {
+    const c = state.pending, box = $('#choice');
+    box.hidden = !c;
+    if (!c) { box.innerHTML = ''; return; }
+    box.innerHTML = `<p><b>${esc(c.text)}</b></p><div class="opts">${c.options.map((o, i) => `<button type="button" data-opt="${i}">${esc(o.label)}</button>`).join('')}</div>`;
+    box.querySelectorAll('[data-opt]').forEach((b) => b.addEventListener('click', () => { state = WaitOrWalk.chooseOption(state, c.options[+b.dataset.opt]); sync(); render(); }));
+  }
+
   function readAlert() {
     const text = $('#alert').value.trim();
-    ['line', 'station', 'group'].forEach((k) => tag(k, false));
-    $('#flags').innerHTML = '';
-    if (!text) { $('#readNote').textContent = ''; render(); return; }
+    $('#flags').innerHTML = ''; $('#example').hidden = true;
+    if (!text) { state = WaitOrWalk.applyAlert(state, null); sync(); $('#readNote').textContent = ''; render(); return; }
     const r = WaitOrWalk.readAlert(text, model);
     // A field the alert does not mention goes back to empty, so nothing stale is kept from before.
-    $('#line').value = r.line || '';
-    $('#station').value = r.station || '';
-    $('#group').value = r.group || '';
-    ['line', 'station', 'group'].forEach((k) => tag(k, !!r[k]));
+    state = WaitOrWalk.applyAlert(state, r); sync();
     const got = [r.line && 'line', r.station && 'station', r.group && 'cause'].filter(Boolean);
     const miss = ['line', 'station', 'cause'].filter((k) => !got.includes(k));
     const and = (a) => a.length > 1 ? a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1] : a[0];
@@ -113,7 +121,8 @@
       items.forEach(([name, s], i) => rows.push(`<tr class="${name === 'Wait or Walk' ? 'ours' : ''}"><td>${i === 0 ? `${span(f.test)} (${f.testDelays.toLocaleString('en-CA')} delays)` : ''}</td><td>${name}</td><td>${s.auc.toFixed(3)}</td><td>${s.logLoss.toFixed(4)}</td><td>${pct(s.meanPredicted)} vs ${pct(f.actualShareLong)}</td></tr>`));
     }
     $('#metrics tbody').innerHTML = rows.join('');
-    $('#metricsNote').textContent = 'Wait or Walk ranks incidents better than the cause only rule in all three tests. On log loss it is about level with the first model: the first model can learn from the three most recent months, which Wait or Walk sets aside for recalibration.';
+    const fa = m.folds.map((f) => `${f.waitOrWalk.auc.toFixed(3)} vs ${f.firstModel.auc.toFixed(3)}`).join(', ');
+    $('#metricsNote').textContent = `Wait or Walk beats the cause only rule on ranking and log loss in all three periods; that is the only baseline it beats. It ranks a little below the first model on AUC in all three (${fa}): recalibrating on the latest three months costs a little ranking, because the base model cannot learn from them. On log loss it is about level with the first model.`;
     // Calibration chart: predicted vs actual for each forecast band, pooled over the three tests.
     const b = m.pooled.reliability, W = 330, H = 220, P = 44, mx = 0.65;
     const X = (v) => P + (v / mx) * (W - P - 10), Y = (v) => H - 34 - (v / mx) * (H - 44);
@@ -124,7 +133,7 @@
     svg += b.map((q) => `<circle cx="${X(q.predicted)}" cy="${Y(q.actual)}" r="${3 + Math.sqrt(q.delays) / 8}"><title>Forecast ${pct(q.predicted)}, actual ${pct(q.actual)}, ${q.delays} delays</title></circle>`).join('');
     svg += `<text x="${(W + P) / 2}" y="${H - 2}" text-anchor="middle">Forecast</text><text x="10" y="${(H - 34) / 2}" text-anchor="middle" transform="rotate(-90 10 ${(H - 34) / 2})">Actual</text></svg>`;
     $('#calib').innerHTML = svg;
-    $('#calibNote').textContent = `Each dot is a forecast band over ${m.pooled.delays.toLocaleString('en-CA')} test delays from the three tests; dots on the line would be perfect. The dots sit a little below it: forecasts ran up to 4 points high, likely because long delays kept getting rarer after each recalibration window. ` + b.map((q) => `${pct(q.predicted)} forecast, ${pct(q.actual)} actual`).join('; ') + '.';
+    $('#calibNote').textContent = `Each dot is a forecast band over ${m.pooled.delays.toLocaleString('en-CA')} delays from the three evaluation periods; dots on the dashed line would be perfect. The dots sit below it, so forecasts run high: ` + b.map((q) => `${pct(q.predicted)} forecast, ${pct(q.actual)} actual`).join('; ') + '.';
     const months = Object.entries(m.monthlyShareLong);
     const max = Math.max(...months.map(([, v]) => v));
     $('#trendNote').textContent = `Tallest bar ${pct(max)}. Red: the three months used to recalibrate the shipped model (${months.slice(-3).map(([, v]) => pct(v)).join(', ')}).`;
@@ -143,10 +152,19 @@
       $('#loading').hidden = true; $('#app').hidden = false;
       if (!wired) {
         wired = true;
-        ['#line', '#station', '#group'].forEach((id) => $(id).addEventListener('change', () => { tag(id.slice(1), false); render(); }));
+        ['#line', '#station', '#group'].forEach((id) => $(id).addEventListener('change', () => { const k = id.slice(1); state[k] = $(id).value; state.derived.delete(k); if (k !== 'group') state.pending = null; tag(k, false); render(); }));
         ['#time', '#weekend', '#dest'].forEach((id) => $(id).addEventListener('change', render));
         $('#alert').addEventListener('input', readAlert);
-        document.querySelectorAll('[data-alert]').forEach((b) => b.addEventListener('click', () => { $('#alert').value = b.dataset.alert; readAlert(); }));
+        document.querySelectorAll('[data-alert]').forEach((b) => b.addEventListener('click', () => {
+          $('#alert').value = b.dataset.alert; readAlert();
+          const res = $('.result'); res.classList.remove('flash'); void res.offsetWidth; res.classList.add('flash');
+          if (res.getBoundingClientRect().top > window.innerHeight - 120) res.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }));
+        $('#tableDetails').open = !window.matchMedia('(max-width: 700px)').matches;
+      }
+      // On phones, show one worked example straight away so the result is visible without scrolling.
+      if (!$('#alert').value && window.matchMedia('(max-width: 700px)').matches) {
+        $('#alert').value = document.querySelector('[data-alert]').dataset.alert; readAlert(); $('#example').hidden = false;
       }
       render();
     }).catch(() => { $('#loading').hidden = true; $('#loadError').hidden = false; });
