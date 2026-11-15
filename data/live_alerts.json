@@ -1,8 +1,8 @@
 {
  "source": "TTC GTFS Realtime alerts, subway feed (https://gtfsrt.ttc.ca/alerts/subway)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1794772174,
- "feedTimestamp": 1794772174,
+ "fetchedAt": 1794773282,
+ "feedTimestamp": 1794773283,
  "alerts": [
   {
    "id": "80241",
@@ -15,18 +15,6 @@
    "description": "",
    "start": 1794650400,
    "end": 1794817800
-  },
-  {
-   "id": "80375",
-   "lines": [
-    "YU"
-   ],
-   "cause": "MEDICAL_EMERGENCY",
-   "effect": "SIGNIFICANT_DELAYS",
-   "header": "Line 1 Yonge-University: Delays northbound at Museum station due to a medical emergency Thank you for your patience.",
-   "description": "",
-   "start": 1794772035,
-   "end": 0
   }
  ]
 }
