@@ -320,6 +320,616 @@
    }
   ]
  },
+ "evidence": {
+  "bootstrapResamples": 2000,
+  "periods": [
+   {
+    "test": "2026-01-01 to 2026-03-31",
+    "delays": 2576,
+    "methods": {
+     "waitOrWalk": {
+      "auc": {
+       "value": 0.7236,
+       "low": 0.6963,
+       "high": 0.7491
+      },
+      "logLoss": {
+       "value": 0.4189,
+       "low": 0.3964,
+       "high": 0.4419
+      },
+      "brier": {
+       "value": 0.1309,
+       "low": 0.1221,
+       "high": 0.1399
+      },
+      "calError": {
+       "value": 0.0146,
+       "low": 0.0097,
+       "high": 0.0311
+      }
+     },
+     "causeOnly": {
+      "auc": {
+       "value": 0.6853,
+       "low": 0.658,
+       "high": 0.7104
+      },
+      "logLoss": {
+       "value": 0.434,
+       "low": 0.412,
+       "high": 0.4562
+      },
+      "brier": {
+       "value": 0.1361,
+       "low": 0.1274,
+       "high": 0.1447
+      },
+      "calError": {
+       "value": 0.0094,
+       "low": 0.0069,
+       "high": 0.0273
+      }
+     },
+     "firstModel": {
+      "auc": {
+       "value": 0.7308,
+       "low": 0.7038,
+       "high": 0.7561
+      },
+      "logLoss": {
+       "value": 0.4151,
+       "low": 0.3924,
+       "high": 0.4387
+      },
+      "brier": {
+       "value": 0.1296,
+       "low": 0.1208,
+       "high": 0.1385
+      },
+      "calError": {
+       "value": 0.0173,
+       "low": 0.0113,
+       "high": 0.0334
+      }
+     }
+    },
+    "differences": {
+     "causeOnly": {
+      "auc": {
+       "value": 0.0383,
+       "low": 0.0245,
+       "high": 0.0521,
+       "distinguishable": true
+      },
+      "logLoss": {
+       "value": -0.0152,
+       "low": -0.0205,
+       "high": -0.01,
+       "distinguishable": true
+      },
+      "brier": {
+       "value": -0.0052,
+       "low": -0.007,
+       "high": -0.0034,
+       "distinguishable": true
+      },
+      "calError": {
+       "value": 0.0052,
+       "low": -0.008,
+       "high": 0.0171,
+       "distinguishable": false
+      }
+     },
+     "firstModel": {
+      "auc": {
+       "value": -0.0071,
+       "low": -0.0125,
+       "high": -0.0018,
+       "distinguishable": true
+      },
+      "logLoss": {
+       "value": 0.0037,
+       "low": 0.0011,
+       "high": 0.0065,
+       "distinguishable": true
+      },
+      "brier": {
+       "value": 0.0013,
+       "low": 0.0005,
+       "high": 0.0022,
+       "distinguishable": true
+      },
+      "calError": {
+       "value": -0.0027,
+       "low": -0.0132,
+       "high": 0.0086,
+       "distinguishable": false
+      }
+     }
+    }
+   },
+   {
+    "test": "2026-04-01 to 2026-06-30",
+    "delays": 2631,
+    "methods": {
+     "waitOrWalk": {
+      "auc": {
+       "value": 0.7582,
+       "low": 0.7315,
+       "high": 0.7843
+      },
+      "logLoss": {
+       "value": 0.3484,
+       "low": 0.3288,
+       "high": 0.3688
+      },
+      "brier": {
+       "value": 0.1045,
+       "low": 0.0972,
+       "high": 0.1121
+      },
+      "calError": {
+       "value": 0.0361,
+       "low": 0.0263,
+       "high": 0.0493
+      }
+     },
+     "causeOnly": {
+      "auc": {
+       "value": 0.729,
+       "low": 0.7023,
+       "high": 0.7577
+      },
+      "logLoss": {
+       "value": 0.3593,
+       "low": 0.34,
+       "high": 0.3785
+      },
+      "brier": {
+       "value": 0.1073,
+       "low": 0.0997,
+       "high": 0.1146
+      },
+      "calError": {
+       "value": 0.0383,
+       "low": 0.0288,
+       "high": 0.0521
+      }
+     },
+     "firstModel": {
+      "auc": {
+       "value": 0.7596,
+       "low": 0.7337,
+       "high": 0.7851
+      },
+      "logLoss": {
+       "value": 0.3472,
+       "low": 0.3271,
+       "high": 0.3677
+      },
+      "brier": {
+       "value": 0.1042,
+       "low": 0.0967,
+       "high": 0.1117
+      },
+      "calError": {
+       "value": 0.0331,
+       "low": 0.0227,
+       "high": 0.0455
+      }
+     }
+    },
+    "differences": {
+     "causeOnly": {
+      "auc": {
+       "value": 0.0292,
+       "low": 0.0163,
+       "high": 0.0414,
+       "distinguishable": true
+      },
+      "logLoss": {
+       "value": -0.0109,
+       "low": -0.0164,
+       "high": -0.0054,
+       "distinguishable": true
+      },
+      "brier": {
+       "value": -0.0028,
+       "low": -0.0048,
+       "high": -0.0007,
+       "distinguishable": true
+      },
+      "calError": {
+       "value": -0.0021,
+       "low": -0.0095,
+       "high": 0.0044,
+       "distinguishable": false
+      }
+     },
+     "firstModel": {
+      "auc": {
+       "value": -0.0015,
+       "low": -0.0061,
+       "high": 0.0035,
+       "distinguishable": false
+      },
+      "logLoss": {
+       "value": 0.0012,
+       "low": -0.0008,
+       "high": 0.0033,
+       "distinguishable": false
+      },
+      "brier": {
+       "value": 0.0003,
+       "low": -0.0003,
+       "high": 0.001,
+       "distinguishable": false
+      },
+      "calError": {
+       "value": 0.0031,
+       "low": -0.0001,
+       "high": 0.0083,
+       "distinguishable": false
+      }
+     }
+    }
+   },
+   {
+    "test": "2026-07-01 to 2026-09-30",
+    "delays": 2248,
+    "methods": {
+     "waitOrWalk": {
+      "auc": {
+       "value": 0.7693,
+       "low": 0.7405,
+       "high": 0.797
+      },
+      "logLoss": {
+       "value": 0.3154,
+       "low": 0.293,
+       "high": 0.3386
+      },
+      "brier": {
+       "value": 0.0933,
+       "low": 0.0852,
+       "high": 0.102
+      },
+      "calError": {
+       "value": 0.0158,
+       "low": 0.0126,
+       "high": 0.0319
+      }
+     },
+     "causeOnly": {
+      "auc": {
+       "value": 0.7603,
+       "low": 0.7297,
+       "high": 0.7888
+      },
+      "logLoss": {
+       "value": 0.3167,
+       "low": 0.2944,
+       "high": 0.3403
+      },
+      "brier": {
+       "value": 0.0931,
+       "low": 0.0847,
+       "high": 0.1018
+      },
+      "calError": {
+       "value": 0.0183,
+       "low": 0.0137,
+       "high": 0.0328
+      }
+     },
+     "firstModel": {
+      "auc": {
+       "value": 0.7696,
+       "low": 0.7417,
+       "high": 0.7972
+      },
+      "logLoss": {
+       "value": 0.3217,
+       "low": 0.3015,
+       "high": 0.3431
+      },
+      "brier": {
+       "value": 0.0953,
+       "low": 0.0876,
+       "high": 0.1033
+      },
+      "calError": {
+       "value": 0.0432,
+       "low": 0.0312,
+       "high": 0.0558
+      }
+     }
+    },
+    "differences": {
+     "causeOnly": {
+      "auc": {
+       "value": 0.009,
+       "low": -0.0079,
+       "high": 0.0251,
+       "distinguishable": false
+      },
+      "logLoss": {
+       "value": -0.0013,
+       "low": -0.0072,
+       "high": 0.0048,
+       "distinguishable": false
+      },
+      "brier": {
+       "value": 0.0003,
+       "low": -0.0017,
+       "high": 0.0022,
+       "distinguishable": false
+      },
+      "calError": {
+       "value": -0.0025,
+       "low": -0.0111,
+       "high": 0.0091,
+       "distinguishable": false
+      }
+     },
+     "firstModel": {
+      "auc": {
+       "value": -0.0003,
+       "low": -0.0054,
+       "high": 0.0048,
+       "distinguishable": false
+      },
+      "logLoss": {
+       "value": -0.0063,
+       "low": -0.01,
+       "high": -0.0024,
+       "distinguishable": true
+      },
+      "brier": {
+       "value": -0.0019,
+       "low": -0.0033,
+       "high": -0.0006,
+       "distinguishable": true
+      },
+      "calError": {
+       "value": -0.0274,
+       "low": -0.0282,
+       "high": -0.0089,
+       "distinguishable": true
+      }
+     }
+    }
+   }
+  ],
+  "pooled": {
+   "delays": 7455,
+   "methods": {
+    "waitOrWalk": {
+     "auc": {
+      "value": 0.7512,
+      "low": 0.7358,
+      "high": 0.7666
+     },
+     "logLoss": {
+      "value": 0.3628,
+      "low": 0.3507,
+      "high": 0.3758
+     },
+     "brier": {
+      "value": 0.1103,
+      "low": 0.1058,
+      "high": 0.115
+     },
+     "calError": {
+      "value": 0.0176,
+      "low": 0.0113,
+      "high": 0.0252
+     }
+    },
+    "causeOnly": {
+     "auc": {
+      "value": 0.7273,
+      "low": 0.7115,
+      "high": 0.7428
+     },
+     "logLoss": {
+      "value": 0.3723,
+      "low": 0.3605,
+      "high": 0.3852
+     },
+     "brier": {
+      "value": 0.113,
+      "low": 0.1084,
+      "high": 0.1178
+     },
+     "calError": {
+      "value": 0.0192,
+      "low": 0.0124,
+      "high": 0.027
+     }
+    },
+    "firstModel": {
+     "auc": {
+      "value": 0.7527,
+      "low": 0.7369,
+      "high": 0.7679
+     },
+     "logLoss": {
+      "value": 0.363,
+      "low": 0.3513,
+      "high": 0.3757
+     },
+     "brier": {
+      "value": 0.1103,
+      "low": 0.1059,
+      "high": 0.115
+     },
+     "calError": {
+      "value": 0.0241,
+      "low": 0.0173,
+      "high": 0.0316
+     }
+    }
+   },
+   "differences": {
+    "causeOnly": {
+     "auc": {
+      "value": 0.0239,
+      "low": 0.0156,
+      "high": 0.0316,
+      "distinguishable": true
+     },
+     "logLoss": {
+      "value": -0.0095,
+      "low": -0.0127,
+      "high": -0.006,
+      "distinguishable": true
+     },
+     "brier": {
+      "value": -0.0027,
+      "low": -0.0038,
+      "high": -0.0015,
+      "distinguishable": true
+     },
+     "calError": {
+      "value": -0.0015,
+      "low": -0.0051,
+      "high": 0.0023,
+      "distinguishable": false
+     }
+    },
+    "firstModel": {
+     "auc": {
+      "value": -0.0015,
+      "low": -0.0053,
+      "high": 0.0022,
+      "distinguishable": false
+     },
+     "logLoss": {
+      "value": -0.0002,
+      "low": -0.0017,
+      "high": 0.0015,
+      "distinguishable": false
+     },
+     "brier": {
+      "value": -0.0,
+      "low": -0.0006,
+      "high": 0.0006,
+      "distinguishable": false
+     },
+     "calError": {
+      "value": -0.0064,
+      "low": -0.0087,
+      "high": -0.0032,
+      "distinguishable": true
+     }
+    }
+   }
+  },
+  "decisionValue": [
+   {
+    "threshold": 0.15,
+    "method": "waitOrWalk",
+    "flaggedShare": 0.423,
+    "longFlagged": 0.735,
+    "falseFlagRate": 0.37,
+    "flaggedThatWereLong": 0.254
+   },
+   {
+    "threshold": 0.15,
+    "method": "causeOnly",
+    "flaggedShare": 0.42,
+    "longFlagged": 0.71,
+    "falseFlagRate": 0.371,
+    "flaggedThatWereLong": 0.247
+   },
+   {
+    "threshold": 0.15,
+    "method": "firstModel",
+    "flaggedShare": 0.443,
+    "longFlagged": 0.745,
+    "falseFlagRate": 0.391,
+    "flaggedThatWereLong": 0.246
+   },
+   {
+    "threshold": 0.35,
+    "method": "waitOrWalk",
+    "flaggedShare": 0.083,
+    "longFlagged": 0.25,
+    "falseFlagRate": 0.054,
+    "flaggedThatWereLong": 0.443
+   },
+   {
+    "threshold": 0.35,
+    "method": "causeOnly",
+    "flaggedShare": 0.041,
+    "longFlagged": 0.145,
+    "falseFlagRate": 0.024,
+    "flaggedThatWereLong": 0.511
+   },
+   {
+    "threshold": 0.35,
+    "method": "firstModel",
+    "flaggedShare": 0.099,
+    "longFlagged": 0.291,
+    "falseFlagRate": 0.066,
+    "flaggedThatWereLong": 0.433
+   }
+  ],
+  "simulation": {
+   "assumptions": {
+    "waitCostIsLoggedDelayMinutesCappedAt": 60,
+    "switchCostsMinutes": [
+     8,
+     12,
+     15
+    ],
+    "threshold": 0.35
+   },
+   "rows": [
+    {
+     "switchCost": 8,
+     "alwaysWait": 6.56,
+     "alwaysSwitch": 8.0,
+     "hindsightBest": 4.94,
+     "causeOnly": 6.26,
+     "waitOrWalk": 6.18,
+     "waitOrWalkMinusCauseOnly": {
+      "value": -0.08,
+      "low": -0.12,
+      "high": -0.03
+     }
+    },
+    {
+     "switchCost": 12,
+     "alwaysWait": 6.56,
+     "alwaysSwitch": 12.0,
+     "hindsightBest": 5.49,
+     "causeOnly": 6.42,
+     "waitOrWalk": 6.51,
+     "waitOrWalkMinusCauseOnly": {
+      "value": 0.09,
+      "low": 0.04,
+      "high": 0.13
+     }
+    },
+    {
+     "switchCost": 15,
+     "alwaysWait": 6.56,
+     "alwaysSwitch": 15.0,
+     "hindsightBest": 5.73,
+     "causeOnly": 6.55,
+     "waitOrWalk": 6.76,
+     "waitOrWalkMinusCauseOnly": {
+      "value": 0.21,
+      "low": 0.16,
+      "high": 0.26
+     }
+    }
+   ]
+  }
+ },
  "zeroMinuteRecordsExcluded": 30515,
  "monthlyShareLong": {
   "2025-01": 0.184,

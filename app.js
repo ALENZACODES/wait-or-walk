@@ -1,7 +1,8 @@
 (function () {
   const $ = (s) => document.querySelector(s);
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-  let model = null, planb = null;
+  const VERSION = 'r4';
+  let model = null, planb = null, ptimes = null;
   let state = { line: '', station: '', group: '', derived: new Set(), pending: null };
   const sync = () => { $('#line').value = state.line; $('#station').value = state.station; $('#group').value = state.group; ['line', 'station', 'group'].forEach((k) => tag(k, state.derived.has(k))); };
   const pct = (p) => Math.round(p * 100) + '%';
@@ -31,9 +32,10 @@
     const s = model.stations.find((t) => t.name === x.station);
     if (s && !x.line && s.lines.length === 1 && !state.pending) { state.line = x.line = s.lines[0]; $('#line').value = x.line; }
     renderChoice();
-    renderPlanB(state.pending ? null : s);
-    const ready = WaitOrWalk.canForecast(state);
+    renderPlanB(state.pending || WaitOrWalk.mismatch(state, model) ? null : s);
+    const ready = WaitOrWalk.canForecast(state, model);
     $('#empty').hidden = !!ready; $('#callBody').hidden = !ready;
+    if (WaitOrWalk.mismatch(state, model)) { $('#empty').textContent = `No number: ${s.label} is not on ${LINE[x.line]}. Choose a matching line or station under “Check the details”.`; $('.result').className = 'card result'; return; }
     if (state.pending) { $('#empty').textContent = 'No number yet: the alert could mean more than one place. Pick one under the alert to see the call.'; $('.result').className = 'card result'; return; }
     if (!ready) {
       const miss = [!x.station && 'station', !x.line && 'line', !x.group && 'cause'].filter(Boolean);
@@ -55,28 +57,48 @@
     if (sd < RARE) rare.push(`only ${sd} logged delays happened at ${s ? s.label : x.station}`);
     $('#rare').hidden = !rare.length;
     $('#rare').textContent = rare.length ? `Rough estimate: ${rare.join(' and ')}, so treat this number as a guide.` : '';
-    if (s && !s.lines.includes(x.line)) { $('#rare').hidden = false; $('#rare').textContent = `${s.label} is not on ${LINE[x.line]}. Check the line and station.`; }
     $('#why').innerHTML = WaitOrWalk.explain(model, x).map((e) => `<li class="${e.up ? 'up' : 'down'}">${esc(e.text)}.</li>`).join('');
     $('#drift').innerHTML = `<b>Drift correction:</b> <span class="drift-n">${pct(raw)}</span> before recalibration, <span class="drift-n">${pct(p)}</span> after. Long delays became rarer in 2026, so the shipped model is recalibrated on ${span(model.calibratedOn)}.`;
   }
 
-  function routeLine(r, extra) {
-    return `<li class="${r.kind}"><b>${esc(r.route)} ${esc(r.name)}</b> <span class="meta">${r.kind}</span>${r.heading ? `<br><span class="dir">${esc(r.heading)}</span>` : ''}<br><span class="meta">Board at ${esc(r.stop)}, about ${r.metres} m</span>${extra || ''}</li>`;
+  const KIND = { bus: 'bus', streetcar: 'streetcar', LRT: 'LRT (light rail)' };
+  const clock = (m) => { const h = Math.floor(m / 60) % 24, mm = String(m % 60).padStart(2, '0'); return `${h % 12 || 12}:${mm} ${h < 12 ? 'a.m.' : 'p.m.'}`; };
+  let ctx = null;
+  function timeContext() {
+    const c = WaitOrWalk.torontoClock();
+    const a = WaitOrWalk.activeServices(ptimes.calendar, c.ymd, c.dow), b = WaitOrWalk.activeServices(ptimes.calendar, c.prevYmd, c.prevDow);
+    return { now: c.minutes, today: a.services, yesterday: b.services, covered: a.covered, ymd: c.ymd };
+  }
+  function departures(refs) {
+    if (!ctx.covered) return '';
+    const next = WaitOrWalk.nextDepartures(ptimes.times, refs, ctx.today, ctx.yesterday, ctx.now, 3).filter((m) => m - ctx.now <= 180);
+    if (!next.length) return '<br><span class="meta notnow">No scheduled departure in the next 3 hours</span>';
+    return `<br><span class="meta deps">Next scheduled: ${next.map((m) => `${clock(m)} (${m - ctx.now <= 0 ? 'now' : 'in ' + (m - ctx.now) + ' min'})`).join(', ')}</span>`;
+  }
+  function access(r) {
+    if (r.access === 1) return '<br><span class="meta">Schedule lists accessible boarding at this stop</span>';
+    if (r.access === 2) return '<br><span class="meta">Schedule lists no accessible boarding at this stop</span>';
+    return '';
+  }
+  function routeLine(r, extra, deps) {
+    return `<li class="${r.kind}"><b>${esc(r.route)} ${esc(r.name)}</b> <span class="meta">${KIND[r.kind] || r.kind}</span>${r.heading ? `<br><span class="dir">${esc(r.heading)}</span>` : ''}<br><span class="meta">Board at ${esc(r.stop)}: ${r.metres} m, about ${WaitOrWalk.walkMinutes(r.metres)} min walk</span>${access(r)}${deps || ''}${extra || ''}</li>`;
   }
 
   function renderPlanB(s) {
     const out = $('#planbOut');
-    if (!s) { out.innerHTML = '<p class="small">Choose the station of the delay to see nearby routes.</p>'; return; }
+    if (!s) { out.innerHTML = WaitOrWalk.mismatch(state, model) ? '<p class="small">Fix the line or station first: they do not match.</p>' : '<p class="small">Choose the station of the delay to see nearby routes.</p>'; return; }
+    ctx = timeContext();
     const dest = $('#dest').value;
     const d = dest && model.stations.find((t) => t.name === dest);
     const r = WaitOrWalk.planB(planb, s.name, dest);
-    let html = '';
+    let html = `<p class="warn" id="planbWarn"><b>A scheduled alternative might not be running right now.</b> Routes can be detoured, short turned or replaced by shuttle buses. Check <a href="https://www.ttc.ca/service-alerts">TTC service alerts</a> before you walk.</p>`;
+    html += ctx.covered ? `<p class="small">Departure times are from the schedule for today, after ${clock(ctx.now)} Toronto time. Walking time assumes 80 metres a minute in a straight line.</p>` : '<p class="small">The schedule data covers Nov 1 to Dec 21, 2026; today is outside it, so departure times are not shown.</p>';
     if (d && d.name !== s.name) {
-      if (r.direct.length) html += `<h3>Goes from ${esc(s.label)} to near ${esc(d.label)}</h3><ul class="planb">${r.direct.map((x) => routeLine(x, `<br><span class="meta">Get off at ${esc(x.alight)}</span>`)).join('')}</ul>`;
-      if (r.via.length) html += `<h3>${r.direct.length ? 'Also: ride' : 'No single scheduled route goes there. Ride'} past the delay, then take the subway</h3><ul class="planb">${r.via.map((x) => routeLine(x, `<br><span class="meta">Change to ${LINE[x.line]} at ${esc(WaitOrWalk.labelFor(model, x.transfer))}</span>`)).join('')}</ul>`;
+      if (r.direct.length) html += `<h3>Goes from ${esc(s.label)} to near ${esc(d.label)}</h3><ul class="planb">${r.direct.map((x) => routeLine(x, `<br><span class="meta">Get off at ${esc(x.alight)}</span>`, departures(x.refs))).join('')}</ul>`;
+      if (r.via.length) html += `<h3>${r.direct.length ? 'Also: ride' : 'No single scheduled route goes there. Ride'} past the delay, then take the subway</h3><ul class="planb">${r.via.map((x) => routeLine(x, `<br><span class="meta">Change to ${LINE[x.line]} at ${esc(WaitOrWalk.labelFor(model, x.transfer))}</span>`, departures(x.refs))).join('')}</ul>`;
       if (!r.direct.length && !r.via.length) {
         const all = WaitOrWalk.planB(planb, s.name, '');
-        html += `<p>No bus or streetcar from ${esc(s.label)} reaches ${esc(d.label)}, or a station on the way, in the schedule. Routes near ${esc(s.label)} in every direction:</p>` + listAll(all);
+        html += `<p>No scheduled bus, streetcar or LRT from ${esc(s.label)} reaches ${esc(d.label)}, or a station on the way. Routes near ${esc(s.label)} in every direction:</p>` + listAll(all);
       }
     } else {
       html += `<h3>Scheduled routes within 300 metres of ${esc(s.label)}, by direction</h3>` + listAll(r);
@@ -87,8 +109,8 @@
   }
 
   function listAll(r) {
-    if (!r.all.length) return '<p>No daytime bus or streetcar stop within 300 metres in the schedule data.</p>';
-    return `<ul class="planb">${r.all.slice(0, 10).map((x) => routeLine(x, x.directions.map((q) => `<br><span class="dir">${esc(q.heading)}</span>${q.next ? ` <span class="meta">next subway: ${esc(WaitOrWalk.labelFor(model, q.next))}</span>` : ''}`).join(''))).join('')}</ul>`;
+    if (!r.all.length) return '<p>No daytime bus, streetcar or LRT stop within 300 metres in the schedule data.</p>';
+    return `<ul class="planb">${r.all.slice(0, 10).map((x) => routeLine(x, x.directions.map((q) => `<br><span class="dir">${esc(q.heading)}</span>${q.stop !== x.stop ? ` <span class="meta">from ${esc(q.stop)}, ${q.metres} m</span>` : ''}${q.next ? ` <span class="meta">next subway: ${esc(WaitOrWalk.labelFor(model, q.next))}</span>` : ''}${departures(q.refs)}`).join(''))).join('')}</ul>`;
   }
 
   function renderChoice() {
@@ -114,15 +136,35 @@
     render();
   }
 
+  const NAMES = { waitOrWalk: 'Wait or Walk', causeOnly: 'Cause only rule', firstModel: 'First model' };
+  const ci = (x, d) => `${x.value.toFixed(d)} <span class="ci">(${x.low.toFixed(d)} to ${x.high.toFixed(d)})</span>`;
+  // Differences in words, so no minus signs: higher says whether a bigger number is better for this measure.
+  const word = (b, d, good, bad) => Math.abs(b) < Math.pow(10, -d) / 2 ? 'level' : `${Math.abs(b).toFixed(d)} ${b > 0 ? good : bad}`;
+  const dci = (x, d, higher, good = 'better', bad = 'worse') => {
+    const f = higher ? 1 : -1; const lo = Math.min(x.low * f, x.high * f), hi = Math.max(x.low * f, x.high * f);
+    let range;
+    if (lo > 0) range = `${lo.toFixed(d)} to ${hi.toFixed(d)} ${good}`;
+    else if (hi < 0) range = `${(-hi).toFixed(d)} to ${(-lo).toFixed(d)} ${bad}`;
+    else range = `${word(lo, d, good, bad)} to ${word(hi, d, good, bad)}`;
+    return `${word(x.value * f, d, good, bad)} <span class="ci">(${range})</span>`;
+  };
+  function methodRows(b) {
+    return Object.keys(NAMES).map((k) => { const v = b.methods[k]; return `<tr class="${k === 'waitOrWalk' ? 'ours' : ''}"><td>${NAMES[k]}</td><td>${ci(v.auc, 3)}</td><td>${ci(v.logLoss, 4)}</td><td>${ci(v.brier, 4)}</td><td>${(v.calError.value * 100).toFixed(1)} pts</td></tr>`; }).join('');
+  }
+  function diffRows(b) {
+    return ['causeOnly', 'firstModel'].map((k) => { const v = b.differences[k]; const yes = (x) => x.distinguishable ? 'yes' : '<b>no</b>'; return `<tr><td>vs ${NAMES[k].toLowerCase()}</td><td>${dci(v.auc, 3, true)}<br><span class="meta">distinguishable: ${yes(v.auc)}</span></td><td>${dci(v.logLoss, 4, false)}<br><span class="meta">distinguishable: ${yes(v.logLoss)}</span></td><td>${dci(v.brier, 4, false)}<br><span class="meta">distinguishable: ${yes(v.brier)}</span></td></tr>`; }).join('');
+  }
+  const MHEAD = '<thead><tr><th scope="col">Method</th><th scope="col">AUC, higher is better (95% interval)</th><th scope="col">Log loss, lower is better</th><th scope="col">Brier score, lower is better</th><th scope="col">Calibration error</th></tr></thead>';
+  const DHEAD = '<thead><tr><th scope="col">Wait or Walk compared</th><th scope="col">AUC</th><th scope="col">Log loss</th><th scope="col">Brier score</th></tr></thead>';
   function metrics(m) {
-    const rows = [];
-    for (const f of m.folds) {
-      const items = [['Overall rate', f.overallRate], ['Cause only rule, recalibrated the same way', f.causeOnlyRate], ['First model (no recency, no recalibration)', f.firstModel], ['Wait or Walk', f.waitOrWalk]];
-      items.forEach(([name, s], i) => rows.push(`<tr class="${name === 'Wait or Walk' ? 'ours' : ''}"><td>${i === 0 ? `${span(f.test)} (${f.testDelays.toLocaleString('en-CA')} delays)` : ''}</td><td>${name}</td><td>${s.auc.toFixed(3)}</td><td>${s.logLoss.toFixed(4)}</td><td>${pct(s.meanPredicted)} vs ${pct(f.actualShareLong)}</td></tr>`));
-    }
-    $('#metrics tbody').innerHTML = rows.join('');
-    const fa = m.folds.map((f) => `${f.waitOrWalk.auc.toFixed(3)} vs ${f.firstModel.auc.toFixed(3)}`).join(', ');
-    $('#metricsNote').textContent = `Wait or Walk beats the cause only rule on ranking and log loss in all three periods; that is the only baseline it beats. It ranks a little below the first model on AUC in all three (${fa}): recalibrating on the latest three months costs a little ranking, because the base model cannot learn from them. On log loss it is about level with the first model.`;
+    const ev = m.evidence;
+    $('#pooledTable').innerHTML = `<table>${MHEAD}<tbody>${methodRows(ev.pooled)}</tbody></table>`;
+    $('#pooledDiff').innerHTML = `<table>${DHEAD}<tbody>${diffRows(ev.pooled)}</tbody></table>`;
+    $('#periodTables').innerHTML = ev.periods.map((p, i) => `<h4>${span(p.test)} (${p.delays.toLocaleString('en-CA')} delays; average forecast ${pct(m.folds[i].waitOrWalk.meanPredicted)} vs ${pct(m.folds[i].actualShareLong)} actual)</h4><div class="tablewrap"><table>${MHEAD}<tbody>${methodRows(p)}</tbody></table></div><div class="tablewrap"><table>${DHEAD}<tbody>${diffRows(p)}</tbody></table></div>`).join('');
+    const dv = ev.decisionValue;
+    $('#decisionTable').innerHTML = `<table><thead><tr><th scope="col">Flag when the forecast is at least</th><th scope="col">Method</th><th scope="col">Share of 10+ minute delays flagged</th><th scope="col">False flag rate (short delays flagged)</th><th scope="col">Flagged delays that ran 10+ minutes</th></tr></thead><tbody>${dv.map((r) => `<tr class="${r.method === 'waitOrWalk' ? 'ours' : ''}"><td>${pct(r.threshold)}</td><td>${NAMES[r.method]}</td><td>${pct(r.longFlagged)}</td><td>${pct(r.falseFlagRate)}</td><td>${pct(r.flaggedThatWereLong)}</td></tr>`).join('')}</tbody></table>`;
+    const sim = ev.simulation;
+    $('#simTable').innerHTML = `<table><thead><tr><th scope="col">Assumed extra minutes to switch</th><th scope="col">Always wait</th><th scope="col">Cause only rule</th><th scope="col">Wait or Walk</th><th scope="col">Hindsight best</th><th scope="col">Wait or Walk against cause only (95% interval)</th></tr></thead><tbody>${sim.rows.map((r) => `<tr><td>${r.switchCost} min</td><td>${r.alwaysWait.toFixed(2)}</td><td>${r.causeOnly.toFixed(2)}</td><td>${r.waitOrWalk.toFixed(2)}</td><td>${r.hindsightBest.toFixed(2)}</td><td>${dci(r.waitOrWalkMinusCauseOnly, 2, false, 'min fewer', 'min more')}</td></tr>`).join('')}</tbody></table>`;
     // Calibration chart: predicted vs actual for each forecast band, pooled over the three tests.
     const b = m.pooled.reliability, W = 330, H = 220, P = 44, mx = 0.65;
     const X = (v) => P + (v / mx) * (W - P - 10), Y = (v) => H - 34 - (v / mx) * (H - 44);
@@ -133,7 +175,7 @@
     svg += b.map((q) => `<circle cx="${X(q.predicted)}" cy="${Y(q.actual)}" r="${3 + Math.sqrt(q.delays) / 8}"><title>Forecast ${pct(q.predicted)}, actual ${pct(q.actual)}, ${q.delays} delays</title></circle>`).join('');
     svg += `<text x="${(W + P) / 2}" y="${H - 2}" text-anchor="middle">Forecast</text><text x="10" y="${(H - 34) / 2}" text-anchor="middle" transform="rotate(-90 10 ${(H - 34) / 2})">Actual</text></svg>`;
     $('#calib').innerHTML = svg;
-    $('#calibNote').textContent = `Each dot is a forecast band over ${m.pooled.delays.toLocaleString('en-CA')} delays from the three evaluation periods; dots on the dashed line would be perfect. The dots sit below it, so forecasts run high: ` + b.map((q) => `${pct(q.predicted)} forecast, ${pct(q.actual)} actual`).join('; ') + '.';
+    $('#calibNote').textContent = `Each dot is a forecast band over ${m.pooled.delays.toLocaleString('en-CA')} delays from the three evaluation periods; dots on the dashed line would be perfect. Every dot sits below the line, so forecasts run high: 3 to 4 points in the bands above 30%, up to 3 points below that. ` + b.map((q) => `${pct(q.predicted)} forecast, ${pct(q.actual)} actual`).join('; ') + '.';
     const months = Object.entries(m.monthlyShareLong);
     const max = Math.max(...months.map(([, v]) => v));
     $('#trendNote').textContent = `Tallest bar ${pct(max)}. Red: the three months used to recalibrate the shipped model (${months.slice(-3).map(([, v]) => pct(v)).join(', ')}).`;
@@ -145,8 +187,9 @@
   function load() {
     $('#loading').hidden = false; $('#loadError').hidden = true;
     const get = (f) => fetch(f).then((r) => { if (!r.ok) throw new Error(f + ' ' + r.status); return r.json(); });
-    Promise.all([get('data/model.json'), get('data/metrics.json'), get('data/planb.json')]).then(([mo, me, pb]) => {
-      model = mo; planb = pb;
+    const v = (f) => get(f + '?v=' + VERSION);
+    Promise.all([v('data/model.json'), v('data/metrics.json'), v('data/planb.json'), v('data/planb_times.json')]).then(([mo, me, pb, pt]) => {
+      model = mo; planb = pb; ptimes = pt;
       $('#baseThrough').textContent = day(mo.baseTrainedThrough); $('#calOn').textContent = span(mo.calibratedOn);
       fillSelects(); metrics(me);
       $('#loading').hidden = true; $('#app').hidden = false;

@@ -130,39 +130,41 @@
   }
 
   // Plan B from the schedule. pb: data/planb.json. from, to: station names (to may be empty).
+  // Every entry carries refs: [pattern index, visit index] pairs, used to look up scheduled departures.
   function planB(pb, from, to) {
     const out = { direct: [], via: [], all: [], night: [] };
-    const seen = new Set();
     const lineOf = (n) => Object.keys(pb.lines).filter((l) => pb.lines[l].includes(n));
+    const base = (q, i) => ({ route: q.route, name: q.name, kind: q.kind, night: q.night, stop: q.visits[i].stop, metres: q.visits[i].metres, access: q.visits[i].access || 0 });
     if (!to || to === from) {
-      const byRoute = new Map();
-      for (const q of pb.patterns) {
+      const byRoute = new Map(), dirs = new Map();
+      pb.patterns.forEach((q, pi) => {
         const i = q.visits.findIndex((v) => v.station === from);
-        if (i < 0) continue;
-        const next = q.visits.slice(i + 1).map((v) => v.station);
+        if (i < 0 || q.visits[i].end) return; // the trip ends here, so it cannot take you anywhere
         const key = q.route + '|' + q.heading;
-        if (seen.has(key)) continue; seen.add(key);
-        const r = byRoute.get(q.route) || { route: q.route, name: q.name, kind: q.kind, night: q.night, stop: q.visits[i].stop, metres: q.visits[i].metres, directions: [] };
-        if (q.visits[i].metres < r.metres) { r.metres = q.visits[i].metres; r.stop = q.visits[i].stop; }
-        r.directions.push({ heading: q.heading, next: next[0] || null });
+        if (dirs.has(key)) { dirs.get(key).refs.push([pi, i]); return; }
+        const r = byRoute.get(q.route) || Object.assign(base(q, i), { directions: [] });
+        if (q.visits[i].metres < r.metres) Object.assign(r, { metres: q.visits[i].metres, stop: q.visits[i].stop, access: q.visits[i].access || 0 });
+        const d = { heading: q.heading, next: (q.visits[i + 1] || {}).station || null, stop: q.visits[i].stop, metres: q.visits[i].metres, refs: [[pi, i]] };
+        r.directions.push(d); dirs.set(key, d);
         byRoute.set(q.route, r);
-      }
+      });
       for (const r of byRoute.values()) (r.night ? out.night : out.all).push(r);
       out.all.sort((a, b) => a.metres - b.metres || a.route.localeCompare(b.route, 'en', { numeric: true }));
       return out;
     }
     const fromLines = lineOf(from), toLines = lineOf(to);
     const shared = fromLines.find((l) => toLines.includes(l));
-    for (const q of pb.patterns) {
+    const direct = new Map();
+    pb.patterns.forEach((q, pi) => {
       const i = q.visits.findIndex((v) => v.station === from);
-      if (i < 0) continue;
+      if (i < 0) return;
       const j = q.visits.findIndex((v, k) => k > i && v.station === to);
+      if (j < 0) return;
       const key = q.route + '|' + q.heading;
-      if (j > 0) {
-        if (seen.has(key)) continue; seen.add(key);
-        (q.night ? out.night : out.direct).push({ route: q.route, name: q.name, kind: q.kind, night: q.night, heading: q.heading, stop: q.visits[i].stop, metres: q.visits[i].metres, alight: q.visits[j].stop });
-      }
-    }
+      if (direct.has(key)) { direct.get(key).refs.push([pi, i]); return; }
+      direct.set(key, Object.assign(base(q, i), { heading: q.heading, alight: q.visits[j].stop, refs: [[pi, i]] }));
+    });
+    for (const r of direct.values()) (r.night ? out.night : out.direct).push(r);
     const directRoutes = new Set(out.direct.map((r) => r.route));
     // Otherwise: routes that carry you past the delay to a station closer to where you are going, then the subway onward.
     let useful = null;
@@ -175,20 +177,53 @@
       for (const l of toLines) { const o = pb.lines[l], b = o.indexOf(to); o.forEach((n, k) => { if (n !== to && n !== from) useful.set(n, { rank: -Math.abs(k - b), line: l }); }); }
     }
     const best = new Map();
-    for (const q of pb.patterns) {
-      if (q.night || directRoutes.has(q.route)) continue;
+    pb.patterns.forEach((q, pi) => {
+      if (q.night || directRoutes.has(q.route)) return;
       const i = q.visits.findIndex((v) => v.station === from);
-      if (i < 0) continue;
+      if (i < 0) return;
       let pick = null;
       q.visits.slice(i + 1).forEach((v) => { const u = useful.get(v.station); if (u && (!pick || u.rank > pick.u.rank)) pick = { v, u }; });
-      if (!pick) continue;
+      if (!pick) return;
       const key = q.route + '|' + q.heading;
       const cur = best.get(key);
-      if (!cur || pick.u.rank > cur.rank) best.set(key, { route: q.route, name: q.name, kind: q.kind, heading: q.heading, stop: q.visits[i].stop, metres: q.visits[i].metres, transfer: pick.v.station, line: pick.u.line, rank: pick.u.rank });
-    }
+      if (cur && pick.u.rank === cur.rank) { cur.refs.push([pi, i]); return; }
+      if (!cur || pick.u.rank > cur.rank) best.set(key, Object.assign(base(q, i), { heading: q.heading, transfer: pick.v.station, line: pick.u.line, rank: pick.u.rank, refs: [[pi, i]] }));
+    });
     out.via = [...best.values()].sort((a, b) => b.rank - a.rank || a.metres - b.metres).slice(0, 6);
     return out;
   }
+
+  // Schedule time helpers. cal: calendar block of data/planb_times.json. ymd: 'YYYYMMDD'. dow: 0 Monday to 6 Sunday.
+  function activeServices(cal, ymd, dow) {
+    const on = new Set(); let covered = false;
+    for (const w of cal.weekly) if (w.from <= ymd && ymd <= w.to) { covered = true; if (w.days[dow]) on.add(w.s); }
+    for (const [s, d, type] of cal.dates) if (d === ymd) { covered = true; if (type === 1) on.add(s); else on.delete(s); }
+    return { services: on, covered };
+  }
+  function decodeTimes(str) {
+    if (!str) return [];
+    let t = 0; return str.split('.').map((x) => (t += parseInt(x, 36)));
+  }
+  // Next scheduled departures (minutes after midnight of today, may be under the current time for none) for a list of refs.
+  function nextDepartures(times, refs, today, yesterday, nowMin, count) {
+    const all = [];
+    for (const [pi, vi] of refs) {
+      const e = (times[pi] || [])[vi] || {};
+      for (const s of today) for (const m of decodeTimes(e[s])) if (m >= nowMin) all.push(m);
+      for (const s of yesterday) for (const m of decodeTimes(e[s])) if (m - 1440 >= nowMin) all.push(m - 1440);
+    }
+    return [...new Set(all)].sort((a, b) => a - b).slice(0, count || 3);
+  }
+  function torontoClock(date) {
+    const f = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Toronto', year: 'numeric', month: '2-digit', day: '2-digit', hour: 'numeric', minute: '2-digit', hourCycle: 'h23', weekday: 'short' }).formatToParts(date || new Date());
+    const g = (k) => f.find((p) => p.type === k).value;
+    const dow = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].indexOf(g('weekday'));
+    const ymd = g('year') + g('month') + g('day');
+    const y = new Date(Date.UTC(+g('year'), +g('month') - 1, +g('day')) - 86400000);
+    const prev = y.getUTCFullYear() + String(y.getUTCMonth() + 1).padStart(2, '0') + String(y.getUTCDate()).padStart(2, '0');
+    return { ymd, prevYmd: prev, dow, prevDow: (dow + 6) % 7, minutes: Number(g('hour')) * 60 + Number(g('minute')) };
+  }
+  const walkMinutes = (metres) => Math.max(1, Math.ceil(metres / 80)); // 80 metres a minute, about 4.8 km/h, straight line
 
   // Page state helpers, kept here so the rules are tested without a browser.
   // state: { line, station, group, derived: Set of fields read from the alert, pending: choice or null }
@@ -207,7 +242,13 @@
     next.derived.add('station'); if (o.line) next.derived.add('line');
     return next;
   }
-  function canForecast(state) { return !state.pending && !!(state.line && state.station && state.group); }
+  // Station and line must match: a station that is not on the chosen line gives no number.
+  function mismatch(state, model) {
+    if (!model || !state.station || !state.line) return false;
+    const s = model.stations.find((x) => x.name === state.station);
+    return !!(s && !s.lines.includes(state.line));
+  }
+  function canForecast(state, model) { return !state.pending && !!(state.line && state.station && state.group) && !mismatch(state, model); }
 
   function torontoNow(date) {
     const f = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Toronto', hour: 'numeric', hourCycle: 'h23', weekday: 'short' }).formatToParts(date || new Date());
@@ -216,5 +257,5 @@
     return { hour, weekend: wd === 'Sat' || wd === 'Sun' };
   }
 
-  return { predict, explain, advice, readAlert, planB, applyAlert, chooseOption, canForecast, timeBucket, torontoNow, labelFor, LABELS };
+  return { predict, explain, advice, readAlert, planB, applyAlert, chooseOption, canForecast, mismatch, activeServices, decodeTimes, nextDepartures, torontoClock, walkMinutes, timeBucket, torontoNow, labelFor, LABELS };
 });

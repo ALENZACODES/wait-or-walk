@@ -94,6 +94,17 @@ for (const a of examples) {
   assert.equal(W.canForecast(st), !/Bloor-Yonge due/.test(a), a);
 }
 
+// Station and line must match before any number is shown (regression: Union with Line 2)
+const mm = { line: 'BD', station: 'Union', group: 'medical', derived: new Set(), pending: null };
+assert.equal(W.mismatch(mm, model), true);
+assert.equal(W.canForecast(mm, model), false);
+assert.equal(W.canForecast({ ...mm, line: 'YU' }, model), true);
+const ua = W.applyAlert({ line: '', station: '', group: '', derived: new Set(), pending: null }, W.readAlert('Line 2: Delays at Union due to a medical emergency.', model));
+assert.deepEqual([ua.line, ua.station], ['BD', 'Union']);
+assert.equal(W.canForecast(ua, model), false);
+assert.equal(W.canForecast({ ...mm, station: 'Bloor', line: 'BD' }, model), false);
+assert.equal(W.canForecast({ ...mm, station: 'Yonge', line: 'BD' }, model), true);
+
 // Toronto clock
 assert.deepEqual(W.torontoNow(new Date('2026-11-15T13:30:00Z')), { hour: 8, weekend: true });
 assert.deepEqual(W.torontoNow(new Date('2026-07-15T21:00:00Z')), { hour: 17, weekend: false });
@@ -120,6 +131,26 @@ assert.ok(!W.planB(pb, 'Main Street', 'Broadview').direct.some((r) => /^East/.te
 const all = W.planB(pb, 'Union', '');
 assert.ok(all.all.length && all.all.every((r) => r.directions.length));
 assert.ok(!JSON.stringify(pb).includes(' - '));
+// Line 5 Eglinton is light rail, not a streetcar
+assert.ok(pb.patterns.filter((q) => q.route === '5').every((q) => q.kind === 'LRT'));
+assert.ok(pb.patterns.filter((q) => q.route === '504').every((q) => q.kind === 'streetcar'));
+// A trip that ends at the station is not offered as a way out of it
+assert.ok(!W.planB(pb, 'Kipling', '').all.some((r) => r.directions.some((d) => /towards Kipling Station/.test(d.heading))));
+
+// Schedule times: services for a date, next departures, walking time
+const pt = load('planb_times.json');
+assert.equal(pt.times.length, pb.patterns.length);
+const mon = W.activeServices(pt.calendar, '20261116', 0), sat = W.activeServices(pt.calendar, '20261121', 5);
+assert.ok(mon.covered && mon.services.has('1') && !mon.services.has('2'));
+assert.ok(sat.services.has('2') && !sat.services.has('1'));
+assert.equal(W.activeServices(pt.calendar, '20270301', 0).covered, false);
+const k149 = W.planB(pb, 'Kipling', 'Jane').direct.find((r) => r.route === '149');
+const nd = W.nextDepartures(pt.times, k149.refs, mon.services, new Set(), 7 * 60 + 30, 3);
+assert.equal(nd.length, 3); assert.ok(nd[0] >= 450 && nd[0] < nd[1] && nd[1] < nd[2]);
+assert.ok(nd.includes(455)); // the 7:35 weekday trip checked by hand in docs/plan-b-checks.md
+assert.deepEqual(W.decodeTimes('a.5.5'), [10, 15, 20]);
+assert.equal(W.walkMinutes(300), 4); assert.equal(W.walkMinutes(10), 1);
+assert.deepEqual(W.torontoClock(new Date('2026-11-16T05:10:00Z')), { ymd: '20261116', prevYmd: '20261115', dow: 0, prevDow: 6, minutes: 10 });
 
 // Honest metrics, each test run with the deployed process (base model stops before the
 // recalibration window, recalibration window is the three months before the test, no refit)
@@ -132,5 +163,14 @@ for (const f of metrics.folds) {
 assert.ok(model.baseTrainedThrough < model.calibratedOn.slice(0, 10));
 assert.equal(metrics.pooled.delays, metrics.folds.reduce((a, f) => a + f.testDelays, 0));
 for (const g of Object.values(model.groups)) assert.ok(g.longDelays <= g.delays);
+
+// Bootstrap intervals bracket the point values, and the published claims match the numbers
+const ev = metrics.evidence;
+for (const b of [...ev.periods, ev.pooled]) for (const m of Object.values(b.methods)) for (const x of Object.values(m)) assert.ok(x.low <= x.value + 1e-9 && x.value <= x.high + 1e-9);
+assert.equal(ev.pooled.differences.causeOnly.auc.distinguishable, true);
+assert.equal(ev.pooled.differences.firstModel.auc.distinguishable, false);
+assert.ok(ev.pooled.methods.waitOrWalk.calError.value < ev.pooled.methods.firstModel.calError.value);
+assert.equal(ev.decisionValue.length, 6);
+assert.equal(ev.simulation.rows.length, 3);
 
 console.log('Wait or Walk tests passed.');

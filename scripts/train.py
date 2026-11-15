@@ -123,7 +123,7 @@ def main():
             if k.sum(): out.append({'from': lo, 'to': min(hi, 1), 'delays': int(k.sum()), 'predicted': round(float(p[k].mean()), 3), 'actual': round(float(np.asarray(y)[k].mean()), 3)})
         return out
 
-    folds = []; pooled_y = []; pooled_p = []
+    folds = []; pooled_y = []; pooled_p = []; preds = []
     for start, end in [('2026-01-01', '2026-04-01'), ('2026-04-01', '2026-07-01'), ('2026-07-01', '2026-10-01')]:
         tr = d[d.Date < start]; te = d[(d.Date >= start) & (d.Date < end)]
         cs = cal_start_for(start)
@@ -136,6 +136,7 @@ def main():
         cr_te_cal = sig(pl.coef_[0][0] * logit(cr_te) + pl.intercept_[0])
         m_raw = LogisticRegression(C=0.5, max_iter=5000).fit(X(tr), tr.y)
         pooled_y += list(te.y); pooled_p += list(p)
+        preds.append({'y': te.y.values, 'minutes': te['Min Delay'].values.astype(float), 'waitOrWalk': p, 'causeOnly': cr_te_cal, 'firstModel': m_raw.predict_proba(X(te))[:, 1]})
         folds.append({'test': f'{start} to {te.Date.max()}', 'baseTrainedThrough': base.Date.max(), 'calibratedOn': f'{cal.Date.min()} to {cal.Date.max()}',
                       'testDelays': int(len(te)), 'actualShareLong': round(float(te.y.mean()), 3),
                       'overallRate': score(te.y, np.full(len(te), tr.y.mean())),
@@ -163,7 +164,8 @@ def main():
     os.makedirs(OUT, exist_ok=True)
     json.dump(model, open(os.path.join(OUT, 'model.json'), 'w'), indent=1)
     pooled = {'tests': len(folds), 'delays': len(pooled_y), 'reliability': bins(np.array(pooled_y), np.array(pooled_p))}
-    json.dump({'folds': folds, 'pooled': pooled, 'zeroMinuteRecordsExcluded': int(zero_excluded),
+    evidence = evaluate(preds, [f['test'] for f in folds], bins)
+    json.dump({'folds': folds, 'pooled': pooled, 'evidence': evidence, 'zeroMinuteRecordsExcluded': int(zero_excluded),
                'monthlyShareLong': {k: round(float(v), 3) for k, v in d.groupby(d.Date.str.slice(0, 7)).y.mean().items()}},
               open(os.path.join(OUT, 'metrics.json'), 'w'), indent=1)
     samp = d.sample(30, random_state=7)
@@ -171,6 +173,72 @@ def main():
     json.dump([{'group': g, 'station': s, 'line': l, 'time': t, 'weekend': bool(wk), 'p': round(float(p), 6)} for g, s, l, t, wk, p in zip(samp.group, samp.station, samp.Line, samp.time, samp.weekend, ps)],
               open(os.path.join(OUT, 'parity.json'), 'w'), indent=1)
     print(json.dumps([{k: v for k, v in f.items() if k != 'reliability'} for f in folds], indent=1)); print(json.dumps(pooled))
+
+METHODS = ['waitOrWalk', 'causeOnly', 'firstModel']
+BOOT = 2000
+SWITCH_COSTS = [8, 12, 15]   # simulation: extra minutes a rider spends by switching to a bus or streetcar
+WAIT_CAP = 60                # simulation: a rider waits at most this many minutes before leaving anyway
+
+def ece(y, p, edges=(0, .05, .1, .15, .2, .3, .45, 1.01)):
+    tot = 0.0
+    for lo, hi in zip(edges[:-1], edges[1:]):
+        k = (p >= lo) & (p < hi)
+        if k.sum(): tot += k.sum() * abs(p[k].mean() - y[k].mean())
+    return tot / len(y)
+
+def evaluate(preds, names, bins):
+    """Bootstrap 95% intervals (resampling delays within each period), decision value at the risk band cut offs,
+    and a transparent decision simulation. Everything is on the out of time evaluation periods."""
+    rng = np.random.default_rng(20261115)
+    def metrics(y, p):
+        return {'auc': roc_auc_score(y, p), 'logLoss': log_loss(y, np.clip(p, 1e-6, 1 - 1e-6), labels=[0, 1]), 'brier': brier_score_loss(y, p), 'calError': ece(y, p)}
+    def block(parts):
+        y = np.concatenate([q['y'] for q in parts])
+        P = {m: np.concatenate([q[m] for q in parts]) for m in METHODS}
+        point = {m: metrics(y, P[m]) for m in METHODS}
+        sizes = [len(q['y']) for q in parts]; offs = np.cumsum([0] + sizes[:-1])
+        draws = {m: {k: [] for k in point[m]} for m in METHODS}
+        for _ in range(BOOT):
+            idx = np.concatenate([o + rng.integers(0, n, n) for o, n in zip(offs, sizes)])
+            yy = y[idx]
+            for m in METHODS:
+                r = metrics(yy, P[m][idx])
+                for k, v in r.items(): draws[m][k].append(v)
+        out = {'delays': int(len(y)), 'methods': {}, 'differences': {}}
+        for m in METHODS:
+            out['methods'][m] = {k: {'value': round(float(point[m][k]), 4), 'low': round(float(np.percentile(draws[m][k], 2.5)), 4), 'high': round(float(np.percentile(draws[m][k], 97.5)), 4)} for k in point[m]}
+        for other in ['causeOnly', 'firstModel']:
+            dd = {}
+            for k in point['waitOrWalk']:
+                diff = np.array(draws['waitOrWalk'][k]) - np.array(draws[other][k])
+                lo, hi = np.percentile(diff, [2.5, 97.5])
+                dd[k] = {'value': round(float(point['waitOrWalk'][k] - point[other][k]), 4), 'low': round(float(lo), 4), 'high': round(float(hi), 4), 'distinguishable': bool(lo > 0 or hi < 0)}
+            out['differences'][other] = dd
+        return out
+    ev = {'bootstrapResamples': BOOT, 'periods': [dict(test=n, **block([q])) for n, q in zip(names, preds)], 'pooled': block(preds)}
+    # Decision value at the 15% and 35% cut offs, pooled over the three periods
+    y = np.concatenate([q['y'] for q in preds]); mins_ = np.concatenate([q['minutes'] for q in preds])
+    P = {m: np.concatenate([q[m] for q in preds]) for m in METHODS}
+    dv = []
+    for th in (0.15, 0.35):
+        for m in METHODS:
+            f = P[m] >= th
+            dv.append({'threshold': th, 'method': m, 'flaggedShare': round(float(f.mean()), 3), 'longFlagged': round(float(f[y == 1].mean()), 3),
+                       'falseFlagRate': round(float(f[y == 0].mean()), 3), 'flaggedThatWereLong': round(float(y[f].mean()), 3) if f.any() else None})
+    ev['decisionValue'] = dv
+    # Simulation: wait costs the logged delay minutes (capped), switching costs a fixed number of extra minutes
+    wait = np.minimum(mins_, WAIT_CAP)
+    sim = {'assumptions': {'waitCostIsLoggedDelayMinutesCappedAt': WAIT_CAP, 'switchCostsMinutes': SWITCH_COSTS, 'threshold': 0.35}, 'rows': []}
+    for c in SWITCH_COSTS:
+        row = {'switchCost': c, 'alwaysWait': round(float(wait.mean()), 2), 'alwaysSwitch': float(c), 'hindsightBest': round(float(np.minimum(wait, c).mean()), 2)}
+        for m in ['causeOnly', 'waitOrWalk']:
+            row[m] = round(float(np.where(P[m] >= 0.35, c, wait).mean()), 2)
+        idxs = [rng.integers(0, len(y), len(y)) for _ in range(BOOT)]
+        dif = [np.where(P['waitOrWalk'][i] >= 0.35, c, wait[i]).mean() - np.where(P['causeOnly'][i] >= 0.35, c, wait[i]).mean() for i in idxs]
+        row['waitOrWalkMinusCauseOnly'] = {'value': round(row['waitOrWalk'] - row['causeOnly'], 2), 'low': round(float(np.percentile(dif, 2.5)), 2), 'high': round(float(np.percentile(dif, 97.5)), 2)}
+        sim['rows'].append(row)
+    ev['simulation'] = sim
+    return ev
 
 def build_stations(gz):
     r = pd.read_csv(gz.open('routes.txt')); s = pd.read_csv(gz.open('stops.txt'))
@@ -188,7 +256,7 @@ def build_stations(gz):
         dist = np.sqrt(dx * dx + dy * dy)
         near = surf.assign(m=dist)[dist <= 300].sort_values('m').drop_duplicates('route_id')
         routes = [{'route': str(x.route_short_name), 'name': str(x.route_long_name).title(), 'kind': 'streetcar' if x.route_type == 0 else 'bus',
-                   'stop': re.sub(r'\s+-\s+', ', ', str(x.stop_name)), 'metres': int(round(x.m / 10) * 10), 'night': str(x.route_short_name).startswith('3')} for x in near.itertuples()]
+                   'stop': re.sub(r'\s+-\s+', ', ', str(x.stop_name)), 'metres': int(round(x.m / 10) * 10), 'night': (str(x.route_short_name).isdigit() and 300 <= int(x.route_short_name) <= 399)} for x in near.itertuples()]
         label = {'Bloor': 'Bloor-Yonge (Line 1)', 'Yonge': 'Bloor-Yonge (Line 2)'}.get(name, name)
         out.append({'name': name, 'label': label, 'lines': sorted({line_of[int(i)] for i in g.route_id}), 'lat': round(lat, 5), 'lon': round(lon, 5), 'nearby': routes})
     return out

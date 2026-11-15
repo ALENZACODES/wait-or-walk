@@ -624,7 +624,7 @@
      "kind": "bus",
      "stop": "Cedarvale Station",
      "metres": 40,
-     "night": true
+     "night": false
     },
     {
      "route": "334",
@@ -1260,7 +1260,7 @@
      "kind": "bus",
      "stop": "Eglinton Station",
      "metres": 40,
-     "night": true
+     "night": false
     },
     {
      "route": "334",
@@ -1423,7 +1423,7 @@
      "kind": "bus",
      "stop": "Finch Station",
      "metres": 80,
-     "night": true
+     "night": false
     },
     {
      "route": "36",
@@ -1431,7 +1431,7 @@
      "kind": "bus",
      "stop": "Finch Station",
      "metres": 80,
-     "night": true
+     "night": false
     },
     {
      "route": "336",
@@ -1482,7 +1482,7 @@
      "kind": "bus",
      "stop": "Finch West Station",
      "metres": 40,
-     "night": true
+     "night": false
     },
     {
      "route": "336",
@@ -1576,7 +1576,7 @@
      "kind": "bus",
      "stop": "Greenwood Station",
      "metres": 40,
-     "night": true
+     "night": false
     },
     {
      "route": "300",
@@ -1611,7 +1611,7 @@
      "kind": "bus",
      "stop": "High Park Station",
      "metres": 120,
-     "night": true
+     "night": false
     },
     {
      "route": "189",
@@ -1664,7 +1664,7 @@
      "kind": "bus",
      "stop": "Islington Ave at Bloor St West North Side",
      "metres": 40,
-     "night": true
+     "night": false
     },
     {
      "route": "337",
@@ -1945,7 +1945,7 @@
      "kind": "bus",
      "stop": "Kennedy Station Drop-off Platform",
      "metres": 60,
-     "night": true
+     "night": false
     },
     {
      "route": "113",
@@ -2049,7 +2049,7 @@
      "kind": "bus",
      "stop": "Kennedy Station, Platform A",
      "metres": 80,
-     "night": true
+     "night": false
     },
     {
      "route": "343",
@@ -2875,7 +2875,7 @@
      "kind": "bus",
      "stop": "Pioneer Village Station",
      "metres": 40,
-     "night": true
+     "night": false
     },
     {
      "route": "108",
@@ -3529,7 +3529,7 @@
      "kind": "bus",
      "stop": "St Clair West Station",
      "metres": 40,
-     "night": true
+     "night": false
     },
     {
      "route": "90",

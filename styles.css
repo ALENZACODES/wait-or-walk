@@ -70,3 +70,10 @@ footer { max-width: 980px; margin: 0 auto; padding: 18px 20px 30px; color: #555;
   #alert { min-height: 0; } .samples { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; } .samples button { white-space: nowrap; font-size: .9rem; }
   .samples > span { display: none; } main .card { margin: 10px 0; } label[for="alert"] .hint { display: none; }
 }
+.warn { background: #fff4f4; border-left: 4px solid var(--red); padding: 6px 10px; margin: 6px 0 8px; font-size: .95rem; }
+.ci { color: #555; font-weight: normal; font-size: .85em; white-space: nowrap; }
+.deps { color: var(--blue); font-weight: 600; } .notnow { color: var(--red); }
+.planb li.LRT { border-left-color: #6b7fa8; }
+#pooledTable table, #pooledDiff table, #decisionTable table, #simTable table, #periodTables table { min-width: 620px; }
+#pooledDiff, #periodTables .tablewrap { margin-top: 8px; }
+h4 { color: var(--blue); margin: 14px 0 6px; font-size: .95rem; }

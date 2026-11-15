@@ -6,9 +6,21 @@ with the boarding stop and the direction it is heading. Also records the station
 each subway line. Run: python3 scripts/build_planb.py [cache_dir]
 """
 import json, os, re, sys, zipfile
+from collections import defaultdict
 import numpy as np, pandas as pd
 
 CACHE = sys.argv[1] if len(sys.argv) > 1 else '/tmp/ttc'
+TIMES_OUT = os.path.join(os.path.dirname(__file__), '..', 'data', 'planb_times.json')
+
+def b36(n):
+    s = ''
+    while True:
+        n, r = divmod(n, 36); s = '0123456789abcdefghijklmnopqrstuvwxyz'[r] + s
+        if not n: return s
+
+def mins(t):
+    h, m, s = (int(x) for x in t.split(':'))
+    return h * 60 + m
 RADIUS = 300
 OUT = os.path.join(os.path.dirname(__file__), '..', 'data', 'planb.json')
 
@@ -25,9 +37,10 @@ def main():
     gz = zipfile.ZipFile(os.path.join(CACHE, 'gtfs.zip'))
     routes = pd.read_csv(gz.open('routes.txt'))
     stops = pd.read_csv(gz.open('stops.txt')).set_index('stop_id')
-    trips = pd.read_csv(gz.open('trips.txt'), usecols=['route_id', 'trip_id', 'direction_id', 'trip_headsign'])
-    st = pd.read_csv(gz.open('stop_times.txt'), usecols=['trip_id', 'stop_id', 'stop_sequence']).sort_values(['trip_id', 'stop_sequence'])
+    trips = pd.read_csv(gz.open('trips.txt'), usecols=['route_id', 'service_id', 'trip_id', 'direction_id', 'trip_headsign'])
+    st = pd.read_csv(gz.open('stop_times.txt'), usecols=['trip_id', 'stop_id', 'stop_sequence', 'departure_time']).sort_values(['trip_id', 'stop_sequence'])
     seqs = st.groupby('trip_id').stop_id.apply(tuple)
+    deps = st.groupby('trip_id').departure_time.apply(tuple)
     trips['seq'] = trips.trip_id.map(seqs)
     trips = trips.merge(routes[['route_id', 'route_short_name', 'route_long_name', 'route_type']], on='route_id')
 
@@ -58,27 +71,48 @@ def main():
         d = np.sqrt(dx * dx + dy * dy); i = int(d.argmin())
         if d[i] <= RADIUS: near[sid] = (names[i], float(d[i]))
 
-    patterns = []
+    patterns = []; times = []
+    surf = surf.assign(deps=surf.trip_id.map(deps))
     for (rid, did), g in surf.groupby(['route_id', 'direction_id']):
         counts = g.groupby('seq').size().sort_values(ascending=False)
         total = counts.sum()
         for seq, c in counts.items():
             if c / total < 0.05: continue
             visits = []
-            for sid in seq:
+            for k, sid in enumerate(seq):
                 if sid in near:
                     n, d = near[sid]
+                    v = {'station': n, 'stop': clean(stops.at[sid, 'stop_name']), 'metres': int(round(d / 10) * 10), 'access': int(stops.at[sid, 'wheelchair_boarding']) if not pd.isna(stops.at[sid, 'wheelchair_boarding']) else 0, 'k': k, 'end': int(k >= len(seq) - 2)}
                     if visits and visits[-1]['station'] == n:
-                        if d < visits[-1]['metres']: visits[-1].update(stop=clean(stops.at[sid, 'stop_name']), metres=int(round(d / 10) * 10))
+                        if d < visits[-1]['metres']: visits[-1].update(v)
                         continue
-                    visits.append({'station': n, 'stop': clean(stops.at[sid, 'stop_name']), 'metres': int(round(d / 10) * 10)})
+                    visits.append(v)
             if not visits: continue
+            pt = g[g.seq == seq]
+            vt = []
+            for v in visits:
+                by = defaultdict(list)
+                for svc, dd in zip(pt.service_id, pt.deps): by[str(svc)].append(mins(dd[v['k']]))
+                enc = {}
+                for svc, L in by.items():
+                    L.sort(); prev = 0; out = []
+                    for m in L: out.append(b36(m - prev)); prev = m
+                    enc[svc] = '.'.join(out)
+                vt.append(enc)
+                del v['k']
+                if not v['end']: del v['end']
+            times.append(vt)
             hs = g[g.seq == seq].trip_headsign.value_counts().index[0]
             r = g.iloc[0]
-            patterns.append({'route': str(r.route_short_name), 'name': str(r.route_long_name).title(), 'kind': 'streetcar' if r.route_type == 0 else 'bus',
-                             'night': str(r.route_short_name).startswith('3'), 'heading': headsign(hs), 'share': round(float(c / total), 2), 'visits': visits})
+            patterns.append({'route': str(r.route_short_name), 'name': str(r.route_long_name).title(), 'kind': 'LRT' if str(r.route_long_name).startswith('Line ') else ('streetcar' if r.route_type == 0 else 'bus'),
+                             'night': (str(r.route_short_name).isdigit() and 300 <= int(r.route_short_name) <= 399), 'heading': headsign(hs), 'share': round(float(c / total), 2), 'visits': visits})
     out = {'source': 'TTC Routes and Schedules (GTFS), City of Toronto Open Data, schedule files dated Oct 20, 2026', 'radiusMetres': RADIUS, 'lines': lines, 'patterns': patterns}
     json.dump(out, open(OUT, 'w'), separators=(',', ':'))
+    cal = pd.read_csv(gz.open('calendar.txt')); cd = pd.read_csv(gz.open('calendar_dates.txt'))
+    calendar = {'weekly': [{'s': str(r.service_id), 'days': [int(getattr(r, d)) for d in ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']], 'from': str(r.start_date), 'to': str(r.end_date)} for r in cal.itertuples()],
+                'dates': [[str(r.service_id), str(r.date), int(r.exception_type)] for r in cd.itertuples()]}
+    json.dump({'calendar': calendar, 'times': times}, open(TIMES_OUT, 'w'), separators=(',', ':'))
+    print('times', os.path.getsize(TIMES_OUT))
     print(len(patterns), {k: len(v) for k, v in lines.items()}, os.path.getsize(OUT))
 
 if __name__ == '__main__':
