@@ -208,7 +208,7 @@
     const hits = [];
     for (const st of stations) for (const a of access.alerts) if (norm(a.station) === norm(st.label) || norm(a.station) === norm(st.name)) hits.push(a);
     if (!hits.length) return '';
-    return `<div class="warn access" id="accessWarn"><b>Elevator or escalator out of service:</b><ul>${hits.map((a) => `<li>${esc(a.header)}</li>`).join('')}</ul><span class="small">TTC accessibility alerts, copied ${when(access.fetchedAt)} (Open Government Licence Toronto). Check <a href="https://www.ttc.ca/riding-the-ttc/accessibility" target="_blank" rel="noopener">TTC accessibility</a> before you rely on a step free route.</span></div>`;
+    return `<div class="warn access" id="accessWarn"><b>Elevator or escalator out of service:</b><ul>${hits.map((a) => `<li>${esc(a.header)}</li>`).join('')}</ul><span class="small">TTC accessibility alerts, copied ${when(access.fetchedAt)} (Open Government Licence Toronto). Check <a href="https://www.ttc.ca/accessibility" target="_blank" rel="noopener">TTC accessibility</a> before you rely on a step free route.</span></div>`;
   }
   // Extras behind a fold: Bike Share Toronto near the stations (live counts from GBFS) and current Toronto weather (ECCC).
   function bikeLine(list, want) {
