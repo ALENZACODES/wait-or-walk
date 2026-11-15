@@ -326,6 +326,7 @@
    {
     "test": "2026-01-01 to 2026-03-31",
     "delays": 2576,
+    "resampling": "delay",
     "methods": {
      "waitOrWalk": {
       "auc": {
@@ -452,6 +453,7 @@
    {
     "test": "2026-04-01 to 2026-06-30",
     "delays": 2631,
+    "resampling": "delay",
     "methods": {
      "waitOrWalk": {
       "auc": {
@@ -578,6 +580,7 @@
    {
     "test": "2026-07-01 to 2026-09-30",
     "delays": 2248,
+    "resampling": "delay",
     "methods": {
      "waitOrWalk": {
       "auc": {
@@ -704,6 +707,7 @@
   ],
   "pooled": {
    "delays": 7455,
+   "resampling": "delay",
    "methods": {
     "waitOrWalk": {
      "auc": {
@@ -827,6 +831,2771 @@
     }
    }
   },
+  "dayBlock": {
+   "periods": [
+    {
+     "test": "2026-01-01 to 2026-03-31",
+     "delays": 2576,
+     "resampling": "day",
+     "methods": {
+      "waitOrWalk": {
+       "auc": {
+        "value": 0.7236,
+        "low": 0.6955,
+        "high": 0.7515
+       },
+       "logLoss": {
+        "value": 0.4189,
+        "low": 0.3928,
+        "high": 0.4456
+       },
+       "brier": {
+        "value": 0.1309,
+        "low": 0.1208,
+        "high": 0.1414
+       },
+       "calError": {
+        "value": 0.0146,
+        "low": 0.0101,
+        "high": 0.0346
+       }
+      },
+      "causeOnly": {
+       "auc": {
+        "value": 0.6853,
+        "low": 0.6571,
+        "high": 0.7147
+       },
+       "logLoss": {
+        "value": 0.434,
+        "low": 0.4075,
+        "high": 0.4615
+       },
+       "brier": {
+        "value": 0.1361,
+        "low": 0.1257,
+        "high": 0.147
+       },
+       "calError": {
+        "value": 0.0094,
+        "low": 0.0077,
+        "high": 0.0297
+       }
+      },
+      "firstModel": {
+       "auc": {
+        "value": 0.7308,
+        "low": 0.7021,
+        "high": 0.7593
+       },
+       "logLoss": {
+        "value": 0.4151,
+        "low": 0.3885,
+        "high": 0.4423
+       },
+       "brier": {
+        "value": 0.1296,
+        "low": 0.1193,
+        "high": 0.1402
+       },
+       "calError": {
+        "value": 0.0173,
+        "low": 0.0114,
+        "high": 0.0363
+       }
+      }
+     },
+     "differences": {
+      "causeOnly": {
+       "auc": {
+        "value": 0.0383,
+        "low": 0.0227,
+        "high": 0.0536,
+        "distinguishable": true
+       },
+       "logLoss": {
+        "value": -0.0152,
+        "low": -0.0208,
+        "high": -0.0096,
+        "distinguishable": true
+       },
+       "brier": {
+        "value": -0.0052,
+        "low": -0.0071,
+        "high": -0.0033,
+        "distinguishable": true
+       },
+       "calError": {
+        "value": 0.0052,
+        "low": -0.0088,
+        "high": 0.0181,
+        "distinguishable": false
+       }
+      },
+      "firstModel": {
+       "auc": {
+        "value": -0.0071,
+        "low": -0.0127,
+        "high": -0.0017,
+        "distinguishable": true
+       },
+       "logLoss": {
+        "value": 0.0037,
+        "low": 0.0008,
+        "high": 0.0068,
+        "distinguishable": true
+       },
+       "brier": {
+        "value": 0.0013,
+        "low": 0.0004,
+        "high": 0.0023,
+        "distinguishable": true
+       },
+       "calError": {
+        "value": -0.0027,
+        "low": -0.0124,
+        "high": 0.0085,
+        "distinguishable": false
+       }
+      }
+     }
+    },
+    {
+     "test": "2026-04-01 to 2026-06-30",
+     "delays": 2631,
+     "resampling": "day",
+     "methods": {
+      "waitOrWalk": {
+       "auc": {
+        "value": 0.7582,
+        "low": 0.7281,
+        "high": 0.7874
+       },
+       "logLoss": {
+        "value": 0.3484,
+        "low": 0.3249,
+        "high": 0.3708
+       },
+       "brier": {
+        "value": 0.1045,
+        "low": 0.0962,
+        "high": 0.1127
+       },
+       "calError": {
+        "value": 0.0361,
+        "low": 0.0267,
+        "high": 0.0489
+       }
+      },
+      "causeOnly": {
+       "auc": {
+        "value": 0.729,
+        "low": 0.6985,
+        "high": 0.7606
+       },
+       "logLoss": {
+        "value": 0.3593,
+        "low": 0.3371,
+        "high": 0.3804
+       },
+       "brier": {
+        "value": 0.1073,
+        "low": 0.0993,
+        "high": 0.1155
+       },
+       "calError": {
+        "value": 0.0383,
+        "low": 0.0293,
+        "high": 0.0518
+       }
+      },
+      "firstModel": {
+       "auc": {
+        "value": 0.7596,
+        "low": 0.7315,
+        "high": 0.787
+       },
+       "logLoss": {
+        "value": 0.3472,
+        "low": 0.3238,
+        "high": 0.3697
+       },
+       "brier": {
+        "value": 0.1042,
+        "low": 0.0959,
+        "high": 0.1124
+       },
+       "calError": {
+        "value": 0.0331,
+        "low": 0.0233,
+        "high": 0.0458
+       }
+      }
+     },
+     "differences": {
+      "causeOnly": {
+       "auc": {
+        "value": 0.0292,
+        "low": 0.0159,
+        "high": 0.0418,
+        "distinguishable": true
+       },
+       "logLoss": {
+        "value": -0.0109,
+        "low": -0.0167,
+        "high": -0.0048,
+        "distinguishable": true
+       },
+       "brier": {
+        "value": -0.0028,
+        "low": -0.0049,
+        "high": -0.0007,
+        "distinguishable": true
+       },
+       "calError": {
+        "value": -0.0021,
+        "low": -0.0096,
+        "high": 0.0048,
+        "distinguishable": false
+       }
+      },
+      "firstModel": {
+       "auc": {
+        "value": -0.0015,
+        "low": -0.0058,
+        "high": 0.0031,
+        "distinguishable": false
+       },
+       "logLoss": {
+        "value": 0.0012,
+        "low": -0.0006,
+        "high": 0.003,
+        "distinguishable": false
+       },
+       "brier": {
+        "value": 0.0003,
+        "low": -0.0003,
+        "high": 0.0009,
+        "distinguishable": false
+       },
+       "calError": {
+        "value": 0.0031,
+        "low": -0.0006,
+        "high": 0.0083,
+        "distinguishable": false
+       }
+      }
+     }
+    },
+    {
+     "test": "2026-07-01 to 2026-09-30",
+     "delays": 2248,
+     "resampling": "day",
+     "methods": {
+      "waitOrWalk": {
+       "auc": {
+        "value": 0.7693,
+        "low": 0.7415,
+        "high": 0.7977
+       },
+       "logLoss": {
+        "value": 0.3154,
+        "low": 0.2907,
+        "high": 0.3422
+       },
+       "brier": {
+        "value": 0.0933,
+        "low": 0.0841,
+        "high": 0.1034
+       },
+       "calError": {
+        "value": 0.0158,
+        "low": 0.0119,
+        "high": 0.0323
+       }
+      },
+      "causeOnly": {
+       "auc": {
+        "value": 0.7603,
+        "low": 0.7311,
+        "high": 0.7883
+       },
+       "logLoss": {
+        "value": 0.3167,
+        "low": 0.2924,
+        "high": 0.3429
+       },
+       "brier": {
+        "value": 0.0931,
+        "low": 0.0842,
+        "high": 0.1028
+       },
+       "calError": {
+        "value": 0.0183,
+        "low": 0.0138,
+        "high": 0.0332
+       }
+      },
+      "firstModel": {
+       "auc": {
+        "value": 0.7696,
+        "low": 0.7414,
+        "high": 0.7984
+       },
+       "logLoss": {
+        "value": 0.3217,
+        "low": 0.2994,
+        "high": 0.346
+       },
+       "brier": {
+        "value": 0.0953,
+        "low": 0.0868,
+        "high": 0.1044
+       },
+       "calError": {
+        "value": 0.0432,
+        "low": 0.0306,
+        "high": 0.0557
+       }
+      }
+     },
+     "differences": {
+      "causeOnly": {
+       "auc": {
+        "value": 0.009,
+        "low": -0.0082,
+        "high": 0.0268,
+        "distinguishable": false
+       },
+       "logLoss": {
+        "value": -0.0013,
+        "low": -0.0074,
+        "high": 0.005,
+        "distinguishable": false
+       },
+       "brier": {
+        "value": 0.0003,
+        "low": -0.0014,
+        "high": 0.0021,
+        "distinguishable": false
+       },
+       "calError": {
+        "value": -0.0025,
+        "low": -0.0114,
+        "high": 0.01,
+        "distinguishable": false
+       }
+      },
+      "firstModel": {
+       "auc": {
+        "value": -0.0003,
+        "low": -0.0053,
+        "high": 0.0044,
+        "distinguishable": false
+       },
+       "logLoss": {
+        "value": -0.0063,
+        "low": -0.0102,
+        "high": -0.0019,
+        "distinguishable": true
+       },
+       "brier": {
+        "value": -0.0019,
+        "low": -0.0033,
+        "high": -0.0004,
+        "distinguishable": true
+       },
+       "calError": {
+        "value": -0.0274,
+        "low": -0.0281,
+        "high": -0.0072,
+        "distinguishable": true
+       }
+      }
+     }
+    }
+   ],
+   "pooled": {
+    "delays": 7455,
+    "resampling": "day",
+    "methods": {
+     "waitOrWalk": {
+      "auc": {
+       "value": 0.7512,
+       "low": 0.734,
+       "high": 0.7686
+      },
+      "logLoss": {
+       "value": 0.3628,
+       "low": 0.3479,
+       "high": 0.3783
+      },
+      "brier": {
+       "value": 0.1103,
+       "low": 0.1047,
+       "high": 0.1162
+      },
+      "calError": {
+       "value": 0.0176,
+       "low": 0.011,
+       "high": 0.0261
+      }
+     },
+     "causeOnly": {
+      "auc": {
+       "value": 0.7273,
+       "low": 0.7095,
+       "high": 0.7456
+      },
+      "logLoss": {
+       "value": 0.3723,
+       "low": 0.3578,
+       "high": 0.3872
+      },
+      "brier": {
+       "value": 0.113,
+       "low": 0.1076,
+       "high": 0.1186
+      },
+      "calError": {
+       "value": 0.0192,
+       "low": 0.0116,
+       "high": 0.0278
+      }
+     },
+     "firstModel": {
+      "auc": {
+       "value": 0.7527,
+       "low": 0.7351,
+       "high": 0.7699
+      },
+      "logLoss": {
+       "value": 0.363,
+       "low": 0.3482,
+       "high": 0.3784
+      },
+      "brier": {
+       "value": 0.1103,
+       "low": 0.1048,
+       "high": 0.1162
+      },
+      "calError": {
+       "value": 0.0241,
+       "low": 0.0165,
+       "high": 0.0326
+      }
+     }
+    },
+    "differences": {
+     "causeOnly": {
+      "auc": {
+       "value": 0.0239,
+       "low": 0.0155,
+       "high": 0.0323,
+       "distinguishable": true
+      },
+      "logLoss": {
+       "value": -0.0095,
+       "low": -0.0131,
+       "high": -0.0061,
+       "distinguishable": true
+      },
+      "brier": {
+       "value": -0.0027,
+       "low": -0.0038,
+       "high": -0.0016,
+       "distinguishable": true
+      },
+      "calError": {
+       "value": -0.0015,
+       "low": -0.0056,
+       "high": 0.0029,
+       "distinguishable": false
+      }
+     },
+     "firstModel": {
+      "auc": {
+       "value": -0.0015,
+       "low": -0.0054,
+       "high": 0.0025,
+       "distinguishable": false
+      },
+      "logLoss": {
+       "value": -0.0002,
+       "low": -0.0019,
+       "high": 0.0016,
+       "distinguishable": false
+      },
+      "brier": {
+       "value": -0.0,
+       "low": -0.0006,
+       "high": 0.0006,
+       "distinguishable": false
+      },
+      "calError": {
+       "value": -0.0064,
+       "low": -0.0094,
+       "high": -0.0029,
+       "distinguishable": true
+      }
+     }
+    }
+   }
+  },
+  "survival": [
+   {
+    "scope": "pooled",
+    "against": "causeOnly",
+    "metric": "auc",
+    "value": 0.0239,
+    "byDelay": true,
+    "byDay": true,
+    "dayLow": 0.0155,
+    "dayHigh": 0.0323
+   },
+   {
+    "scope": "pooled",
+    "against": "causeOnly",
+    "metric": "logLoss",
+    "value": -0.0095,
+    "byDelay": true,
+    "byDay": true,
+    "dayLow": -0.0131,
+    "dayHigh": -0.0061
+   },
+   {
+    "scope": "pooled",
+    "against": "causeOnly",
+    "metric": "brier",
+    "value": -0.0027,
+    "byDelay": true,
+    "byDay": true,
+    "dayLow": -0.0038,
+    "dayHigh": -0.0016
+   },
+   {
+    "scope": "pooled",
+    "against": "causeOnly",
+    "metric": "calError",
+    "value": -0.0015,
+    "byDelay": false,
+    "byDay": false,
+    "dayLow": -0.0056,
+    "dayHigh": 0.0029
+   },
+   {
+    "scope": "pooled",
+    "against": "firstModel",
+    "metric": "auc",
+    "value": -0.0015,
+    "byDelay": false,
+    "byDay": false,
+    "dayLow": -0.0054,
+    "dayHigh": 0.0025
+   },
+   {
+    "scope": "pooled",
+    "against": "firstModel",
+    "metric": "logLoss",
+    "value": -0.0002,
+    "byDelay": false,
+    "byDay": false,
+    "dayLow": -0.0019,
+    "dayHigh": 0.0016
+   },
+   {
+    "scope": "pooled",
+    "against": "firstModel",
+    "metric": "brier",
+    "value": -0.0,
+    "byDelay": false,
+    "byDay": false,
+    "dayLow": -0.0006,
+    "dayHigh": 0.0006
+   },
+   {
+    "scope": "pooled",
+    "against": "firstModel",
+    "metric": "calError",
+    "value": -0.0064,
+    "byDelay": true,
+    "byDay": true,
+    "dayLow": -0.0094,
+    "dayHigh": -0.0029
+   },
+   {
+    "scope": "2026-01-01 to 2026-03-31",
+    "against": "causeOnly",
+    "metric": "auc",
+    "value": 0.0383,
+    "byDelay": true,
+    "byDay": true,
+    "dayLow": 0.0227,
+    "dayHigh": 0.0536
+   },
+   {
+    "scope": "2026-01-01 to 2026-03-31",
+    "against": "causeOnly",
+    "metric": "logLoss",
+    "value": -0.0152,
+    "byDelay": true,
+    "byDay": true,
+    "dayLow": -0.0208,
+    "dayHigh": -0.0096
+   },
+   {
+    "scope": "2026-01-01 to 2026-03-31",
+    "against": "causeOnly",
+    "metric": "brier",
+    "value": -0.0052,
+    "byDelay": true,
+    "byDay": true,
+    "dayLow": -0.0071,
+    "dayHigh": -0.0033
+   },
+   {
+    "scope": "2026-01-01 to 2026-03-31",
+    "against": "causeOnly",
+    "metric": "calError",
+    "value": 0.0052,
+    "byDelay": false,
+    "byDay": false,
+    "dayLow": -0.0088,
+    "dayHigh": 0.0181
+   },
+   {
+    "scope": "2026-01-01 to 2026-03-31",
+    "against": "firstModel",
+    "metric": "auc",
+    "value": -0.0071,
+    "byDelay": true,
+    "byDay": true,
+    "dayLow": -0.0127,
+    "dayHigh": -0.0017
+   },
+   {
+    "scope": "2026-01-01 to 2026-03-31",
+    "against": "firstModel",
+    "metric": "logLoss",
+    "value": 0.0037,
+    "byDelay": true,
+    "byDay": true,
+    "dayLow": 0.0008,
+    "dayHigh": 0.0068
+   },
+   {
+    "scope": "2026-01-01 to 2026-03-31",
+    "against": "firstModel",
+    "metric": "brier",
+    "value": 0.0013,
+    "byDelay": true,
+    "byDay": true,
+    "dayLow": 0.0004,
+    "dayHigh": 0.0023
+   },
+   {
+    "scope": "2026-01-01 to 2026-03-31",
+    "against": "firstModel",
+    "metric": "calError",
+    "value": -0.0027,
+    "byDelay": false,
+    "byDay": false,
+    "dayLow": -0.0124,
+    "dayHigh": 0.0085
+   },
+   {
+    "scope": "2026-04-01 to 2026-06-30",
+    "against": "causeOnly",
+    "metric": "auc",
+    "value": 0.0292,
+    "byDelay": true,
+    "byDay": true,
+    "dayLow": 0.0159,
+    "dayHigh": 0.0418
+   },
+   {
+    "scope": "2026-04-01 to 2026-06-30",
+    "against": "causeOnly",
+    "metric": "logLoss",
+    "value": -0.0109,
+    "byDelay": true,
+    "byDay": true,
+    "dayLow": -0.0167,
+    "dayHigh": -0.0048
+   },
+   {
+    "scope": "2026-04-01 to 2026-06-30",
+    "against": "causeOnly",
+    "metric": "brier",
+    "value": -0.0028,
+    "byDelay": true,
+    "byDay": true,
+    "dayLow": -0.0049,
+    "dayHigh": -0.0007
+   },
+   {
+    "scope": "2026-04-01 to 2026-06-30",
+    "against": "causeOnly",
+    "metric": "calError",
+    "value": -0.0021,
+    "byDelay": false,
+    "byDay": false,
+    "dayLow": -0.0096,
+    "dayHigh": 0.0048
+   },
+   {
+    "scope": "2026-04-01 to 2026-06-30",
+    "against": "firstModel",
+    "metric": "auc",
+    "value": -0.0015,
+    "byDelay": false,
+    "byDay": false,
+    "dayLow": -0.0058,
+    "dayHigh": 0.0031
+   },
+   {
+    "scope": "2026-04-01 to 2026-06-30",
+    "against": "firstModel",
+    "metric": "logLoss",
+    "value": 0.0012,
+    "byDelay": false,
+    "byDay": false,
+    "dayLow": -0.0006,
+    "dayHigh": 0.003
+   },
+   {
+    "scope": "2026-04-01 to 2026-06-30",
+    "against": "firstModel",
+    "metric": "brier",
+    "value": 0.0003,
+    "byDelay": false,
+    "byDay": false,
+    "dayLow": -0.0003,
+    "dayHigh": 0.0009
+   },
+   {
+    "scope": "2026-04-01 to 2026-06-30",
+    "against": "firstModel",
+    "metric": "calError",
+    "value": 0.0031,
+    "byDelay": false,
+    "byDay": false,
+    "dayLow": -0.0006,
+    "dayHigh": 0.0083
+   },
+   {
+    "scope": "2026-07-01 to 2026-09-30",
+    "against": "causeOnly",
+    "metric": "auc",
+    "value": 0.009,
+    "byDelay": false,
+    "byDay": false,
+    "dayLow": -0.0082,
+    "dayHigh": 0.0268
+   },
+   {
+    "scope": "2026-07-01 to 2026-09-30",
+    "against": "causeOnly",
+    "metric": "logLoss",
+    "value": -0.0013,
+    "byDelay": false,
+    "byDay": false,
+    "dayLow": -0.0074,
+    "dayHigh": 0.005
+   },
+   {
+    "scope": "2026-07-01 to 2026-09-30",
+    "against": "causeOnly",
+    "metric": "brier",
+    "value": 0.0003,
+    "byDelay": false,
+    "byDay": false,
+    "dayLow": -0.0014,
+    "dayHigh": 0.0021
+   },
+   {
+    "scope": "2026-07-01 to 2026-09-30",
+    "against": "causeOnly",
+    "metric": "calError",
+    "value": -0.0025,
+    "byDelay": false,
+    "byDay": false,
+    "dayLow": -0.0114,
+    "dayHigh": 0.01
+   },
+   {
+    "scope": "2026-07-01 to 2026-09-30",
+    "against": "firstModel",
+    "metric": "auc",
+    "value": -0.0003,
+    "byDelay": false,
+    "byDay": false,
+    "dayLow": -0.0053,
+    "dayHigh": 0.0044
+   },
+   {
+    "scope": "2026-07-01 to 2026-09-30",
+    "against": "firstModel",
+    "metric": "logLoss",
+    "value": -0.0063,
+    "byDelay": true,
+    "byDay": true,
+    "dayLow": -0.0102,
+    "dayHigh": -0.0019
+   },
+   {
+    "scope": "2026-07-01 to 2026-09-30",
+    "against": "firstModel",
+    "metric": "brier",
+    "value": -0.0019,
+    "byDelay": true,
+    "byDay": true,
+    "dayLow": -0.0033,
+    "dayHigh": -0.0004
+   },
+   {
+    "scope": "2026-07-01 to 2026-09-30",
+    "against": "firstModel",
+    "metric": "calError",
+    "value": -0.0274,
+    "byDelay": true,
+    "byDay": true,
+    "dayLow": -0.0281,
+    "dayHigh": -0.0072
+   }
+  ],
+  "bands": {
+   "5": {
+    "periods": [
+     {
+      "test": "2026-01-01 to 2026-03-31",
+      "delays": 2576,
+      "resampling": "delay",
+      "methods": {
+       "waitOrWalk": {
+        "auc": {
+         "value": 0.6837,
+         "low": 0.6625,
+         "high": 0.7037
+        },
+        "logLoss": {
+         "value": 0.6362,
+         "low": 0.6251,
+         "high": 0.6476
+        },
+        "brier": {
+         "value": 0.2232,
+         "low": 0.2181,
+         "high": 0.2285
+        },
+        "calError": {
+         "value": 0.0172,
+         "low": 0.0085,
+         "high": 0.0361
+        }
+       },
+       "causeOnly": {
+        "auc": {
+         "value": 0.616,
+         "low": 0.5939,
+         "high": 0.6364
+        },
+        "logLoss": {
+         "value": 0.6684,
+         "low": 0.6604,
+         "high": 0.6769
+        },
+        "brier": {
+         "value": 0.238,
+         "low": 0.2341,
+         "high": 0.2421
+        },
+        "calError": {
+         "value": 0.0176,
+         "low": 0.0052,
+         "high": 0.0355
+        }
+       },
+       "firstModel": {
+        "auc": {
+         "value": 0.6851,
+         "low": 0.6645,
+         "high": 0.705
+        },
+        "logLoss": {
+         "value": 0.6341,
+         "low": 0.6215,
+         "high": 0.6465
+        },
+        "brier": {
+         "value": 0.2224,
+         "low": 0.2167,
+         "high": 0.2281
+        },
+        "calError": {
+         "value": 0.0199,
+         "low": 0.0089,
+         "high": 0.039
+        }
+       }
+      },
+      "differences": {
+       "causeOnly": {
+        "auc": {
+         "value": 0.0677,
+         "low": 0.0512,
+         "high": 0.0853,
+         "distinguishable": true
+        },
+        "logLoss": {
+         "value": -0.0323,
+         "low": -0.0404,
+         "high": -0.0242,
+         "distinguishable": true
+        },
+        "brier": {
+         "value": -0.0148,
+         "low": -0.0187,
+         "high": -0.0111,
+         "distinguishable": true
+        },
+        "calError": {
+         "value": -0.0004,
+         "low": -0.0044,
+         "high": 0.0171,
+         "distinguishable": false
+        }
+       },
+       "firstModel": {
+        "auc": {
+         "value": -0.0014,
+         "low": -0.0057,
+         "high": 0.0032,
+         "distinguishable": false
+        },
+        "logLoss": {
+         "value": 0.0021,
+         "low": -0.001,
+         "high": 0.0049,
+         "distinguishable": false
+        },
+        "brier": {
+         "value": 0.0008,
+         "low": -0.0005,
+         "high": 0.002,
+         "distinguishable": false
+        },
+        "calError": {
+         "value": -0.0027,
+         "low": -0.0175,
+         "high": 0.0148,
+         "distinguishable": false
+        }
+       }
+      }
+     },
+     {
+      "test": "2026-04-01 to 2026-06-30",
+      "delays": 2631,
+      "resampling": "delay",
+      "methods": {
+       "waitOrWalk": {
+        "auc": {
+         "value": 0.7069,
+         "low": 0.6873,
+         "high": 0.7274
+        },
+        "logLoss": {
+         "value": 0.6327,
+         "low": 0.6196,
+         "high": 0.6453
+        },
+        "brier": {
+         "value": 0.2211,
+         "low": 0.2151,
+         "high": 0.2269
+        },
+        "calError": {
+         "value": 0.0718,
+         "low": 0.0545,
+         "high": 0.0899
+        }
+       },
+       "causeOnly": {
+        "auc": {
+         "value": 0.6595,
+         "low": 0.6376,
+         "high": 0.6802
+        },
+        "logLoss": {
+         "value": 0.6642,
+         "low": 0.6557,
+         "high": 0.673
+        },
+        "brier": {
+         "value": 0.2359,
+         "low": 0.2318,
+         "high": 0.24
+        },
+        "calError": {
+         "value": 0.0771,
+         "low": 0.0592,
+         "high": 0.0963
+        }
+       },
+       "firstModel": {
+        "auc": {
+         "value": 0.7094,
+         "low": 0.6899,
+         "high": 0.7293
+        },
+        "logLoss": {
+         "value": 0.6301,
+         "low": 0.6172,
+         "high": 0.6428
+        },
+        "brier": {
+         "value": 0.22,
+         "low": 0.2142,
+         "high": 0.2256
+        },
+        "calError": {
+         "value": 0.0702,
+         "low": 0.0532,
+         "high": 0.0881
+        }
+       }
+      },
+      "differences": {
+       "causeOnly": {
+        "auc": {
+         "value": 0.0474,
+         "low": 0.0318,
+         "high": 0.0639,
+         "distinguishable": true
+        },
+        "logLoss": {
+         "value": -0.0316,
+         "low": -0.0412,
+         "high": -0.0223,
+         "distinguishable": true
+        },
+        "brier": {
+         "value": -0.0148,
+         "low": -0.0192,
+         "high": -0.0106,
+         "distinguishable": true
+        },
+        "calError": {
+         "value": -0.0053,
+         "low": -0.0104,
+         "high": -0.0002,
+         "distinguishable": true
+        }
+       },
+       "firstModel": {
+        "auc": {
+         "value": -0.0025,
+         "low": -0.0062,
+         "high": 0.0011,
+         "distinguishable": false
+        },
+        "logLoss": {
+         "value": 0.0025,
+         "low": 0.0003,
+         "high": 0.0049,
+         "distinguishable": true
+        },
+        "brier": {
+         "value": 0.0011,
+         "low": 0.0,
+         "high": 0.0021,
+         "distinguishable": true
+        },
+        "calError": {
+         "value": 0.0016,
+         "low": -0.0002,
+         "high": 0.0032,
+         "distinguishable": false
+        }
+       }
+      }
+     },
+     {
+      "test": "2026-07-01 to 2026-09-30",
+      "delays": 2248,
+      "resampling": "delay",
+      "methods": {
+       "waitOrWalk": {
+        "auc": {
+         "value": 0.7152,
+         "low": 0.6935,
+         "high": 0.7353
+        },
+        "logLoss": {
+         "value": 0.6129,
+         "low": 0.599,
+         "high": 0.6272
+        },
+        "brier": {
+         "value": 0.2124,
+         "low": 0.2061,
+         "high": 0.2187
+        },
+        "calError": {
+         "value": 0.0232,
+         "low": 0.0125,
+         "high": 0.0427
+        }
+       },
+       "causeOnly": {
+        "auc": {
+         "value": 0.6488,
+         "low": 0.6256,
+         "high": 0.6702
+        },
+        "logLoss": {
+         "value": 0.6503,
+         "low": 0.6386,
+         "high": 0.6619
+        },
+        "brier": {
+         "value": 0.2291,
+         "low": 0.2236,
+         "high": 0.2346
+        },
+        "calError": {
+         "value": 0.022,
+         "low": 0.0088,
+         "high": 0.0415
+        }
+       },
+       "firstModel": {
+        "auc": {
+         "value": 0.7115,
+         "low": 0.6904,
+         "high": 0.7317
+        },
+        "logLoss": {
+         "value": 0.6252,
+         "low": 0.6116,
+         "high": 0.6388
+        },
+        "brier": {
+         "value": 0.2181,
+         "low": 0.212,
+         "high": 0.2243
+        },
+        "calError": {
+         "value": 0.0693,
+         "low": 0.0506,
+         "high": 0.0881
+        }
+       }
+      },
+      "differences": {
+       "causeOnly": {
+        "auc": {
+         "value": 0.0663,
+         "low": 0.048,
+         "high": 0.0847,
+         "distinguishable": true
+        },
+        "logLoss": {
+         "value": -0.0373,
+         "low": -0.0474,
+         "high": -0.0264,
+         "distinguishable": true
+        },
+        "brier": {
+         "value": -0.0167,
+         "low": -0.0214,
+         "high": -0.0117,
+         "distinguishable": true
+        },
+        "calError": {
+         "value": 0.0012,
+         "low": -0.0123,
+         "high": 0.0192,
+         "distinguishable": false
+        }
+       },
+       "firstModel": {
+        "auc": {
+         "value": 0.0037,
+         "low": -0.0002,
+         "high": 0.0077,
+         "distinguishable": false
+        },
+        "logLoss": {
+         "value": -0.0122,
+         "low": -0.0174,
+         "high": -0.0067,
+         "distinguishable": true
+        },
+        "brier": {
+         "value": -0.0057,
+         "low": -0.0081,
+         "high": -0.0032,
+         "distinguishable": true
+        },
+        "calError": {
+         "value": -0.0461,
+         "low": -0.0538,
+         "high": -0.0231,
+         "distinguishable": true
+        }
+       }
+      }
+     }
+    ],
+    "pooled": {
+     "delays": 7455,
+     "resampling": "delay",
+     "methods": {
+      "waitOrWalk": {
+       "auc": {
+        "value": 0.7017,
+        "low": 0.6896,
+        "high": 0.7144
+       },
+       "logLoss": {
+        "value": 0.6279,
+        "low": 0.62,
+        "high": 0.6355
+       },
+       "brier": {
+        "value": 0.2192,
+        "low": 0.2156,
+        "high": 0.2227
+       },
+       "calError": {
+        "value": 0.0239,
+        "low": 0.0141,
+        "high": 0.034
+       }
+      },
+      "causeOnly": {
+       "auc": {
+        "value": 0.6428,
+        "low": 0.63,
+        "high": 0.6559
+       },
+       "logLoss": {
+        "value": 0.6615,
+        "low": 0.6556,
+        "high": 0.6672
+       },
+       "brier": {
+        "value": 0.2346,
+        "low": 0.2318,
+        "high": 0.2373
+       },
+       "calError": {
+        "value": 0.0278,
+        "low": 0.0168,
+        "high": 0.038
+       }
+      },
+      "firstModel": {
+       "auc": {
+        "value": 0.7021,
+        "low": 0.6903,
+        "high": 0.7144
+       },
+       "logLoss": {
+        "value": 0.63,
+        "low": 0.6222,
+        "high": 0.6374
+       },
+       "brier": {
+        "value": 0.2203,
+        "low": 0.2167,
+        "high": 0.2236
+       },
+       "calError": {
+        "value": 0.0446,
+        "low": 0.0338,
+        "high": 0.0547
+       }
+      }
+     },
+     "differences": {
+      "causeOnly": {
+       "auc": {
+        "value": 0.0589,
+        "low": 0.0491,
+        "high": 0.0688,
+        "distinguishable": true
+       },
+       "logLoss": {
+        "value": -0.0335,
+        "low": -0.039,
+        "high": -0.0281,
+        "distinguishable": true
+       },
+       "brier": {
+        "value": -0.0154,
+        "low": -0.0178,
+        "high": -0.0129,
+        "distinguishable": true
+       },
+       "calError": {
+        "value": -0.0038,
+        "low": -0.0081,
+        "high": 0.002,
+        "distinguishable": false
+       }
+      },
+      "firstModel": {
+       "auc": {
+        "value": -0.0004,
+        "low": -0.0032,
+        "high": 0.0026,
+        "distinguishable": false
+       },
+       "logLoss": {
+        "value": -0.0021,
+        "low": -0.0041,
+        "high": -0.0,
+        "distinguishable": true
+       },
+       "brier": {
+        "value": -0.0011,
+        "low": -0.002,
+        "high": -0.0001,
+        "distinguishable": true
+       },
+       "calError": {
+        "value": -0.0206,
+        "low": -0.0217,
+        "high": -0.0155,
+        "distinguishable": true
+       }
+      }
+     }
+    },
+    "pooledByDay": {
+     "delays": 7455,
+     "resampling": "day",
+     "methods": {
+      "waitOrWalk": {
+       "auc": {
+        "value": 0.7017,
+        "low": 0.6889,
+        "high": 0.7144
+       },
+       "logLoss": {
+        "value": 0.6279,
+        "low": 0.6201,
+        "high": 0.636
+       },
+       "brier": {
+        "value": 0.2192,
+        "low": 0.2156,
+        "high": 0.2229
+       },
+       "calError": {
+        "value": 0.0239,
+        "low": 0.0141,
+        "high": 0.0353
+       }
+      },
+      "causeOnly": {
+       "auc": {
+        "value": 0.6428,
+        "low": 0.6291,
+        "high": 0.6563
+       },
+       "logLoss": {
+        "value": 0.6615,
+        "low": 0.6557,
+        "high": 0.6672
+       },
+       "brier": {
+        "value": 0.2346,
+        "low": 0.2318,
+        "high": 0.2373
+       },
+       "calError": {
+        "value": 0.0278,
+        "low": 0.0141,
+        "high": 0.0404
+       }
+      },
+      "firstModel": {
+       "auc": {
+        "value": 0.7021,
+        "low": 0.689,
+        "high": 0.7148
+       },
+       "logLoss": {
+        "value": 0.63,
+        "low": 0.6219,
+        "high": 0.6382
+       },
+       "brier": {
+        "value": 0.2203,
+        "low": 0.2166,
+        "high": 0.2239
+       },
+       "calError": {
+        "value": 0.0446,
+        "low": 0.0325,
+        "high": 0.0561
+       }
+      }
+     },
+     "differences": {
+      "causeOnly": {
+       "auc": {
+        "value": 0.0589,
+        "low": 0.0488,
+        "high": 0.0687,
+        "distinguishable": true
+       },
+       "logLoss": {
+        "value": -0.0335,
+        "low": -0.0393,
+        "high": -0.0277,
+        "distinguishable": true
+       },
+       "brier": {
+        "value": -0.0154,
+        "low": -0.018,
+        "high": -0.0127,
+        "distinguishable": true
+       },
+       "calError": {
+        "value": -0.0038,
+        "low": -0.0098,
+        "high": 0.0043,
+        "distinguishable": false
+       }
+      },
+      "firstModel": {
+       "auc": {
+        "value": -0.0004,
+        "low": -0.0032,
+        "high": 0.0026,
+        "distinguishable": false
+       },
+       "logLoss": {
+        "value": -0.0021,
+        "low": -0.0044,
+        "high": 0.0002,
+        "distinguishable": false
+       },
+       "brier": {
+        "value": -0.0011,
+        "low": -0.0021,
+        "high": -0.0,
+        "distinguishable": true
+       },
+       "calError": {
+        "value": -0.0206,
+        "low": -0.022,
+        "high": -0.0141,
+        "distinguishable": true
+       }
+      }
+     }
+    },
+    "actualShare": 0.479
+   },
+   "20": {
+    "periods": [
+     {
+      "test": "2026-01-01 to 2026-03-31",
+      "delays": 2576,
+      "resampling": "delay",
+      "methods": {
+       "waitOrWalk": {
+        "auc": {
+         "value": 0.7572,
+         "low": 0.7171,
+         "high": 0.7963
+        },
+        "logLoss": {
+         "value": 0.1816,
+         "low": 0.1595,
+         "high": 0.2061
+        },
+        "brier": {
+         "value": 0.0461,
+         "low": 0.0393,
+         "high": 0.0532
+        },
+        "calError": {
+         "value": 0.0139,
+         "low": 0.0083,
+         "high": 0.0226
+        }
+       },
+       "causeOnly": {
+        "auc": {
+         "value": 0.7178,
+         "low": 0.6755,
+         "high": 0.7576
+        },
+        "logLoss": {
+         "value": 0.1872,
+         "low": 0.1647,
+         "high": 0.2127
+        },
+        "brier": {
+         "value": 0.047,
+         "low": 0.0403,
+         "high": 0.0544
+        },
+        "calError": {
+         "value": 0.0136,
+         "low": 0.0082,
+         "high": 0.0227
+        }
+       },
+       "firstModel": {
+        "auc": {
+         "value": 0.7566,
+         "low": 0.7164,
+         "high": 0.7963
+        },
+        "logLoss": {
+         "value": 0.1805,
+         "low": 0.1586,
+         "high": 0.2045
+        },
+        "brier": {
+         "value": 0.0457,
+         "low": 0.0391,
+         "high": 0.0528
+        },
+        "calError": {
+         "value": 0.0054,
+         "low": 0.0041,
+         "high": 0.0153
+        }
+       }
+      },
+      "differences": {
+       "causeOnly": {
+        "auc": {
+         "value": 0.0394,
+         "low": 0.0151,
+         "high": 0.0656,
+         "distinguishable": true
+        },
+        "logLoss": {
+         "value": -0.0056,
+         "low": -0.0095,
+         "high": -0.0019,
+         "distinguishable": true
+        },
+        "brier": {
+         "value": -0.0009,
+         "low": -0.0016,
+         "high": -0.0003,
+         "distinguishable": true
+        },
+        "calError": {
+         "value": 0.0003,
+         "low": -0.0064,
+         "high": 0.0065,
+         "distinguishable": false
+        }
+       },
+       "firstModel": {
+        "auc": {
+         "value": 0.0006,
+         "low": -0.0097,
+         "high": 0.0107,
+         "distinguishable": false
+        },
+        "logLoss": {
+         "value": 0.0012,
+         "low": -0.001,
+         "high": 0.0033,
+         "distinguishable": false
+        },
+        "brier": {
+         "value": 0.0003,
+         "low": -0.0001,
+         "high": 0.0007,
+         "distinguishable": false
+        },
+        "calError": {
+         "value": 0.0085,
+         "low": -0.0014,
+         "high": 0.012,
+         "distinguishable": false
+        }
+       }
+      }
+     },
+     {
+      "test": "2026-04-01 to 2026-06-30",
+      "delays": 2631,
+      "resampling": "delay",
+      "methods": {
+       "waitOrWalk": {
+        "auc": {
+         "value": 0.7808,
+         "low": 0.7358,
+         "high": 0.8231
+        },
+        "logLoss": {
+         "value": 0.1404,
+         "low": 0.1219,
+         "high": 0.1602
+        },
+        "brier": {
+         "value": 0.0333,
+         "low": 0.0279,
+         "high": 0.0391
+        },
+        "calError": {
+         "value": 0.0147,
+         "low": 0.0097,
+         "high": 0.0216
+        }
+       },
+       "causeOnly": {
+        "auc": {
+         "value": 0.7701,
+         "low": 0.7267,
+         "high": 0.8098
+        },
+        "logLoss": {
+         "value": 0.1429,
+         "low": 0.1246,
+         "high": 0.1628
+        },
+        "brier": {
+         "value": 0.0339,
+         "low": 0.0283,
+         "high": 0.0397
+        },
+        "calError": {
+         "value": 0.0177,
+         "low": 0.0122,
+         "high": 0.025
+        }
+       },
+       "firstModel": {
+        "auc": {
+         "value": 0.7878,
+         "low": 0.7427,
+         "high": 0.8301
+        },
+        "logLoss": {
+         "value": 0.1393,
+         "low": 0.1206,
+         "high": 0.1597
+        },
+        "brier": {
+         "value": 0.0334,
+         "low": 0.0279,
+         "high": 0.0393
+        },
+        "calError": {
+         "value": 0.0108,
+         "low": 0.0075,
+         "high": 0.0187
+        }
+       }
+      },
+      "differences": {
+       "causeOnly": {
+        "auc": {
+         "value": 0.0107,
+         "low": -0.0111,
+         "high": 0.0334,
+         "distinguishable": false
+        },
+        "logLoss": {
+         "value": -0.0025,
+         "low": -0.0055,
+         "high": 0.0005,
+         "distinguishable": false
+        },
+        "brier": {
+         "value": -0.0006,
+         "low": -0.0013,
+         "high": 0.0001,
+         "distinguishable": false
+        },
+        "calError": {
+         "value": -0.003,
+         "low": -0.0088,
+         "high": 0.0014,
+         "distinguishable": false
+        }
+       },
+       "firstModel": {
+        "auc": {
+         "value": -0.007,
+         "low": -0.0165,
+         "high": 0.0028,
+         "distinguishable": false
+        },
+        "logLoss": {
+         "value": 0.0011,
+         "low": -0.0006,
+         "high": 0.0025,
+         "distinguishable": false
+        },
+        "brier": {
+         "value": -0.0,
+         "low": -0.0003,
+         "high": 0.0002,
+         "distinguishable": false
+        },
+        "calError": {
+         "value": 0.0039,
+         "low": -0.0011,
+         "high": 0.0056,
+         "distinguishable": false
+        }
+       }
+      }
+     },
+     {
+      "test": "2026-07-01 to 2026-09-30",
+      "delays": 2248,
+      "resampling": "delay",
+      "methods": {
+       "waitOrWalk": {
+        "auc": {
+         "value": 0.7871,
+         "low": 0.7303,
+         "high": 0.8408
+        },
+        "logLoss": {
+         "value": 0.1133,
+         "low": 0.0935,
+         "high": 0.134
+        },
+        "brier": {
+         "value": 0.0258,
+         "low": 0.0202,
+         "high": 0.0316
+        },
+        "calError": {
+         "value": 0.0103,
+         "low": 0.0073,
+         "high": 0.0178
+        }
+       },
+       "causeOnly": {
+        "auc": {
+         "value": 0.794,
+         "low": 0.7404,
+         "high": 0.845
+        },
+        "logLoss": {
+         "value": 0.1119,
+         "low": 0.093,
+         "high": 0.1318
+        },
+        "brier": {
+         "value": 0.0256,
+         "low": 0.0201,
+         "high": 0.0313
+        },
+        "calError": {
+         "value": 0.012,
+         "low": 0.0066,
+         "high": 0.0185
+        }
+       },
+       "firstModel": {
+        "auc": {
+         "value": 0.7799,
+         "low": 0.7234,
+         "high": 0.8308
+        },
+        "logLoss": {
+         "value": 0.116,
+         "low": 0.0973,
+         "high": 0.1349
+        },
+        "brier": {
+         "value": 0.0261,
+         "low": 0.0207,
+         "high": 0.0317
+        },
+        "calError": {
+         "value": 0.017,
+         "low": 0.0118,
+         "high": 0.0239
+        }
+       }
+      },
+      "differences": {
+       "causeOnly": {
+        "auc": {
+         "value": -0.0069,
+         "low": -0.0309,
+         "high": 0.0156,
+         "distinguishable": false
+        },
+        "logLoss": {
+         "value": 0.0014,
+         "low": -0.0013,
+         "high": 0.0043,
+         "distinguishable": false
+        },
+        "brier": {
+         "value": 0.0002,
+         "low": -0.0005,
+         "high": 0.0009,
+         "distinguishable": false
+        },
+        "calError": {
+         "value": -0.0017,
+         "low": -0.0033,
+         "high": 0.0057,
+         "distinguishable": false
+        }
+       },
+       "firstModel": {
+        "auc": {
+         "value": 0.0072,
+         "low": -0.0039,
+         "high": 0.0193,
+         "distinguishable": false
+        },
+        "logLoss": {
+         "value": -0.0027,
+         "low": -0.0045,
+         "high": -0.0008,
+         "distinguishable": true
+        },
+        "brier": {
+         "value": -0.0003,
+         "low": -0.0006,
+         "high": 0.0001,
+         "distinguishable": false
+        },
+        "calError": {
+         "value": -0.0067,
+         "low": -0.008,
+         "high": -0.0003,
+         "distinguishable": true
+        }
+       }
+      }
+     }
+    ],
+    "pooled": {
+     "delays": 7455,
+     "resampling": "delay",
+     "methods": {
+      "waitOrWalk": {
+       "auc": {
+        "value": 0.7732,
+        "low": 0.7477,
+        "high": 0.7977
+       },
+       "logLoss": {
+        "value": 0.1465,
+        "low": 0.1349,
+        "high": 0.1593
+       },
+       "brier": {
+        "value": 0.0355,
+        "low": 0.0321,
+        "high": 0.0392
+       },
+       "calError": {
+        "value": 0.0068,
+        "low": 0.0056,
+        "high": 0.0118
+       }
+      },
+      "causeOnly": {
+       "auc": {
+        "value": 0.7524,
+        "low": 0.7275,
+        "high": 0.7773
+       },
+       "logLoss": {
+        "value": 0.1489,
+        "low": 0.137,
+        "high": 0.1616
+       },
+       "brier": {
+        "value": 0.0359,
+        "low": 0.0325,
+        "high": 0.0396
+       },
+       "calError": {
+        "value": 0.0112,
+        "low": 0.0073,
+        "high": 0.0155
+       }
+      },
+      "firstModel": {
+       "auc": {
+        "value": 0.7746,
+        "low": 0.7488,
+        "high": 0.7995
+       },
+       "logLoss": {
+        "value": 0.1465,
+        "low": 0.135,
+        "high": 0.1592
+       },
+       "brier": {
+        "value": 0.0354,
+        "low": 0.0321,
+        "high": 0.0391
+       },
+       "calError": {
+        "value": 0.0082,
+        "low": 0.0056,
+        "high": 0.0129
+       }
+      }
+     },
+     "differences": {
+      "causeOnly": {
+       "auc": {
+        "value": 0.0208,
+        "low": 0.0074,
+        "high": 0.0349,
+        "distinguishable": true
+       },
+       "logLoss": {
+        "value": -0.0024,
+        "low": -0.0044,
+        "high": -0.0005,
+        "distinguishable": true
+       },
+       "brier": {
+        "value": -0.0005,
+        "low": -0.0009,
+        "high": -0.0,
+        "distinguishable": true
+       },
+       "calError": {
+        "value": -0.0043,
+        "low": -0.0066,
+        "high": 0.0009,
+        "distinguishable": false
+       }
+      },
+      "firstModel": {
+       "auc": {
+        "value": -0.0014,
+        "low": -0.008,
+        "high": 0.0052,
+        "distinguishable": false
+       },
+       "logLoss": {
+        "value": -0.0,
+        "low": -0.0011,
+        "high": 0.0011,
+        "distinguishable": false
+       },
+       "brier": {
+        "value": 0.0,
+        "low": -0.0002,
+        "high": 0.0002,
+        "distinguishable": false
+       },
+       "calError": {
+        "value": -0.0014,
+        "low": -0.0026,
+        "high": 0.0027,
+        "distinguishable": false
+       }
+      }
+     }
+    },
+    "pooledByDay": {
+     "delays": 7455,
+     "resampling": "day",
+     "methods": {
+      "waitOrWalk": {
+       "auc": {
+        "value": 0.7732,
+        "low": 0.745,
+        "high": 0.8019
+       },
+       "logLoss": {
+        "value": 0.1465,
+        "low": 0.131,
+        "high": 0.1633
+       },
+       "brier": {
+        "value": 0.0355,
+        "low": 0.0308,
+        "high": 0.0402
+       },
+       "calError": {
+        "value": 0.0068,
+        "low": 0.0057,
+        "high": 0.0126
+       }
+      },
+      "causeOnly": {
+       "auc": {
+        "value": 0.7524,
+        "low": 0.72,
+        "high": 0.7859
+       },
+       "logLoss": {
+        "value": 0.1489,
+        "low": 0.1329,
+        "high": 0.1658
+       },
+       "brier": {
+        "value": 0.0359,
+        "low": 0.0312,
+        "high": 0.0408
+       },
+       "calError": {
+        "value": 0.0112,
+        "low": 0.0066,
+        "high": 0.017
+       }
+      },
+      "firstModel": {
+       "auc": {
+        "value": 0.7746,
+        "low": 0.7463,
+        "high": 0.8035
+       },
+       "logLoss": {
+        "value": 0.1465,
+        "low": 0.1309,
+        "high": 0.1629
+       },
+       "brier": {
+        "value": 0.0354,
+        "low": 0.0309,
+        "high": 0.0403
+       },
+       "calError": {
+        "value": 0.0082,
+        "low": 0.0055,
+        "high": 0.0138
+       }
+      }
+     },
+     "differences": {
+      "causeOnly": {
+       "auc": {
+        "value": 0.0208,
+        "low": 0.004,
+        "high": 0.0377,
+        "distinguishable": true
+       },
+       "logLoss": {
+        "value": -0.0024,
+        "low": -0.0045,
+        "high": -0.0002,
+        "distinguishable": true
+       },
+       "brier": {
+        "value": -0.0005,
+        "low": -0.0009,
+        "high": -0.0,
+        "distinguishable": true
+       },
+       "calError": {
+        "value": -0.0043,
+        "low": -0.0076,
+        "high": 0.0013,
+        "distinguishable": false
+       }
+      },
+      "firstModel": {
+       "auc": {
+        "value": -0.0014,
+        "low": -0.0085,
+        "high": 0.0051,
+        "distinguishable": false
+       },
+       "logLoss": {
+        "value": -0.0,
+        "low": -0.0012,
+        "high": 0.0012,
+        "distinguishable": false
+       },
+       "brier": {
+        "value": 0.0,
+        "low": -0.0002,
+        "high": 0.0002,
+        "distinguishable": false
+       },
+       "calError": {
+        "value": -0.0014,
+        "low": -0.0027,
+        "high": 0.003,
+        "distinguishable": false
+       }
+      }
+     }
+    },
+    "actualShare": 0.041
+   }
+  },
+  "cellShrinkage": {
+   "pooled": {
+    "delays": 7455,
+    "resampling": "delay",
+    "methods": {
+     "cellShrunk": {
+      "auc": {
+       "value": 0.7512,
+       "low": 0.736,
+       "high": 0.7663
+      },
+      "logLoss": {
+       "value": 0.3628,
+       "low": 0.3502,
+       "high": 0.3756
+      },
+      "brier": {
+       "value": 0.1103,
+       "low": 0.1055,
+       "high": 0.1152
+      },
+      "calError": {
+       "value": 0.0176,
+       "low": 0.0111,
+       "high": 0.0257
+      }
+     },
+     "waitOrWalk": {
+      "auc": {
+       "value": 0.7512,
+       "low": 0.736,
+       "high": 0.7663
+      },
+      "logLoss": {
+       "value": 0.3628,
+       "low": 0.3502,
+       "high": 0.3756
+      },
+      "brier": {
+       "value": 0.1103,
+       "low": 0.1055,
+       "high": 0.1152
+      },
+      "calError": {
+       "value": 0.0176,
+       "low": 0.0111,
+       "high": 0.0257
+      }
+     },
+     "cellRaw": {
+      "auc": {
+       "value": 0.74,
+       "low": 0.7243,
+       "high": 0.7562
+      },
+      "logLoss": {
+       "value": 0.3702,
+       "low": 0.3577,
+       "high": 0.3837
+      },
+      "brier": {
+       "value": 0.1115,
+       "low": 0.1068,
+       "high": 0.1164
+      },
+      "calError": {
+       "value": 0.0295,
+       "low": 0.0237,
+       "high": 0.0379
+      }
+     }
+    },
+    "differences": {
+     "waitOrWalk": {
+      "auc": {
+       "value": -0.0,
+       "low": -0.0,
+       "high": 0.0,
+       "distinguishable": false
+      },
+      "logLoss": {
+       "value": -0.0,
+       "low": -0.0,
+       "high": -0.0,
+       "distinguishable": true
+      },
+      "brier": {
+       "value": -0.0,
+       "low": -0.0,
+       "high": -0.0,
+       "distinguishable": true
+      },
+      "calError": {
+       "value": -0.0,
+       "low": -0.0,
+       "high": 0.0,
+       "distinguishable": false
+      }
+     },
+     "cellRaw": {
+      "auc": {
+       "value": 0.0112,
+       "low": 0.0006,
+       "high": 0.0225,
+       "distinguishable": true
+      },
+      "logLoss": {
+       "value": -0.0074,
+       "low": -0.0122,
+       "high": -0.0029,
+       "distinguishable": true
+      },
+      "brier": {
+       "value": -0.0013,
+       "low": -0.0026,
+       "high": 0.0,
+       "distinguishable": false
+      },
+      "calError": {
+       "value": -0.0119,
+       "low": -0.019,
+       "high": -0.0067,
+       "distinguishable": true
+      }
+     }
+    }
+   },
+   "pooledByDay": {
+    "delays": 7455,
+    "resampling": "day",
+    "methods": {
+     "cellShrunk": {
+      "auc": {
+       "value": 0.7512,
+       "low": 0.7341,
+       "high": 0.7682
+      },
+      "logLoss": {
+       "value": 0.3628,
+       "low": 0.3485,
+       "high": 0.3786
+      },
+      "brier": {
+       "value": 0.1103,
+       "low": 0.1049,
+       "high": 0.1162
+      },
+      "calError": {
+       "value": 0.0176,
+       "low": 0.011,
+       "high": 0.0259
+      }
+     },
+     "waitOrWalk": {
+      "auc": {
+       "value": 0.7512,
+       "low": 0.7341,
+       "high": 0.7682
+      },
+      "logLoss": {
+       "value": 0.3628,
+       "low": 0.3485,
+       "high": 0.3786
+      },
+      "brier": {
+       "value": 0.1103,
+       "low": 0.1049,
+       "high": 0.1162
+      },
+      "calError": {
+       "value": 0.0176,
+       "low": 0.011,
+       "high": 0.0259
+      }
+     },
+     "cellRaw": {
+      "auc": {
+       "value": 0.74,
+       "low": 0.722,
+       "high": 0.7576
+      },
+      "logLoss": {
+       "value": 0.3702,
+       "low": 0.3559,
+       "high": 0.3855
+      },
+      "brier": {
+       "value": 0.1115,
+       "low": 0.1063,
+       "high": 0.1174
+      },
+      "calError": {
+       "value": 0.0295,
+       "low": 0.0227,
+       "high": 0.0381
+      }
+     }
+    },
+    "differences": {
+     "waitOrWalk": {
+      "auc": {
+       "value": -0.0,
+       "low": -0.0,
+       "high": 0.0,
+       "distinguishable": false
+      },
+      "logLoss": {
+       "value": -0.0,
+       "low": -0.0,
+       "high": -0.0,
+       "distinguishable": true
+      },
+      "brier": {
+       "value": -0.0,
+       "low": -0.0,
+       "high": -0.0,
+       "distinguishable": true
+      },
+      "calError": {
+       "value": -0.0,
+       "low": -0.0,
+       "high": 0.0,
+       "distinguishable": false
+      }
+     },
+     "cellRaw": {
+      "auc": {
+       "value": 0.0112,
+       "low": 0.0002,
+       "high": 0.0228,
+       "distinguishable": true
+      },
+      "logLoss": {
+       "value": -0.0074,
+       "low": -0.0125,
+       "high": -0.0025,
+       "distinguishable": true
+      },
+      "brier": {
+       "value": -0.0013,
+       "low": -0.0026,
+       "high": 0.0001,
+       "distinguishable": false
+      },
+      "calError": {
+       "value": -0.0119,
+       "low": -0.019,
+       "high": -0.0062,
+       "distinguishable": true
+      }
+     }
+    }
+   },
+   "periods": [
+    {
+     "test": "2026-01-01 to 2026-03-31",
+     "delays": 2576,
+     "resampling": "delay",
+     "methods": {
+      "cellShrunk": {
+       "auc": {
+        "value": 0.7236,
+        "low": 0.6979,
+        "high": 0.7484
+       },
+       "logLoss": {
+        "value": 0.4189,
+        "low": 0.3963,
+        "high": 0.4418
+       },
+       "brier": {
+        "value": 0.1309,
+        "low": 0.1222,
+        "high": 0.1395
+       },
+       "calError": {
+        "value": 0.0146,
+        "low": 0.0098,
+        "high": 0.0311
+       }
+      },
+      "waitOrWalk": {
+       "auc": {
+        "value": 0.7236,
+        "low": 0.6979,
+        "high": 0.7484
+       },
+       "logLoss": {
+        "value": 0.4189,
+        "low": 0.3963,
+        "high": 0.4418
+       },
+       "brier": {
+        "value": 0.1309,
+        "low": 0.1222,
+        "high": 0.1395
+       },
+       "calError": {
+        "value": 0.0146,
+        "low": 0.0098,
+        "high": 0.0311
+       }
+      },
+      "cellRaw": {
+       "auc": {
+        "value": 0.7133,
+        "low": 0.6868,
+        "high": 0.7378
+       },
+       "logLoss": {
+        "value": 0.4286,
+        "low": 0.4061,
+        "high": 0.4517
+       },
+       "brier": {
+        "value": 0.1335,
+        "low": 0.125,
+        "high": 0.1419
+       },
+       "calError": {
+        "value": 0.0281,
+        "low": 0.0189,
+        "high": 0.042
+       }
+      }
+     },
+     "differences": {
+      "waitOrWalk": {
+       "auc": {
+        "value": 0.0,
+        "low": 0.0,
+        "high": 0.0,
+        "distinguishable": false
+       },
+       "logLoss": {
+        "value": -0.0,
+        "low": -0.0,
+        "high": -0.0,
+        "distinguishable": true
+       },
+       "brier": {
+        "value": -0.0,
+        "low": -0.0,
+        "high": -0.0,
+        "distinguishable": true
+       },
+       "calError": {
+        "value": -0.0,
+        "low": -0.0,
+        "high": 0.0,
+        "distinguishable": false
+       }
+      },
+      "cellRaw": {
+       "auc": {
+        "value": 0.0103,
+        "low": -0.0084,
+        "high": 0.0288,
+        "distinguishable": false
+       },
+       "logLoss": {
+        "value": -0.0097,
+        "low": -0.0178,
+        "high": -0.0015,
+        "distinguishable": true
+       },
+       "brier": {
+        "value": -0.0026,
+        "low": -0.0049,
+        "high": -0.0002,
+        "distinguishable": true
+       },
+       "calError": {
+        "value": -0.0135,
+        "low": -0.0246,
+        "high": 0.0043,
+        "distinguishable": false
+       }
+      }
+     }
+    },
+    {
+     "test": "2026-04-01 to 2026-06-30",
+     "delays": 2631,
+     "resampling": "delay",
+     "methods": {
+      "cellShrunk": {
+       "auc": {
+        "value": 0.7582,
+        "low": 0.7321,
+        "high": 0.7839
+       },
+       "logLoss": {
+        "value": 0.3484,
+        "low": 0.3284,
+        "high": 0.368
+       },
+       "brier": {
+        "value": 0.1045,
+        "low": 0.0969,
+        "high": 0.1119
+       },
+       "calError": {
+        "value": 0.0361,
+        "low": 0.0261,
+        "high": 0.0487
+       }
+      },
+      "waitOrWalk": {
+       "auc": {
+        "value": 0.7582,
+        "low": 0.7321,
+        "high": 0.7839
+       },
+       "logLoss": {
+        "value": 0.3484,
+        "low": 0.3284,
+        "high": 0.368
+       },
+       "brier": {
+        "value": 0.1045,
+        "low": 0.0969,
+        "high": 0.1119
+       },
+       "calError": {
+        "value": 0.0361,
+        "low": 0.0261,
+        "high": 0.0487
+       }
+      },
+      "cellRaw": {
+       "auc": {
+        "value": 0.7701,
+        "low": 0.7434,
+        "high": 0.7963
+       },
+       "logLoss": {
+        "value": 0.3475,
+        "low": 0.3287,
+        "high": 0.3663
+       },
+       "brier": {
+        "value": 0.1035,
+        "low": 0.0964,
+        "high": 0.1105
+       },
+       "calError": {
+        "value": 0.0476,
+        "low": 0.0368,
+        "high": 0.0594
+       }
+      }
+     },
+     "differences": {
+      "waitOrWalk": {
+       "auc": {
+        "value": -0.0,
+        "low": -0.0,
+        "high": 0.0,
+        "distinguishable": false
+       },
+       "logLoss": {
+        "value": -0.0,
+        "low": -0.0,
+        "high": -0.0,
+        "distinguishable": true
+       },
+       "brier": {
+        "value": -0.0,
+        "low": -0.0,
+        "high": -0.0,
+        "distinguishable": true
+       },
+       "calError": {
+        "value": -0.0,
+        "low": -0.0,
+        "high": 0.0,
+        "distinguishable": false
+       }
+      },
+      "cellRaw": {
+       "auc": {
+        "value": -0.0119,
+        "low": -0.0297,
+        "high": 0.0053,
+        "distinguishable": false
+       },
+       "logLoss": {
+        "value": 0.0009,
+        "low": -0.0066,
+        "high": 0.009,
+        "distinguishable": false
+       },
+       "brier": {
+        "value": 0.0011,
+        "low": -0.0012,
+        "high": 0.0034,
+        "distinguishable": false
+       },
+       "calError": {
+        "value": -0.0114,
+        "low": -0.0208,
+        "high": -0.0012,
+        "distinguishable": true
+       }
+      }
+     }
+    },
+    {
+     "test": "2026-07-01 to 2026-09-30",
+     "delays": 2248,
+     "resampling": "delay",
+     "methods": {
+      "cellShrunk": {
+       "auc": {
+        "value": 0.7693,
+        "low": 0.7407,
+        "high": 0.7968
+       },
+       "logLoss": {
+        "value": 0.3154,
+        "low": 0.2929,
+        "high": 0.3385
+       },
+       "brier": {
+        "value": 0.0933,
+        "low": 0.0851,
+        "high": 0.1022
+       },
+       "calError": {
+        "value": 0.0158,
+        "low": 0.0127,
+        "high": 0.032
+       }
+      },
+      "waitOrWalk": {
+       "auc": {
+        "value": 0.7693,
+        "low": 0.7407,
+        "high": 0.7968
+       },
+       "logLoss": {
+        "value": 0.3154,
+        "low": 0.2929,
+        "high": 0.3385
+       },
+       "brier": {
+        "value": 0.0933,
+        "low": 0.0851,
+        "high": 0.1022
+       },
+       "calError": {
+        "value": 0.0158,
+        "low": 0.0127,
+        "high": 0.032
+       }
+      },
+      "cellRaw": {
+       "auc": {
+        "value": 0.7309,
+        "low": 0.6952,
+        "high": 0.7624
+       },
+       "logLoss": {
+        "value": 0.3298,
+        "low": 0.3054,
+        "high": 0.3569
+       },
+       "brier": {
+        "value": 0.0958,
+        "low": 0.0874,
+        "high": 0.1047
+       },
+       "calError": {
+        "value": 0.029,
+        "low": 0.02,
+        "high": 0.0421
+       }
+      }
+     },
+     "differences": {
+      "waitOrWalk": {
+       "auc": {
+        "value": -0.0,
+        "low": -0.0,
+        "high": 0.0,
+        "distinguishable": false
+       },
+       "logLoss": {
+        "value": -0.0,
+        "low": -0.0,
+        "high": -0.0,
+        "distinguishable": true
+       },
+       "brier": {
+        "value": -0.0,
+        "low": -0.0,
+        "high": 0.0,
+        "distinguishable": false
+       },
+       "calError": {
+        "value": -0.0,
+        "low": -0.0,
+        "high": 0.0,
+        "distinguishable": false
+       }
+      },
+      "cellRaw": {
+       "auc": {
+        "value": 0.0384,
+        "low": 0.0162,
+        "high": 0.061,
+        "distinguishable": true
+       },
+       "logLoss": {
+        "value": -0.0144,
+        "low": -0.0232,
+        "high": -0.0063,
+        "distinguishable": true
+       },
+       "brier": {
+        "value": -0.0024,
+        "low": -0.0045,
+        "high": -0.0003,
+        "distinguishable": true
+       },
+       "calError": {
+        "value": -0.0132,
+        "low": -0.0213,
+        "high": 0.0041,
+        "distinguishable": false
+       }
+      }
+     }
+    }
+   ],
+   "prior": [
+    {
+     "test": "2026-01-01",
+     "priorStrength": 100000,
+     "cells": 814
+    },
+    {
+     "test": "2026-04-01",
+     "priorStrength": 100000,
+     "cells": 857
+    },
+    {
+     "test": "2026-07-01",
+     "priorStrength": 100000,
+     "cells": 895
+    }
+   ]
+  },
   "decisionValue": [
    {
     "threshold": 0.15,
@@ -898,7 +3667,7 @@
      "waitOrWalkMinusCauseOnly": {
       "value": -0.08,
       "low": -0.12,
-      "high": -0.03
+      "high": -0.04
      }
     },
     {
@@ -928,7 +3697,296 @@
      }
     }
    ]
-  }
+  },
+  "stationSimulation": {
+   "assumptions": {
+    "maxStopsAlongLine": 3,
+    "waitCostIsLoggedDelayMinutesCappedAt": 60,
+    "switchAt": 0.35,
+    "walkMetresPerMinute": 80,
+    "boardingMinutes": 1,
+    "maxWaitForDepartureMinutes": 180,
+    "scheduleDays": "Tue Nov 17, Sat Nov 21 and Sun Nov 22, 2026 stand in for each day type"
+   },
+   "delays": 7455,
+   "directions": 13174,
+   "directionsWithAlternative": 7483,
+   "medianSwitchCost": 17.0,
+   "candidateCostsBelowZeroBeforeClamp": 0.0,
+   "subsets": {
+    "all": {
+     "delays": 7455,
+     "alwaysWait": 6.56,
+     "alwaysSwitch": 14.5,
+     "hindsightBest": 6.12,
+     "waitOrWalk": 6.91,
+     "causeOnly": 6.71,
+     "firstModel": 6.96,
+     "savedVsWait_waitOrWalk": {
+      "value": -0.35,
+      "low": -0.44,
+      "high": -0.26
+     },
+     "savedVsWait_causeOnly": {
+      "value": -0.15,
+      "low": -0.23,
+      "high": -0.08
+     },
+     "savedVsWait_firstModel": {
+      "value": -0.4,
+      "low": -0.5,
+      "high": -0.32
+     },
+     "savedVsWait_hindsightBest": {
+      "value": 0.44,
+      "low": 0.36,
+      "high": 0.52
+     },
+     "savedVs_causeOnly": {
+      "value": -0.2,
+      "low": -0.26,
+      "high": -0.14
+     },
+     "savedVs_firstModel": {
+      "value": 0.06,
+      "low": 0.02,
+      "high": 0.09
+     }
+    },
+    "atLeast20": {
+     "delays": 309,
+     "alwaysWait": 34.02,
+     "alwaysSwitch": 27.9,
+     "hindsightBest": 26.62,
+     "waitOrWalk": 32.34,
+     "causeOnly": 32.42,
+     "firstModel": 32.56,
+     "savedVsWait_waitOrWalk": {
+      "value": 1.68,
+      "low": 0.98,
+      "high": 2.48
+     },
+     "savedVsWait_causeOnly": {
+      "value": 1.6,
+      "low": 0.93,
+      "high": 2.38
+     },
+     "savedVsWait_firstModel": {
+      "value": 1.46,
+      "low": 0.62,
+      "high": 2.32
+     },
+     "savedVsWait_hindsightBest": {
+      "value": 7.4,
+      "low": 5.99,
+      "high": 8.82
+     },
+     "savedVs_causeOnly": {
+      "value": 0.08,
+      "low": -0.21,
+      "high": 0.39
+     },
+     "savedVs_firstModel": {
+      "value": 0.22,
+      "low": -0.2,
+      "high": 0.83
+     }
+    },
+    "atLeast30": {
+     "delays": 139,
+     "alwaysWait": 46.64,
+     "alwaysSwitch": 35.77,
+     "hindsightBest": 34.37,
+     "waitOrWalk": 43.48,
+     "causeOnly": 43.63,
+     "firstModel": 44.14,
+     "savedVsWait_waitOrWalk": {
+      "value": 3.16,
+      "low": 1.8,
+      "high": 4.79
+     },
+     "savedVsWait_causeOnly": {
+      "value": 3.01,
+      "low": 1.67,
+      "high": 4.64
+     },
+     "savedVsWait_firstModel": {
+      "value": 2.5,
+      "low": 0.7,
+      "high": 4.36
+     },
+     "savedVsWait_hindsightBest": {
+      "value": 12.27,
+      "low": 9.69,
+      "high": 15.0
+     },
+     "savedVs_causeOnly": {
+      "value": 0.15,
+      "low": -0.4,
+      "high": 0.76
+     },
+     "savedVs_firstModel": {
+      "value": 0.66,
+      "low": -0.22,
+      "high": 2.03
+     }
+    },
+    "under10": {
+     "delays": 6363,
+     "alwaysWait": 4.45,
+     "alwaysSwitch": 13.63,
+     "hindsightBest": 4.41,
+     "waitOrWalk": 4.86,
+     "causeOnly": 4.67,
+     "firstModel": 4.91,
+     "savedVsWait_waitOrWalk": {
+      "value": -0.41,
+      "low": -0.5,
+      "high": -0.33
+     },
+     "savedVsWait_causeOnly": {
+      "value": -0.22,
+      "low": -0.3,
+      "high": -0.15
+     },
+     "savedVsWait_firstModel": {
+      "value": -0.46,
+      "low": -0.55,
+      "high": -0.37
+     },
+     "savedVsWait_hindsightBest": {
+      "value": 0.04,
+      "low": 0.04,
+      "high": 0.05
+     },
+     "savedVs_causeOnly": {
+      "value": -0.19,
+      "low": -0.24,
+      "high": -0.15
+     },
+     "savedVs_firstModel": {
+      "value": 0.04,
+      "low": 0.01,
+      "high": 0.08
+     }
+    }
+   }
+  },
+  "bandCrossingBeforeClamp": [
+   {
+    "test": "2026-01-01",
+    "delays": 2576,
+    "share": 0.0
+   },
+   {
+    "test": "2026-04-01",
+    "delays": 2631,
+    "share": 0.0053
+   },
+   {
+    "test": "2026-07-01",
+    "delays": 2248,
+    "share": 0.004
+   }
+  ],
+  "sensitivity": [
+   {
+    "halfLifeDays": 90,
+    "calibrationDays": 61,
+    "shipped": false,
+    "auc": 0.7501,
+    "logLoss": 0.3625,
+    "calError": 0.96
+   },
+   {
+    "halfLifeDays": 90,
+    "calibrationDays": 91,
+    "shipped": false,
+    "auc": 0.7508,
+    "logLoss": 0.3632,
+    "calError": 1.72
+   },
+   {
+    "halfLifeDays": 90,
+    "calibrationDays": 122,
+    "shipped": false,
+    "auc": 0.7496,
+    "logLoss": 0.3637,
+    "calError": 1.65
+   },
+   {
+    "halfLifeDays": 180,
+    "calibrationDays": 61,
+    "shipped": false,
+    "auc": 0.7512,
+    "logLoss": 0.3619,
+    "calError": 1.17
+   },
+   {
+    "halfLifeDays": 180,
+    "calibrationDays": 91,
+    "shipped": true,
+    "auc": 0.7512,
+    "logLoss": 0.3628,
+    "calError": 1.76
+   },
+   {
+    "halfLifeDays": 180,
+    "calibrationDays": 122,
+    "shipped": false,
+    "auc": 0.7497,
+    "logLoss": 0.3635,
+    "calError": 1.64
+   },
+   {
+    "halfLifeDays": 365,
+    "calibrationDays": 61,
+    "shipped": false,
+    "auc": 0.751,
+    "logLoss": 0.3619,
+    "calError": 1.1
+   },
+   {
+    "halfLifeDays": 365,
+    "calibrationDays": 91,
+    "shipped": false,
+    "auc": 0.7506,
+    "logLoss": 0.3629,
+    "calError": 1.78
+   },
+   {
+    "halfLifeDays": 365,
+    "calibrationDays": 122,
+    "shipped": false,
+    "auc": 0.7488,
+    "logLoss": 0.3637,
+    "calError": 1.65
+   },
+   {
+    "halfLifeDays": null,
+    "calibrationDays": 61,
+    "shipped": false,
+    "auc": 0.7497,
+    "logLoss": 0.3622,
+    "calError": 1.28
+   },
+   {
+    "halfLifeDays": null,
+    "calibrationDays": 91,
+    "shipped": false,
+    "auc": 0.7491,
+    "logLoss": 0.3634,
+    "calError": 1.79
+   },
+   {
+    "halfLifeDays": null,
+    "calibrationDays": 122,
+    "shipped": false,
+    "auc": 0.7472,
+    "logLoss": 0.3642,
+    "calError": 1.66
+   }
+  ]
  },
  "zeroMinuteRecordsExcluded": 30515,
  "monthlyShareLong": {

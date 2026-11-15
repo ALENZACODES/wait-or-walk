@@ -11,6 +11,9 @@ const metrics = load('metrics.json');
 for (const s of load('parity.json')) {
   const p = W.predict(model, s).p;
   assert.ok(Math.abs(p - s.p) < 1e-4, `parity ${JSON.stringify(s)} got ${p}`);
+  const b = W.predictBands(model, s);
+  assert.ok(Math.abs(b.p5 - s.p5) < 1e-4 && Math.abs(b.p20 - s.p20) < 1e-4, `band parity ${JSON.stringify(s)} got ${JSON.stringify(b)}`);
+  assert.ok(b.p5 >= b.p10 && b.p10 >= b.p20);
 }
 
 // Time buckets match training: 0 to 5, 6 to 9, 10 to 15, 16 to 19, 20 to 23
@@ -149,6 +152,25 @@ const nd = W.nextDepartures(pt.times, k149.refs, mon.services, new Set(), 7 * 60
 assert.equal(nd.length, 3); assert.ok(nd[0] >= 450 && nd[0] < nd[1] && nd[1] < nd[2]);
 assert.ok(nd.includes(455)); // the 7:35 weekday trip checked by hand in docs/plan-b-checks.md
 assert.deepEqual(W.decodeTimes('a.5.5'), [10, 15, 20]);
+// Only departures a rider can still catch: now + walking time + 1 minute to board
+const r149 = (now) => W.reachable(pb, pt.times, k149.refs, mon.services, new Set(), now, 3).map((x) => x.dep);
+assert.ok(r149(7 * 60 + 33).includes(455));   // 7:33 + 1 min walk + 1 min to board = 7:35, still catchable
+assert.ok(!r149(7 * 60 + 34).includes(455));  // one minute later it is gone
+for (const now of [300, 455, 1050, 1300]) for (const x of W.reachable(pb, pt.times, k149.refs, mon.services, new Set(), now, 3)) assert.ok(x.dep >= now + x.walk + W.BOARD_MINUTES && x.dep - now <= 180);
+assert.equal(W.reachable(pb, pt.times, k149.refs, mon.services, new Set(), 23 * 60 + 59, 3, 1).length, 0); // nothing within a 1 minute horizon at midnight
+// Ranked by scheduled arrival: the first catchable departure plus the scheduled ride (plus subway onward when changing)
+const kj = W.planB(pb, 'Kipling', 'Jane'), ranked = W.rankByArrival(pb, pt.times, kj.direct.concat(kj.via), mon.services, new Set(), 1050, 'Jane');
+assert.ok(ranked.length >= 2);
+for (let i = 1; i < ranked.length; i++) if (ranked[i].estimate !== null) assert.ok(ranked[i - 1].estimate !== null && ranked[i - 1].estimate <= ranked[i].estimate);
+assert.ok(ranked.every((r) => r.estimate === null || r.estimate > r.first.dep));
+assert.equal(W.subwayMinutes(pb, 'BD', 'Kipling', 'Jane'), W.subwayMinutes(pb, 'BD', 'Jane', 'Kipling'));
+// Schedule validity: Dec 7 and Dec 20 are covered, Dec 22 is after the end, and the range is reported
+assert.deepEqual(W.scheduleRange(pt.calendar), { from: '20261101', to: '20261221' });
+assert.ok(W.activeServices(pt.calendar, '20261207', 0).covered && W.activeServices(pt.calendar, '20261207', 0).services.has('1'));
+assert.ok(W.activeServices(pt.calendar, '20261220', 6).covered && W.activeServices(pt.calendar, '20261220', 6).services.size > 0);
+assert.equal(W.activeServices(pt.calendar, '20261222', 1).covered, false);
+// 3 a.m.: trips from the previous service day that run past midnight are counted
+assert.deepEqual(W.torontoClock(new Date('2026-11-17T08:00:00Z')), { ymd: '20261117', prevYmd: '20261116', dow: 1, prevDow: 0, minutes: 180 });
 assert.equal(W.walkMinutes(300), 4); assert.equal(W.walkMinutes(10), 1);
 assert.deepEqual(W.torontoClock(new Date('2026-11-16T05:10:00Z')), { ymd: '20261116', prevYmd: '20261115', dow: 0, prevDow: 6, minutes: 10 });
 
@@ -172,5 +194,10 @@ assert.equal(ev.pooled.differences.firstModel.auc.distinguishable, false);
 assert.ok(ev.pooled.methods.waitOrWalk.calError.value < ev.pooled.methods.firstModel.calError.value);
 assert.equal(ev.decisionValue.length, 6);
 assert.equal(ev.simulation.rows.length, 3);
+// Day block bootstrap and the extra evidence are present and bracket their values
+for (const b of [...ev.dayBlock.periods, ev.dayBlock.pooled, ev.bands['5'].pooled, ev.bands['20'].pooled, ev.cellShrinkage.pooled]) for (const m of Object.values(b.methods)) for (const x of Object.values(m)) assert.ok(x.low <= x.value + 1e-9 && x.value <= x.high + 1e-9);
+assert.equal(ev.survival.length, 32);
+assert.ok(ev.sensitivity.filter((x) => x.shipped).length === 1);
+const ss = ev.stationSimulation; assert.ok(ss.directionsWithAlternative > 0 && ss.subsets.all.delays === metrics.pooled.delays);
 
 console.log('Wait or Walk tests passed.');

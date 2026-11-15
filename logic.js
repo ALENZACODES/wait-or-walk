@@ -29,6 +29,20 @@
     return { p, raw, parts };
   }
 
+  // Chances of 5+, 10+ and 20+ minutes. Each band has its own model, trained and recalibrated the same way;
+  // the bands are kept in order (5+ at least the 10+ chance, 20+ at most the 10+ chance), as in the evaluation.
+  function predictBands(model, x) {
+    const p10 = predict(model, x).p;
+    const one = (b) => {
+      if (!model.bands || !model.bands[b]) return null;
+      const m = model.bands[b]; let z = m.intercept;
+      for (const k of featureKeys(x, model)) z += m.weights[k] || 0;
+      return sig(m.platt.a * logit(sig(z)) + m.platt.b);
+    };
+    const p5 = one('5'), p20 = one('20');
+    return { p5: p5 === null ? null : Math.max(p5, p10), p10, p20: p20 === null ? null : Math.min(p20, p10) };
+  }
+
   const LABELS = { night: 'overnight (before 6 a.m.)', am_peak: 'morning rush (6 to 10 a.m.)', midday: 'midday (10 a.m. to 4 p.m.)', pm_peak: 'evening rush (4 to 8 p.m.)', evening: 'evening (8 p.m. on)', YU: 'Line 1', BD: 'Line 2', SHP: 'Line 4' };
 
   const SHORT = { night: 'overnight', am_peak: 'morning rush', midday: 'midday', pm_peak: 'evening rush', evening: 'evening' };
@@ -161,8 +175,8 @@
       const j = q.visits.findIndex((v, k) => k > i && v.station === to);
       if (j < 0) return;
       const key = q.route + '|' + q.heading;
-      if (direct.has(key)) { direct.get(key).refs.push([pi, i]); return; }
-      direct.set(key, Object.assign(base(q, i), { heading: q.heading, alight: q.visits[j].stop, refs: [[pi, i]] }));
+      if (direct.has(key)) { direct.get(key).refs.push([pi, i, j]); return; }
+      direct.set(key, Object.assign(base(q, i), { heading: q.heading, alight: q.visits[j].stop, refs: [[pi, i, j]] }));
     });
     for (const r of direct.values()) (r.night ? out.night : out.direct).push(r);
     const directRoutes = new Set(out.direct.map((r) => r.route));
@@ -182,12 +196,12 @@
       const i = q.visits.findIndex((v) => v.station === from);
       if (i < 0) return;
       let pick = null;
-      q.visits.slice(i + 1).forEach((v) => { const u = useful.get(v.station); if (u && (!pick || u.rank > pick.u.rank)) pick = { v, u }; });
+      q.visits.forEach((v, j) => { if (j <= i) return; const u = useful.get(v.station); if (u && (!pick || u.rank > pick.u.rank)) pick = { v, u, j }; });
       if (!pick) return;
       const key = q.route + '|' + q.heading;
       const cur = best.get(key);
-      if (cur && pick.u.rank === cur.rank) { cur.refs.push([pi, i]); return; }
-      if (!cur || pick.u.rank > cur.rank) best.set(key, Object.assign(base(q, i), { heading: q.heading, transfer: pick.v.station, line: pick.u.line, rank: pick.u.rank, refs: [[pi, i]] }));
+      if (cur && pick.u.rank === cur.rank) { cur.refs.push([pi, i, pick.j]); return; }
+      if (!cur || pick.u.rank > cur.rank) best.set(key, Object.assign(base(q, i), { heading: q.heading, transfer: pick.v.station, line: pick.u.line, rank: pick.u.rank, refs: [[pi, i, pick.j]] }));
     });
     out.via = [...best.values()].sort((a, b) => b.rank - a.rank || a.metres - b.metres).slice(0, 6);
     return out;
@@ -214,6 +228,45 @@
     }
     return [...new Set(all)].sort((a, b) => a - b).slice(0, count || 3);
   }
+  const BOARD_MINUTES = 1; // time allowed to board after walking to the stop
+  const walkMinutes = (metres) => Math.max(1, Math.ceil(metres / 80)); // 80 metres a minute, about 4.8 km/h, straight line
+  // Departures a rider can still catch: leaving at or after now + walking time + 1 minute to board, within the horizon.
+  // refs: [pattern, boarding visit, optional visit where you get off]. Returns [{dep, arrive, walk}], earliest first.
+  function reachable(pb, times, refs, today, yesterday, nowMin, count, horizon) {
+    const all = new Map();
+    for (const [pi, vi, vj] of refs) {
+      const q = pb.patterns[pi]; if (!q) continue;
+      const walk = walkMinutes(q.visits[vi].metres), earliest = nowMin + walk + BOARD_MINUTES;
+      const ride = vj !== undefined && q.visits[vj] && q.visits[vi].ride !== undefined ? q.visits[vj].ride - q.visits[vi].ride : null;
+      const e = (times[pi] || [])[vi] || {};
+      const add = (m) => { if (m >= earliest && m - nowMin <= (horizon || 180)) { const cur = all.get(m); const arrive = ride === null ? null : m + ride; if (!cur || (arrive !== null && (cur.arrive === null || arrive < cur.arrive))) all.set(m, { dep: m, arrive, walk }); } };
+      for (const s of today) for (const m of decodeTimes(e[s])) add(m);
+      for (const s of yesterday) for (const m of decodeTimes(e[s])) add(m - 1440);
+    }
+    return [...all.values()].sort((a, b) => a.dep - b.dep).slice(0, count || 3);
+  }
+  // Scheduled subway running time between two stations on one line (minutes), or null.
+  function subwayMinutes(pb, line, a, b) {
+    const o = pb.lines[line], c = (pb.subwayMinutes || {})[line];
+    if (!o || !c) return null;
+    const i = o.indexOf(a), j = o.indexOf(b);
+    return i < 0 || j < 0 ? null : Math.abs(c[j] - c[i]);
+  }
+  // Order Plan B entries by the scheduled arrival they allow: the first reachable departure plus the scheduled ride,
+  // plus the scheduled subway time onward for ride past the delay entries. Entries without an estimate go last.
+  function rankByArrival(pb, times, entries, today, yesterday, nowMin, dest) {
+    return entries.map((r, k) => {
+      const first = reachable(pb, times, r.refs, today, yesterday, nowMin, 1)[0] || null;
+      let arrive = first && first.arrive !== null ? first.arrive : null, onward = null;
+      if (arrive !== null && r.transfer) { onward = subwayMinutes(pb, r.line, r.transfer, dest); arrive = onward === null ? null : arrive + onward; }
+      return Object.assign({}, r, { first, estimate: arrive, onward, order: k });
+    }).sort((a, b) => (a.estimate === null) - (b.estimate === null) || (a.estimate || 0) - (b.estimate || 0) || a.order - b.order);
+  }
+  function scheduleRange(cal) {
+    let from = null, to = null;
+    for (const w of cal.weekly) { if (!from || w.from < from) from = w.from; if (!to || w.to > to) to = w.to; }
+    return { from, to };
+  }
   function torontoClock(date) {
     const f = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Toronto', year: 'numeric', month: '2-digit', day: '2-digit', hour: 'numeric', minute: '2-digit', hourCycle: 'h23', weekday: 'short' }).formatToParts(date || new Date());
     const g = (k) => f.find((p) => p.type === k).value;
@@ -223,8 +276,6 @@
     const prev = y.getUTCFullYear() + String(y.getUTCMonth() + 1).padStart(2, '0') + String(y.getUTCDate()).padStart(2, '0');
     return { ymd, prevYmd: prev, dow, prevDow: (dow + 6) % 7, minutes: Number(g('hour')) * 60 + Number(g('minute')) };
   }
-  const walkMinutes = (metres) => Math.max(1, Math.ceil(metres / 80)); // 80 metres a minute, about 4.8 km/h, straight line
-
   // Page state helpers, kept here so the rules are tested without a browser.
   // state: { line, station, group, derived: Set of fields read from the alert, pending: choice or null }
   function applyAlert(state, r) {
@@ -257,5 +308,5 @@
     return { hour, weekend: wd === 'Sat' || wd === 'Sun' };
   }
 
-  return { predict, explain, advice, readAlert, planB, applyAlert, chooseOption, canForecast, mismatch, activeServices, decodeTimes, nextDepartures, torontoClock, walkMinutes, timeBucket, torontoNow, labelFor, LABELS };
+  return { predict, predictBands, reachable, rankByArrival, subwayMinutes, scheduleRange, BOARD_MINUTES, explain, advice, readAlert, planB, applyAlert, chooseOption, canForecast, mismatch, activeServices, decodeTimes, nextDepartures, torontoClock, walkMinutes, timeBucket, torontoNow, labelFor, LABELS };
 });

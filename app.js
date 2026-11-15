@@ -1,7 +1,7 @@
 (function () {
   const $ = (s) => document.querySelector(s);
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-  const VERSION = 'r4';
+  const VERSION = 'r5';
   let model = null, planb = null, ptimes = null;
   let state = { line: '', station: '', group: '', derived: new Set(), pending: null };
   const sync = () => { $('#line').value = state.line; $('#station').value = state.station; $('#group').value = state.group; ['line', 'station', 'group'].forEach((k) => tag(k, state.derived.has(k))); };
@@ -45,12 +45,16 @@
     }
     const { p, raw } = WaitOrWalk.predict(model, x);
     const a = WaitOrWalk.advice(p);
+    const bands = WaitOrWalk.predictBands(model, x);
     $('#pct').textContent = pct(p);
+    $('#bands').innerHTML = bands.p5 === null ? '' : `<span><b>${pct(bands.p5)}</b> 5+ min</span><span class="on"><b>${pct(p)}</b> 10+ min</span><span><b>${pct(bands.p20)}</b> 20+ min</span>`;
     $('.result').className = 'card result ' + a.level;
     $('#advice').textContent = a.title + '.';
     $('#adviceText').textContent = a.text;
     const g = model.groups[x.group];
     $('#typical').textContent = `This cause: ${g.delays.toLocaleString('en-CA')} logged delays, ${g.longDelays.toLocaleString('en-CA')} of them 10 minutes or more; half were over in ${g.medianMinutes} minutes or less.`;
+    const share = g.longDelays / g.delays;
+    $('#reconcile').textContent = `Why ${pct(p)} and not ${pct(share)}: ${pct(share)} is every logged delay with this cause since January 2025 (${g.longDelays.toLocaleString('en-CA')} of ${g.delays.toLocaleString('en-CA')}). The estimate adjusts that for the station, the line, the time of day and the drop in long delays in 2026${g.recentShareLong !== null && g.recentDelays ? ` (in the latest 91 days, ${pct(g.recentShareLong)} of ${g.recentDelays} delays with this cause ran 10 minutes or more)` : ''}.`;
     const sd = (model.stationDelays || {})[x.station] || 0;
     const rare = [];
     if (g.delays < RARE) rare.push(`only ${g.delays} logged delays have this cause`);
@@ -64,16 +68,23 @@
   const KIND = { bus: 'bus', streetcar: 'streetcar', LRT: 'LRT (light rail)' };
   const clock = (m) => { const h = Math.floor(m / 60) % 24, mm = String(m % 60).padStart(2, '0'); return `${h % 12 || 12}:${mm} ${h < 12 ? 'a.m.' : 'p.m.'}`; };
   let ctx = null;
+  const ymdWords = (y) => `${MON[+y.slice(4, 6) - 1]} ${+y.slice(6)}, ${y.slice(0, 4)}`;
   function timeContext() {
-    const c = WaitOrWalk.torontoClock();
+    const c = WaitOrWalk.torontoClock(new Date());
     const a = WaitOrWalk.activeServices(ptimes.calendar, c.ymd, c.dow), b = WaitOrWalk.activeServices(ptimes.calendar, c.prevYmd, c.prevDow);
-    return { now: c.minutes, today: a.services, yesterday: b.services, covered: a.covered, ymd: c.ymd };
+    return { now: c.minutes, today: a.services, yesterday: b.services, covered: a.covered, ymd: c.ymd, range: WaitOrWalk.scheduleRange(ptimes.calendar) };
   }
+  const inMin = (m) => (m - ctx.now <= 0 ? 'now' : 'in ' + (m - ctx.now) + ' min');
   function departures(refs) {
     if (!ctx.covered) return '';
-    const next = WaitOrWalk.nextDepartures(ptimes.times, refs, ctx.today, ctx.yesterday, ctx.now, 3).filter((m) => m - ctx.now <= 180);
-    if (!next.length) return '<br><span class="meta notnow">No scheduled departure in the next 3 hours</span>';
-    return `<br><span class="meta deps">Next scheduled: ${next.map((m) => `${clock(m)} (${m - ctx.now <= 0 ? 'now' : 'in ' + (m - ctx.now) + ' min'})`).join(', ')}</span>`;
+    const next = WaitOrWalk.reachable(planb, ptimes.times, refs, ctx.today, ctx.yesterday, ctx.now, 3);
+    if (!next.length) return '<br><span class="meta notnow">No departure you can still catch in the next 3 hours, after walking and 1 minute to board</span>';
+    return `<br><span class="meta deps">Next you can catch: ${next.map((x) => `${clock(x.dep)} (${inMin(x.dep)})`).join(', ')}</span>`;
+  }
+  function arrival(r, destLabel) {
+    if (!ctx.covered || !r.first || r.estimate === null) return '';
+    if (r.transfer) return `<br><span class="meta eta">By the schedule: at ${esc(WaitOrWalk.labelFor(model, r.transfer))} about ${clock(r.first.arrive)}, then ${LINE[r.line]} to ${esc(destLabel)} about ${clock(r.estimate)} if the subway runs normally there</span>`;
+    return `<br><span class="meta eta">By the schedule: at ${esc(destLabel)} about ${clock(r.estimate)}</span>`;
   }
   function access(r) {
     if (r.access === 1) return '<br><span class="meta">Schedule lists accessible boarding at this stop</span>';
@@ -92,11 +103,17 @@
     const d = dest && model.stations.find((t) => t.name === dest);
     const r = WaitOrWalk.planB(planb, s.name, dest);
     let html = `<p class="warn" id="planbWarn"><b>A scheduled alternative might not be running right now.</b> Routes can be detoured, short turned or replaced by shuttle buses. Check <a href="https://www.ttc.ca/service-alerts">TTC service alerts</a> before you walk.</p>`;
-    html += ctx.covered ? `<p class="small">Departure times are from the schedule for today, after ${clock(ctx.now)} Toronto time. Walking time assumes 80 metres a minute in a straight line.</p>` : '<p class="small">The schedule data covers Nov 1 to Dec 21, 2026; today is outside it, so departure times are not shown.</p>';
+    const rg = ctx.range;
+    if (ctx.covered) html += `<p class="small" id="planbClock">Departures you can still catch from now (${clock(ctx.now)} Toronto time), allowing the walk at 80 metres a minute in a straight line plus 1 minute to board. Updated every minute. Schedule data ends on ${ymdWords(rg.to)}.</p>`;
+    else html += `<p class="warn" id="planbClock"><b>Schedule data ends on ${ymdWords(rg.to)}.</b> ${ctx.ymd > rg.to ? 'Today is after that' : `It starts on ${ymdWords(rg.from)}, and today is before that`}, so departure times are not shown. Routes and stops below are from that schedule and may have changed.</p>`;
     if (d && d.name !== s.name) {
-      if (r.direct.length) html += `<h3>Goes from ${esc(s.label)} to near ${esc(d.label)}</h3><ul class="planb">${r.direct.map((x) => routeLine(x, `<br><span class="meta">Get off at ${esc(x.alight)}</span>`, departures(x.refs))).join('')}</ul>`;
-      if (r.via.length) html += `<h3>${r.direct.length ? 'Also: ride' : 'No single scheduled route goes there. Ride'} past the delay, then take the subway</h3><ul class="planb">${r.via.map((x) => routeLine(x, `<br><span class="meta">Change to ${LINE[x.line]} at ${esc(WaitOrWalk.labelFor(model, x.transfer))}</span>`, departures(x.refs))).join('')}</ul>`;
-      if (!r.direct.length && !r.via.length) {
+      const ranked = ctx.covered ? WaitOrWalk.rankByArrival(planb, ptimes.times, r.direct.concat(r.via), ctx.today, ctx.yesterday, ctx.now, d.name) : r.direct.concat(r.via).map((x) => Object.assign({}, x, { first: null, estimate: null }));
+      if (ranked.length) {
+        html += `<h3>From ${esc(s.label)} towards ${esc(d.label)}${ctx.covered ? ', earliest scheduled arrival first' : ''}</h3>`;
+        if (ctx.covered) html += '<p class="small">Ordered by the first departure you can catch plus the scheduled ride (and the scheduled subway time onward where you change). These are schedule estimates, not live times and not a promise of the quickest way.</p>';
+        html += `<ul class="planb">${ranked.map((x) => routeLine(x, (x.transfer ? `<br><span class="meta">Ride past the delay, then change to ${LINE[x.line]} at ${esc(WaitOrWalk.labelFor(model, x.transfer))}</span>` : `<br><span class="meta">Goes to near ${esc(d.label)}: get off at ${esc(x.alight)}</span>`) + arrival(x, d.label), departures(x.refs))).join('')}</ul>`;
+      }
+      if (!ranked.length) {
         const all = WaitOrWalk.planB(planb, s.name, '');
         html += `<p>No scheduled bus, streetcar or LRT from ${esc(s.label)} reaches ${esc(d.label)}, or a station on the way. Routes near ${esc(s.label)} in every direction:</p>` + listAll(all);
       }
@@ -148,23 +165,40 @@
     else range = `${word(lo, d, good, bad)} to ${word(hi, d, good, bad)}`;
     return `${word(x.value * f, d, good, bad)} <span class="ci">(${range})</span>`;
   };
-  function methodRows(b) {
-    return Object.keys(NAMES).map((k) => { const v = b.methods[k]; return `<tr class="${k === 'waitOrWalk' ? 'ours' : ''}"><td>${NAMES[k]}</td><td>${ci(v.auc, 3)}</td><td>${ci(v.logLoss, 4)}</td><td>${ci(v.brier, 4)}</td><td>${(v.calError.value * 100).toFixed(1)} pts</td></tr>`; }).join('');
+  const pts = (x) => ({ value: x.value * 100, low: x.low * 100, high: x.high * 100 });
+  const yes = (x) => x.distinguishable ? 'yes' : '<b>no</b>';
+  function methodRows(b, names) {
+    names = names || NAMES;
+    return Object.keys(names).map((k) => { const v = b.methods[k]; return `<tr class="${k === 'waitOrWalk' ? 'ours' : ''}"><td>${names[k]}</td><td>${ci(v.auc, 3)}</td><td>${ci(v.logLoss, 4)}</td><td>${ci(v.brier, 4)}</td><td>${ci(pts(v.calError), 1)} pts</td></tr>`; }).join('');
   }
-  function diffRows(b) {
-    return ['causeOnly', 'firstModel'].map((k) => { const v = b.differences[k]; const yes = (x) => x.distinguishable ? 'yes' : '<b>no</b>'; return `<tr><td>vs ${NAMES[k].toLowerCase()}</td><td>${dci(v.auc, 3, true)}<br><span class="meta">distinguishable: ${yes(v.auc)}</span></td><td>${dci(v.logLoss, 4, false)}<br><span class="meta">distinguishable: ${yes(v.logLoss)}</span></td><td>${dci(v.brier, 4, false)}<br><span class="meta">distinguishable: ${yes(v.brier)}</span></td></tr>`; }).join('');
+  function diffRows(b, names, base) {
+    names = names || NAMES;
+    return Object.keys(b.differences).map((k) => { const v = b.differences[k]; return `<tr><td>${base || 'Wait or Walk'} vs ${names[k].toLowerCase()}</td><td>${dci(v.auc, 3, true)}<br><span class="meta">distinguishable: ${yes(v.auc)}</span></td><td>${dci(v.logLoss, 4, false)}<br><span class="meta">distinguishable: ${yes(v.logLoss)}</span></td><td>${dci(v.brier, 4, false)}<br><span class="meta">distinguishable: ${yes(v.brier)}</span></td><td>${dci(pts(v.calError), 1, false)} pts<br><span class="meta">distinguishable: ${yes(v.calError)}</span></td></tr>`; }).join('');
   }
-  const MHEAD = '<thead><tr><th scope="col">Method</th><th scope="col">AUC, higher is better (95% interval)</th><th scope="col">Log loss, lower is better</th><th scope="col">Brier score, lower is better</th><th scope="col">Calibration error</th></tr></thead>';
-  const DHEAD = '<thead><tr><th scope="col">Wait or Walk compared</th><th scope="col">AUC</th><th scope="col">Log loss</th><th scope="col">Brier score</th></tr></thead>';
+  const MHEAD = '<thead><tr><th scope="col">Method</th><th scope="col">AUC, higher is better (95% interval)</th><th scope="col">Log loss, lower is better</th><th scope="col">Brier score, lower is better</th><th scope="col">Calibration error, lower is better</th></tr></thead>';
+  const DHEAD = '<thead><tr><th scope="col">Compared</th><th scope="col">AUC</th><th scope="col">Log loss</th><th scope="col">Brier score</th><th scope="col">Calibration error</th></tr></thead>';
+  const tbl = (head, body) => `<table>${head}<tbody>${body}</tbody></table>`;
+  const mins2 = (x) => x.toFixed(2);
+  const saved = (x) => dci(x, 2, true, 'min saved', 'min lost');
   function metrics(m) {
     const ev = m.evidence;
-    $('#pooledTable').innerHTML = `<table>${MHEAD}<tbody>${methodRows(ev.pooled)}</tbody></table>`;
-    $('#pooledDiff').innerHTML = `<table>${DHEAD}<tbody>${diffRows(ev.pooled)}</tbody></table>`;
-    $('#periodTables').innerHTML = ev.periods.map((p, i) => `<h4>${span(p.test)} (${p.delays.toLocaleString('en-CA')} delays; average forecast ${pct(m.folds[i].waitOrWalk.meanPredicted)} vs ${pct(m.folds[i].actualShareLong)} actual)</h4><div class="tablewrap"><table>${MHEAD}<tbody>${methodRows(p)}</tbody></table></div><div class="tablewrap"><table>${DHEAD}<tbody>${diffRows(p)}</tbody></table></div>`).join('');
+    $('#pooledTable').innerHTML = tbl(MHEAD, methodRows(ev.pooled));
+    $('#pooledDiff').innerHTML = tbl(DHEAD, diffRows(ev.pooled));
+    $('#dayTable').innerHTML = tbl(DHEAD, diffRows(ev.dayBlock.pooled));
+    const surv = ev.survival, same = surv.filter((x) => x.byDelay === x.byDay).length;
+    $('#survNote').textContent = `${same} of ${surv.length} conclusions are the same both ways (pooled and in each period, against both baselines, on all four measures).` + (same < surv.length ? ' Changed: ' + surv.filter((x) => x.byDelay !== x.byDay).map((x) => `${span(x.scope)}, ${NAMES[x.against].toLowerCase()}, ${x.metric}`).join('; ') + '.' : '');
+    $('#bandsTable').innerHTML = ['5', '20'].map((k) => { const B = ev.bands[k]; return `<h4>${k}+ minutes (${pct(B.actualShare)} of test delays)</h4><div class="tablewrap">${tbl(MHEAD, methodRows(B.pooled))}</div><div class="tablewrap">${tbl(DHEAD, diffRows(B.pooled))}</div>`; }).join('');
+    const CN = { cellShrunk: 'With station by cause pooling', waitOrWalk: 'Wait or Walk as shipped', cellRaw: 'Station by cause, no pooling' };
+    $('#cellTable').innerHTML = `<div class="tablewrap">${tbl(MHEAD, methodRows(ev.cellShrinkage.pooled, CN))}</div><div class="tablewrap">${tbl(DHEAD, diffRows(ev.cellShrinkage.pooled, CN, 'Pooling'))}</div>`;
     const dv = ev.decisionValue;
     $('#decisionTable').innerHTML = `<table><thead><tr><th scope="col">Flag when the forecast is at least</th><th scope="col">Method</th><th scope="col">Share of 10+ minute delays flagged</th><th scope="col">False flag rate (short delays flagged)</th><th scope="col">Flagged delays that ran 10+ minutes</th></tr></thead><tbody>${dv.map((r) => `<tr class="${r.method === 'waitOrWalk' ? 'ours' : ''}"><td>${pct(r.threshold)}</td><td>${NAMES[r.method]}</td><td>${pct(r.longFlagged)}</td><td>${pct(r.falseFlagRate)}</td><td>${pct(r.flaggedThatWereLong)}</td></tr>`).join('')}</tbody></table>`;
+    const ss = ev.stationSimulation, SN = { all: 'All delays', under10: 'Under 10 minutes', atLeast20: '20 minutes or more', atLeast30: '30 minutes or more' };
+    $('#stationSimTable').innerHTML = `<table><thead><tr><th scope="col">Delays</th><th scope="col">Always wait</th><th scope="col">Always switch</th><th scope="col">Cause only rule</th><th scope="col">First model</th><th scope="col">Wait or Walk</th><th scope="col">Hindsight best</th><th scope="col">Wait or Walk against always wait (95% interval)</th><th scope="col">Wait or Walk against cause only</th></tr></thead><tbody>${['all', 'under10', 'atLeast20', 'atLeast30'].map((k) => { const r = ss.subsets[k]; return `<tr><td>${SN[k]} (${r.delays.toLocaleString('en-CA')})</td><td>${mins2(r.alwaysWait)}</td><td>${mins2(r.alwaysSwitch)}</td><td>${mins2(r.causeOnly)}</td><td>${mins2(r.firstModel)}</td><td><b>${mins2(r.waitOrWalk)}</b></td><td>${mins2(r.hindsightBest)}</td><td>${saved(r.savedVsWait_waitOrWalk)}</td><td>${saved(r.savedVs_causeOnly)}</td></tr>`; }).join('')}</tbody></table>`;
+    $('#stationSimNote').textContent = `${ss.directionsWithAlternative.toLocaleString('en-CA')} of ${ss.directions.toLocaleString('en-CA')} delay and direction pairs had a scheduled alternative leaving within 3 hours; the median switch cost was ${ss.medianSwitchCost} extra minutes.`;
     const sim = ev.simulation;
     $('#simTable').innerHTML = `<table><thead><tr><th scope="col">Assumed extra minutes to switch</th><th scope="col">Always wait</th><th scope="col">Cause only rule</th><th scope="col">Wait or Walk</th><th scope="col">Hindsight best</th><th scope="col">Wait or Walk against cause only (95% interval)</th></tr></thead><tbody>${sim.rows.map((r) => `<tr><td>${r.switchCost} min</td><td>${r.alwaysWait.toFixed(2)}</td><td>${r.causeOnly.toFixed(2)}</td><td>${r.waitOrWalk.toFixed(2)}</td><td>${r.hindsightBest.toFixed(2)}</td><td>${dci(r.waitOrWalkMinusCauseOnly, 2, false, 'min fewer', 'min more')}</td></tr>`).join('')}</tbody></table>`;
+    $('#sensTable').innerHTML = `<table><thead><tr><th scope="col">Half life</th><th scope="col">Recalibration window</th><th scope="col">AUC</th><th scope="col">Log loss</th><th scope="col">Calibration error</th></tr></thead><tbody>${ev.sensitivity.map((r) => `<tr class="${r.shipped ? 'ours' : ''}"><td>${r.halfLifeDays ? r.halfLifeDays + ' days' : 'none (equal weights)'}</td><td>${r.calibrationDays} days</td><td>${r.auc.toFixed(4)}</td><td>${r.logLoss.toFixed(4)}</td><td>${r.calError.toFixed(1)} pts${r.shipped ? ' (shipped)' : ''}</td></tr>`).join('')}</tbody></table>`;
+    $('#periodTables').innerHTML = ev.periods.map((p, i) => `<h4>${span(p.test)} (${p.delays.toLocaleString('en-CA')} delays; average forecast ${pct(m.folds[i].waitOrWalk.meanPredicted)} vs ${pct(m.folds[i].actualShareLong)} actual)</h4><div class="tablewrap">${tbl(MHEAD, methodRows(p))}</div><div class="tablewrap">${tbl(DHEAD, diffRows(p))}</div>`).join('');
     // Calibration chart: predicted vs actual for each forecast band, pooled over the three tests.
     const b = m.pooled.reliability, W = 330, H = 220, P = 44, mx = 0.65;
     const X = (v) => P + (v / mx) * (W - P - 10), Y = (v) => H - 34 - (v / mx) * (H - 44);
@@ -207,11 +241,17 @@
       }
       // On phones, show one worked example straight away so the result is visible without scrolling.
       if (!$('#alert').value && window.matchMedia('(max-width: 700px)').matches) {
-        $('#alert').value = document.querySelector('[data-alert]').dataset.alert; readAlert(); $('#example').hidden = false;
+        $('#alert').value = document.querySelector('[data-worked]').dataset.alert; readAlert(); $('#dest').value = 'Jane'; $('#example').hidden = false;
       }
       render();
     }).catch(() => { $('#loading').hidden = true; $('#loadError').hidden = false; });
   }
+  // Keep Plan B times current: re-render when the Toronto minute or the service date changes.
+  setInterval(() => {
+    if (!model || !ptimes || !ctx || $('#app').hidden) return;
+    const c = WaitOrWalk.torontoClock(new Date());
+    if (c.minutes !== ctx.now || c.ymd !== ctx.ymd) render();
+  }, 5000);
   $('#retry').addEventListener('click', load);
   load();
 })();

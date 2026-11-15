@@ -54,11 +54,47 @@ with sync_playwright() as p:
         check(warn.is_visible() and warn.bounding_box()['y'] < lst.bounding_box()['y'], f'{w}: "might not be running" warning sits above the Plan B list')
         check('LRT (light rail)' in pg.inner_text('#planbOut') and 'Line 5 Eglinton streetcar' not in pg.inner_text('#planbOut'), f'{w}: Line 5 Eglinton shown as LRT')
         check('min walk' in pg.inner_text('#planbOut'), f'{w}: Plan B shows walking time')
-        check('Version r4' in pg.inner_text('footer') and 'Not affiliated' in pg.inner_text('footer'), f'{w}: footer shows version r4 and the not affiliated line')
+        check('Version r5' in pg.inner_text('footer') and 'Not affiliated' in pg.inner_text('footer'), f'{w}: footer shows version r5 and the not affiliated line')
+        check(pg.is_visible('.estlab') and 'estimated chance' in pg.inner_text('.estlab').lower() and pg.locator('#bands span').count() == 3, f'{w}: card says Estimated chance and shows 5+, 10+ and 20+')
+        check(pg.inner_text('#reconcile').startswith('Why '), f'{w}: card explains the estimate against the raw share for the cause')
+        check(pg.is_visible('.safety') and 'follow TTC staff' in pg.inner_text('.safety'), f'{w}: safety line visible')
         check(pg.locator('#pooledTable table').count() == 1 and pg.locator('#decisionTable table').count() == 1 and pg.locator('#simTable table').count() == 1, f'{w}: results, decision value and simulation tables render')
         check(pg.evaluate('document.documentElement.scrollWidth') <= w, f'{w}: no sideways scrolling')
         check(not errs, f'{w}: no script errors {errs}')
         pg.close()
+    # Schedule clock checks with a fixed Toronto time
+    import re
+    def at(iso, w=1280):
+        q = b.new_page(viewport={'width': w, 'height': 900}); q.clock.set_fixed_time(iso); q.goto(URL); q.wait_for_selector('#app:not([hidden])')
+        q.locator('[data-worked]').click(); q.select_option('#dest', 'Jane'); q.wait_for_timeout(300); return q
+    def mins(txt):
+        out = []
+        for h, m, ap in re.findall(r'(\d{1,2}):(\d{2}) ([ap])\.m\.', txt):
+            h = int(h) % 12 + (12 if ap == 'p' else 0); out.append(h * 60 + int(m))
+        return out
+    q = at('2026-11-16T22:38:00Z')   # Monday 5:38 p.m.
+    first = q.locator('#planbOut .planb li', has_text='149 Etobicoke').first.inner_text()
+    deps = mins(first.split('Next you can catch:')[1].split('\n')[0]) if 'Next you can catch:' in first else []
+    check(deps and deps[0] == 18 * 60 + 7, f'5:38 p.m.: the 5:39 bus 149 is not offered (1 min walk + 1 min to board); first is {deps[:1]}')
+    etas = [mins(li.split('By the schedule:')[1])[-1] for li in q.locator('#planbOut .planb li').all_inner_texts() if 'By the schedule:' in li]
+    check(len(etas) >= 2 and etas == sorted(etas), f'Plan B entries ordered by estimated arrival {etas}')
+    check('By the schedule: at Jane about' in q.inner_text('#planbOut') and 'earliest scheduled arrival first' in q.inner_text('#planbOut'), 'Plan B ranked by scheduled arrival with estimates')
+    check('Schedule data ends on Dec 21, 2026' in q.inner_text('#planbClock'), 'schedule end date shown')
+    q.close()
+    for iso, label in [('2026-12-07T17:00:00Z', 'Dec 7 noon'), ('2026-12-20T17:00:00Z', 'Dec 20 noon')]:
+        q = at(iso); check('Next you can catch' in q.inner_text('#planbOut'), f'{label}: departures shown'); q.close()
+    q = at('2026-11-17T08:00:00Z')   # 3 a.m.
+    txt = q.inner_text('#planbOut')
+    check('3:00 a.m.' in q.inner_text('#planbClock') and ('Next you can catch' in txt or 'No departure you can still catch' in txt), '3 a.m.: clock and departures or a clear none message')
+    q.close()
+    q = at('2026-12-22T17:00:00Z')
+    check('Schedule data ends on Dec 21, 2026' in q.inner_text('#planbClock') and 'Today is after that' in q.inner_text('#planbClock') and 'Next you can catch' not in q.inner_text('#planbOut'), 'after Dec 21: clear schedule ended message, no times')
+    q.close()
+    q = b.new_page(viewport={'width': 1280, 'height': 900}); q.clock.install(time='2026-11-17T04:58:30Z')   # Monday 11:58:30 p.m.
+    q.goto(URL); q.wait_for_selector('#app:not([hidden])'); q.locator('[data-worked]').click(); q.wait_for_timeout(300)
+    before = q.inner_text('#planbClock'); q.clock.run_for(150000); q.wait_for_timeout(300); after = q.inner_text('#planbClock')
+    check('11:58 p.m.' in before and ('12:00 a.m.' in after or '12:01 a.m.' in after), f'Plan B refreshes each minute and across midnight ({before.split("(")[1].split(")")[0]} then {after.split("(")[1].split(")")[0]})')
+    q.close()
     pg = b.new_page(viewport={'width': 390, 'height': 844})
     pg.route('**/data/planb.json*', lambda r: r.abort())
     pg.goto(URL); pg.wait_for_selector('#loadError:not([hidden])', timeout=8000)

@@ -2,8 +2,8 @@
 
 For every bus and streetcar stop pattern (the stop sequences that run at least 5% of a
 route direction's trips), record which subway stations it passes within 300 metres, in order,
-with the boarding stop and the direction it is heading. Also records the station order of
-each subway line. Run: python3 scripts/build_planb.py [cache_dir]
+with the boarding stop, the direction it is heading and the median scheduled ride time between
+station visits. Also records the station order and scheduled running time of each subway line. Run: python3 scripts/build_planb.py [cache_dir]
 """
 import json, os, re, sys, zipfile
 from collections import defaultdict
@@ -49,14 +49,19 @@ def main():
         n = stops.at[sid, 'stop_name']
         return re.sub(r'\s+Station$', '', re.sub(r'\s+-\s+.*$', '', n)).strip()
     line_of = {1: 'YU', 2: 'BD', 4: 'SHP'}
-    lines = {}
+    lines = {}; subway_min = {}
+    sub = sub.assign(deps=sub.trip_id.map(deps))
     for rid, g in sub.groupby('route_id'):
         best = g[g.direction_id == 0].seq.value_counts().index[0]
-        order = []
-        for sid in best:
+        bt = g[g.seq == best]
+        order = []; cum = []
+        for k, sid in enumerate(best):
             n = sname(sid)
-            if not order or order[-1] != n: order.append(n)
+            if not order or order[-1] != n:
+                order.append(n)
+                cum.append(float(np.median([mins(dd[k]) - mins(dd[0]) for dd in bt.deps])))
         lines[line_of[int(rid)]] = order
+        subway_min[line_of[int(rid)]] = cum
     stations = {}
     for sid in set(s for q in sub.seq for s in q):
         stations.setdefault(sname(sid), []).append((stops.at[sid, 'stop_lat'], stops.at[sid, 'stop_lon']))
@@ -89,6 +94,8 @@ def main():
                     visits.append(v)
             if not visits: continue
             pt = g[g.seq == seq]
+            for v in visits:  # median scheduled minutes from the first station visit, for ride time estimates
+                v['ride'] = int(round(float(np.median([mins(dd[v['k']]) - mins(dd[visits[0]['k']]) for dd in pt.deps]))))
             vt = []
             for v in visits:
                 by = defaultdict(list)
@@ -106,7 +113,7 @@ def main():
             r = g.iloc[0]
             patterns.append({'route': str(r.route_short_name), 'name': str(r.route_long_name).title(), 'kind': 'LRT' if str(r.route_long_name).startswith('Line ') else ('streetcar' if r.route_type == 0 else 'bus'),
                              'night': (str(r.route_short_name).isdigit() and 300 <= int(r.route_short_name) <= 399), 'heading': headsign(hs), 'share': round(float(c / total), 2), 'visits': visits})
-    out = {'source': 'TTC Routes and Schedules (GTFS), City of Toronto Open Data, schedule files dated Oct 20, 2026', 'radiusMetres': RADIUS, 'lines': lines, 'patterns': patterns}
+    out = {'source': 'TTC Routes and Schedules (GTFS), City of Toronto Open Data, schedule files dated Oct 20, 2026', 'radiusMetres': RADIUS, 'lines': lines, 'subwayMinutes': subway_min, 'patterns': patterns}
     json.dump(out, open(OUT, 'w'), separators=(',', ':'))
     cal = pd.read_csv(gz.open('calendar.txt')); cd = pd.read_csv(gz.open('calendar_dates.txt'))
     calendar = {'weekly': [{'s': str(r.service_id), 'days': [int(getattr(r, d)) for d in ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']], 'from': str(r.start_date), 'to': str(r.end_date)} for r in cal.itertuples()],
