@@ -61,6 +61,7 @@
     $('#metrics tbody').innerHTML = rows.join('');
     const months = Object.entries(m.monthlyShareLong);
     const max = Math.max(...months.map(([, v]) => v));
+    $('#trendNote').textContent = `Tallest bar ${pct(max)}. Red: the latest three months, used to recalibrate (${months.slice(-3).map(([, v]) => pct(v)).join(', ')}).`;
     $('#trend').innerHTML = months.map(([k, v], i) => `<div class="${i >= months.length - 3 ? 'recent' : ''}" style="height:${Math.round((v / max) * 100)}%" title="${k}: ${pct(v)}">${i % 3 === 0 ? `<span>${k}</span>` : ''}</div>`).join('');
   }
 

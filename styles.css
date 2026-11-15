@@ -30,7 +30,7 @@ button:focus-visible, select:focus-visible, textarea:focus-visible, a:focus-visi
 table { width: 100%; border-collapse: collapse; font-size: .95rem; }
 th, td { text-align: left; padding: 7px; border-bottom: 1px solid var(--line); vertical-align: top; } th { background: var(--soft); color: var(--blue); }
 tr.ours td { font-weight: 700; }
-.trend { display: flex; align-items: flex-end; gap: 3px; height: 130px; border-bottom: 1px solid #999; padding-top: 18px; }
+.trend { margin-bottom: 30px; display: flex; align-items: flex-end; gap: 3px; height: 130px; border-bottom: 1px solid #999; padding-top: 18px; }
 .trend div { flex: 1; background: var(--blue); position: relative; min-width: 6px; }
 .trend div.recent { background: var(--red); }
 .trend span { position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); font-size: .7rem; color: #555; white-space: nowrap; }

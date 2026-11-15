@@ -31,6 +31,8 @@
 
   const LABELS = { night: 'overnight (before 6 a.m.)', am_peak: 'morning rush (6 to 10 a.m.)', midday: 'midday (10 a.m. to 4 p.m.)', pm_peak: 'evening rush (4 to 8 p.m.)', evening: 'evening (8 p.m. on)', YU: 'Line 1', BD: 'Line 2', SHP: 'Line 4' };
 
+  const SHORT = { night: 'overnight', am_peak: 'morning rush', midday: 'midday', pm_peak: 'evening rush', evening: 'evening' };
+
   // Plain words for the biggest pushes up and down.
   function explain(model, x) {
     const { parts } = predict(model, x);
@@ -44,7 +46,7 @@
         if (kind === 'group') what = `Cause (${model.groups[val].label.toLowerCase()})`;
         else if (kind === 'station') what = val === 'Other' ? 'Location (between stations or in a yard)' : `Station (${labelFor(model, val)})`;
         else if (kind === 'line') what = LABELS[val];
-        else if (kind === 'time') what = `Time of day (${LABELS[val]})`;
+        else if (kind === 'time') what = `Time of day (${SHORT[val]})`;
         else what = 'Weekend';
         return { text: `${what} ${q.weight > 0 ? 'raises' : 'lowers'} the odds`, up: q.weight > 0, weight: q.weight };
       });
