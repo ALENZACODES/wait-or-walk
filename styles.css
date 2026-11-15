@@ -89,3 +89,5 @@ h4 { color: var(--blue); margin: 14px 0 6px; font-size: .95rem; }
 .scope { margin: 4px 0 6px; font-size: .92rem; color: #3a3f4b; }
 .suggest { margin: 6px 0; padding: 6px 10px; border-left: 4px solid var(--blue); background: #f4f7fc; }
 .pasterow { margin: 6px 0; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.pastenote { margin: 2px 0 6px; }
+.pasterow { margin: 6px 0 2px; }

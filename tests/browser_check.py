@@ -24,7 +24,7 @@ with sync_playwright() as p:
         pg.on('pageerror', lambda e: errs.append(str(e)))
         pg.goto(URL); pg.wait_for_selector('#app:not([hidden])')
         if w < 700:
-            check(pg.is_visible('#pct') and pg.locator('#pct').bounding_box()['y'] < h, f'{w}: an example result is visible above the fold')
+            check(pg.is_visible('#pct') and pg.locator('#pct').bounding_box()['y'] + pg.locator('#pct').bounding_box()['height'] < h - 40, f'{w}: an example result is visible above the fold')
         buttons = pg.locator('[data-alert]')
         for i in range(buttons.count()):
             btn = buttons.nth(i); label = btn.inner_text()
@@ -55,7 +55,7 @@ with sync_playwright() as p:
         check('LRT (light rail)' in pg.inner_text('#planbOut') and 'Line 5 Eglinton streetcar' not in pg.inner_text('#planbOut'), f'{w}: Line 5 Eglinton shown as LRT')
         check('min walk' in pg.inner_text('#planbOut'), f'{w}: Plan B shows walking time')
         check('Version r7' in pg.inner_text('footer') and 'Not affiliated' in pg.inner_text('footer'), f'{w}: footer shows version r7 and the not affiliated line')
-        check(pg.is_visible('#pasteBtn') and 'cannot be read by this page' in pg.inner_text('section[aria-labelledby="in-h"]'), f'{w}: paste button and the note about live feeds')
+        check(pg.is_visible('#pasteBtn') and 'cannot be read by this page' in pg.inner_text('.pastenote'), f'{w}: paste button and the note about live feeds')
         check(pg.is_visible('#scope') and pg.inner_text('#scope') == 'This predicts a logged service delay category, not how many minutes you personally have left to wait.', f'{w}: card says what the number predicts')
         check(pg.is_visible('.estlab') and 'estimated chance' in pg.inner_text('.estlab').lower() and pg.locator('#bands span').count() == 3, f'{w}: card says Estimated chance and shows 5+, 10+ and 20+')
         check(pg.inner_text('#reconcile').startswith('Why '), f'{w}: card explains the estimate against the raw share for the cause')
