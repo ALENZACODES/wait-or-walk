@@ -15,7 +15,8 @@ ROOT = os.path.join(os.path.dirname(__file__), '..')
 CACHE = sys.argv[1] if len(sys.argv) > 1 else '/tmp/ttc'
 sig = lambda z: 1 / (1 + np.exp(-z)); logit = lambda p: np.log(np.clip(p, 1e-9, 1 - 1e-9) / (1 - np.clip(p, 1e-9, 1 - 1e-9)))
 
-def main():
+def score():
+    """Download the newest delay file and score the frozen model on delays after its training data. Returns a dict."""
     model = json.load(open(os.path.join(ROOT, 'data', 'model.json')))
     os.makedirs(CACHE, exist_ok=True)
     path = os.path.join(CACHE, 'since2025_latest.csv')
@@ -51,6 +52,10 @@ def main():
         out['byDay'] = T0.block(part, T0.METHODS, 'waitOrWalk', ['causeOnly', 'firstModel'], 'day', rng)
     else:
         out['note'] = 'No delays after the training data yet, so there is no fresh frozen test. Run this again when the City publishes newer delays.'
+    return out
+
+def main():
+    out = score(); today = out['checked']
     os.makedirs(os.path.join(ROOT, 'docs'), exist_ok=True)
     json.dump(out, open(os.path.join(ROOT, 'docs', f'frozen-test-{today}.json'), 'w'), indent=1)
     print(json.dumps(out, indent=1)[:3000])

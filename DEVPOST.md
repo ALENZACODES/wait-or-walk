@@ -5,8 +5,11 @@ Alert pasted on a weekday at 5:30 p.m., heading to Jane: *"Line 2 Bloor-Danforth
 - **Drift correction:** 29% before recalibration, 23% after.
 - **Why 23% and not 48%:** 48% is every logged delay with this cause since January 2025 (270 of 563). The estimate adjusts that for the station, the line, the time of day and the drop in long delays in 2026 (in the latest 91 days, 41% of 80 delays with this cause ran 10 minutes or more). The cause raises the odds; Kipling and the evening rush lower them.
 - **Plan B, earliest scheduled arrival first (may not be running right now):** 149 Etobicoke-Bloor from Kipling Station (10 m, about a 1 minute walk, accessible boarding listed): next you can catch 5:39, 6:07 and 6:35 p.m.; by the schedule at Jane about 5:57 p.m. Then 40 Junction-Dundas West (100 m): next you can catch 5:53 p.m.; at Islington about 5:58, then Line 2 to Jane about 6:04 p.m. if the subway runs normally there.
-- **Wait or switch: wait.** Incidents like this delay service about 8 minutes on average, by this estimate; by the schedule the best Plan B gets you to Jane about 19 minutes later than an on time subway, which is more. This uses the expected cost rule described under Honest results.
+- **Schedule comparison: waiting looks better.** By this estimate, delays like this average about 8 minutes, against 19 extra minutes by Plan B (route 149 Etobicoke-Bloor to Jane, from the schedule). This is not your remaining wait; if the delay is already underway, follow current TTC announcements.
+- **How 23% becomes about 8 minutes:** a 60% chance of under 5 minutes (about 3 on average), 17% of 5 to 10 (about 6), 13% of 10 to 20 (about 13) and 10% of 20 or more (about 34).
 - **Safety first:** always follow TTC staff and announcements. This is a planning aid for riders on a platform, not for decisions about leaving a train or evacuating.
+
+**The contrasting case, where switching looks better.** Same weekday, 5:30 p.m., heading to Dupont: *"Line 1: Trains are bypassing St. George while we investigate a fire."* Estimated chance 66% (96% for 5+, 46% for 20+, flagged as rough because only 94 logged delays have this cause). By this estimate delays like this average about 20 minutes. Plan B: 26 Dupont from St George Station (70 m, about a 1 minute walk), next you can catch 5:35 p.m., at Dupont about 5:41 p.m. by the schedule, 9 extra minutes. The card says switching looks better, and only if you can catch that bus. Both cases are buttons on the page and browser tests check both outcomes at that time.
 
 ## Overview
 Wait or Walk answers the question every Toronto subway rider asks when the train stops: will this be two minutes or twenty? Paste the TTC alert and it gives the estimated chance of a 5, 10 or 20 minute delay, the reasons behind it, and scheduled buses, streetcars and LRT within 300 metres that head where you are going, ordered by the arrival the schedule allows, counting only departures you can still catch, and says whether waiting or switching looks better by the schedule.
@@ -15,7 +18,7 @@ Wait or Walk answers the question every Toronto subway rider asks when the train
 TTC alerts say what happened, not how long it will take. Riders guess, and guessing wrong costs real time: people wait twenty minutes for a fire investigation to clear, or leave a platform for a passenger alarm that would have cleared in three. City of Toronto Open Data publishes a TTC subway delay log starting January 1, 2025, with each incident's cause, station and minutes of delay; the copy used here has 47,915 records up to September 30, 2026. Wait or Walk turns those records into a risk estimate you can use on the platform, for daily commuters, students, shift workers and visitors who do not know the surface routes.
 
 ## How it works
-- **Reading the alert:** you paste or type the alert yourself; the page does not fetch live alerts. It is read by hand written rules, not a trained model. Regular expressions find line names ("Line 2", "Bloor-Danforth"), keyword patterns find 14 causes in a fixed order with the most specific first ("person at track level" before "track"), and a search finds the 71 station names plus a few older names, such as Dundas for TMU. Values read are tagged "from alert, please check".
+- **Reading the alert:** you paste the whole alert (there is a paste button and a link to TTC service alerts). The TTC's live alert feeds (the alerts JSON behind its website and the GTFS realtime alerts) do not send the header that lets another website read them, so a static page cannot fetch them; this was checked on Nov 15, 2026. It is read by hand written rules, not a trained model. Regular expressions find line names ("Line 2", "Bloor-Danforth"), keyword patterns find 14 causes in a fixed order with the most specific first ("person at track level" before "track"), and a search finds the 71 station names plus a few older names, such as Dundas for TMU. Values read are tagged "from alert, please check".
 - **No number until it is clear:** two stations named, a two line station without a line, or a station that is not on the chosen line (Union on Line 2) all give no number until you choose. Clearing the alert clears what it filled in. Automated tests cover each case.
 - **Three calibrated models:** logistic regressions for 5+, 10+ and 20+ minutes on cause (the TTC's 124 delay codes grouped into the 15 causes alerts use), station, line, time of day and weekend, trained in Python with scikit-learn and run in the browser, so nothing you type is sent anywhere. The three are kept in order; before that step they crossed for under 1% of test delays. A parity test checks the browser against Python on 30 inputs for all three.
 - **Drift:** long delays became rarer in 2026 (about 19% of delays in early 2025, about 12% by summer 2026). Newer delays count more (180 day half life), and each output is recalibrated with Platt scaling on the latest 91 days; the base model never sees those days, and that exact pair ships with no refit. The call card shows the forecast before and after.
@@ -24,9 +27,11 @@ TTC alerts say what happened, not how long it will take. Riders guess, and guess
 
 ## Honest results
 **In three lines:**
-1. **Ranking:** clearly better than the cause alone (AUC 0.751 against 0.727) and level with the first model (0.751 against 0.753, not distinguishable).
-2. **Calibration:** closer than the first model (1.8 against 2.4 points, distinguishable), but forecasts still run a few points high.
-3. **Decisions:** in a simulation with schedule based switch costs, the wait or switch rule now shipped (switch when the expected delay is at least the scheduled switch cost) is 0.16 minutes per delay ahead of always waiting (0.11 to 0.20) and 0.50 ahead of the old 35% rule (0.41 to 0.60). These intervals hold only under the simulation's assumptions. It has not been tested with riders.
+1. **Ranking:** better than the cause alone (AUC 0.751 against 0.727) and level with the first model (0.751 against 0.753, not distinguishable).
+2. **Calibration:** better calibrated than the first model (1.8 against 2.4 points, distinguishable), though forecasts still run a few points high.
+3. **Decisions:** on delays of 20 minutes or more, the schedule comparison saves about 3 minutes per delay in simulation (3.08, 2.23 to 4.04). Averaged over all delays the gain is small (0.16 minutes, 0.11 to 0.20), exploratory, and gone if buses run 5 minutes late or a departure is missed. It has not been tested with riders.
+
+The shipped model itself is never scored; every number below comes from per period models built the same way.
 
 **Which data each test period's model saw.** No test period is scored with a calibration fit on that period. Each has its own base model and its own Platt scaling, fit on the 91 days before the period starts:
 
@@ -51,7 +56,28 @@ The shipped model is not used for any score here, and the calibration chart on t
 | 20+ minutes (309) | 34.02 | 32.42 | 32.34 | 32.89 | 30.94 | 3.08 saved (2.23 to 4.04) | 1.40 saved (0.61 to 2.26) |
 | 30+ minutes (139) | 46.64 | 43.63 | 43.48 | 44.47 | 41.83 | 4.81 saved (3.17 to 6.74) | 1.65 saved (0.03 lost to 3.45 saved) |
 
-The expected cost rule was clearly better than the old rule, the cause only rule (0.31 minutes saved, 0.24 to 0.38) and always waiting, so it ships, with its margin (0 minutes) picked the same way on the shipped model's own recalibration window; the 20+ chance rule was not, so it does not. It wins by switching less on short delays and more on long ones. These are simulated minutes: the intervals hold only under the simulation's assumptions (Tue Nov 17, Sat Nov 21 and Sun Nov 22, 2026 schedule days applied to earlier delays, logged delay minutes as the cost of waiting, alternatives that run as scheduled). On the page the switch cost uses your destination when it is on the same line; in the simulation it is the first station past the delay, averaged over both directions.
+On these periods the expected cost rule was clearly better than the old rule, the cause only rule (0.31 minutes saved, 0.24 to 0.38) and always waiting, so it ships, with its margin (0 minutes) picked the same way on the shipped model's own recalibration window; the 20+ chance rule was not, so it does not. It wins by switching less on short delays and more on long ones. These are simulated minutes: the intervals hold only under the simulation's assumptions (Tue Nov 17, Sat Nov 21 and Sun Nov 22, 2026 schedule days applied to earlier delays, logged delay minutes as the cost of waiting, alternatives that run as scheduled). On the page the switch cost uses your destination when it is on the same line; in the simulation it is the first station past the delay, averaged over both directions.
+
+**Exploratory, not confirmed.** The expected cost rule was chosen over the 20+ chance rule after both were compared on these same evaluation periods, so its advantage is exploratory: the intervals above do not account for that choice, and it has not been confirmed on an untouched period (none exists yet; see the forecast log below). Within the rule, the margin picked on each earlier window varied: 0.5 minutes below, 1 minute above and 0.5 minutes above; the shipped margin is 0.
+
+**Stress test: when the switch costs more than the schedule says.** The rider still decides from the schedule, but the switch really costs more. Minutes saved per delay against always waiting (95% intervals, whole days resampled):
+
+| What really happens | All delays | 20+ minute delays |
+|---|---|---|
+| As scheduled (1.3 m/s walk, 1 minute to board) | 0.16 saved (0.11 to 0.20) | 3.08 saved (2.23 to 4.04) |
+| Bus 5 minutes late | 0.14 lost (0.09 to 0.19) | 2.53 saved (1.79 to 3.36) |
+| Bus 10 minutes late | 0.44 lost (0.38 to 0.49) | 1.98 saved (1.34 to 2.69) |
+| First catchable departure missed | 1.36 lost (1.24 to 1.48) | 0.22 lost (0.82 lost to 0.36 saved) |
+| Walking at 1.0 m/s | 0.02 lost (0.08 lost to 0.04 saved) | 2.78 saved (1.92 to 3.68) |
+| 2 minutes to board | 0.31 lost (0.23 to 0.40) | 2.72 saved (1.87 to 3.61) |
+| 3 minutes to board | 0.65 lost (0.56 to 0.76) | 2.17 saved (1.43 to 2.93) |
+| All of these at once | 2.54 lost (2.33 to 2.77) | 2.15 lost (1.24 to 3.31) |
+
+Read honestly: across all delays the small gain does not survive late buses, a missed departure or longer boarding. On delays of 20 minutes or more it holds up, except with a missed departure or everything at once. That is why the card says to switch only if you can catch that bus.
+
+**Drift in the expected delay.** The averages in each range come from the base training data, and long delays became rarer in 2026. They barely moved: for 20+ minutes, 33.9 minutes in the base data against 32.0, 35.2 and 34.0 in the windows just before each period. Using those recent averages instead (with the margin picked again on the same earlier window) changed the simulated minutes by 0.01 per delay, not distinguishable, so the shipped averages are kept. The expected delay does run high in the later periods (6.4 against 5.95 logged minutes on average in Jul to Sep, 7.1 against 6.4 in Apr to Jun) because the forecasts themselves run high, not because of the averages.
+
+**Forecast log, a plan.** `docs/forecast-log.md` gets one dated line each time the City publishes newer delays: the frozen shipped model scored, never refit, on delays after September 30, 2026, against both baselines (`scripts/forecast_log.py`). Today it has one line: no new delays yet, so no score.
 
 **The forecast in detail.** Everything below is on the three out of time evaluation periods (7,455 delays), each run with the exact process that ships, with 95% bootstrap intervals (2,000 resamples).
 
@@ -97,7 +123,7 @@ The expected cost rule was clearly better than the old rule, the cause only rule
 | 35% | First model | 29% | 7% | 43% |
 
 ## Responsible use
-No accounts and no tracking. Not affiliated with or endorsed by the Toronto Transit Commission. Always follow TTC staff and announcements; it is not for decisions about leaving a train or evacuating. The forecast is labelled as an estimate, rare causes and stations are flagged, every value read from an alert can be checked and changed, and Plan B is labelled as scheduled alternatives that might not be running. The alert is entered by hand. Blue Night routes are listed only overnight. It has not been tested with riders.
+No accounts and no tracking. Not affiliated with or endorsed by the Toronto Transit Commission. Always follow TTC staff and announcements; it is not for decisions about leaving a train or evacuating. The forecast is labelled as an estimate, rare causes and stations are flagged, every value read from an alert can be checked and changed, and Plan B is labelled as scheduled alternatives that might not be running. The alert is pasted, not fetched live, and planned work or slow zones are flagged as not incidents. Blue Night routes are listed only overnight. It has not been tested with riders.
 
 ## Challenges I ran into
 The drift was the big one: a model that looked fine on 2025 data was wrong on 2026, and my first fix used a calibration process that did not match the shipped model, which I caught and redid. Matching station names was the other: the delay log writes "BLOOR STATION", "YONGE BD STATION" and old names like "DUNDAS", while the schedule uses "Bloor Station", "Yonge Station" and "TMU Station". And the simulation first let crosstown buses "beat" the subway by jumping across the U of Line 1; limiting it to stations a few stops along fixed that.

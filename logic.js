@@ -155,6 +155,7 @@
       out.choice = { text, options };
     }
     if (out.line && out.station) { const s = st(out.station); if (s && !s.lines.includes(out.line)) out.flags.push({ field: 'station', text: `${s.label} is not on ${LABELS[out.line]}. Check the station.` }); }
+    if (/planned|slower than usual|while we (work|perform)|track work|maintenance/.test(t)) { out.planned = true; out.flags.push({ field: 'group', text: 'This looks like planned work or a slow zone, not an unplanned incident. The estimate comes from logged incidents, so treat it with care and check the TTC notice.' }); }
     for (const k of ['line', 'station', 'group']) if (out[k]) out.found.push(k);
     return out;
   }

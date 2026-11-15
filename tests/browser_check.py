@@ -11,7 +11,7 @@ from playwright.sync_api import sync_playwright
 
 URL = sys.argv[1] if len(sys.argv) > 1 else 'http://localhost:8080/'
 EXPECT = {'Passenger alarm at Union': ('Union', 'low'), 'Person at track level, Kipling': ('Kipling', 'moderate'),
-          'Fire investigation, St George': ('St George', 'high')}
+          'Fire investigation, St George': ('St George', 'high'), 'Fire at St George, headed to Dupont': ('St George', 'high')}
 fails = []
 def check(cond, msg):
     print(('ok   ' if cond else 'FAIL ') + msg)
@@ -54,7 +54,8 @@ with sync_playwright() as p:
         check(warn.is_visible() and warn.bounding_box()['y'] < lst.bounding_box()['y'], f'{w}: "might not be running" warning sits above the Plan B list')
         check('LRT (light rail)' in pg.inner_text('#planbOut') and 'Line 5 Eglinton streetcar' not in pg.inner_text('#planbOut'), f'{w}: Line 5 Eglinton shown as LRT')
         check('min walk' in pg.inner_text('#planbOut'), f'{w}: Plan B shows walking time')
-        check('Version r6' in pg.inner_text('footer') and 'Not affiliated' in pg.inner_text('footer'), f'{w}: footer shows version r6 and the not affiliated line')
+        check('Version r7' in pg.inner_text('footer') and 'Not affiliated' in pg.inner_text('footer'), f'{w}: footer shows version r7 and the not affiliated line')
+        check(pg.is_visible('#pasteBtn') and 'cannot be read by this page' in pg.inner_text('section[aria-labelledby="in-h"]'), f'{w}: paste button and the note about live feeds')
         check(pg.is_visible('#scope') and pg.inner_text('#scope') == 'This predicts a logged service delay category, not how many minutes you personally have left to wait.', f'{w}: card says what the number predicts')
         check(pg.is_visible('.estlab') and 'estimated chance' in pg.inner_text('.estlab').lower() and pg.locator('#bands span').count() == 3, f'{w}: card says Estimated chance and shows 5+, 10+ and 20+')
         check(pg.inner_text('#reconcile').startswith('Why '), f'{w}: card explains the estimate against the raw share for the cause')
@@ -82,8 +83,13 @@ with sync_playwright() as p:
     check('By the schedule: at Jane about' in q.inner_text('#planbOut') and 'earliest scheduled arrival first' in q.inner_text('#planbOut'), 'Plan B ranked by scheduled arrival with estimates')
     check('Schedule data ends on Dec 21, 2026' in q.inner_text('#planbClock'), 'schedule end date shown')
     check('Blue Night' not in q.inner_text('#planbOut'), '5:38 p.m.: no Blue Night line in the daytime')
-    check(q.inner_text('#suggest').startswith('Wait or switch: wait.') and 'later than an on time subway' in q.inner_text('#suggest'), f'5:38 p.m. Kipling to Jane: wait or switch line compares the best scheduled switch ({q.inner_text("#suggest")[:60]})')
+    check(q.inner_text('#mix').startswith('How 23% becomes about 8 minutes') and 'not your remaining wait' in q.inner_text('#suggest'), '5:38 p.m.: the 23% is tied to the 8 minute average, and the comparison says it is not your remaining wait')
+    check(q.inner_text('#suggest').startswith('Schedule comparison: waiting looks better') and 'extra minutes by Plan B' in q.inner_text('#suggest'), f'5:38 p.m. Kipling to Jane: wait or switch line compares the best scheduled switch ({q.inner_text("#suggest")[:60]})')
     check(q.locator('#foldTable tr').count() == 5 and q.locator('#policyTable tr').count() == 5 and q.locator('#firstTwoTable table').count() == 2, 'data seen table, decision rule table and Jan to Jun table render')
+    q.close()
+    q = at('2026-11-16T22:30:00Z')   # Monday 5:30 p.m., the contrasting worked example
+    q.locator('[data-contrast]').click(); q.wait_for_timeout(400)
+    check(q.input_value('#dest') == 'Dupont' and q.inner_text('#suggest').startswith('Schedule comparison: switching looks better') and '26 Dupont' in q.inner_text('#suggest'), f'contrast example: St George fire, headed to Dupont, switching looks better ({q.inner_text("#suggest")[:90]})')
     q.close()
     for iso, label in [('2026-12-07T17:00:00Z', 'Dec 7 noon'), ('2026-12-20T17:00:00Z', 'Dec 20 noon')]:
         q = at(iso); check('Next you can catch' in q.inner_text('#planbOut'), f'{label}: departures shown'); q.close()

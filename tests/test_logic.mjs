@@ -91,7 +91,7 @@ assert.deepEqual([s5.station, s5.line, s5.group], ['', '', 'signals']);
 // Every example button alert gives a number without a choice, except the one meant to show the choice
 const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 const examples = [...html.matchAll(/data-alert="([^"]+)"/g)].map((m) => m[1]);
-assert.equal(examples.length, 4);
+assert.equal(examples.length, 5);
 for (const a of examples) {
   const st = W.applyAlert(empty, W.readAlert(a, model));
   assert.equal(W.canForecast(st), !/Bloor-Yonge due/.test(a), a);
@@ -216,5 +216,26 @@ assert.equal(W.switchCall(8.2, 19, 0).switch, false); assert.equal(W.switchCall(
 assert.equal(W.switchCall(null, 5, 0), null); assert.equal(W.switchCall(5, null, 0), null);
 // Blue Night routes only overnight (midnight to 6 a.m., the model's night band)
 assert.ok(W.isOvernight(0) && W.isOvernight(180) && W.isOvernight(359) && !W.isOvernight(360) && !W.isOvernight(1050) && !W.isOvernight(1439));
+
+// Real TTC alerts as published on the TTC live alerts page on Nov 15, 2026 (copied by hand): pasted text fills line, cause and the station choice
+const REAL = [
+  ['Line 2 Bloor-Danforth: There is no subway service between Victoria Park and Kennedy stations due to planned track work. Shuttle buses are running.', 'BD', 'track', ['Victoria Park', 'Kennedy']],
+  ['Line 1 Yonge-University: Subway trains will move slower than usual northbound from Museum to St George stations while we work on track issues Thank you for your patience.', 'YU', 'track', ['Museum', 'St George']],
+  ['Line 2 Bloor-Danforth: Subway trains will move slower than usual westbound from Warden to Victoria Park stations while we work on switch issues.', 'BD', 'track', ['Warden', 'Victoria Park']],
+];
+for (const [t, line, group, sts] of REAL) {
+  const r = W.readAlert(t, model);
+  assert.equal(r.line, line); assert.equal(r.group, group); assert.equal(r.station, null);
+  assert.deepEqual(r.choice.options.map((o) => o.station), sts);
+  assert.ok(r.planned && r.flags.some((f) => /planned work or a slow zone/.test(f.text)), 'planned work is flagged');
+}
+assert.ok(!W.readAlert('Line 2 Bloor-Danforth: Delays at Kipling due to a person at track level.', model).planned);
+
+// Decision checks: the stress test's as scheduled case reproduces the evaluation, and the drift check is present
+const dc = load('decision_checks.json');
+assert.equal(dc.stress.subsets.all.asScheduled.savedVsWait.value, ev.decisionPolicy.subsets.all.expectedCost_savedVsWait.value);
+assert.equal(dc.stress.subsets.atLeast20.asScheduled.savedVsWait.value, ev.decisionPolicy.subsets.atLeast20.expectedCost_savedVsWait.value);
+assert.equal(dc.drift.periods.length, 3);
+for (const k of ['busLate5', 'busLate10', 'missedDeparture', 'walk60', 'board2', 'board3', 'allBad']) assert.ok(k in dc.stress.subsets.all);
 
 console.log('Wait or Walk tests passed.');

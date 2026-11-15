@@ -13,12 +13,15 @@ Alert pasted on a weekday at 5:30 p.m., heading to Jane: *"Line 2 Bloor-Danforth
 - **Drift correction:** 29% before recalibration, 23% after.
 - **Why 23% and not 48%:** 48% is every logged delay with this cause since January 2025 (270 of 563). The estimate adjusts that for the station, the line, the time of day and the drop in long delays in 2026 (in the latest 91 days, 41% of 80 delays with this cause ran 10 minutes or more). The cause raises the odds; Kipling and the evening rush lower them.
 - **Plan B, earliest scheduled arrival first (may not be running right now):** 149 Etobicoke-Bloor from Kipling Station (10 m, about a 1 minute walk, accessible boarding listed): next you can catch 5:39, 6:07 and 6:35 p.m.; by the schedule at Jane about 5:57 p.m. Then 40 Junction-Dundas West (100 m): next you can catch 5:53 p.m.; at Islington about 5:58, then Line 2 to Jane about 6:04 p.m. if the subway runs normally there.
-- **Wait or switch: wait.** Incidents like this delay service about 8 minutes on average, by this estimate; by the schedule the best Plan B gets you to Jane about 19 minutes later than an on time subway, which is more. This uses the expected cost rule described under Honest results.
+- **Schedule comparison: waiting looks better.** By this estimate, delays like this average about 8 minutes, against 19 extra minutes by Plan B (route 149 Etobicoke-Bloor to Jane, from the schedule). This is not your remaining wait; if the delay is already underway, follow current TTC announcements.
+- **How 23% becomes about 8 minutes:** a 60% chance of under 5 minutes (about 3 on average), 17% of 5 to 10 (about 6), 13% of 10 to 20 (about 13) and 10% of 20 or more (about 34).
 - **Safety first:** always follow TTC staff and announcements. This is a planning aid for riders on a platform, not for decisions about leaving a train or evacuating.
+
+**The contrasting case, where switching looks better.** Same weekday, 5:30 p.m., heading to Dupont: *"Line 1: Trains are bypassing St. George while we investigate a fire."* Estimated chance 66% (96% for 5+, 46% for 20+, flagged as rough because only 94 logged delays have this cause). By this estimate delays like this average about 20 minutes. Plan B: 26 Dupont from St George Station (70 m, about a 1 minute walk), next you can catch 5:35 p.m., at Dupont about 5:41 p.m. by the schedule, 9 extra minutes. The card says switching looks better, and only if you can catch that bus. Both cases are buttons on the page and browser tests check both outcomes at that time.
 
 ## How it works
 
-1. **Read the alert.** You paste or type the alert yourself; the page does not fetch live alerts. `logic.js` reads it with hand written rules, not a trained model: regular expressions for line names, keyword patterns for 14 causes checked in a fixed order with the most specific first ("person at track level" before "track"), and a search for the 71 station names plus a few older names such as Dundas for TMU. It pulls the line, the station and the cause out of the alert text (for example "Line 2: Delays at Kipling due to a person at track level"). Anything it reads is tagged "from alert, please check", and anything it cannot find is left empty, never carried over from before. If the alert is ambiguous, no number is shown until you choose: an alert that names more than one station asks which one, and Bloor-Yonge (or St George, Spadina or Sheppard-Yonge) without a line asks which line. A station that is not on the chosen line (Union on Line 2) also gives no number. Clearing the alert clears everything it filled in, and the number with it.
+1. **Read the alert.** You paste the whole alert (there is a paste button and a link to TTC service alerts). The TTC's live alert feeds (the alerts JSON behind its website and the GTFS realtime alerts) do not send the header that lets another website read them, so a static page cannot fetch them; this was checked on Nov 15, 2026. `logic.js` reads it with hand written rules, not a trained model: regular expressions for line names, keyword patterns for 14 causes checked in a fixed order with the most specific first ("person at track level" before "track"), and a search for the 71 station names plus a few older names such as Dundas for TMU. It pulls the line, the station and the cause out of the alert text (for example "Line 2: Delays at Kipling due to a person at track level"). Anything it reads is tagged "from alert, please check", and anything it cannot find is left empty, never carried over from before. If the alert is ambiguous, no number is shown until you choose: an alert that names more than one station asks which one, and Bloor-Yonge (or St George, Spadina or Sheppard-Yonge) without a line asks which line. A station that is not on the chosen line (Union on Line 2) also gives no number. Clearing the alert clears everything it filled in, and the number with it.
 2. **Score it.** Three logistic regressions (5+, 10+ and 20+ minutes), trained in Python with scikit-learn and run in the browser, score five things an alert tells you: cause, station, line, time of day and weekend. The three are kept in order (5+ at least the 10+ chance, 20+ at most).
 3. **Explain it.** Right under the risk band, the call card shows the drift correction (the forecast before and after recalibration). Below that: the number of logged delays behind the cause (with a warning under 100) and the factors that pushed the chance up or down most.
 4. **Plan B: scheduled alternatives.** Never claimed as the quickest way; right above the list the page warns that a scheduled alternative might not be running now. From the TTC schedule (GTFS files dated Oct 20, 2026, covering Nov 1 to Dec 21, 2026; still the newest published on Nov 15, 2026), every regular stop pattern (5% or more of a route direction's trips) of every bus, streetcar and LRT route, with the subway stations it passes within 300 metres in order and the median scheduled ride time between them. Line 5 Eglinton and Line 6 Finch West are listed as LRT. Each stop shows its distance and walking time (80 metres a minute, straight line) and the schedule's accessible boarding flag (`wheelchair_boarding`). Only departures you can still catch are shown: at or after now plus the walk plus 1 minute to board, using today's service calendar and exceptions (and the previous day's trips that run past midnight). With a destination, entries are ordered by that departure plus the scheduled ride, plus the scheduled subway time onward where you change. Times refresh every minute and follow the service date past midnight; outside the schedule's dates the page says "Schedule data ends on Dec 21, 2026" and shows no times. Blue Night routes (300 to 399) are listed separately.
@@ -39,9 +42,11 @@ The risk bands are a plain language summary: under 15% low, 15% to 35% moderate,
 
 ## Honest results
 **In three lines:**
-1. **Ranking:** clearly better than the cause alone (AUC 0.751 against 0.727) and level with the first model (0.751 against 0.753, not distinguishable).
-2. **Calibration:** closer than the first model (1.8 against 2.4 points, distinguishable), but forecasts still run a few points high.
-3. **Decisions:** in a simulation with schedule based switch costs, the wait or switch rule now shipped (switch when the expected delay is at least the scheduled switch cost) is 0.16 minutes per delay ahead of always waiting (0.11 to 0.20) and 0.50 ahead of the old 35% rule (0.41 to 0.60). These intervals hold only under the simulation's assumptions. It has not been tested with riders.
+1. **Ranking:** better than the cause alone (AUC 0.751 against 0.727) and level with the first model (0.751 against 0.753, not distinguishable).
+2. **Calibration:** better calibrated than the first model (1.8 against 2.4 points, distinguishable), though forecasts still run a few points high.
+3. **Decisions:** on delays of 20 minutes or more, the schedule comparison saves about 3 minutes per delay in simulation (3.08, 2.23 to 4.04). Averaged over all delays the gain is small (0.16 minutes, 0.11 to 0.20), exploratory, and gone if buses run 5 minutes late or a departure is missed. It has not been tested with riders.
+
+The shipped model itself is never scored; every number below comes from per period models built the same way.
 
 **Which data each test period's model saw.** No test period is scored with a calibration fit on that period. Each has its own base model and its own Platt scaling, fit on the 91 days before the period starts:
 
@@ -66,7 +71,28 @@ The shipped model is not used for any score here, and the calibration chart on t
 | 20+ minutes (309) | 34.02 | 32.42 | 32.34 | 32.89 | 30.94 | 3.08 saved (2.23 to 4.04) | 1.40 saved (0.61 to 2.26) |
 | 30+ minutes (139) | 46.64 | 43.63 | 43.48 | 44.47 | 41.83 | 4.81 saved (3.17 to 6.74) | 1.65 saved (0.03 lost to 3.45 saved) |
 
-The expected cost rule was clearly better than the old rule, the cause only rule (0.31 minutes saved, 0.24 to 0.38) and always waiting, so it ships, with its margin (0 minutes) picked the same way on the shipped model's own recalibration window; the 20+ chance rule was not, so it does not. It wins by switching less on short delays and more on long ones. These are simulated minutes: the intervals hold only under the simulation's assumptions (Tue Nov 17, Sat Nov 21 and Sun Nov 22, 2026 schedule days applied to earlier delays, logged delay minutes as the cost of waiting, alternatives that run as scheduled). On the page the switch cost uses your destination when it is on the same line; in the simulation it is the first station past the delay, averaged over both directions.
+On these periods the expected cost rule was clearly better than the old rule, the cause only rule (0.31 minutes saved, 0.24 to 0.38) and always waiting, so it ships, with its margin (0 minutes) picked the same way on the shipped model's own recalibration window; the 20+ chance rule was not, so it does not. It wins by switching less on short delays and more on long ones. These are simulated minutes: the intervals hold only under the simulation's assumptions (Tue Nov 17, Sat Nov 21 and Sun Nov 22, 2026 schedule days applied to earlier delays, logged delay minutes as the cost of waiting, alternatives that run as scheduled). On the page the switch cost uses your destination when it is on the same line; in the simulation it is the first station past the delay, averaged over both directions.
+
+**Exploratory, not confirmed.** The expected cost rule was chosen over the 20+ chance rule after both were compared on these same evaluation periods, so its advantage is exploratory: the intervals above do not account for that choice, and it has not been confirmed on an untouched period (none exists yet; see the forecast log below). Within the rule, the margin picked on each earlier window varied: 0.5 minutes below, 1 minute above and 0.5 minutes above; the shipped margin is 0.
+
+**Stress test: when the switch costs more than the schedule says.** The rider still decides from the schedule, but the switch really costs more. Minutes saved per delay against always waiting (95% intervals, whole days resampled):
+
+| What really happens | All delays | 20+ minute delays |
+|---|---|---|
+| As scheduled (1.3 m/s walk, 1 minute to board) | 0.16 saved (0.11 to 0.20) | 3.08 saved (2.23 to 4.04) |
+| Bus 5 minutes late | 0.14 lost (0.09 to 0.19) | 2.53 saved (1.79 to 3.36) |
+| Bus 10 minutes late | 0.44 lost (0.38 to 0.49) | 1.98 saved (1.34 to 2.69) |
+| First catchable departure missed | 1.36 lost (1.24 to 1.48) | 0.22 lost (0.82 lost to 0.36 saved) |
+| Walking at 1.0 m/s | 0.02 lost (0.08 lost to 0.04 saved) | 2.78 saved (1.92 to 3.68) |
+| 2 minutes to board | 0.31 lost (0.23 to 0.40) | 2.72 saved (1.87 to 3.61) |
+| 3 minutes to board | 0.65 lost (0.56 to 0.76) | 2.17 saved (1.43 to 2.93) |
+| All of these at once | 2.54 lost (2.33 to 2.77) | 2.15 lost (1.24 to 3.31) |
+
+Read honestly: across all delays the small gain does not survive late buses, a missed departure or longer boarding. On delays of 20 minutes or more it holds up, except with a missed departure or everything at once. That is why the card says to switch only if you can catch that bus.
+
+**Drift in the expected delay.** The averages in each range come from the base training data, and long delays became rarer in 2026. They barely moved: for 20+ minutes, 33.9 minutes in the base data against 32.0, 35.2 and 34.0 in the windows just before each period. Using those recent averages instead (with the margin picked again on the same earlier window) changed the simulated minutes by 0.01 per delay, not distinguishable, so the shipped averages are kept. The expected delay does run high in the later periods (6.4 against 5.95 logged minutes on average in Jul to Sep, 7.1 against 6.4 in Apr to Jun) because the forecasts themselves run high, not because of the averages.
+
+**Forecast log, a plan.** `docs/forecast-log.md` gets one dated line each time the City publishes newer delays: the frozen shipped model scored, never refit, on delays after September 30, 2026, against both baselines (`scripts/forecast_log.py`). Today it has one line: no new delays yet, so no score.
 
 **The forecast in detail.** Everything below is on the three out of time evaluation periods (7,455 delays), each run with the exact process that ships, with 95% bootstrap intervals (2,000 resamples).
 
@@ -161,10 +187,12 @@ python3 scripts/build_planb.py /tmp/ttc
 python3 scripts/train.py /tmp/ttc
 python3 scripts/choose_policy.py /tmp/ttc
 python3 scripts/check_planb.py /tmp/ttc > docs/plan-b-checks.md
+python3 scripts/decision_checks.py /tmp/ttc
 python3 scripts/frozen_test.py /tmp/ttc
+python3 scripts/forecast_log.py /tmp/ttc
 ```
 
-Run `build_planb.py` first: the station simulation in `train.py` reads its output. `train.py` writes `data/model.json` (the 10+ model plus the 5+ and 20+ models), `data/metrics.json` (evaluation periods, calibration bands, bootstrap intervals by delay and by day, the 5+ and 20+ results, station by cause pooling, settings sensitivity, decision value and both simulations) and `data/parity.json`. It takes about 15 minutes. `build_planb.py` writes `data/planb.json` and `data/planb_times.json` (departure times and the service calendar). `check_planb.py` rewrites the hand check report from the raw schedule. `choose_policy.py` picks the wait or switch margin on the shipped model's recalibration window and writes `data/policy.json`. `frozen_test.py` downloads the newest delay file and scores the frozen shipped model once on delays after its training data, writing `docs/frozen-test-<date>.json`; on November 15, 2026 there were none.
+Run `build_planb.py` first: the station simulation in `train.py` reads its output. `train.py` writes `data/model.json` (the 10+ model plus the 5+ and 20+ models), `data/metrics.json` (evaluation periods, calibration bands, bootstrap intervals by delay and by day, the 5+ and 20+ results, station by cause pooling, settings sensitivity, decision value and both simulations) and `data/parity.json`. It takes about 15 minutes. `build_planb.py` writes `data/planb.json` and `data/planb_times.json` (departure times and the service calendar). `check_planb.py` rewrites the hand check report from the raw schedule. `choose_policy.py` picks the wait or switch margin on the shipped model's recalibration window and writes `data/policy.json`. `frozen_test.py` downloads the newest delay file and scores the frozen shipped model once on delays after its training data, writing `docs/frozen-test-<date>.json`; on November 15, 2026 there were none. `decision_checks.py` runs the drift check and the stress test (`data/decision_checks.json`). `forecast_log.py` adds a dated line to `docs/forecast-log.md`.
 
 ## Tests
 
@@ -175,7 +203,7 @@ node tests/test_logic.mjs
 GitHub Actions runs this, and the browser check below, on every push. It covers:
 
 - **Parity test:** the browser code gives the same 5+, 10+ and 20+ probabilities as the Python models on 30 example inputs, within 0.0001, and keeps them in order. This is an implementation check, not an accuracy test.
-- Cause ordering, risk bands, and alert reading.
+- Cause ordering, risk bands, and alert reading, including three real TTC alerts copied from the TTC live alerts page on Nov 15, 2026 (line, cause and the station choice filled in; planned work flagged).
 - Ambiguous alerts: Bloor-Yonge with no line, two stations named, and a two line station with no line all give no number until a choice is made. Clearing the alert clears the derived fields and the number.
 - Every example button gives a number, except the one meant to show the choice.
 - The Toronto clock and the station data.
@@ -194,7 +222,7 @@ python3 tests/browser_check.py https://alenzacodes.github.io/wait-or-walk/
 
 ## Limits
 
-An estimate, not a promise. Rare causes rest on few cases (fire or smoke: 94 delays; personal injury at track level: 34), and the page says so. The alert is entered by hand. Plan B uses straight line distance and the regular schedule, not live detours or shuttle buses. It has not been tested with riders. Data: City of Toronto Open Data under the Open Government Licence Toronto.
+An estimate, not a promise. Rare causes rest on few cases (fire or smoke: 94 delays; personal injury at track level: 34), and the page says so. The alert is pasted, not fetched live, and planned work or slow zones are flagged as not incidents. Plan B uses straight line distance and the regular schedule, not live detours or shuttle buses. It has not been tested with riders. Data: City of Toronto Open Data under the Open Government Licence Toronto.
 
 ## What's next
 

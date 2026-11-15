@@ -1,0 +1,330 @@
+{
+ "drift": {
+  "periods": [
+   {
+    "test": "2026-01-01 to 2026-03-31",
+    "binMeansBase": [
+     3.44,
+     6.17,
+     13.24,
+     33.9
+    ],
+    "binMeansRecent": [
+     3.4,
+     6.07,
+     13.11,
+     32.02
+    ],
+    "loggedMinutesAverage": 7.26,
+    "expectedDelayBase": 7.08,
+    "expectedDelayRecent": 6.92,
+    "recentMargin": -1.0
+   },
+   {
+    "test": "2026-04-01 to 2026-06-30",
+    "binMeansBase": [
+     3.43,
+     6.15,
+     13.21,
+     33.48
+    ],
+    "binMeansRecent": [
+     3.38,
+     6.15,
+     12.98,
+     35.16
+    ],
+    "loggedMinutesAverage": 6.39,
+    "expectedDelayBase": 7.13,
+    "expectedDelayRecent": 7.17,
+    "recentMargin": 2.0
+   },
+   {
+    "test": "2026-07-01 to 2026-09-30",
+    "binMeansBase": [
+     3.42,
+     6.15,
+     13.16,
+     33.86
+    ],
+    "binMeansRecent": [
+     3.34,
+     6.16,
+     12.9,
+     33.96
+    ],
+    "loggedMinutesAverage": 5.95,
+    "expectedDelayBase": 6.42,
+    "expectedDelayRecent": 6.36,
+    "recentMargin": 0.5
+   }
+  ],
+  "subsets": {
+   "all": {
+    "delays": 7455,
+    "shippedRule": 6.4,
+    "recentBinMeans": 6.41,
+    "recentMinusShipped": {
+     "value": -0.01,
+     "low": -0.02,
+     "high": 0.0
+    }
+   },
+   "under10": {
+    "delays": 6363,
+    "shippedRule": 4.49,
+    "recentBinMeans": 4.49,
+    "recentMinusShipped": {
+     "value": 0.0,
+     "low": -0.0,
+     "high": 0.01
+    }
+   },
+   "atLeast20": {
+    "delays": 309,
+    "shippedRule": 30.94,
+    "recentBinMeans": 31.09,
+    "recentMinusShipped": {
+     "value": -0.15,
+     "low": -0.36,
+     "high": 0.0
+    }
+   }
+  }
+ },
+ "stress": {
+  "scenarios": {
+   "asScheduled": {},
+   "busLate5": {
+    "late": 5
+   },
+   "busLate10": {
+    "late": 10
+   },
+   "missedDeparture": {
+    "miss": 1
+   },
+   "walk60": {
+    "speed": 60
+   },
+   "board2": {
+    "board": 2
+   },
+   "board3": {
+    "board": 3
+   },
+   "allBad": {
+    "late": 5,
+    "miss": 1,
+    "speed": 60,
+    "board": 3
+   }
+  },
+  "subsets": {
+   "all": {
+    "delays": 7455,
+    "alwaysWait": 6.56,
+    "asScheduled": {
+     "minutes": 6.4,
+     "savedVsWait": {
+      "value": 0.16,
+      "low": 0.11,
+      "high": 0.2
+     }
+    },
+    "busLate5": {
+     "minutes": 6.7,
+     "savedVsWait": {
+      "value": -0.14,
+      "low": -0.19,
+      "high": -0.09
+     }
+    },
+    "busLate10": {
+     "minutes": 7.0,
+     "savedVsWait": {
+      "value": -0.44,
+      "low": -0.49,
+      "high": -0.38
+     }
+    },
+    "missedDeparture": {
+     "minutes": 7.92,
+     "savedVsWait": {
+      "value": -1.36,
+      "low": -1.48,
+      "high": -1.24
+     }
+    },
+    "walk60": {
+     "minutes": 6.58,
+     "savedVsWait": {
+      "value": -0.02,
+      "low": -0.08,
+      "high": 0.04
+     }
+    },
+    "board2": {
+     "minutes": 6.87,
+     "savedVsWait": {
+      "value": -0.31,
+      "low": -0.4,
+      "high": -0.23
+     }
+    },
+    "board3": {
+     "minutes": 7.21,
+     "savedVsWait": {
+      "value": -0.65,
+      "low": -0.76,
+      "high": -0.56
+     }
+    },
+    "allBad": {
+     "minutes": 9.1,
+     "savedVsWait": {
+      "value": -2.54,
+      "low": -2.77,
+      "high": -2.33
+     }
+    }
+   },
+   "under10": {
+    "delays": 6363,
+    "alwaysWait": 4.45,
+    "asScheduled": {
+     "minutes": 4.49,
+     "savedVsWait": {
+      "value": -0.04,
+      "low": -0.05,
+      "high": -0.03
+     }
+    },
+    "busLate5": {
+     "minutes": 4.76,
+     "savedVsWait": {
+      "value": -0.31,
+      "low": -0.33,
+      "high": -0.28
+     }
+    },
+    "busLate10": {
+     "minutes": 5.02,
+     "savedVsWait": {
+      "value": -0.57,
+      "low": -0.62,
+      "high": -0.52
+     }
+    },
+    "missedDeparture": {
+     "minutes": 5.79,
+     "savedVsWait": {
+      "value": -1.34,
+      "low": -1.47,
+      "high": -1.21
+     }
+    },
+    "walk60": {
+     "minutes": 4.66,
+     "savedVsWait": {
+      "value": -0.21,
+      "low": -0.26,
+      "high": -0.16
+     }
+    },
+    "board2": {
+     "minutes": 4.95,
+     "savedVsWait": {
+      "value": -0.5,
+      "low": -0.59,
+      "high": -0.42
+     }
+    },
+    "board3": {
+     "minutes": 5.26,
+     "savedVsWait": {
+      "value": -0.81,
+      "low": -0.92,
+      "high": -0.71
+     }
+    },
+    "allBad": {
+     "minutes": 6.89,
+     "savedVsWait": {
+      "value": -2.44,
+      "low": -2.68,
+      "high": -2.21
+     }
+    }
+   },
+   "atLeast20": {
+    "delays": 309,
+    "alwaysWait": 34.02,
+    "asScheduled": {
+     "minutes": 30.94,
+     "savedVsWait": {
+      "value": 3.08,
+      "low": 2.23,
+      "high": 4.04
+     }
+    },
+    "busLate5": {
+     "minutes": 31.49,
+     "savedVsWait": {
+      "value": 2.53,
+      "low": 1.79,
+      "high": 3.36
+     }
+    },
+    "busLate10": {
+     "minutes": 32.04,
+     "savedVsWait": {
+      "value": 1.98,
+      "low": 1.34,
+      "high": 2.69
+     }
+    },
+    "missedDeparture": {
+     "minutes": 34.24,
+     "savedVsWait": {
+      "value": -0.22,
+      "low": -0.82,
+      "high": 0.36
+     }
+    },
+    "walk60": {
+     "minutes": 31.24,
+     "savedVsWait": {
+      "value": 2.78,
+      "low": 1.92,
+      "high": 3.68
+     }
+    },
+    "board2": {
+     "minutes": 31.3,
+     "savedVsWait": {
+      "value": 2.72,
+      "low": 1.87,
+      "high": 3.61
+     }
+    },
+    "board3": {
+     "minutes": 31.85,
+     "savedVsWait": {
+      "value": 2.17,
+      "low": 1.43,
+      "high": 2.93
+     }
+    },
+    "allBad": {
+     "minutes": 36.17,
+     "savedVsWait": {
+      "value": -2.15,
+      "low": -3.31,
+      "high": -1.24
+     }
+    }
+   }
+  }
+ }
+}
