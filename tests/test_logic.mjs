@@ -238,4 +238,58 @@ assert.equal(dc.stress.subsets.atLeast20.asScheduled.savedVsWait.value, ev.decis
 assert.equal(dc.drift.periods.length, 3);
 for (const k of ['busLate5', 'busLate10', 'missedDeparture', 'walk60', 'board2', 'board3', 'allBad']) assert.ok(k in dc.stress.subsets.all);
 
+// Already underway: conditioning the calibrated bands, P(10+ | 5+) = P(10+) / P(5+), P(20+ | 10+) = P(20+) / P(10+)
+{
+  const bm = load('policy.json').binMeans, b = { p5: 0.4, p10: 0.23, p20: 0.1 };
+  const u0 = W.underway(b, bm, 0), u5 = W.underway(b, bm, 5), u10 = W.underway(b, bm, 10);
+  assert.equal(u0.headline, 0.23); assert.ok(Math.abs(u0.remaining - W.expectedDelay(b, bm)) < 1e-12);
+  assert.ok(Math.abs(u5.headline - 0.23 / 0.4) < 1e-12 && Math.abs(u5.chips[1][1] - 0.1 / 0.4) < 1e-12);
+  assert.ok(Math.abs(u10.headline - 0.1 / 0.23) < 1e-12 && u10.target === 20);
+  // remaining = E[D | D >= 5] - 5 from the bin means of the ranges still possible
+  const e5 = ((0.4 - 0.23) * bm[1] + (0.23 - 0.1) * bm[2] + 0.1 * bm[3]) / 0.4 - 5;
+  assert.ok(Math.abs(u5.remaining - e5) < 1e-12);
+  // zero and crossing cases: no division by zero, ratios stay in [0, 1] and in order
+  assert.equal(W.underway({ p5: 0, p10: 0, p20: 0 }, bm, 5), null);
+  assert.equal(W.underway({ p5: 0.3, p10: 0, p20: 0 }, bm, 10), null);
+  const x = W.underway({ p5: 0.2, p10: 0.25, p20: 0.3 }, bm, 5);   // crossed inputs (predictBands prevents this)
+  assert.ok(x.headline <= 1 && x.chips[1][1] <= x.headline && x.remaining >= 0);
+  assert.ok(W.underway(b, bm, 7) === null && W.underway(null, bm, 5) === null);
+  // across every parity input the conditional chances are proper and ordered
+  for (const s of load('parity.json')) {
+    const q = W.predictBands(model, s);
+    for (const el of [5, 10]) { const u = W.underway(q, bm, el); assert.ok(u && u.headline >= 0 && u.headline <= 1 && u.remaining >= 0); }
+  }
+  const uc = load('underway_checks.json');
+  assert.ok(uc.tenGivenFive.delays > 3000 && uc.twentyGivenTen.delays > 1000 && uc.remaining.length === 3);
+  assert.ok(Math.abs(uc.tenGivenFive.meanForecast - uc.tenGivenFive.actualShare) < 0.05 && Math.abs(uc.twentyGivenTen.meanForecast - uc.twentyGivenTen.actualShare) < 0.05);
+}
+
+// The example clock sits inside the schedule data and is a Monday at 5:30 p.m.
+{
+  const pt = load('planb_times.json'), rg = W.scheduleRange(pt.calendar);
+  assert.ok(W.SIM.ymd >= rg.from && W.SIM.ymd <= rg.to && W.SIM.dow === 0 && W.SIM.minutes === 1050);
+  assert.equal(W.SIM.label, 'Simulated Monday, November 16, 2026, 5:30 p.m.');
+  assert.ok(W.activeServices(pt.calendar, W.SIM.ymd, W.SIM.dow).covered);
+}
+
+// Planned work from the TTC's own feed is flagged (no forecast is shown for it on the page)
+assert.ok(W.readAlert('Line 2 Bloor-Danforth: There is no subway service between Victoria Park and Kennedy stations due to planned track work. Shuttle buses are running.', model).planned);
+assert.ok(W.readAlert('Line 1: Trains are moving slower than usual between St Clair and Eglinton due to a reduced speed zone.', model).planned);
+assert.ok(!W.readAlert('Line 1 Yonge-University: Delays northbound at Museum station due to a medical emergency Thank you for your patience.', model).planned);
+
+// The alerts copy: licensed source, fetch time, and alerts with text and lines
+{
+  const L = load('live_alerts.json');
+  assert.ok(/gtfsrt\.ttc\.ca\/alerts\/subway/.test(L.source) && L.licence === 'Open Government Licence Toronto' && L.fetchedAt > 1.79e9);
+  for (const a of L.alerts) assert.ok(a.header && a.lines.length && a.lines.every((l) => ['YU', 'BD', 'SHP'].includes(l)));
+}
+
+// The late bus rule was picked on earlier windows and is not shipped because it is worse as scheduled
+{
+  const r = load('decision_checks.json').robust;
+  assert.equal(r.chosenUnder, 'busLate5'); assert.equal(r.margins.length, 3);
+  assert.equal(r.ship, r.subsets.all.asScheduled.robustMinusShipped.value >= 0 && r.subsets.all.busLate5.robustMinusShipped.value > 0);
+  assert.equal(load('policy.json').margin, 0);
+}
+
 console.log('Wait or Walk tests passed.');

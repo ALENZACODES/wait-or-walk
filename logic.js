@@ -32,6 +32,30 @@
     return { switch: expected - Math.max(cost, 0) >= margin, expected, cost: Math.max(cost, 0) };
   }
 
+  // "Already underway": condition the same calibrated bands on the delay having reached 5 or 10 minutes, with no refit.
+  // P(10+ | 5+) = P(10+) / P(5+) and P(20+ | 10+) = P(20+) / P(10+); the bands are kept in order (p5 >= p10 >= p20),
+  // so each ratio is between 0 and 1 (clamped anyway). Expected remaining minutes use the bin averages of the ranges still
+  // possible, minus the minutes already gone, floored at 0. Returns null when the conditioning band is (near) zero.
+  // elapsed 0: headline is the 10+ chance; 5: chance of 10+ in total; 10: chance of 20+ in total.
+  function underway(b, bm, elapsed) {
+    if (!b || b.p5 === null || b.p20 === null || !bm) return null;
+    const c = (x) => Math.min(Math.max(x, 0), 1);
+    if (!elapsed) return { elapsed: 0, headline: b.p10, target: 10, chips: [[5, b.p5], [10, b.p10], [20, b.p20]], remaining: expectedDelay(b, bm) };
+    if (elapsed === 5) {
+      if (!(b.p5 > 1e-6)) return null;
+      const q10 = c(b.p10 / b.p5), q20 = Math.min(c(b.p20 / b.p5), q10);
+      const rem = ((b.p5 - b.p10) * bm[1] + (b.p10 - b.p20) * bm[2] + b.p20 * bm[3]) / b.p5 - 5;
+      return { elapsed: 5, headline: q10, target: 10, chips: [[10, q10], [20, q20]], remaining: Math.max(rem, 0) };
+    }
+    if (elapsed === 10) {
+      if (!(b.p10 > 1e-6)) return null;
+      const q20 = c(b.p20 / b.p10);
+      const rem = ((b.p10 - b.p20) * bm[2] + b.p20 * bm[3]) / b.p10 - 10;
+      return { elapsed: 10, headline: q20, target: 20, chips: [[20, q20]], remaining: Math.max(rem, 0) };
+    }
+    return null;
+  }
+
   // Overnight hours, the same band the model uses for its night time (midnight to 6 a.m.): when Blue Night routes matter.
   function isOvernight(minutes) { return minutes >= 0 && minutes < 360; }
 
@@ -155,7 +179,7 @@
       out.choice = { text, options };
     }
     if (out.line && out.station) { const s = st(out.station); if (s && !s.lines.includes(out.line)) out.flags.push({ field: 'station', text: `${s.label} is not on ${LABELS[out.line]}. Check the station.` }); }
-    if (/planned|slower than usual|while we (work|perform)|track work|maintenance/.test(t)) { out.planned = true; out.flags.push({ field: 'group', text: 'This looks like planned work or a slow zone, not an unplanned incident. The estimate comes from logged incidents, so treat it with care and check the TTC notice.' }); }
+    if (/planned|slower than usual|slow zone|reduced speed|while we (work|perform)|track work|maintenance|early closure|weekend closure/.test(t)) { out.planned = true; out.flags.push({ field: 'group', text: 'This looks like planned work or a slow zone, not an unplanned incident, so no delay forecast is shown. Check the TTC notice.' }); }
     for (const k of ['line', 'station', 'group']) if (out[k]) out.found.push(k);
     return out;
   }
@@ -293,6 +317,8 @@
     const prev = y.getUTCFullYear() + String(y.getUTCMonth() + 1).padStart(2, '0') + String(y.getUTCDate()).padStart(2, '0');
     return { ymd, prevYmd: prev, dow, prevDow: (dow + 6) % 7, minutes: Number(g('hour')) * 60 + Number(g('minute')) };
   }
+  // The fixed clock the worked examples use, inside the schedule window, so they still work after the schedule data ends.
+  const SIM = { ymd: '20261116', prevYmd: '20261115', dow: 0, prevDow: 6, minutes: 17 * 60 + 30, label: 'Simulated Monday, November 16, 2026, 5:30 p.m.' };
   // Page state helpers, kept here so the rules are tested without a browser.
   // state: { line, station, group, derived: Set of fields read from the alert, pending: choice or null }
   function applyAlert(state, r) {
@@ -325,5 +351,5 @@
     return { hour, weekend: wd === 'Sat' || wd === 'Sun' };
   }
 
-  return { predict, isOvernight, expectedDelay, switchCall, predictBands, reachable, rankByArrival, subwayMinutes, scheduleRange, BOARD_MINUTES, explain, advice, readAlert, planB, applyAlert, chooseOption, canForecast, mismatch, activeServices, decodeTimes, nextDepartures, torontoClock, walkMinutes, timeBucket, torontoNow, labelFor, LABELS };
+  return { predict, underway, SIM, isOvernight, expectedDelay, switchCall, predictBands, reachable, rankByArrival, subwayMinutes, scheduleRange, BOARD_MINUTES, explain, advice, readAlert, planB, applyAlert, chooseOption, canForecast, mismatch, activeServices, decodeTimes, nextDepartures, torontoClock, walkMinutes, timeBucket, torontoNow, labelFor, LABELS };
 });

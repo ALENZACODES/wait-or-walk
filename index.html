@@ -4,15 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Wait or Walk · Is this TTC subway delay likely to run long?</title>
-<meta name="description" content="Paste a TTC subway alert and see how often comparable logged incidents delayed subway service 10 minutes or more, why, and which scheduled buses, streetcars and LRT head your way.">
-<link rel="stylesheet" href="styles.css?v=r7">
+<meta name="description" content="Paste a TTC subway alert: the chance comparable recorded delays lasted 10 minutes or more, the buses you can still catch, and whether waiting or switching looks better by the schedule.">
+<link rel="stylesheet" href="styles.css?v=r8">
 </head>
 <body>
 <a class="skip" href="#main">Skip to the tool</a>
 <header>
   <h1>Wait or Walk</h1>
-  <p class="lede short">Paste a TTC subway alert: see the risk it runs 10 minutes or more, and scheduled buses and streetcars nearby.</p>
-  <p class="lede long">The subway just stopped. Will it be two minutes or twenty? Paste the TTC alert and see how often comparable incidents in 21 months of TTC delay records held up subway service 10 minutes or more, plus the buses and streetcars a short walk away that head where you are going.</p>
+  <p class="lede short">Subway stopped? Paste the TTC alert: wait or walk, in 30 seconds.</p>
+  <p class="lede long"><b>The subway just stopped. Wait, or walk to a bus?</b> Paste the TTC alert and in about 30 seconds see how often comparable recorded delays lasted 10 minutes or more, the buses and streetcars you can still catch, and whether waiting or switching looks better by the schedule.</p>
+  <ol class="path long" aria-label="The 30 second path"><li><a href="#in-h">Alert</a></li><li><a href="#out-h">Chance</a></li><li><a href="#pb-h">Plan B</a></li><li><a href="#v-h">Verdict</a></li></ol>
 </header>
 <main id="main">
   <div id="loading" class="card status" role="status">Loading the delay model and schedule…</div>
@@ -27,7 +28,8 @@
     <label for="alert">TTC alert text <span class="hint">(from the TTC site, app or a platform screen)</span></label>
     <textarea id="alert" rows="3" placeholder="Line 1: No service between St Clair and Lawrence due to a medical emergency."></textarea>
     <p class="pasterow"><button type="button" id="pasteBtn">Paste alert</button> <a href="https://www.ttc.ca/service-alerts" target="_blank" rel="noopener">TTC service alerts</a></p>
-    <p class="small pastenote">Line, station and cause are read from the whole alert. The TTC's live alert feeds cannot be read by this page, so you paste it; nothing is sent anywhere.</p>
+    <details id="live" class="live" hidden><summary id="liveSum">TTC subway alerts</summary><ul id="liveList"></ul><p id="liveNote" class="small"></p></details>
+    <p class="small pastenote">Line, station and cause are read from the whole alert; nothing is sent anywhere.</p>
     <div class="samples" role="group" aria-label="Example alerts">
       <span>Examples:</span>
       <button type="button" data-alert="Line 1 Yonge-University: Minor delays at Union while we deal with a passenger alarm.">Passenger alarm at Union</button>
@@ -37,6 +39,7 @@
       <button type="button" data-alert="Trains are not stopping at Bloor-Yonge due to a security incident.">Security at Bloor-Yonge (no line given)</button>
     </div>
     <p id="example" class="example" hidden>Showing the worked example, headed to Jane. Paste your own alert to replace it.</p>
+    <p id="simBanner" class="example" hidden><b id="simLabel"></b>. Examples use this fixed time inside the TTC schedule data, so they work on any date. <button type="button" id="liveTime">Use the live time</button></p>
     <p id="readNote" class="note" role="status" aria-live="polite"></p>
     <div id="choice" class="choice" hidden></div>
     <ul id="flags" class="flags"></ul>
@@ -47,19 +50,21 @@
     <div id="empty" class="empty">Paste an alert above, or choose the station and cause under “Check the details”.</div>
     <div id="callBody" hidden>
       <p class="estlab">Estimated chance</p>
-      <div class="big"><span id="pct">--</span><span class="pctlab">that an incident like this delays subway service 10 minutes or more</span></div>
-      <p class="scope" id="scope">This predicts a logged service delay category, not how many minutes you personally have left to wait.</p>
-      <p id="bands" class="bands" aria-label="Estimated chance of 5, 10 and 20 minutes or more"></p>
+      <div class="big"><span id="pct">--</span><span class="pctlab" id="pctlab">chance the recorded delay lasts 10 minutes or more, among comparable recorded TTC delays</span></div>
+      <p class="scope" id="scope">Not the chance your alert causes this delay, or your remaining wait.</p>
+      <p id="bands" class="bands" aria-label="Estimated chances by length"></p>
+      <div class="underway" role="group" aria-label="Already underway?"><span>Already underway?</span> <button type="button" data-elapsed="0" aria-pressed="true">Just started</button><button type="button" data-elapsed="5" aria-pressed="false">About 5 min in</button><button type="button" data-elapsed="10" aria-pressed="false">About 10 min in</button></div>
+      <p id="verdictShort" class="suggest" hidden></p>
       <p id="advice" class="advice"></p>
       <p id="adviceText" class="adviceText"></p>
-      <p id="suggest" class="suggest"></p>
-      <p id="mix" class="typical"></p>
+      <details class="meaning"><summary>What this number means</summary><p id="meaning"></p></details>
       <p id="drift" class="drift"></p>
       <p id="typical" class="typical"></p>
       <p id="reconcile" class="typical"></p>
       <p id="rare" class="rare" hidden></p>
       <h3>Why</h3>
       <ul id="why"></ul>
+      <p class="sharerow"><button type="button" id="shareBtn">Copy a link to this result</button> <span id="shareNote" class="small" role="status"></span></p>
     </div>
     <p class="safety"><b>Safety first:</b> always follow TTC staff and announcements. This is a planning aid for riders on a platform, not for decisions about leaving a train or evacuating.</p>
   </section>
@@ -70,6 +75,13 @@
     <select id="dest"></select>
     <div id="planbOut"></div>
     <p class="small">These are scheduled alternatives, never a promise of the quickest way. Routes, directions and stops come from the TTC schedule (files dated Oct 20, 2026, covering Nov 1 to Dec 21, 2026), using each route's regular stop patterns; a stop counts as near a station within 300 metres in a straight line, about a 4 minute walk. The schedule cannot tell you about detours, crowding or shuttle buses, so check <a href="https://www.ttc.ca/service-alerts">TTC service alerts</a>. Five journeys were <a href="https://github.com/ALENZACODES/wait-or-walk/blob/main/docs/plan-b-checks.md">checked by hand against the schedule</a>; it has not been tested with riders.</p>
+  </section>
+
+  <section class="card" aria-labelledby="v-h">
+    <h2 id="v-h">4. Verdict: wait or switch?</h2>
+    <p id="suggest" class="suggest">Paste an alert to see the comparison.</p>
+    <p id="mix" class="typical"></p>
+    <p class="small">The rule: switch when the expected recorded delay (or what is left of it, if you say it is already underway) minus the extra minutes by the best scheduled Plan B is at least 0, a margin picked on earlier data. Switching only helps if you can catch that bus and it runs on time. <a href="#evidence">Evidence</a></p>
   </section>
 
   <section class="card" aria-labelledby="d-h">
@@ -91,16 +103,18 @@
       <p><b>Calibration:</b> better calibrated than the first model (1.8 against 2.4 points, distinguishable), though forecasts still run a few points high.</p>
       <p><b>Decisions:</b> on delays of 20 minutes or more, the schedule comparison saves about 3 minutes per delay in simulation (3.08, 95% interval 2.23 to 4.04). Averaged over all delays the gain is small (0.16 minutes, 0.11 to 0.20), exploratory, and gone if buses run 5 minutes late or a departure is missed. It has not been tested with riders.</p>
     </div>
+    <details id="evidence" class="evidence">
+    <summary>Evidence: tables, checks and caveats</summary>
     <h3>Which data each test period's model saw</h3>
     <div id="foldTable" class="tablewrap" tabindex="0" role="region" aria-label="Data seen by each test period's model"></div>
     <p class="small"><b>The shipped model itself is never scored; every number on this page comes from per period models built the same way.</b> <b>No test period is scored with a calibration fit on that period.</b> Each period has its own base model, trained on everything before its recalibration window, and its own Platt scaling, fit on the 91 days before the period starts. The shipped model is a separate fit (base model to Jul 1, 2026, recalibrated on Jul 2 to Sep 30, 2026) and is not used for any score on this page; the calibration chart also uses the test period forecasts. An automated test checks that every recalibration window ends before its test period starts.</p>
     <p class="small"><b>Jul to Sep 2026 is not a fully independent check.</b> An earlier private prototype was tested on that period, and what it showed (forecasts running high) led to the age weighting and recalibration. So results from that period informed the approach. For that reason the pooled results are also shown without it, below.</p>
     <p class="small"><b>No fresh frozen test yet.</b> On November 15, 2026 the newest TTC delay file on City of Toronto Open Data (updated October 26, 2026) still ends on September 30, 2026, the last day the shipped model saw, so there are no newer delays to score. When the City publishes newer delays, <a href="https://github.com/ALENZACODES/wait-or-walk/blob/main/scripts/frozen_test.py">scripts/frozen_test.py</a> scores the frozen shipped model once on them against the cause only rule and the first model. That period will be the untouched one.</p>
-    <p><b>What the number means.</b> The TTC logs each subway incident with the minutes it delayed service. The headline number is the estimated chance that an incident like this one, logged with more than 0 minutes of delay, delayed service 10 minutes or more. The chips beside it give the same for 5 and 20 minutes. It is not your own remaining wait, which also depends on where you are and how service is restored. Records with 0 minutes of delay (<span id="zeroCount"></span> of them) are left out.</p>
+    <p><b>What the number means.</b> The TTC logs each subway incident with the minutes it delayed service. In full: among comparable recorded TTC delays, the model estimates the chance the recorded delay lasts 10 minutes or more (23% in the Kipling example). This is not the chance your current alert causes that delay, or your remaining wait, which also depends on where you are and how service is restored. The chips beside it give the same for 5 and 20 minutes. With “about 5 minutes in” the headline becomes the chance of 10 minutes or more in total among comparable delays that reached 5 (the 10+ chance divided by the 5+ chance), and with “about 10 minutes in” the chance of 20 or more among those that reached 10. Records with 0 minutes of delay (<span id="zeroCount"></span> of them) are left out.</p>
     <p><b>The data.</b> City of Toronto Open Data publishes a TTC subway delay log starting January 1, 2025. The copy used here has 47,915 records up to September 30, 2026; 16,548 of them are on Lines 1, 2 and 4 with more than 0 minutes of delay. On November 15, 2026 both this log and the TTC schedule were still the newest versions published.</p>
     <p><b>How it was made.</b> Three logistic regressions, one each for 5+, 10+ and 20+ minutes, using only what an alert tells you: the cause, the station, the line, the time and the day. Newer delays count more (180 day half life). Each base model is trained on everything up to <span id="baseThrough"></span>, then its output is recalibrated (Platt scaling) on the next three months (<span id="calOn"></span>) and shipped as is, with no refit. The three are kept in order (5+ at least the 10+ chance, 20+ at most); before that step they crossed for under 1% of test delays.</p>
     <p><b>How the settings were chosen.</b> The 180 day half life, the 91 day recalibration window and the 15% and 35% cut offs were set in the first commit and never changed. They were not chosen blind to the test periods: an earlier private prototype was tested on July to September 2026, one of the three evaluation periods, and its forecasts ran high there, which is why age weighting and recalibration were added. No record shows other values being tried before the first commit. The table under “More checks” shows the alternatives on the same periods: a 61 day window would have scored slightly better (log loss 0.3619 against 0.3628). The shipped values were kept rather than tuned on the test periods. The 15% and 35% cut offs still set the risk labels; since version r6 the wait or switch suggestion comes from the expected cost rule described below.</p>
-    <p><b>How the alert is read.</b> You paste the whole alert (there is a paste button); the TTC's live alert feeds do not allow reading from other websites, so the page cannot fetch them. It is read by hand written rules, not a trained model: regular expressions for line names (such as “Line 2” or “Bloor-Danforth”), keyword patterns for 14 causes checked in a fixed order with the most specific first (“person at track level” before “track”), and a search for the 71 station names plus a few older names, such as Dundas for TMU. If more than one station, or a two line station without a line, could be meant, you choose.</p>
+    <p><b>How the alert is read.</b> You paste the whole alert (there is a paste button), or pick one from the copy of the TTC's open GTFS Realtime subway alerts that a scheduled job saves into this site every 30 minutes when they change (the TTC's feeds cannot be read from other websites directly). Alerts that read as planned work or a slow zone get no forecast. It is read by hand written rules, not a trained model: regular expressions for line names (such as “Line 2” or “Bloor-Danforth”), keyword patterns for 14 causes checked in a fixed order with the most specific first (“person at track level” before “track”), and a search for the 71 station names plus a few older names, such as Dundas for TMU. If more than one station, or a two line station without a line, could be meant, you choose.</p>
     <p><b>The baselines.</b> <i>Cause only rule:</i> the recent share of long delays for the cause, recalibrated the same way. <i>First model:</i> the same features and regression, trained on all earlier data with equal weights and no recalibration.</p>
     <p><b>Why this model ships.</b> Pooled over three out of time evaluation periods not used for fitting (7,455 delays), it ranks incidents as well as the first model (AUC 0.751 against 0.753, not distinguishable) with the same log loss (0.3628 against 0.3630) and a lower calibration error (1.8 against 2.4 points; 0.6 points lower, 95% interval 0.3 to 0.9). In the latest period its log loss, Brier score and calibration error are distinguishably better, because it follows the 2026 drop in long delays; in the first period (Jan to Mar 2026) it is distinguishably behind the first model on AUC, log loss and Brier score. The cause alone gets most of the way: the cause only rule reaches AUC 0.727, and station, line, time and day add 0.024 (95% interval 0.016 to 0.032).</p>
     <h3>Forecasts run high</h3>
@@ -124,8 +138,15 @@
     <h4>Stress test: when the switch costs more than the schedule says</h4>
     <div id="stressTable" class="tablewrap" tabindex="0" role="region" aria-label="Stress test"></div>
     <p class="small">Read honestly: across all delays the small gain does not survive late buses, a missed departure or longer boarding; slower walking leaves it level. On delays of 20 minutes or more it still saves time with late buses, slower walking and boarding buffers, but not with a missed departure or everything at once. That is why the card says to switch only if you can catch that bus.</p>
+    <h4>A rule picked for late buses: tested, not shipped</h4>
+    <p class="small">Could a bigger margin protect riders when the bus runs late? For each test period the margin was picked on that period's earlier window as the one with the fewest minutes if every bus ran 5 minutes late, then the full stress test was run with it. The rule had to be at least as good as the shipped one as scheduled and lose less under slippage. Margins picked: 3.5, 12.5 and 4 minutes.</p>
+    <div id="robustTable" class="tablewrap" tabindex="0" role="region" aria-label="Slippage robust rule"></div>
+    <p id="robustNote" class="small"></p>
+    <h4>Already underway: are the conditional chances sound?</h4>
+    <div id="underwayTable" class="tablewrap" tabindex="0" role="region" aria-label="Already underway check"></div>
+    <p id="underwayNote" class="small"></p>
     <p class="small"><b>Drift in the expected delay.</b> The averages in each range come from the base training data, and long delays became rarer in 2026. They barely moved: for 20+ minutes, 33.9 minutes in the base data against 32.0, 35.2 and 34.0 in the windows just before each period. Using those recent averages instead (with the margin picked again on the same earlier window) changed the simulated minutes by 0.01 per delay, not distinguishable, so the shipped averages are kept. The expected delay does run high in the later periods (6.4 against 5.95 logged minutes on average in Jul to Sep, 7.1 against 6.4 in Apr to Jun) because the forecasts themselves run high, not because of the averages.</p>
-    <p class="small">Read honestly: it wins by switching less on short delays (it is still 0.04 minutes behind always waiting under 10 minutes) and more on long ones. These are simulated minutes, and the intervals hold only under the simulation's assumptions: November 2026 schedule days applied to earlier delays, logged delay minutes as the cost of waiting, and alternatives that run as scheduled. On the page the switch cost uses your destination when it is on the same line; in the simulation it is the first station past the delay, averaged over both directions. The expected delay is about logged service delays, not your own remaining wait.</p>
+    <p class="small">Read honestly: it wins by switching less on short delays (it is still 0.04 minutes behind always waiting under 10 minutes) and more on long ones. These are simulated minutes, and the intervals hold only under the simulation's assumptions: November 2026 schedule days applied to earlier delays, logged delay minutes as the cost of waiting, and alternatives that run as scheduled. On the page the switch cost uses your destination when it is on the same line; in the simulation it is the first station past the delay, averaged over both directions. That is why the Kipling example, headed to Jane 4 stops away (Islington, Royal York, Old Mill, Jane), is not limited by the simulation's cap of 3 stops: the cap only decides which station counts as past the delay in the simulation (for the 149 from Kipling, Islington, 1 stop along), while the page compares door to destination along the line. The expected delay is about logged service delays, not your own remaining wait.</p>
     <h3>A decision simulation with schedule based switch costs, not real savings</h3>
     <p class="small">For each test delay and each direction along its line, switching costs the walk to the stop (80 metres a minute) plus 1 minute to board, the wait for the next scheduled departure after that, and the scheduled ride to a station past the delay (at most 3 stops along), minus the scheduled subway time between the same two stations (floored at 0). Waiting costs the logged delay minutes, capped at 60. This table uses the old rule (switch at 35% or more, when an alternative leaves within 3 hours). Tue Nov 17, Sat Nov 21 and Sun Nov 22, 2026 in the current schedule stand in for each day type, so the intervals hold only under that assumption. Average minutes lost per delay:</p>
     <div id="stationSimTable" class="tablewrap" tabindex="0" role="region" aria-label="Station simulation, scrolls sideways on small screens"></div>
@@ -157,12 +178,13 @@
     <h3>Share of delays lasting 10 minutes or more, by month</h3>
     <div id="trend" class="trend" role="img" aria-label="Monthly share of long delays"></div>
     <p id="trendNote" class="small"></p>
-    <p class="small">Limits: the cause list follows TTC delay codes grouped into the words alerts use, so an alert with an unusual cause reads as “other”. Causes or stations with fewer than 100 logged delays are flagged as rough. It does not use how long the delay has already lasted: the log gives total minutes but not when an alert went out, so that cannot be checked honestly yet. It has not been tested with riders. This is an estimate to help you decide, not a promise. Always follow TTC staff and announcements; it is not for decisions about leaving a train or evacuating.</p>
+    </details>
+    <p class="small">Limits: the cause list follows TTC delay codes grouped into the words alerts use, so an alert with an unusual cause reads as “other”. Causes or stations with fewer than 100 logged delays are flagged as rough. The “already underway” setting reads “about 5 minutes in” as the recorded delay having reached 5 minutes, because the log gives total minutes but not when an alert went out. It has not been tested with riders. This is an estimate to help you decide, not a promise. Always follow TTC staff and announcements; it is not for decisions about leaving a train or evacuating.</p>
   </section>
   </div>
 </main>
-<footer>Made by John Khan in Toronto, Ontario. Not affiliated with or endorsed by the Toronto Transit Commission (TTC). Data: City of Toronto Open Data, <i>TTC Subway Delay Data since 2025</i> and <i>TTC Routes and Schedules</i> (GTFS, files dated Oct 20, 2026, covering Nov 1 to Dec 21, 2026), both under the <a href="https://open.toronto.ca/open-data-licence/">Open Government Licence Toronto</a>. Version r7. <a href="https://github.com/ALENZACODES/wait-or-walk">Source code</a></footer>
-<script src="logic.js?v=r7"></script>
-<script src="app.js?v=r7"></script>
+<footer>Made by John Khan in Toronto, Ontario. Not affiliated with or endorsed by the Toronto Transit Commission (TTC). Data: City of Toronto Open Data, <i>TTC Subway Delay Data since 2025</i> and <i>TTC Routes and Schedules</i> (GTFS, files dated Oct 20, 2026, covering Nov 1 to Dec 21, 2026), both under the <a href="https://open.toronto.ca/open-data-licence/">Open Government Licence Toronto</a>. Version r8. <a href="https://github.com/ALENZACODES/wait-or-walk">Source code</a></footer>
+<script src="logic.js?v=r8"></script>
+<script src="app.js?v=r8"></script>
 </body>
 </html>

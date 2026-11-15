@@ -1,0 +1,32 @@
+name: Copy TTC subway alerts
+# Every 30 minutes, copy the TTC's open GTFS Realtime subway alerts (Open Government Licence Toronto) into
+# data/live_alerts.json so the page can read them from its own site. Commits only when the alerts changed.
+on:
+  schedule:
+    - cron: '7,37 * * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: alerts
+  cancel-in-progress: false
+jobs:
+  copy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install gtfs-realtime-bindings==1.0.0
+      - run: python scripts/fetch_alerts.py
+      - name: Commit if the alerts changed
+        run: |
+          if git diff --quiet -- data/live_alerts.json; then echo "No change"; exit 0; fi
+          git config user.name "John Khan"
+          git config user.email "309250657+ALENZACODES@users.noreply.github.com"
+          git add data/live_alerts.json
+          git commit -m "Copy TTC subway alerts"
+          git pull --rebase origin main
+          git push origin HEAD:main

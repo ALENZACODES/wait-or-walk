@@ -91,3 +91,18 @@ h4 { color: var(--blue); margin: 14px 0 6px; font-size: .95rem; }
 .pasterow { margin: 6px 0; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
 .pastenote { margin: 2px 0 6px; }
 .pasterow { margin: 6px 0 2px; }
+/* r8 */
+.path { display: flex; gap: 6px; list-style: none; padding: 0; margin: 10px 0 0; flex-wrap: wrap; counter-reset: p; }
+.path li { counter-increment: p; } .path a { display: inline-block; padding: 3px 10px; border: 1px solid var(--blue); border-radius: 14px; color: var(--blue); text-decoration: none; font-weight: 600; font-size: .9rem; }
+.path li a::before { content: counter(p) ". "; } .path li + li::before { content: "→ "; color: var(--red); }
+ol.path.long { display: flex; }
+.underway { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 6px 0; font-size: .9rem; }
+.underway button { padding: 3px 8px; font-size: .85rem; } .underway button[aria-pressed="true"] { background: var(--blue); color: #fff; }
+.live { margin: 6px 0; font-size: .9rem; } .live summary { cursor: pointer; color: var(--blue); font-weight: 600; }
+.live ul { padding-left: 18px; margin: 6px 0; } .live li { margin: 4px 0; } .live li button { margin-left: 4px; padding: 2px 8px; font-size: .85rem; }
+.meaning { margin: 6px 0; font-size: .9rem; } .meaning summary { cursor: pointer; color: var(--blue); }
+.sharerow { margin: 10px 0 0; }
+.result.planned { border-left: 6px solid #6b7fa8; } .result.planned .empty { color: var(--blue); font-weight: 600; }
+.evidence { margin: 12px 0; } .evidence > summary { cursor: pointer; font-weight: 700; color: var(--blue); padding: 8px 0; font-size: 1.05rem; }
+#simBanner button { margin-left: 4px; padding: 2px 8px; font-size: .85rem; }
+@media (max-width: 700px) { ol.path.long { display: none; } }

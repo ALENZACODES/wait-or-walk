@@ -1,8 +1,10 @@
 (function () {
   const $ = (s) => document.querySelector(s);
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-  const VERSION = 'r7';
-  let model = null, planb = null, ptimes = null, policy = null, best = null, checks = null;
+  const VERSION = 'r8';
+  let model = null, planb = null, ptimes = null, policy = null, best = null, checks = null, underwayChecks = null;
+  // sim: the fixed example clock (WaitOrWalk.SIM) or null for live time; elapsed: the "already underway" setting.
+  let sim = null, elapsed = 0, planned = false, live = null;
   let state = { line: '', station: '', group: '', derived: new Set(), pending: null };
   const sync = () => { $('#line').value = state.line; $('#station').value = state.station; $('#group').value = state.group; ['line', 'station', 'group'].forEach((k) => tag(k, state.derived.has(k))); };
   const pct = (p) => Math.round(p * 100) + '%';
@@ -19,9 +21,19 @@
     $('#dest').innerHTML = '<option value="">Not set, show every direction</option>' + opts;
     const order = ['medical', 'security', 'alarm', 'track_person', 'injury_track', 'fire', 'doors', 'signals', 'track', 'train', 'power', 'weather', 'cleaning', 'operations', 'other'];
     $('#group').innerHTML = '<option value="">Choose a cause</option>' + order.map((g) => `<option value="${g}">${esc(model.groups[g].label)}</option>`).join('');
+    liveTimeFields();
+  }
+  function liveTimeFields() {
     const now = WaitOrWalk.torontoNow();
     $('#time').value = WaitOrWalk.timeBucket(now.hour);
     $('#weekend').checked = now.weekend;
+  }
+  // The worked examples run on a fixed clock inside the schedule window; typing or pasting an alert goes back to live time.
+  function setSim(on) {
+    sim = on ? WaitOrWalk.SIM : null;
+    $('#simBanner').hidden = !sim;
+    if (sim) { $('#simLabel').textContent = sim.label; $('#time').value = WaitOrWalk.timeBucket(Math.floor(sim.minutes / 60)); $('#weekend').checked = sim.dow >= 5; }
+    else liveTimeFields();
   }
 
   const current = () => ({ line: state.line, station: state.station, group: state.group, time: $('#time').value, weekend: $('#weekend').checked });
@@ -34,7 +46,8 @@
     renderChoice();
     renderPlanB(state.pending || WaitOrWalk.mismatch(state, model) ? null : s);
     const ready = WaitOrWalk.canForecast(state, model);
-    $('#empty').hidden = !!ready; $('#callBody').hidden = !ready;
+    $('#empty').hidden = !!ready; $('#callBody').hidden = !ready; if (!ready) verdict(null);
+    if (planned) { $('#empty').hidden = false; $('#callBody').hidden = true; $('#empty').textContent = 'This is planned service work. The incident delay model does not apply.'; $('.result').className = 'card result planned'; verdict(null); return; }
     if (WaitOrWalk.mismatch(state, model)) { $('#empty').textContent = `No number: ${s.label} is not on ${LINE[x.line]}. Choose a matching line or station under “Check the details”.`; $('.result').className = 'card result'; return; }
     if (state.pending) { $('#empty').textContent = 'No number yet: the alert could mean more than one place. Pick one under the alert to see the call.'; $('.result').className = 'card result'; return; }
     if (!ready) {
@@ -44,22 +57,26 @@
       return;
     }
     const { p, raw } = WaitOrWalk.predict(model, x);
-    const a = WaitOrWalk.advice(p);
     const bands = WaitOrWalk.predictBands(model, x);
-    $('#pct').textContent = pct(p);
-    $('#bands').innerHTML = bands.p5 === null ? '' : `<span><b>${pct(bands.p5)}</b> 5+ min</span><span class="on"><b>${pct(p)}</b> 10+ min</span><span><b>${pct(bands.p20)}</b> 20+ min</span>`;
+    const bm = policy && policy.binMeans;
+    const u = WaitOrWalk.underway(bands, bm, elapsed) || WaitOrWalk.underway(bands, bm, 0);
+    if (u) u.bands = bands;
+    const h = u ? u.headline : p;
+    $('#pct').textContent = pct(h);
+    $('#pctlab').textContent = !u || !u.elapsed ? 'chance the recorded delay lasts 10 minutes or more, among comparable recorded TTC delays'
+      : `chance it reaches ${u.target} minutes or more in total, among comparable recorded delays that reached ${u.elapsed}`;
+    $('#scope').textContent = !u || !u.elapsed ? 'Not the chance your alert causes this delay, or your remaining wait.' : 'From the same models, given the minutes already gone. Not a promise of your remaining wait.';
+    $('#bands').innerHTML = !u ? '' : u.chips.map(([k, q]) => `<span class="${k === u.target ? 'on' : ''}"><b>${pct(q)}</b> ${k}+ min${u.elapsed ? ' total' : ''}</span>`).join('');
+    document.querySelectorAll('[data-elapsed]').forEach((b) => b.setAttribute('aria-pressed', String(+b.dataset.elapsed === (u ? u.elapsed : 0))));
+    $('#meaning').textContent = !u || !u.elapsed
+      ? `Among comparable recorded TTC delays, the model estimates a ${pct(p)} chance the recorded delay lasts 10 minutes or more. This is not the chance your current alert causes that delay, or your remaining wait. Comparable means delays in the TTC log since January 2025 with this cause, station, line, time of day and day type, as the model weighs them; records with 0 minutes are left out.`
+      : `Among comparable recorded TTC delays that reached ${u.elapsed} minutes, the model estimates a ${pct(u.headline)} chance the recorded delay reached ${u.target} minutes or more in total (the ${u.target}+ chance divided by the ${u.elapsed}+ chance, from the same calibrated models, no refit). The log gives total minutes, not alert times, so “about ${u.elapsed} minutes in” is read as “the recorded delay has reached ${u.elapsed} minutes”. On the test periods these conditional chances averaged ${underwayChecks ? underwayNote(u.elapsed) : 'close to actual'}. This is not the chance your current alert causes that delay, or your remaining wait.`;
+    const a = !u || !u.elapsed ? WaitOrWalk.advice(p) : u.elapsed === 5 ? WaitOrWalk.advice(u.headline)
+      : { level: u.headline >= 0.35 ? 'high' : 'moderate', title: 'Already a long delay', text: `Comparable delays that reached 10 minutes went on to 20 or more ${pct(u.headline)} of the time.` };
     $('.result').className = 'card result ' + a.level;
     $('#advice').textContent = a.title + '.';
     $('#adviceText').textContent = a.text;
-    const ew = WaitOrWalk.expectedDelay(bands, policy && policy.binMeans);
-    const call = best && WaitOrWalk.switchCall(ew, best.cost, policy.margin);
-    const em = ew === null ? null : Math.round(ew);
-    const tail = ' This is not your remaining wait; if the delay is already underway, follow current TTC announcements.';
-    $('#suggest').innerHTML = em === null ? '' : call
-      ? `<b>Schedule comparison: ${call.switch ? 'switching' : 'waiting'} looks better.</b> By this estimate, delays like this average about ${em} minutes, against ${Math.round(call.cost)} extra minutes by Plan B (route ${esc(best.route)} to ${esc(best.dest)}, from the schedule).${call.switch ? ' Only if you can catch that bus: in the simulation, a missed or late bus erased the gain.' : ''}${tail}`
-      : `<b>Schedule comparison:</b> by this estimate, delays like this average about ${em} minutes. ${!$('#dest').value ? 'Choose where you are headed under Plan B to compare it with the best scheduled switch.' : ctx && !ctx.covered ? 'The schedule data has ended, so there is no switch to compare.' : 'No scheduled switch you can catch could be compared for that trip (the comparison needs a destination on the same line).'}${tail}`;
-    const sh = (q) => Math.round(q * 100) + '%', bmn = policy && policy.binMeans;
-    $('#mix').textContent = em === null || !bmn ? '' : `How ${pct(p)} becomes about ${em} minutes: a ${sh(1 - bands.p5)} chance of under 5 minutes (about ${Math.round(bmn[0])} on average), ${sh(bands.p5 - bands.p10)} of 5 to 10 (about ${Math.round(bmn[1])}), ${sh(bands.p10 - bands.p20)} of 10 to 20 (about ${Math.round(bmn[2])}) and ${sh(bands.p20)} of 20 or more (about ${Math.round(bmn[3])}).`;
+    verdict(u);
     const g = model.groups[x.group];
     $('#typical').textContent = `This cause: ${g.delays.toLocaleString('en-CA')} logged delays, ${g.longDelays.toLocaleString('en-CA')} of them 10 minutes or more; half were over in ${g.medianMinutes} minutes or less.`;
     const share = g.longDelays / g.delays;
@@ -74,12 +91,44 @@
     $('#drift').innerHTML = `<b>Drift correction:</b> <span class="drift-n">${pct(raw)}</span> before recalibration, <span class="drift-n">${pct(p)}</span> after. Long delays became rarer in 2026, so the shipped model is recalibrated on ${span(model.calibratedOn)}.`;
   }
 
+  function underwayNote(el) {
+    const c = underwayChecks[el === 5 ? 'tenGivenFive' : 'twentyGivenTen'];
+    return `${pct(c.meanForecast)} against ${pct(c.actualShare)} actual (${c.delays.toLocaleString('en-CA')} test delays)`;
+  }
+  // The wait or switch verdict: expected (remaining) logged delay against the best scheduled switch, shipped rule and margin.
+  function verdict(u) {
+    const em = !u || u.remaining === null ? null : Math.round(u.remaining);
+    const call = em !== null && best && WaitOrWalk.switchCall(u.remaining, best.cost, policy.margin);
+    const just = !u || !u.elapsed, left = just ? '' : ' left';
+    const lead = just ? 'assuming the incident has just begun, delays like this average' : `about ${u.elapsed} minutes in, comparable delays had on average`;
+    const cap = (t) => t.charAt(0).toUpperCase() + t.slice(1);
+    const tail = ' An estimate from recorded delays, not your remaining wait; always follow TTC announcements.';
+    const ttc = '<a href="https://www.ttc.ca/service-alerts" target="_blank" rel="noopener">Check TTC service alerts</a>';
+    let full = '', short = '';
+    if (em !== null && call) {
+      const w = call.switch ? 'switching' : 'waiting';
+      full = `<b>Schedule comparison: ${w} looks better.</b> ${cap(lead)} about ${em} minutes${left}, against ${Math.round(call.cost)} extra minutes by Plan B (route ${esc(best.route)} to ${esc(best.dest)}, from the schedule).${call.switch ? ` Switching only helps if you can catch that bus and it runs on time: in the simulation, a missed or late bus erased the gain. ${ttc}.` : ''}${tail}`;
+      short = `<b>Verdict: ${w} looks better</b> by the schedule, about ${em} minutes${left} against ${Math.round(call.cost)} by route ${esc(best.route.split(' ')[0])}${call.switch ? ', only if you can catch that bus and it runs on time' : ''}. <a href="#v-h">Why</a>`;
+    } else if (em !== null) {
+      const why = !$('#dest').value ? 'Choose where you are headed under Plan B to compare it with the best scheduled switch.' : ctx && !ctx.covered ? 'The schedule data has ended, so there is no switch to compare.' : 'No scheduled switch you can catch could be compared for that trip (the comparison needs a destination on the same line).';
+      full = `<b>Schedule comparison:</b> ${cap(lead)} about ${em} minutes${left}. ${why}${tail}`;
+      short = `<b>Verdict:</b> ${!$('#dest').value ? 'choose where you are headed under Plan B to compare waiting with switching.' : 'no scheduled switch to compare.'} <a href="#v-h">Details</a>`;
+    }
+    $('#suggest').innerHTML = full || 'Paste an alert to see the comparison.';
+    $('#verdictShort').innerHTML = short; $('#verdictShort').hidden = !short;
+    const bmn = policy && policy.binMeans, sh = (q) => Math.round(q * 100) + '%';
+    if (!u || !bmn || em === null) { $('#mix').textContent = ''; return; }
+    const b = u.bands;
+    $('#mix').textContent = just
+      ? `How ${pct(u.headline)} becomes about ${em} minutes: a ${sh(1 - b.p5)} chance of under 5 minutes (about ${Math.round(bmn[0])} on average), ${sh(b.p5 - b.p10)} of 5 to 10 (about ${Math.round(bmn[1])}), ${sh(b.p10 - b.p20)} of 10 to 20 (about ${Math.round(bmn[2])}) and ${sh(b.p20)} of 20 or more (about ${Math.round(bmn[3])}).`
+      : `How about ${em} minutes${left}: the average recorded minutes of the ranges still possible (${u.elapsed === 5 ? `5 to 10: about ${Math.round(bmn[1])}, ` : ''}10 to 20: about ${Math.round(bmn[2])}, 20 or more: about ${Math.round(bmn[3])}), weighted by their chances given ${u.elapsed} minutes so far, minus the ${u.elapsed} minutes gone.`;
+  }
   const KIND = { bus: 'bus', streetcar: 'streetcar', LRT: 'LRT (light rail)' };
   const clock = (m) => { const h = Math.floor(m / 60) % 24, mm = String(m % 60).padStart(2, '0'); return `${h % 12 || 12}:${mm} ${h < 12 ? 'a.m.' : 'p.m.'}`; };
   let ctx = null;
   const ymdWords = (y) => `${MON[+y.slice(4, 6) - 1]} ${+y.slice(6)}, ${y.slice(0, 4)}`;
   function timeContext() {
-    const c = WaitOrWalk.torontoClock(new Date());
+    const c = sim || WaitOrWalk.torontoClock(new Date());
     const a = WaitOrWalk.activeServices(ptimes.calendar, c.ymd, c.dow), b = WaitOrWalk.activeServices(ptimes.calendar, c.prevYmd, c.prevDow);
     return { now: c.minutes, today: a.services, yesterday: b.services, covered: a.covered, ymd: c.ymd, range: WaitOrWalk.scheduleRange(ptimes.calendar) };
   }
@@ -113,7 +162,7 @@
     const r = WaitOrWalk.planB(planb, s.name, dest);
     let html = `<p class="warn" id="planbWarn"><b>A scheduled alternative might not be running right now.</b> Routes can be detoured, short turned or replaced by shuttle buses. Check <a href="https://www.ttc.ca/service-alerts">TTC service alerts</a> before you walk.</p>`;
     const rg = ctx.range;
-    if (ctx.covered) html += `<p class="small" id="planbClock">Departures you can still catch from now (${clock(ctx.now)} Toronto time), allowing the walk at 80 metres a minute in a straight line plus 1 minute to board. Updated every minute. Schedule data ends on ${ymdWords(rg.to)}.</p>`;
+    if (ctx.covered) html += `<p class="small" id="planbClock">${sim ? `<b>${esc(sim.label)}.</b> Departures you could catch then` : `Departures you can still catch from now (${clock(ctx.now)} Toronto time)`}, allowing the walk at 80 metres a minute in a straight line plus 1 minute to board.${sim ? ' Paste your own alert for live times.' : ' Updated every minute.'} Schedule data ends on ${ymdWords(rg.to)}.</p>`;
     else html += `<p class="warn" id="planbClock"><b>Schedule data ends on ${ymdWords(rg.to)}.</b> ${ctx.ymd > rg.to ? 'Today is after that' : `It starts on ${ymdWords(rg.from)}, and today is before that`}, so departure times are not shown. Routes and stops below are from that schedule and may have changed.</p>`;
     if (d && d.name !== s.name) {
       const ranked = ctx.covered ? WaitOrWalk.rankByArrival(planb, ptimes.times, r.direct.concat(r.via), ctx.today, ctx.yesterday, ctx.now, d.name) : r.direct.concat(r.via).map((x) => Object.assign({}, x, { first: null, estimate: null }));
@@ -152,9 +201,10 @@
 
   function readAlert() {
     const text = $('#alert').value.trim();
-    $('#flags').innerHTML = ''; $('#example').hidden = true;
-    if (!text) { state = WaitOrWalk.applyAlert(state, null); sync(); $('#readNote').textContent = ''; render(); return; }
+    $('#flags').innerHTML = ''; $('#example').hidden = true; elapsed = 0;
+    if (!text) { planned = false; state = WaitOrWalk.applyAlert(state, null); sync(); $('#readNote').textContent = ''; render(); return; }
     const r = WaitOrWalk.readAlert(text, model);
+    planned = !!r.planned;
     // A field the alert does not mention goes back to empty, so nothing stale is kept from before.
     state = WaitOrWalk.applyAlert(state, r); sync();
     const got = [r.line && 'line', r.station && 'station', r.group && 'cause'].filter(Boolean);
@@ -216,6 +266,15 @@
     const SC = { asScheduled: 'As scheduled (1.3 m/s walk, 1 minute to board)', busLate5: 'Bus 5 minutes late', busLate10: 'Bus 10 minutes late', missedDeparture: 'First catchable departure missed', walk60: 'Walking at 1.0 m/s', board2: '2 minutes to board', board3: '3 minutes to board', allBad: 'All of these at once (5 late, missed, 1.0 m/s, 3 minutes)' };
     const st = checks.stress.subsets;
     $('#stressTable').innerHTML = `<table><thead><tr><th scope="col">What really happens (the rider still decides from the schedule)</th><th scope="col">All delays: against always wait (95% interval)</th><th scope="col">20+ minute delays: against always wait</th></tr></thead><tbody>${Object.keys(SC).map((k) => `<tr class="${k === 'asScheduled' ? 'ours' : ''}"><td>${SC[k]}</td><td>${saved(st.all[k].savedVsWait)}</td><td>${saved(st.atLeast20[k].savedVsWait)}</td></tr>`).join('')}</tbody></table>`;
+    const rb = checks.robust.subsets;
+    $('#robustTable').innerHTML = `<table><thead><tr><th scope="col">What really happens</th><th scope="col">Shipped rule against always wait</th><th scope="col">Late bus rule against always wait</th><th scope="col">Late bus rule against shipped (95% interval)</th></tr></thead><tbody>${Object.keys(SC).map((k) => `<tr class="${k === 'asScheduled' || k === 'busLate5' ? 'ours' : ''}"><td>${SC[k]}</td><td>${saved(st.all[k].savedVsWait)}</td><td>${saved(rb.all[k].savedVsWait)}</td><td>${saved(rb.all[k].robustMinusShipped)}</td></tr>`).join('')}</tbody></table>`;
+    const r0 = rb.all.asScheduled.robustMinusShipped, r5 = rb.all.busLate5.robustMinusShipped;
+    $('#robustNote').textContent = `All delays. Read honestly: it loses ${Math.abs(r0.value).toFixed(2)} minutes per delay as scheduled against the shipped rule (${Math.abs(r0.high).toFixed(2)} to ${Math.abs(r0.low).toFixed(2)}) and saves ${r5.value.toFixed(2)} when buses run 5 minutes late (${r5.low.toFixed(2)} to ${r5.high.toFixed(2)}); on delays of 20 minutes or more it gives up ${Math.abs(rb.atLeast20.asScheduled.robustMinusShipped.value).toFixed(2)} minutes as scheduled. It is ${checks.robust.ship ? 'shipped' : 'not shipped, because it is worse as scheduled'}. The card instead says to switch only if you can catch that bus and it runs on time.`;
+    const U = underwayChecks, UH = '<thead><tr><th scope="col">Given the delay reached</th><th scope="col">Test delays</th><th scope="col">Forecast on average</th><th scope="col">Actual share</th><th scope="col">AUC, Wait or Walk (95% interval)</th><th scope="col">AUC, cause only</th><th scope="col">Calibration error</th></tr></thead>';
+    const urow = (lab, c) => `<tr><td>${lab}</td><td>${c.delays.toLocaleString('en-CA')}</td><td>${pct(c.meanForecast)}</td><td>${pct(c.actualShare)}</td><td>${ci(c.methods.waitOrWalk.auc, 3)}</td><td>${c.methods.causeOnly.auc.value.toFixed(3)}</td><td>${(c.methods.waitOrWalk.calError.value * 100).toFixed(1)} pts</td></tr>`;
+    $('#underwayTable').innerHTML = `<table>${UH}<tbody>${urow('5 minutes: chance of 10+ in total', U.tenGivenFive)}${urow('10 minutes: chance of 20+ in total', U.twentyGivenTen)}</tbody></table>`;
+    const rm = U.remaining;
+    $('#underwayNote').textContent = `The same test periods as above, no refit: the conditional chances are the band ratios of the per period models. They rank less well than the headline (once a delay has lasted 5 minutes, the easy short ones are gone) but stay level with or ahead of the cause only rule, and calibration is within ${Math.ceil(Math.max(U.tenGivenFive.methods.waitOrWalk.calError.value, U.twentyGivenTen.methods.waitOrWalk.calError.value) * 100)} points. Expected remaining minutes against logged remaining minutes (capped at 60): ${rm.map((r) => `from ${r.elapsed} minutes, ${r.expectedRemaining.toFixed(1)} expected against ${r.loggedRemaining.toFixed(1)} logged`).join('; ')}. The log gives total minutes, not alert times, so “about 5 minutes in” is read as “the recorded delay reached 5 minutes”.`;
     const sim = ev.simulation;
     $('#simTable').innerHTML = `<table><thead><tr><th scope="col">Assumed extra minutes to switch</th><th scope="col">Always wait</th><th scope="col">Cause only rule</th><th scope="col">Wait or Walk</th><th scope="col">Hindsight best</th><th scope="col">Wait or Walk against cause only (95% interval)</th></tr></thead><tbody>${sim.rows.map((r) => `<tr><td>${r.switchCost} min</td><td>${r.alwaysWait.toFixed(2)}</td><td>${r.causeOnly.toFixed(2)}</td><td>${r.waitOrWalk.toFixed(2)}</td><td>${r.hindsightBest.toFixed(2)}</td><td>${dci(r.waitOrWalkMinusCauseOnly, 2, false, 'min fewer', 'min more')}</td></tr>`).join('')}</tbody></table>`;
     $('#sensTable').innerHTML = `<table><thead><tr><th scope="col">Half life</th><th scope="col">Recalibration window</th><th scope="col">AUC</th><th scope="col">Log loss</th><th scope="col">Calibration error</th></tr></thead><tbody>${ev.sensitivity.map((r) => `<tr class="${r.shipped ? 'ours' : ''}"><td>${r.halfLifeDays ? r.halfLifeDays + ' days' : 'none (equal weights)'}</td><td>${r.calibrationDays} days</td><td>${r.auc.toFixed(4)}</td><td>${r.logLoss.toFixed(4)}</td><td>${r.calError.toFixed(1)} pts${r.shipped ? ' (shipped)' : ''}</td></tr>`).join('')}</tbody></table>`;
@@ -238,13 +297,43 @@
     $('#zeroCount').textContent = m.zeroMinuteRecordsExcluded.toLocaleString('en-CA');
   }
 
+  // A destination the rider chose before is filled in again for their own alerts (kept only in this browser).
+  function savedDest() {
+    try { const d = localStorage.getItem('wowDest'); if (d && !$('#dest').value && model.stations.some((t) => t.name === d)) { $('#dest').value = d; render(); } } catch (e) { /* storage off */ }
+  }
+  // A link that reopens this alert, destination and setting (nothing is stored on any server).
+  function share() {
+    const q = new URLSearchParams();
+    if ($('#alert').value.trim()) q.set('alert', $('#alert').value.trim());
+    if ($('#dest').value) q.set('dest', $('#dest').value);
+    if (elapsed) q.set('in', String(elapsed));
+    const url = location.origin + location.pathname + (q.toString() ? '?' + q : '');
+    const done = (t) => { $('#shareNote').textContent = t; };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(() => done('Link copied.'), () => done(url));
+    else done(url);
+  }
+  // The TTC's open subway alerts, copied into this site every 30 minutes by a scheduled job (data/live_alerts.json).
+  const when = (sec) => { const d = new Date(sec * 1000), c = WaitOrWalk.torontoClock(d); return `${clock(c.minutes)} on ${ymdWords(c.ymd)}`; };
+  function loadLive(get) {
+    get('data/live_alerts.json?t=' + Math.floor(Date.now() / 60000)).then((L) => {
+      live = L; const now = Date.now() / 1000;
+      const act = L.alerts.filter((a) => !a.end || a.end > now);
+      const age = Math.round((now - L.fetchedAt) / 60);
+      $('#liveSum').textContent = `TTC subway alerts: ${act.length} in the copy saved at ${when(L.fetchedAt)}`;
+      $('#liveList').innerHTML = act.length ? act.map((a, i) => `<li><span>${esc(a.header)}</span> <button type="button" data-live="${i}">Use this alert</button></li>`).join('') : '<li>No subway alerts in the latest copy.</li>';
+      $('#liveList').querySelectorAll('[data-live]').forEach((b) => b.addEventListener('click', () => { setSim(false); $('#alert').value = act[+b.dataset.live].header; readAlert(); savedDest(); }));
+      $('#liveNote').textContent = `Copied from the TTC's open GTFS Realtime feed (Open Government Licence Toronto). The copy updates within about 30 minutes when the alerts change, and scheduled runs can be late${age > 120 ? `; this copy is ${Math.round(age / 60)} hours old` : ''}. For the newest alert, paste it from the TTC.`;
+      $('#live').hidden = false;
+    }).catch(() => { $('#live').hidden = true; });
+  }
+
   let wired = false;
   function load() {
     $('#loading').hidden = false; $('#loadError').hidden = true;
     const get = (f) => fetch(f).then((r) => { if (!r.ok) throw new Error(f + ' ' + r.status); return r.json(); });
     const v = (f) => get(f + '?v=' + VERSION);
-    Promise.all([v('data/model.json'), v('data/metrics.json'), v('data/planb.json'), v('data/planb_times.json'), v('data/policy.json'), v('data/decision_checks.json')]).then(([mo, me, pb, pt, po, dc]) => {
-      model = mo; planb = pb; ptimes = pt; policy = po; checks = dc;
+    Promise.all([v('data/model.json'), v('data/metrics.json'), v('data/planb.json'), v('data/planb_times.json'), v('data/policy.json'), v('data/decision_checks.json'), v('data/underway_checks.json')]).then(([mo, me, pb, pt, po, dc, uc]) => {
+      model = mo; planb = pb; ptimes = pt; policy = po; checks = dc; underwayChecks = uc;
       $('#baseThrough').textContent = day(mo.baseTrainedThrough); $('#calOn').textContent = span(mo.calibratedOn);
       fillSelects(); metrics(me);
       $('#loading').hidden = true; $('#app').hidden = false;
@@ -252,28 +341,38 @@
         wired = true;
         ['#line', '#station', '#group'].forEach((id) => $(id).addEventListener('change', () => { const k = id.slice(1); state[k] = $(id).value; state.derived.delete(k); if (k !== 'group') state.pending = null; tag(k, false); render(); }));
         ['#time', '#weekend', '#dest'].forEach((id) => $(id).addEventListener('change', render));
-        $('#alert').addEventListener('input', readAlert);
+        $('#alert').addEventListener('input', () => { setSim(false); readAlert(); savedDest(); });
+        $('#dest').addEventListener('change', () => { try { if ($('#dest').value && !sim) localStorage.setItem('wowDest', $('#dest').value); } catch (e) { /* storage off */ } });
+        $('#liveTime').addEventListener('click', () => { setSim(false); render(); });
+        document.querySelectorAll('[data-elapsed]').forEach((b) => b.addEventListener('click', () => { elapsed = +b.dataset.elapsed; render(); }));
+        $('#shareBtn').addEventListener('click', share);
         $('#pasteBtn').addEventListener('click', () => {
           if (!navigator.clipboard || !navigator.clipboard.readText) { $('#alert').focus(); $('#readNote').textContent = 'Paste the alert into the box (long press or Ctrl+V).'; return; }
-          navigator.clipboard.readText().then((t) => { $('#alert').value = t; readAlert(); }).catch(() => { $('#alert').focus(); $('#readNote').textContent = 'Could not read the clipboard. Paste the alert into the box (long press or Ctrl+V).'; });
+          navigator.clipboard.readText().then((t) => { setSim(false); $('#alert').value = t; readAlert(); savedDest(); }).catch(() => { $('#alert').focus(); $('#readNote').textContent = 'Could not read the clipboard. Paste the alert into the box (long press or Ctrl+V).'; });
         });
         document.querySelectorAll('[data-alert]').forEach((b) => b.addEventListener('click', () => {
-          $('#alert').value = b.dataset.alert; readAlert(); $('#dest').value = b.dataset.dest || ''; render();
+          setSim(true); $('#alert').value = b.dataset.alert; readAlert(); $('#dest').value = b.dataset.dest || ''; render();
           const res = $('.result'); res.classList.remove('flash'); void res.offsetWidth; res.classList.add('flash');
           if (res.getBoundingClientRect().top > window.innerHeight - 120) res.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }));
         $('#tableDetails').open = !window.matchMedia('(max-width: 700px)').matches;
       }
       // On phones, show one worked example straight away so the result is visible without scrolling.
-      if (!$('#alert').value && window.matchMedia('(max-width: 700px)').matches) {
-        $('#alert').value = document.querySelector('[data-worked]').dataset.alert; readAlert(); $('#dest').value = 'Jane'; $('#example').hidden = false;
+      const q = new URLSearchParams(location.search);
+      if (q.get('alert') && !$('#alert').value) {
+        $('#alert').value = q.get('alert').slice(0, 600); readAlert();
+        if (q.get('dest') && model.stations.some((t) => t.name === q.get('dest'))) $('#dest').value = q.get('dest');
+        if (['5', '10'].includes(q.get('in'))) elapsed = +q.get('in');
+      } else if (!$('#alert').value && window.matchMedia('(max-width: 700px)').matches) {
+        setSim(true); $('#alert').value = document.querySelector('[data-worked]').dataset.alert; readAlert(); $('#dest').value = 'Jane';
       }
+      loadLive(get);
       render();
     }).catch(() => { $('#loading').hidden = true; $('#loadError').hidden = false; });
   }
   // Keep Plan B times current: re-render when the Toronto minute or the service date changes.
   setInterval(() => {
-    if (!model || !ptimes || !ctx || $('#app').hidden) return;
+    if (!model || !ptimes || !ctx || sim || $('#app').hidden) return;
     const c = WaitOrWalk.torontoClock(new Date());
     if (c.minutes !== ctx.now || c.ymd !== ctx.ymd) render();
   }, 5000);

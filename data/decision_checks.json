@@ -18,7 +18,9 @@
     "loggedMinutesAverage": 7.26,
     "expectedDelayBase": 7.08,
     "expectedDelayRecent": 6.92,
-    "recentMargin": -1.0
+    "recentMargin": -1.0,
+    "shippedMargin": -0.5,
+    "robustMargin": 3.5
    },
    {
     "test": "2026-04-01 to 2026-06-30",
@@ -37,7 +39,9 @@
     "loggedMinutesAverage": 6.39,
     "expectedDelayBase": 7.13,
     "expectedDelayRecent": 7.17,
-    "recentMargin": 2.0
+    "recentMargin": 2.0,
+    "shippedMargin": 1.0,
+    "robustMargin": 12.5
    },
    {
     "test": "2026-07-01 to 2026-09-30",
@@ -56,7 +60,9 @@
     "loggedMinutesAverage": 5.95,
     "expectedDelayBase": 6.42,
     "expectedDelayRecent": 6.36,
-    "recentMargin": 0.5
+    "recentMargin": 0.5,
+    "shippedMargin": 0.5,
+    "robustMargin": 4.0
    }
   ],
   "subsets": {
@@ -326,5 +332,338 @@
     }
    }
   }
+ },
+ "robust": {
+  "chosenUnder": "busLate5",
+  "margins": [
+   3.5,
+   12.5,
+   4.0
+  ],
+  "subsets": {
+   "all": {
+    "delays": 7455,
+    "asScheduled": {
+     "minutes": 6.5,
+     "savedVsWait": {
+      "value": 0.06,
+      "low": 0.04,
+      "high": 0.08
+     },
+     "robustMinusShipped": {
+      "value": -0.1,
+      "low": -0.14,
+      "high": -0.06
+     }
+    },
+    "busLate5": {
+     "minutes": 6.54,
+     "savedVsWait": {
+      "value": 0.02,
+      "low": -0.0,
+      "high": 0.04
+     },
+     "robustMinusShipped": {
+      "value": 0.16,
+      "low": 0.11,
+      "high": 0.2
+     }
+    },
+    "busLate10": {
+     "minutes": 6.59,
+     "savedVsWait": {
+      "value": -0.03,
+      "low": -0.04,
+      "high": -0.01
+     },
+     "robustMinusShipped": {
+      "value": 0.41,
+      "low": 0.36,
+      "high": 0.46
+     }
+    },
+    "missedDeparture": {
+     "minutes": 6.7,
+     "savedVsWait": {
+      "value": -0.14,
+      "low": -0.18,
+      "high": -0.11
+     },
+     "robustMinusShipped": {
+      "value": 1.22,
+      "low": 1.1,
+      "high": 1.34
+     }
+    },
+    "walk60": {
+     "minutes": 6.53,
+     "savedVsWait": {
+      "value": 0.03,
+      "low": 0.01,
+      "high": 0.06
+     },
+     "robustMinusShipped": {
+      "value": 0.05,
+      "low": -0.0,
+      "high": 0.11
+     }
+    },
+    "board2": {
+     "minutes": 6.58,
+     "savedVsWait": {
+      "value": -0.02,
+      "low": -0.05,
+      "high": 0.01
+     },
+     "robustMinusShipped": {
+      "value": 0.3,
+      "low": 0.22,
+      "high": 0.38
+     }
+    },
+    "board3": {
+     "minutes": 6.63,
+     "savedVsWait": {
+      "value": -0.07,
+      "low": -0.1,
+      "high": -0.04
+     },
+     "robustMinusShipped": {
+      "value": 0.59,
+      "low": 0.49,
+      "high": 0.68
+     }
+    },
+    "allBad": {
+     "minutes": 6.85,
+     "savedVsWait": {
+      "value": -0.3,
+      "low": -0.36,
+      "high": -0.24
+     },
+     "robustMinusShipped": {
+      "value": 2.25,
+      "low": 2.05,
+      "high": 2.46
+     }
+    }
+   },
+   "under10": {
+    "delays": 6363,
+    "asScheduled": {
+     "minutes": 4.44,
+     "savedVsWait": {
+      "value": 0.01,
+      "low": 0.0,
+      "high": 0.01
+     },
+     "robustMinusShipped": {
+      "value": 0.05,
+      "low": 0.03,
+      "high": 0.06
+     }
+    },
+    "busLate5": {
+     "minutes": 4.47,
+     "savedVsWait": {
+      "value": -0.02,
+      "low": -0.03,
+      "high": -0.02
+     },
+     "robustMinusShipped": {
+      "value": 0.28,
+      "low": 0.26,
+      "high": 0.31
+     }
+    },
+    "busLate10": {
+     "minutes": 4.5,
+     "savedVsWait": {
+      "value": -0.05,
+      "low": -0.06,
+      "high": -0.04
+     },
+     "robustMinusShipped": {
+      "value": 0.52,
+      "low": 0.47,
+      "high": 0.56
+     }
+    },
+    "missedDeparture": {
+     "minutes": 4.56,
+     "savedVsWait": {
+      "value": -0.11,
+      "low": -0.15,
+      "high": -0.08
+     },
+     "robustMinusShipped": {
+      "value": 1.23,
+      "low": 1.11,
+      "high": 1.35
+     }
+    },
+    "walk60": {
+     "minutes": 4.46,
+     "savedVsWait": {
+      "value": -0.01,
+      "low": -0.02,
+      "high": 0.0
+     },
+     "robustMinusShipped": {
+      "value": 0.2,
+      "low": 0.15,
+      "high": 0.25
+     }
+    },
+    "board2": {
+     "minutes": 4.5,
+     "savedVsWait": {
+      "value": -0.05,
+      "low": -0.08,
+      "high": -0.03
+     },
+     "robustMinusShipped": {
+      "value": 0.45,
+      "low": 0.38,
+      "high": 0.53
+     }
+    },
+    "board3": {
+     "minutes": 4.53,
+     "savedVsWait": {
+      "value": -0.08,
+      "low": -0.12,
+      "high": -0.05
+     },
+     "robustMinusShipped": {
+      "value": 0.73,
+      "low": 0.64,
+      "high": 0.83
+     }
+    },
+    "allBad": {
+     "minutes": 4.66,
+     "savedVsWait": {
+      "value": -0.21,
+      "low": -0.26,
+      "high": -0.16
+     },
+     "robustMinusShipped": {
+      "value": 2.23,
+      "low": 2.01,
+      "high": 2.46
+     }
+    }
+   },
+   "atLeast20": {
+    "delays": 309,
+    "asScheduled": {
+     "minutes": 33.11,
+     "savedVsWait": {
+      "value": 0.91,
+      "low": 0.46,
+      "high": 1.47
+     },
+     "robustMinusShipped": {
+      "value": -2.17,
+      "low": -2.98,
+      "high": -1.43
+     }
+    },
+    "busLate5": {
+     "minutes": 33.26,
+     "savedVsWait": {
+      "value": 0.76,
+      "low": 0.37,
+      "high": 1.24
+     },
+     "robustMinusShipped": {
+      "value": -1.77,
+      "low": -2.49,
+      "high": -1.13
+     }
+    },
+    "busLate10": {
+     "minutes": 33.42,
+     "savedVsWait": {
+      "value": 0.6,
+      "low": 0.28,
+      "high": 1.02
+     },
+     "robustMinusShipped": {
+      "value": -1.37,
+      "low": -2.01,
+      "high": -0.82
+     }
+    },
+    "missedDeparture": {
+     "minutes": 34.07,
+     "savedVsWait": {
+      "value": -0.05,
+      "low": -0.27,
+      "high": 0.16
+     },
+     "robustMinusShipped": {
+      "value": 0.17,
+      "low": -0.34,
+      "high": 0.66
+     }
+    },
+    "walk60": {
+     "minutes": 33.35,
+     "savedVsWait": {
+      "value": 0.67,
+      "low": 0.22,
+      "high": 1.18
+     },
+     "robustMinusShipped": {
+      "value": -2.11,
+      "low": -2.88,
+      "high": -1.4
+     }
+    },
+    "board2": {
+     "minutes": 33.41,
+     "savedVsWait": {
+      "value": 0.61,
+      "low": 0.17,
+      "high": 1.12
+     },
+     "robustMinusShipped": {
+      "value": -2.11,
+      "low": -2.88,
+      "high": -1.4
+     }
+    },
+    "board3": {
+     "minutes": 33.48,
+     "savedVsWait": {
+      "value": 0.54,
+      "low": 0.15,
+      "high": 1.01
+     },
+     "robustMinusShipped": {
+      "value": -1.63,
+      "low": -2.28,
+      "high": -1.02
+     }
+    },
+    "allBad": {
+     "minutes": 34.69,
+     "savedVsWait": {
+      "value": -0.67,
+      "low": -1.21,
+      "high": -0.27
+     },
+     "robustMinusShipped": {
+      "value": 1.48,
+      "low": 0.67,
+      "high": 2.44
+     }
+    }
+   }
+  },
+  "ship": false,
+  "reason": "worse as scheduled than the shipped rule"
  }
 }

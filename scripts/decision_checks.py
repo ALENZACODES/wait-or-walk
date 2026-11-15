@@ -6,6 +6,10 @@
 2. Stress test: the rider decides from the schedule (80 m a minute, 1 minute to board, on time buses), but the switch
    really costs more: buses 5 or 10 minutes late, the first catchable departure missed, walking at 1.0 m/s (60 m a minute),
    boarding buffers of 1 to 3 minutes, and all of the bad ones at once. Does the rule still beat always waiting?
+3. A slippage robust margin: for each test period the margin is picked on that period's earlier window (the same 91 days
+   used for recalibration) as the one with the fewest minutes when every bus runs 5 minutes late (busLate5), then the
+   full stress table is run with it on the test period. It ships only if it is at least as good as the shipped rule as
+   scheduled and loses less under slippage.
 Reads the evaluation forecasts train.py saves in the cache (preds.pkl). Writes data/decision_checks.json.
 Run after train.py: python3 scripts/decision_checks.py [cache_dir]
 """
@@ -106,16 +110,19 @@ def main():
         rows_c = directions(cs, pb, deps, cands); Dc = np.minimum(cs['minutes'], WAIT_CAP)
         ew_c = exp_wait(cs['p5'], cs['p10'], cs['p20'], bm_recent)
         m_recent = min(T0.MARGIN_GRID, key=lambda mg: cost(rows_c, Dc, lambda r, x: ew_c[r] - x >= mg).mean())
+        ew_cb = exp_wait(cs['p5'], cs['p10'], cs['p20'], bm_base)
+        m_robust = min(T0.MARGIN_GRID, key=lambda mg: cost(rows_c, Dc, lambda r, x: ew_cb[r] - x >= mg, 'busLate5').mean())
         rows = directions(te, pb, deps, cands)
         C = {'alwaysWait': cost(rows, D, lambda r, x: False),
              'shippedRule': cost(rows, D, lambda r, x: ew_base[r] - x >= margins[k]),
              'recentBinMeans': cost(rows, D, lambda r, x: ew_recent[r] - x >= m_recent)}
         for sc in SCENARIOS:
             C['stress_' + sc] = cost(rows, D, lambda r, x: ew_base[r] - x >= margins[k], sc)
-            C['stressWait_' + sc] = C['alwaysWait']
+            C['robust_' + sc] = cost(rows, D, lambda r, x: ew_base[r] - x >= m_robust, sc)
         drift.append({'test': metrics['folds'][k]['test'], 'binMeansBase': [round(x, 2) for x in bm_base], 'binMeansRecent': [round(x, 2) for x in bm_recent],
                       'loggedMinutesAverage': round(float(D.mean()), 2), 'expectedDelayBase': round(float(ew_base.mean()), 2),
-                      'expectedDelayRecent': round(float(ew_recent.mean()), 2), 'recentMargin': m_recent})
+                      'expectedDelayRecent': round(float(ew_recent.mean()), 2), 'recentMargin': m_recent,
+                      'shippedMargin': margins[k], 'robustMargin': m_robust})
         tests.append(dict(C, D=D, y=te['y'], date=te['date']))
     allC = {q: np.concatenate([t[q] for t in tests]) for q in tests[0] if q not in ('D', 'y', 'date')}
     D = np.concatenate([t['D'] for t in tests])
@@ -125,7 +132,8 @@ def main():
     def ci(diff, mask):
         vals = [diff[i][mask[i]].mean() for i in idxs]
         return {'value': round(float(diff[mask].mean()), 2), 'low': round(float(np.percentile(vals, 2.5)), 2), 'high': round(float(np.percentile(vals, 97.5)), 2)}
-    out = {'drift': {'periods': drift, 'subsets': {}}, 'stress': {'scenarios': SCENARIOS, 'subsets': {}}}
+    out = {'drift': {'periods': drift, 'subsets': {}}, 'stress': {'scenarios': SCENARIOS, 'subsets': {}},
+           'robust': {'chosenUnder': 'busLate5', 'margins': [d['robustMargin'] for d in drift], 'subsets': {}}}
     for name, mask in subsets.items():
         out['drift']['subsets'][name] = {'delays': int(mask.sum()), 'shippedRule': round(float(allC['shippedRule'][mask].mean()), 2),
                                          'recentBinMeans': round(float(allC['recentBinMeans'][mask].mean()), 2),
@@ -134,8 +142,19 @@ def main():
         for sc in SCENARIOS:
             row[sc] = {'minutes': round(float(allC['stress_' + sc][mask].mean()), 2), 'savedVsWait': ci(allC['alwaysWait'] - allC['stress_' + sc], mask)}
         out['stress']['subsets'][name] = row
+        rob = {'delays': int(mask.sum())}
+        for sc in SCENARIOS:
+            rob[sc] = {'minutes': round(float(allC['robust_' + sc][mask].mean()), 2), 'savedVsWait': ci(allC['alwaysWait'] - allC['robust_' + sc], mask),
+                       'robustMinusShipped': ci(allC['stress_' + sc] - allC['robust_' + sc], mask)}
+        out['robust']['subsets'][name] = rob
+    a = out['robust']['subsets']['all']
+    sched_ok = a['asScheduled']['robustMinusShipped']['value'] >= 0
+    slip_ok = a['busLate5']['robustMinusShipped']['value'] > 0
+    out['robust']['ship'] = bool(sched_ok and slip_ok)
+    out['robust']['reason'] = ('at least as good as scheduled and better under slippage' if sched_ok and slip_ok else
+                               'worse as scheduled than the shipped rule' if not sched_ok else 'not better under slippage')
     json.dump(out, open(os.path.join(ROOT, 'data', 'decision_checks.json'), 'w'), indent=1)
-    print(json.dumps(out['drift'], indent=1)); print(json.dumps(out['stress']['subsets'], indent=1))
+    print(json.dumps(out['robust'], indent=1))
 
 if __name__ == '__main__':
     main()
