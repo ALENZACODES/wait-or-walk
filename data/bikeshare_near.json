@@ -1,0 +1,940 @@
+{
+"source": "Bike Share Toronto GBFS v3 station_information (https://toronto.publicbikesystem.net/customer/gbfs/v3.0/station_information), read 2026-11-15",
+"licence": "Open Government Licence Toronto (City of Toronto catalogue); live feed listed as CC BY 4.0 by the Mobility Database",
+"statusUrl": "https://toronto.publicbikesystem.net/customer/gbfs/v3.0/station_status",
+"radiusMetres": 400,
+"stations": {
+"Bathurst": [
+{
+"id": "7154",
+"name": "Bathurst Subway Station",
+"metres": 98
+},
+{
+"id": "7766",
+"name": "Albany Ave / Bloor St W",
+"metres": 111
+},
+{
+"id": "7907",
+"name": "365 Lippincott St",
+"metres": 185
+}
+],
+"Bay": [
+{
+"id": "7384",
+"name": "Cumberland St / Bay St - SMART",
+"metres": 82
+},
+{
+"id": "7335",
+"name": "Bay St / Bloor St W (West Side)",
+"metres": 150
+},
+{
+"id": "7029",
+"name": "Bay St / Bloor St W (East Side)",
+"metres": 157
+}
+],
+"Bayview": [
+{
+"id": "7985",
+"name": "Hawksbury Dr / Sheppard Ave E",
+"metres": 321
+}
+],
+"Bessarion": [
+{
+"id": "8218",
+"name": "Bessarion Rd / Sheppard Ave E",
+"metres": 69
+}
+],
+"Bloor": [
+{
+"id": "7246",
+"name": "Yonge St / Bloor St",
+"metres": 96
+},
+{
+"id": "7385",
+"name": "20 Charles St E",
+"metres": 161
+},
+{
+"id": "7276",
+"name": "Bloor St W / Balmuto St",
+"metres": 207
+}
+],
+"Broadview": [
+{
+"id": "7388",
+"name": "Broadview Subway Station",
+"metres": 59
+},
+{
+"id": "7922",
+"name": "35 Erindale Ave",
+"metres": 132
+},
+{
+"id": "7095",
+"name": "Danforth Ave / Ellerbeck St",
+"metres": 179
+}
+],
+"Castle Frank": [
+{
+"id": "7117",
+"name": "Castle Frank Subway Station",
+"metres": 90
+},
+{
+"id": "7116",
+"name": "Bloor St E / Parliament St",
+"metres": 350
+},
+{
+"id": "7410",
+"name": "Howard St / Rose Ave",
+"metres": 380
+}
+],
+"Cedarvale": [
+{
+"id": "7998",
+"name": "Eglinton West Subway Station",
+"metres": 150
+}
+],
+"Chester": [
+{
+"id": "7094",
+"name": "14 Arundel Ave",
+"metres": 96
+},
+{
+"id": "7095",
+"name": "Danforth Ave / Ellerbeck St",
+"metres": 360
+}
+],
+"Christie": [
+{
+"id": "7153",
+"name": "Bloor St W / Christie St",
+"metres": 76
+},
+{
+"id": "7239",
+"name": "Bloor St W / Manning Ave - SMART",
+"metres": 168
+},
+{
+"id": "7040",
+"name": "Euclid Ave / Bloor St W",
+"metres": 271
+}
+],
+"College": [
+{
+"id": "8213",
+"name": "Yonge St / College St",
+"metres": 10
+},
+{
+"id": "7418",
+"name": "College Park - Yonge St Entrance",
+"metres": 103
+},
+{
+"id": "8084",
+"name": "Grenville St / Yonge St",
+"metres": 148
+}
+],
+"Coxwell": [
+{
+"id": "7820",
+"name": "1612 Danforth Ave",
+"metres": 79
+},
+{
+"id": "7088",
+"name": "Danforth Ave / Coxwell Ave",
+"metres": 114
+},
+{
+"id": "8196",
+"name": "737 Rhodes Ave",
+"metres": 223
+}
+],
+"Davisville": [
+{
+"id": "7378",
+"name": "Yonge St / Davisville Ave",
+"metres": 45
+},
+{
+"id": "7813",
+"name": "Yonge St / Merton St",
+"metres": 166
+},
+{
+"id": "7377",
+"name": "Balliol St / Yonge St - SMART",
+"metres": 234
+}
+],
+"Don Mills": [
+{
+"id": "8056",
+"name": "Parkway Forest Dr / Forest Manor Rd (North)",
+"metres": 302
+}
+],
+"Donlands": [
+{
+"id": "7091",
+"name": "Donlands Subway Station",
+"metres": 77
+},
+{
+"id": "7655",
+"name": "Danforth Ave / Dewhurst Blvd",
+"metres": 119
+},
+{
+"id": "7596",
+"name": "Langford Ave / Danforth Ave - SMART",
+"metres": 213
+}
+],
+"Downsview Park": [
+{
+"id": "7782",
+"name": "Downsview Park Subway Station - SMART",
+"metres": 78
+}
+],
+"Dufferin": [
+{
+"id": "7687",
+"name": "Bloor St W / Gladstone Ave - SMART",
+"metres": 69
+},
+{
+"id": "7157",
+"name": "Dufferin St / Bloor St W",
+"metres": 85
+},
+{
+"id": "8199",
+"name": "7 Bartlett Ave",
+"metres": 150
+}
+],
+"Dundas West": [
+{
+"id": "7178",
+"name": "Dundas St W / Edna Ave",
+"metres": 51
+},
+{
+"id": "7174",
+"name": "Bloor St W / Dundas St W",
+"metres": 85
+},
+{
+"id": "7728",
+"name": "Randolph Ave / Perth Ave",
+"metres": 223
+}
+],
+"Dupont": [
+{
+"id": "7140",
+"name": "Macpherson Ave / Spadina Rd",
+"metres": 160
+},
+{
+"id": "7143",
+"name": "Kendal Ave / Bernard Ave",
+"metres": 336
+},
+{
+"id": "8255",
+"name": "Dartnell Ave / Bridgman Ave",
+"metres": 379
+}
+],
+"Eglinton": [
+{
+"id": "7818",
+"name": "Soudan Ave / Yonge St",
+"metres": 180
+},
+{
+"id": "7789",
+"name": "75 Holly St",
+"metres": 208
+},
+{
+"id": "7371",
+"name": "Eglinton Ave W / Henning Ave SMART",
+"metres": 253
+}
+],
+"Finch": [
+{
+"id": "7832",
+"name": "Finch Subway Station",
+"metres": 154
+}
+],
+"Finch West": [],
+"Glencairn": [
+{
+"id": "7833",
+"name": "Glencairn Subway Station",
+"metres": 118
+},
+{
+"id": "7849",
+"name": "Viewmount Park",
+"metres": 300
+}
+],
+"Greenwood": [
+{
+"id": "7090",
+"name": "Danforth Ave / Lamb Ave",
+"metres": 136
+},
+{
+"id": "7704",
+"name": "24 Mountjoy Ave",
+"metres": 247
+}
+],
+"High Park": [
+{
+"id": "7438",
+"name": "Gothic Ave / Quebec Ave",
+"metres": 35
+},
+{
+"id": "7221",
+"name": "High Park Subway Station",
+"metres": 200
+},
+{
+"id": "7224",
+"name": "Bloor St W / High Park Ave (High Park)",
+"metres": 225
+}
+],
+"Highway 407": [],
+"Islington": [
+{
+"id": "7841",
+"name": "Islington Subway Station (Aberfoyle Cres)",
+"metres": 66
+},
+{
+"id": "7840",
+"name": "Mabelle Park",
+"metres": 285
+}
+],
+"Jane": [
+{
+"id": "7729",
+"name": "265 Armadale Ave",
+"metres": 66
+},
+{
+"id": "7479",
+"name": "Jane St / Bloor St W (Jane Subway Station)",
+"metres": 86
+},
+{
+"id": "8186",
+"name": "265 Willard Ave",
+"metres": 165
+}
+],
+"Keele": [
+{
+"id": "7223",
+"name": "Parkside Dr / Bloor St W - SMART",
+"metres": 119
+},
+{
+"id": "7653",
+"name": "Bloor St W / Indian Rd",
+"metres": 191
+},
+{
+"id": "7654",
+"name": "Bloor St W / Pacific Ave",
+"metres": 363
+}
+],
+"Kennedy": [
+{
+"id": "8219",
+"name": "Kennedy Station",
+"metres": 141
+}
+],
+"King": [
+{
+"id": "7417",
+"name": "King St W / Jordan St",
+"metres": 61
+},
+{
+"id": "8237",
+"name": "King St E / Victoria St (2)",
+"metres": 119
+},
+{
+"id": "7333",
+"name": "King St E / Victoria St",
+"metres": 147
+}
+],
+"Kipling": [
+{
+"id": "8272",
+"name": "Kipling Station",
+"metres": 159
+}
+],
+"Lansdowne": [
+{
+"id": "7866",
+"name": "697 Lansdowne Ave",
+"metres": 25
+},
+{
+"id": "7180",
+"name": "Lansdowne Subway Station",
+"metres": 60
+},
+{
+"id": "8212",
+"name": "9 Emerson Ave",
+"metres": 138
+}
+],
+"Lawrence": [
+{
+"id": "7625",
+"name": "Yonge St / Lawrence Ave E",
+"metres": 142
+}
+],
+"Lawrence West": [
+{
+"id": "7999",
+"name": "Lawrence Ave W / Marlee Ave",
+"metres": 183
+}
+],
+"Leslie": [
+{
+"id": "7977",
+"name": "Leslie Subway Station",
+"metres": 137
+},
+{
+"id": "7986",
+"name": "Sheppard Ave E / Leslie St",
+"metres": 168
+}
+],
+"Main Street": [
+{
+"id": "7085",
+"name": "Danforth Ave / Westlake Ave",
+"metres": 331
+}
+],
+"Museum": [
+{
+"id": "7457",
+"name": "Queen's Park Cres W / Hoskin Ave",
+"metres": 167
+},
+{
+"id": "7063",
+"name": "Queen's Park / Bloor St W",
+"metres": 214
+},
+{
+"id": "7008",
+"name": "Wellesley St W / Queen's Park Cres",
+"metres": 369
+}
+],
+"North York Centre": [
+{
+"id": "7978",
+"name": "Yonge St / North York Blvd",
+"metres": 76
+},
+{
+"id": "8197",
+"name": "10 Kingsdale Ave",
+"metres": 282
+}
+],
+"Old Mill": [
+{
+"id": "7658",
+"name": "King's Mill Park",
+"metres": 87
+},
+{
+"id": "7748",
+"name": "Bloor St W / Old Mill Trl",
+"metres": 183
+}
+],
+"Osgoode": [
+{
+"id": "7407",
+"name": "University Ave / Queen St W",
+"metres": 64
+},
+{
+"id": "7928",
+"name": "Simcoe St / Pullan Pl",
+"metres": 77
+},
+{
+"id": "7646",
+"name": "University Ave / Richmond St W",
+"metres": 144
+}
+],
+"Ossington": [
+{
+"id": "7437",
+"name": "Concord Ave / Bloor St W",
+"metres": 38
+},
+{
+"id": "7152",
+"name": "Ossington Ave / Bloor St W",
+"metres": 125
+},
+{
+"id": "7240",
+"name": "Bloor St W / Shaw St - SMART",
+"metres": 314
+}
+],
+"Pape": [
+{
+"id": "7093",
+"name": "Danforth Ave / Gough Ave",
+"metres": 190
+},
+{
+"id": "7450",
+"name": "Carlaw Ave / Danforth Ave",
+"metres": 245
+},
+{
+"id": "7596",
+"name": "Langford Ave / Danforth Ave - SMART",
+"metres": 352
+}
+],
+"Pioneer Village": [
+{
+"id": "7767",
+"name": "Pioneer Village Subway Station",
+"metres": 71
+}
+],
+"Queen": [
+{
+"id": "7462",
+"name": "Richmond St E / Yonge St",
+"metres": 114
+},
+{
+"id": "8206",
+"name": "Richmond St E / Yonge St (2)",
+"metres": 115
+},
+{
+"id": "7019",
+"name": "Temperance St Station",
+"metres": 201
+}
+],
+"Queen's Park": [
+{
+"id": "7899",
+"name": "Queens Park Cres / College St",
+"metres": 42
+},
+{
+"id": "7502",
+"name": "University Ave / College St (East)",
+"metres": 69
+},
+{
+"id": "8152",
+"name": "Surrey Pl / Dr. Emily Stowe Way - SMART",
+"metres": 240
+}
+],
+"Rosedale": [
+{
+"id": "7935",
+"name": "Ramsden Park",
+"metres": 116
+},
+{
+"id": "7128",
+"name": "Yonge St / Aylmer Ave",
+"metres": 135
+},
+{
+"id": "7725",
+"name": "Yonge St / Macpherson Ave",
+"metres": 341
+}
+],
+"Royal York": [
+{
+"id": "8176",
+"name": "9 Willingdon Blvd",
+"metres": 38
+},
+{
+"id": "7751",
+"name": "Willingdon Blvd / Bloor St W (Green P)",
+"metres": 72
+}
+],
+"Runnymede": [
+{
+"id": "7466",
+"name": "Glendonwynne Rd / Bloor St W",
+"metres": 131
+},
+{
+"id": "7480",
+"name": "Neil McLellan Park",
+"metres": 165
+}
+],
+"Sheppard West": [],
+"Sheppard-Yonge": [
+{
+"id": "7976",
+"name": "Yonge St / Sheppard Ave E",
+"metres": 16
+},
+{
+"id": "7934",
+"name": "19 Glendora Ave",
+"metres": 241
+},
+{
+"id": "8137",
+"name": "95 Beecroft Rd",
+"metres": 396
+}
+],
+"Sherbourne": [
+{
+"id": "7115",
+"name": "Howard St / Sherbourne St",
+"metres": 99
+},
+{
+"id": "8187",
+"name": "Glen Rd / Bloor St",
+"metres": 102
+},
+{
+"id": "7264",
+"name": "Bloor St E / Huntley St - SMART",
+"metres": 251
+}
+],
+"Spadina": [
+{
+"id": "7710",
+"name": "11 Spadina Rd",
+"metres": 94
+},
+{
+"id": "7132",
+"name": "Kendal Ave / Spadina Rd",
+"metres": 218
+},
+{
+"id": "7003",
+"name": "Madison Ave / Bloor St W",
+"metres": 226
+}
+],
+"St Andrew": [
+{
+"id": "7284",
+"name": "University Ave / King St W - SMART",
+"metres": 14
+},
+{
+"id": "7917",
+"name": "King St W / University Ave",
+"metres": 45
+},
+{
+"id": "7916",
+"name": "University Ave / Pearl St",
+"metres": 92
+}
+],
+"St Clair": [
+{
+"id": "7642",
+"name": "Yonge St / St. Clair Ave",
+"metres": 86
+},
+{
+"id": "7540",
+"name": "Alvin Ave / St. Clair Ave E",
+"metres": 90
+},
+{
+"id": "8004",
+"name": "21 Pleasant Blvd (1)",
+"metres": 105
+}
+],
+"St Clair West": [
+{
+"id": "7363",
+"name": "Wells Hill Ave / St. Clair Ave W",
+"metres": 133
+},
+{
+"id": "7650",
+"name": "St. Clair West Subway Station - Heath St. W",
+"metres": 201
+},
+{
+"id": "7362",
+"name": "St. Clair Ave W / Bathurst St",
+"metres": 285
+}
+],
+"St George": [
+{
+"id": "7002",
+"name": "St. George St / Bloor St W",
+"metres": 153
+},
+{
+"id": "7131",
+"name": "Taddle Creek Park",
+"metres": 165
+},
+{
+"id": "7419",
+"name": "Bloor St W / Huron St",
+"metres": 285
+}
+],
+"St Patrick": [
+{
+"id": "7668",
+"name": "Simcoe St / Dundas St W",
+"metres": 102
+},
+{
+"id": "7257",
+"name": "Dundas St W / St. Patrick St",
+"metres": 109
+},
+{
+"id": "7900",
+"name": "Simcoe St / Elm St",
+"metres": 197
+}
+],
+"Summerhill": [
+{
+"id": "7133",
+"name": "Summerhill Subway Station",
+"metres": 81
+},
+{
+"id": "7677",
+"name": "1303 Yonge St - SMART",
+"metres": 244
+},
+{
+"id": "7867",
+"name": "15 Price St",
+"metres": 317
+}
+],
+"TMU": [
+{
+"id": "7038",
+"name": "Dundas St W / Yonge St",
+"metres": 64
+},
+{
+"id": "7164",
+"name": "Gould St / Yonge St (TMU)",
+"metres": 97
+},
+{
+"id": "7391",
+"name": "Yonge St / Dundas Sq",
+"metres": 108
+}
+],
+"Union": [
+{
+"id": "7033",
+"name": "Union Station",
+"metres": 19
+},
+{
+"id": "8001",
+"name": "Union Station (North) - SMART",
+"metres": 46
+},
+{
+"id": "7169",
+"name": "Front St W / Bay St (North Side)",
+"metres": 144
+}
+],
+"Vaughan Metropolitan Centre": [],
+"Victoria Park": [
+{
+"id": "7266",
+"name": "Victoria Park Subway Station - SMART",
+"metres": 85
+},
+{
+"id": "7395",
+"name": "Dentonia Park",
+"metres": 229
+},
+{
+"id": "7611",
+"name": "Victoria Park Ave / Danforth Ave",
+"metres": 382
+}
+],
+"Warden": [
+{
+"id": "7824",
+"name": "Warden Subway Station",
+"metres": 131
+}
+],
+"Wellesley": [
+{
+"id": "7001",
+"name": "Wellesley Station Green P",
+"metres": 66
+},
+{
+"id": "7272",
+"name": "Yonge St / Dundonald St",
+"metres": 91
+},
+{
+"id": "7024",
+"name": "Dundonald St / Church St",
+"metres": 211
+}
+],
+"Wilson": [
+{
+"id": "8050",
+"name": "Wilson Ave / Transit Rd (TTC Subway Station)",
+"metres": 291
+}
+],
+"Woodbine": [
+{
+"id": "7429",
+"name": "Woodbine Subway Station",
+"metres": 22
+},
+{
+"id": "7659",
+"name": "Amroth Ave / Danforth Ave",
+"metres": 153
+},
+{
+"id": "7708",
+"name": "101 Cedarvale Ave",
+"metres": 170
+}
+],
+"Yonge": [
+{
+"id": "7246",
+"name": "Yonge St / Bloor St",
+"metres": 118
+},
+{
+"id": "7126",
+"name": "Yonge St / Yorkville Ave",
+"metres": 153
+},
+{
+"id": "7276",
+"name": "Bloor St W / Balmuto St",
+"metres": 188
+}
+],
+"York Mills": [],
+"York University": [
+{
+"id": "7679",
+"name": "York University Station (North)",
+"metres": 49
+},
+{
+"id": "7678",
+"name": "York University Station (South) - SMART",
+"metres": 76
+},
+{
+"id": "7874",
+"name": "The Pond Rd / Ian Macdonald Blvd",
+"metres": 386
+}
+],
+"Yorkdale": [
+{
+"id": "8165",
+"name": "Ranee Ave / Flemington Rd (North)",
+"metres": 137
+}
+]
+}
+}

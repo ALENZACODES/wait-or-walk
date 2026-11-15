@@ -17,8 +17,10 @@ jobs:
           python-version: '3.12'
       - run: pip install playwright==1.64.0
       - run: python -m playwright install --with-deps chromium
+      # axe-core (Mozilla Public License 2.0) for the accessibility rules; installed here, used unmodified, not stored in the repo
+      - run: npm install --no-save --no-package-lock axe-core@4.14.0
       - name: Serve the page and run the browser check
         run: |
           python -m http.server 8080 >/dev/null 2>&1 &
           sleep 2
-          python tests/browser_check.py http://localhost:8080/
+          REQUIRE_AXE=1 AXE=node_modules/axe-core/axe.min.js python tests/browser_check.py http://localhost:8080/

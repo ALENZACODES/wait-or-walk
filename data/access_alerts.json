@@ -1,0 +1,128 @@
+{
+ "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
+ "licence": "Open Government Licence Toronto",
+ "fetchedAt": 1794774395,
+ "feedTimestamp": 1794774396,
+ "alerts": [
+  {
+   "id": "71415",
+   "station": "Museum",
+   "kind": "escalator",
+   "header": "Museum: Escalator 2Y1E out of service from concourse to Line 1 platform while we perform maintenance. Escalator is expected to be back in service November 30, 2026."
+  },
+  {
+   "id": "71416",
+   "station": "Broadview",
+   "kind": "escalator",
+   "header": "Broadview: Escalator 6D3E out of service from concourse to Broadview Ave entrance while we perform maintenance. Escalator is expected to be back in service December 31, 2026."
+  },
+  {
+   "id": "74136",
+   "station": "Spadina",
+   "kind": "escalator",
+   "header": "Spadina: Escalator 2B3E out of service from Line 2 Kipling platform to south concourse while we perform maintenance. Escalator is expected to be back in service February 27, 2027."
+  },
+  {
+   "id": "76445",
+   "station": "Coxwell",
+   "kind": "escalator",
+   "header": "Coxwell: Escalator 11D3E out of service from Line 2 Kipling platform to concourse while we perform maintenance. Escalator is expected to be back in service December 31, 2026."
+  },
+  {
+   "id": "77197",
+   "station": "Kennedy",
+   "kind": "escalator",
+   "header": "Kennedy: Escalator 16D2E out of service from Line 2 platform to concourse while we perform maintenance. Escalator is expected to be back in service December 11, 2026."
+  },
+  {
+   "id": "79053",
+   "station": "Kipling",
+   "kind": "escalator",
+   "header": "Kipling: Escalator 16B3E out of service from Line 2 platform to bus platform while we perform maintenance. Escalator is expected to be back in service February 19, 2027."
+  },
+  {
+   "id": "79729",
+   "station": "Finch",
+   "kind": "elevator",
+   "header": "Finch: Elevator out of service between GO and YRT bus platform and fares concourse while we perform maintenance."
+  },
+  {
+   "id": "80244",
+   "station": "Bloor-Yonge",
+   "kind": "escalator",
+   "header": "Bloor-Yonge: Escalator 3D5E out of service from Line 1 Finch platform to Line 2 platform while we perform maintenance. Escalator is expected to be back in service November 15, 2026."
+  },
+  {
+   "id": "80249",
+   "station": "Oakwood",
+   "kind": "elevator",
+   "header": "Oakwood: Elevator ELV02-B out of service between concourse and Eglinton Avenue north side entrance while we perform maintenance. Elevator is expected to be back in service November 16, 2026."
+  },
+  {
+   "id": "80308",
+   "station": "Bloor-Yonge",
+   "kind": "escalator",
+   "header": "Bloor-Yonge: Escalator 3D9E out of service from Line 1 Finch platform to south concourse while we perform maintenance."
+  },
+  {
+   "id": "80325",
+   "station": "Dundas West",
+   "kind": "escalator",
+   "header": "Dundas West: Escalator 8B3E out of service from concourse to Dundas St W entrance and bus and Streetcar platform while we perform maintenance. Escalator is expected to be back in service March 30, 2027."
+  },
+  {
+   "id": "80338",
+   "station": "Bayview",
+   "kind": "escalator",
+   "header": "Bayview: Escalator 55P3E out of service from Line 4 platform to west concourse while we perform maintenance."
+  },
+  {
+   "id": "80342",
+   "station": "Fairbank",
+   "kind": "elevator",
+   "header": "Fairbank: Elevator ELV02-B out of service between Eglinton Avenue south east side entrance and concourse while we perform maintenance."
+  },
+  {
+   "id": "80357",
+   "station": "Mount Dennis",
+   "kind": "escalator",
+   "header": "Mount Dennis: Escalator 9 out of service between concourse and TTC bus platform due to a technical problem."
+  },
+  {
+   "id": "80360",
+   "station": "Laird",
+   "kind": "elevator",
+   "header": "Laird: Elevator ELV01-A out of service between concourse and Line 5 centre platform due to a technical problem."
+  },
+  {
+   "id": "80363",
+   "station": "Queen",
+   "kind": "escalator",
+   "header": "Queen: Escalator 9Y6E out of service from north underpass to Line 1 Finch platform while we perform maintenance."
+  },
+  {
+   "id": "80369",
+   "station": "Royal York",
+   "kind": "escalator",
+   "header": "Royal York: Escalator 14B3E out of service from Line 2 Kipling platform to west concourse while we perform maintenance."
+  },
+  {
+   "id": "80371",
+   "station": "Keele",
+   "kind": "escalator",
+   "header": "Keele: Escalator 9B2E out of service from Keele St entrance to Line 2 Kennedy platform while we perform maintenance."
+  },
+  {
+   "id": "80373",
+   "station": "Sheppard-Yonge",
+   "kind": "escalator",
+   "header": "Sheppard-Yonge: Escalator 51P1E out of service from Line 4 Don Mills platform to Line 1 platform while we perform maintenance."
+  },
+  {
+   "id": "80374",
+   "station": "Davisville",
+   "kind": "escalator",
+   "header": "Davisville: Escalator 17Y4E out of service from concourse to Davisville Ave entrance while we perform maintenance."
+  }
+ ]
+}

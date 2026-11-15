@@ -292,4 +292,30 @@ assert.ok(!W.readAlert('Line 1 Yonge-University: Delays northbound at Museum sta
   assert.equal(load('policy.json').margin, 0);
 }
 
+// r9: the too close to call band and the break even slack
+{
+  const c = W.switchCall(10, 9, 0, 2);
+  assert.equal(c.close, true); assert.equal(c.switch, false); assert.ok(Math.abs(c.slack - 1) < 1e-9);
+  assert.equal(W.switchCall(10, 7, 0, 2).switch, true); assert.equal(W.switchCall(10, 7, 0, 2).close, false);
+  assert.equal(W.switchCall(10, 9, 0, 0).close, false); assert.equal(W.switchCall(10, 9, 0, 0).switch, true);
+  assert.equal(W.switchCall(8, 10, 0, 2).close, true);   // slack -2 is inside [-2, 2)
+  assert.equal(W.switchCall(7, 10, 0, 2).close, false);
+  const pol = load('policy.json'), dc = load('decision_checks.json');
+  assert.ok(typeof pol.closeBand === 'number' && pol.closeBand >= 0);
+  assert.equal(dc.closeCall.bands.length, 3); assert.equal(typeof dc.closeCall.ship, 'boolean');
+  assert.equal(dc.periods.length, 3); for (const q of dc.periods) assert.ok(q.test && q.delays > 0);
+  const H = load('alert_history.json'); assert.ok(H.since > 0);
+  for (const a of Object.values(H.alerts)) assert.ok(a.firstSeen <= a.lastSeen && (!a.goneBy || a.goneBy > a.lastSeen));
+  const A = load('access_alerts.json'); assert.ok(Array.isArray(A.alerts) && A.fetchedAt > 0);
+  for (const a of A.alerts) assert.ok(['elevator', 'escalator', 'other'].includes(a.kind) && a.header);
+  const B = load('bikeshare_near.json'); assert.equal(B.radiusMetres, 400);
+  for (const [k, v] of Object.entries(B.stations)) { assert.ok(v.length <= 3); for (const x of v) assert.ok(x.metres <= 400 && x.id); }
+}
+
+{
+  const S = load('surface_delays.json'), v = S.validation;
+  assert.equal(v.show, v.spearman >= 0.7 && v.maeRoute < v.maeNetworkAverage);
+  for (const q of Object.values(S.routes)) assert.ok(q.perWeek >= 0 && q.per100Trips >= 0 && ['more than most', 'fewer than most', 'about typical'].includes(q.compared));
+}
+
 console.log('Wait or Walk tests passed.');

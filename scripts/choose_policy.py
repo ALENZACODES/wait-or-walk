@@ -42,9 +42,14 @@ def main():
     rows, _ = T0.switch_rows([part]); D = np.minimum(cal['Min Delay'].values.astype(float), T0.WAIT_CAP)
     costs = {mg: float(T0.policy_costs(rows, D, lambda r, x: ew[r] - x >= mg).mean()) for mg in T0.MARGIN_GRID}
     best = min(T0.MARGIN_GRID, key=lambda mg: costs[mg])
+    # "Too close to call" band: the largest of 0.5 to 5 minutes above the margin that costs at most 0.01 minutes per
+    # delay on the same window (tested on later periods in scripts/decision_checks.py, which decides if it ships).
+    band_close = 0.0
+    for bb in [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5]:
+        if float(T0.policy_costs(rows, D, lambda r, x: ew[r] - x >= best + bb).mean()) - costs[best] <= 0.01: band_close = bb
     out = {'rule': 'expectedCost', 'margin': best, 'binMeans': [round(x, 2) for x in bm], 'binMeansFrom': f"{base.Date.min()} to {model['baseTrainedThrough']}",
            'chosenOn': model['calibratedOn'], 'delays': int(len(cal)), 'averageMinutesAtMargin': round(costs[best], 3),
-           'averageMinutesAlwaysWait': round(float(D.mean()), 3)}
+           'averageMinutesAlwaysWait': round(float(D.mean()), 3), 'closeBand': band_close}
     json.dump(out, open(os.path.join(ROOT, 'data', 'policy.json'), 'w'), indent=1)
     print(out)
 

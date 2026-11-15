@@ -1,0 +1,26 @@
+{
+ "since": 1794772174,
+ "alerts": {
+  "80375": {
+   "firstSeen": 1794772174,
+   "lastSeen": 1794772174,
+   "header": "Line 1 Yonge-University: Delays northbound at Museum station due to a medical emergency Thank you for your patience.",
+   "lines": [
+    "YU"
+   ],
+   "cause": "MEDICAL_EMERGENCY",
+   "effect": "SIGNIFICANT_DELAYS",
+   "goneBy": 1794773282
+  },
+  "80241": {
+   "firstSeen": 1794772174,
+   "lastSeen": 1794773282,
+   "header": "Line 2 Bloor-Danforth: There is no subway service between Victoria Park and Kennedy stations due to planned track work. Shuttle buses are running.",
+   "lines": [
+    "BD"
+   ],
+   "cause": "MAINTENANCE",
+   "effect": "NO_SERVICE"
+  }
+ }
+}

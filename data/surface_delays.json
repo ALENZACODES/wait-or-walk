@@ -1,0 +1,1026 @@
+{
+"source": "City of Toronto Open Data: TTC Bus Delay Data and TTC Streetcar Delay Data (since 2025), Open Government Licence Toronto; scheduled trips from TTC GTFS, week of Nov 16, 2026",
+"measure": "logged incidents with a recorded delay of 10 minutes or more",
+"window": [
+"2026-01-01",
+"2026-09-30"
+],
+"validation": {
+"earlier": [
+"2025-01-01",
+"2025-12-31"
+],
+"later": [
+"2026-01-01",
+"2026-09-30"
+],
+"routes": 200,
+"minTripsPerWeek": 200,
+"spearman": 0.872,
+"maeRoute": 0.081,
+"maeNetworkAverage": 0.167,
+"show": true
+},
+"routes": {
+"1": {
+"perWeek": 0.0,
+"per100Trips": 0.0,
+"compared": "fewer than most"
+},
+"100": {
+"perWeek": 5.4,
+"per100Trips": 0.252,
+"compared": "fewer than most"
+},
+"101": {
+"perWeek": 3.8,
+"per100Trips": 0.62,
+"compared": "more than most"
+},
+"102": {
+"perWeek": 17.1,
+"per100Trips": 0.642,
+"compared": "more than most"
+},
+"103": {
+"perWeek": 0.9,
+"per100Trips": 0.13,
+"compared": "fewer than most"
+},
+"104": {
+"perWeek": 2.5,
+"per100Trips": 0.394,
+"compared": "about typical"
+},
+"105": {
+"perWeek": 1.7,
+"per100Trips": 0.16,
+"compared": "fewer than most"
+},
+"106": {
+"perWeek": 2.6,
+"per100Trips": 0.255,
+"compared": "fewer than most"
+},
+"107": {
+"perWeek": 0.8,
+"per100Trips": 0.144,
+"compared": "fewer than most"
+},
+"108": {
+"perWeek": 5.7,
+"per100Trips": 0.399,
+"compared": "about typical"
+},
+"109": {
+"perWeek": 2.8,
+"per100Trips": 0.358,
+"compared": "about typical"
+},
+"11": {
+"perWeek": 5.5,
+"per100Trips": 0.344,
+"compared": "about typical"
+},
+"110": {
+"perWeek": 5.6,
+"per100Trips": 0.343,
+"compared": "about typical"
+},
+"111": {
+"perWeek": 3.4,
+"per100Trips": 0.313,
+"compared": "about typical"
+},
+"112": {
+"perWeek": 6.6,
+"per100Trips": 0.561,
+"compared": "more than most"
+},
+"113": {
+"perWeek": 3.3,
+"per100Trips": 0.4,
+"compared": "about typical"
+},
+"114": {
+"perWeek": 4.4,
+"per100Trips": 0.292,
+"compared": "about typical"
+},
+"115": {
+"perWeek": 0.4,
+"per100Trips": 0.065,
+"compared": "fewer than most"
+},
+"116": {
+"perWeek": 5.2,
+"per100Trips": 0.269,
+"compared": "about typical"
+},
+"117": {
+"perWeek": 0.8,
+"per100Trips": 0.109,
+"compared": "fewer than most"
+},
+"118": {
+"perWeek": 3.3,
+"per100Trips": 0.51,
+"compared": "more than most"
+},
+"119": {
+"perWeek": 1.4,
+"per100Trips": 0.385,
+"compared": "about typical"
+},
+"12": {
+"perWeek": 6.9,
+"per100Trips": 0.541,
+"compared": "more than most"
+},
+"120": {
+"perWeek": 1.8,
+"per100Trips": 0.302,
+"compared": "about typical"
+},
+"121": {
+"perWeek": 2.4,
+"per100Trips": 0.28,
+"compared": "about typical"
+},
+"122": {
+"perWeek": 3.7,
+"per100Trips": 0.39,
+"compared": "about typical"
+},
+"123": {
+"perWeek": 6.9,
+"per100Trips": 0.34,
+"compared": "about typical"
+},
+"125": {
+"perWeek": 1.7,
+"per100Trips": 0.146,
+"compared": "fewer than most"
+},
+"126": {
+"perWeek": 1.3,
+"per100Trips": 0.202,
+"compared": "fewer than most"
+},
+"127": {
+"perWeek": 2.4,
+"per100Trips": 0.364,
+"compared": "about typical"
+},
+"129": {
+"perWeek": 7.9,
+"per100Trips": 0.417,
+"compared": "about typical"
+},
+"13": {
+"perWeek": 2.9,
+"per100Trips": 0.427,
+"compared": "more than most"
+},
+"130": {
+"perWeek": 5.6,
+"per100Trips": 0.878,
+"compared": "more than most"
+},
+"131": {
+"perWeek": 6.8,
+"per100Trips": 0.624,
+"compared": "more than most"
+},
+"132": {
+"perWeek": 1.3,
+"per100Trips": 0.193,
+"compared": "fewer than most"
+},
+"133": {
+"perWeek": 11.1,
+"per100Trips": 0.705,
+"compared": "more than most"
+},
+"134": {
+"perWeek": 4.0,
+"per100Trips": 0.383,
+"compared": "about typical"
+},
+"135": {
+"perWeek": 1.9,
+"per100Trips": 0.248,
+"compared": "fewer than most"
+},
+"14": {
+"perWeek": 3.8,
+"per100Trips": 0.623,
+"compared": "more than most"
+},
+"145": {
+"perWeek": 0.2,
+"per100Trips": 0.038,
+"compared": "fewer than most"
+},
+"149": {
+"perWeek": 1.7,
+"per100Trips": 0.237,
+"compared": "fewer than most"
+},
+"15": {
+"perWeek": 1.4,
+"per100Trips": 0.201,
+"compared": "fewer than most"
+},
+"151": {
+"perWeek": 1.2,
+"per100Trips": 0.15,
+"compared": "fewer than most"
+},
+"154": {
+"perWeek": 4.2,
+"per100Trips": 0.502,
+"compared": "more than most"
+},
+"156": {
+"perWeek": 0.6,
+"per100Trips": 0.158,
+"compared": "fewer than most"
+},
+"158": {
+"perWeek": 3.1,
+"per100Trips": 0.284,
+"compared": "about typical"
+},
+"16": {
+"perWeek": 6.1,
+"per100Trips": 0.397,
+"compared": "about typical"
+},
+"160": {
+"perWeek": 2.4,
+"per100Trips": 0.572,
+"compared": "more than most"
+},
+"161": {
+"perWeek": 5.5,
+"per100Trips": 0.572,
+"compared": "more than most"
+},
+"162": {
+"perWeek": 2.6,
+"per100Trips": 0.535,
+"compared": "more than most"
+},
+"164": {
+"perWeek": 2.1,
+"per100Trips": 0.335,
+"compared": "about typical"
+},
+"165": {
+"perWeek": 7.7,
+"per100Trips": 0.323,
+"compared": "about typical"
+},
+"166": {
+"perWeek": 1.3,
+"per100Trips": 0.558,
+"compared": "more than most"
+},
+"167": {
+"perWeek": 1.2,
+"per100Trips": 0.252,
+"compared": "fewer than most"
+},
+"168": {
+"perWeek": 5.0,
+"per100Trips": 0.42,
+"compared": "about typical"
+},
+"169": {
+"perWeek": 2.4,
+"per100Trips": 0.449,
+"compared": "more than most"
+},
+"17": {
+"perWeek": 5.6,
+"per100Trips": 0.495,
+"compared": "more than most"
+},
+"171": {
+"perWeek": 1.8,
+"per100Trips": 0.224,
+"compared": "fewer than most"
+},
+"18": {
+"perWeek": 1.8,
+"per100Trips": 0.194,
+"compared": "fewer than most"
+},
+"184": {
+"perWeek": 0.3,
+"per100Trips": 0.041,
+"compared": "fewer than most"
+},
+"185": {
+"perWeek": 1.7,
+"per100Trips": 0.221,
+"compared": "fewer than most"
+},
+"189": {
+"perWeek": 0.5,
+"per100Trips": 0.078,
+"compared": "fewer than most"
+},
+"19": {
+"perWeek": 2.8,
+"per100Trips": 0.425,
+"compared": "more than most"
+},
+"191": {
+"perWeek": 1.8,
+"per100Trips": 0.266,
+"compared": "about typical"
+},
+"2": {
+"perWeek": 0.0,
+"per100Trips": 0.0,
+"compared": "fewer than most"
+},
+"20": {
+"perWeek": 4.1,
+"per100Trips": 0.5,
+"compared": "more than most"
+},
+"21": {
+"perWeek": 4.8,
+"per100Trips": 0.55,
+"compared": "more than most"
+},
+"22": {
+"perWeek": 2.5,
+"per100Trips": 0.141,
+"compared": "fewer than most"
+},
+"23": {
+"perWeek": 2.5,
+"per100Trips": 0.161,
+"compared": "fewer than most"
+},
+"24": {
+"perWeek": 9.5,
+"per100Trips": 0.433,
+"compared": "more than most"
+},
+"25": {
+"perWeek": 6.3,
+"per100Trips": 0.213,
+"compared": "fewer than most"
+},
+"26": {
+"perWeek": 3.8,
+"per100Trips": 0.577,
+"compared": "more than most"
+},
+"27": {
+"perWeek": 4.5,
+"per100Trips": 0.263,
+"compared": "about typical"
+},
+"28": {
+"perWeek": 0.6,
+"per100Trips": 0.095,
+"compared": "fewer than most"
+},
+"29": {
+"perWeek": 8.7,
+"per100Trips": 0.403,
+"compared": "about typical"
+},
+"30": {
+"perWeek": 2.2,
+"per100Trips": 0.357,
+"compared": "about typical"
+},
+"300": {
+"perWeek": 4.3,
+"per100Trips": 0.6,
+"compared": "more than most"
+},
+"301": {
+"perWeek": 2.6,
+"per100Trips": 0.611,
+"compared": "more than most"
+},
+"304": {
+"perWeek": 1.8,
+"per100Trips": 0.365,
+"compared": "about typical"
+},
+"305": {
+"perWeek": 1.3,
+"per100Trips": 0.45,
+"compared": "more than most"
+},
+"306": {
+"perWeek": 1.6,
+"per100Trips": 0.377,
+"compared": "about typical"
+},
+"31": {
+"perWeek": 2.5,
+"per100Trips": 0.233,
+"compared": "fewer than most"
+},
+"310": {
+"perWeek": 0.7,
+"per100Trips": 0.286,
+"compared": "about typical"
+},
+"312": {
+"perWeek": 0.3,
+"per100Trips": 0.111,
+"compared": "fewer than most"
+},
+"32": {
+"perWeek": 9.0,
+"per100Trips": 0.614,
+"compared": "more than most"
+},
+"320": {
+"perWeek": 2.2,
+"per100Trips": 0.352,
+"compared": "about typical"
+},
+"329": {
+"perWeek": 0.9,
+"per100Trips": 0.436,
+"compared": "more than most"
+},
+"33": {
+"perWeek": 2.1,
+"per100Trips": 0.301,
+"compared": "about typical"
+},
+"334": {
+"perWeek": 2.4,
+"per100Trips": 0.487,
+"compared": "more than most"
+},
+"336": {
+"perWeek": 0.7,
+"per100Trips": 0.248,
+"compared": "fewer than most"
+},
+"339": {
+"perWeek": 0.6,
+"per100Trips": 0.252,
+"compared": "fewer than most"
+},
+"34": {
+"perWeek": 10.9,
+"per100Trips": 1.398,
+"compared": "more than most"
+},
+"35": {
+"perWeek": 13.3,
+"per100Trips": 0.639,
+"compared": "more than most"
+},
+"353": {
+"perWeek": 0.5,
+"per100Trips": 0.235,
+"compared": "fewer than most"
+},
+"354": {
+"perWeek": 0.3,
+"per100Trips": 0.149,
+"compared": "fewer than most"
+},
+"36": {
+"perWeek": 1.7,
+"per100Trips": 0.066,
+"compared": "fewer than most"
+},
+"37": {
+"perWeek": 11.5,
+"per100Trips": 0.683,
+"compared": "more than most"
+},
+"38": {
+"perWeek": 9.9,
+"per100Trips": 0.679,
+"compared": "more than most"
+},
+"39": {
+"perWeek": 9.5,
+"per100Trips": 0.385,
+"compared": "about typical"
+},
+"4": {
+"perWeek": 0.0,
+"per100Trips": 0.0,
+"compared": "fewer than most"
+},
+"40": {
+"perWeek": 5.9,
+"per100Trips": 0.439,
+"compared": "more than most"
+},
+"41": {
+"perWeek": 12.4,
+"per100Trips": 0.783,
+"compared": "more than most"
+},
+"42": {
+"perWeek": 4.8,
+"per100Trips": 0.387,
+"compared": "about typical"
+},
+"43": {
+"perWeek": 10.3,
+"per100Trips": 0.419,
+"compared": "about typical"
+},
+"44": {
+"perWeek": 1.8,
+"per100Trips": 0.089,
+"compared": "fewer than most"
+},
+"45": {
+"perWeek": 7.4,
+"per100Trips": 0.422,
+"compared": "more than most"
+},
+"46": {
+"perWeek": 3.3,
+"per100Trips": 0.351,
+"compared": "about typical"
+},
+"47": {
+"perWeek": 3.9,
+"per100Trips": 0.083,
+"compared": "fewer than most"
+},
+"48": {
+"perWeek": 1.4,
+"per100Trips": 0.208,
+"compared": "fewer than most"
+},
+"49": {
+"perWeek": 0.9,
+"per100Trips": 0.124,
+"compared": "fewer than most"
+},
+"5": {
+"perWeek": 0.0,
+"per100Trips": 0.0,
+"compared": "fewer than most"
+},
+"50": {
+"perWeek": 1.6,
+"per100Trips": 0.169,
+"compared": "fewer than most"
+},
+"501": {
+"perWeek": 35.7,
+"per100Trips": 0.972,
+"compared": "more than most"
+},
+"503": {
+"perWeek": 9.1,
+"per100Trips": 0.407,
+"compared": "about typical"
+},
+"504": {
+"perWeek": 29.1,
+"per100Trips": 0.622,
+"compared": "more than most"
+},
+"505": {
+"perWeek": 20.8,
+"per100Trips": 0.65,
+"compared": "more than most"
+},
+"506": {
+"perWeek": 25.0,
+"per100Trips": 0.684,
+"compared": "more than most"
+},
+"507": {
+"perWeek": 6.9,
+"per100Trips": 0.457,
+"compared": "more than most"
+},
+"509": {
+"perWeek": 3.5,
+"per100Trips": 0.195,
+"compared": "fewer than most"
+},
+"51": {
+"perWeek": 5.8,
+"per100Trips": 0.387,
+"compared": "about typical"
+},
+"510": {
+"perWeek": 8.4,
+"per100Trips": 0.274,
+"compared": "about typical"
+},
+"511": {
+"perWeek": 6.9,
+"per100Trips": 0.281,
+"compared": "about typical"
+},
+"512": {
+"perWeek": 6.3,
+"per100Trips": 0.256,
+"compared": "fewer than most"
+},
+"52": {
+"perWeek": 20.6,
+"per100Trips": 0.528,
+"compared": "more than most"
+},
+"53": {
+"perWeek": 8.3,
+"per100Trips": 0.347,
+"compared": "about typical"
+},
+"54": {
+"perWeek": 12.6,
+"per100Trips": 0.496,
+"compared": "more than most"
+},
+"55": {
+"perWeek": 1.3,
+"per100Trips": 0.198,
+"compared": "fewer than most"
+},
+"57": {
+"perWeek": 4.7,
+"per100Trips": 0.401,
+"compared": "about typical"
+},
+"59": {
+"perWeek": 4.0,
+"per100Trips": 0.522,
+"compared": "more than most"
+},
+"6": {
+"perWeek": 0.0,
+"per100Trips": 0.0,
+"compared": "fewer than most"
+},
+"60": {
+"perWeek": 4.0,
+"per100Trips": 0.203,
+"compared": "fewer than most"
+},
+"61": {
+"perWeek": 2.8,
+"per100Trips": 0.316,
+"compared": "about typical"
+},
+"62": {
+"perWeek": 3.2,
+"per100Trips": 0.403,
+"compared": "about typical"
+},
+"63": {
+"perWeek": 10.5,
+"per100Trips": 0.197,
+"compared": "fewer than most"
+},
+"64": {
+"perWeek": 8.1,
+"per100Trips": 0.592,
+"compared": "more than most"
+},
+"65": {
+"perWeek": 4.5,
+"per100Trips": 0.3,
+"compared": "about typical"
+},
+"66": {
+"perWeek": 2.8,
+"per100Trips": 0.175,
+"compared": "fewer than most"
+},
+"67": {
+"perWeek": 4.0,
+"per100Trips": 0.35,
+"compared": "about typical"
+},
+"68": {
+"perWeek": 6.8,
+"per100Trips": 0.466,
+"compared": "more than most"
+},
+"69": {
+"perWeek": 4.5,
+"per100Trips": 0.589,
+"compared": "more than most"
+},
+"7": {
+"perWeek": 16.6,
+"per100Trips": 0.971,
+"compared": "more than most"
+},
+"70": {
+"perWeek": 4.8,
+"per100Trips": 0.349,
+"compared": "about typical"
+},
+"71": {
+"perWeek": 4.3,
+"per100Trips": 0.402,
+"compared": "about typical"
+},
+"72": {
+"perWeek": 3.4,
+"per100Trips": 0.169,
+"compared": "fewer than most"
+},
+"73": {
+"perWeek": 6.6,
+"per100Trips": 0.418,
+"compared": "about typical"
+},
+"74": {
+"perWeek": 1.5,
+"per100Trips": 0.191,
+"compared": "fewer than most"
+},
+"75": {
+"perWeek": 3.3,
+"per100Trips": 0.206,
+"compared": "fewer than most"
+},
+"76": {
+"perWeek": 3.4,
+"per100Trips": 0.149,
+"compared": "fewer than most"
+},
+"77": {
+"perWeek": 1.5,
+"per100Trips": 0.188,
+"compared": "fewer than most"
+},
+"78": {
+"perWeek": 2.5,
+"per100Trips": 0.384,
+"compared": "about typical"
+},
+"79": {
+"perWeek": 4.8,
+"per100Trips": 0.359,
+"compared": "about typical"
+},
+"8": {
+"perWeek": 3.0,
+"per100Trips": 0.35,
+"compared": "about typical"
+},
+"80": {
+"perWeek": 3.4,
+"per100Trips": 0.368,
+"compared": "about typical"
+},
+"82": {
+"perWeek": 1.0,
+"per100Trips": 0.157,
+"compared": "fewer than most"
+},
+"83": {
+"perWeek": 2.3,
+"per100Trips": 0.238,
+"compared": "fewer than most"
+},
+"84": {
+"perWeek": 5.1,
+"per100Trips": 0.209,
+"compared": "fewer than most"
+},
+"85": {
+"perWeek": 12.7,
+"per100Trips": 0.642,
+"compared": "more than most"
+},
+"86": {
+"perWeek": 12.9,
+"per100Trips": 0.555,
+"compared": "more than most"
+},
+"87": {
+"perWeek": 1.9,
+"per100Trips": 0.112,
+"compared": "fewer than most"
+},
+"88": {
+"perWeek": 3.3,
+"per100Trips": 0.287,
+"compared": "about typical"
+},
+"89": {
+"perWeek": 11.7,
+"per100Trips": 0.655,
+"compared": "more than most"
+},
+"9": {
+"perWeek": 4.1,
+"per100Trips": 0.483,
+"compared": "more than most"
+},
+"90": {
+"perWeek": 4.4,
+"per100Trips": 0.314,
+"compared": "about typical"
+},
+"900": {
+"perWeek": 3.1,
+"per100Trips": 0.122,
+"compared": "fewer than most"
+},
+"902": {
+"perWeek": 6.4,
+"per100Trips": 0.596,
+"compared": "more than most"
+},
+"903": {
+"perWeek": 5.1,
+"per100Trips": 0.401,
+"compared": "about typical"
+},
+"904": {
+"perWeek": 7.7,
+"per100Trips": 0.709,
+"compared": "more than most"
+},
+"905": {
+"perWeek": 4.8,
+"per100Trips": 0.389,
+"compared": "about typical"
+},
+"906": {
+"perWeek": 2.3,
+"per100Trips": 0.207,
+"compared": "fewer than most"
+},
+"91": {
+"perWeek": 2.8,
+"per100Trips": 0.344,
+"compared": "about typical"
+},
+"92": {
+"perWeek": 1.6,
+"per100Trips": 0.124,
+"compared": "fewer than most"
+},
+"924": {
+"perWeek": 3.1,
+"per100Trips": 0.652,
+"compared": "more than most"
+},
+"925": {
+"perWeek": 5.5,
+"per100Trips": 0.505,
+"compared": "more than most"
+},
+"927": {
+"perWeek": 8.6,
+"per100Trips": 0.392,
+"compared": "about typical"
+},
+"929": {
+"perWeek": 3.4,
+"per100Trips": 0.223,
+"compared": "fewer than most"
+},
+"93": {
+"perWeek": 0.7,
+"per100Trips": 0.126,
+"compared": "fewer than most"
+},
+"935": {
+"perWeek": 5.1,
+"per100Trips": 0.383,
+"compared": "about typical"
+},
+"937": {
+"perWeek": 2.4,
+"per100Trips": 0.745,
+"compared": "more than most"
+},
+"939": {
+"perWeek": 15.7,
+"per100Trips": 0.745,
+"compared": "more than most"
+},
+"94": {
+"perWeek": 6.6,
+"per100Trips": 0.405,
+"compared": "about typical"
+},
+"941": {
+"perWeek": 2.9,
+"per100Trips": 0.821,
+"compared": "more than most"
+},
+"943": {
+"perWeek": 0.0,
+"per100Trips": 0.0,
+"compared": "fewer than most"
+},
+"944": {
+"perWeek": 0.1,
+"per100Trips": 0.01,
+"compared": "fewer than most"
+},
+"945": {
+"perWeek": 1.8,
+"per100Trips": 0.359,
+"compared": "about typical"
+},
+"95": {
+"perWeek": 13.3,
+"per100Trips": 0.722,
+"compared": "more than most"
+},
+"952": {
+"perWeek": 3.2,
+"per100Trips": 0.509,
+"compared": "more than most"
+},
+"953": {
+"perWeek": 1.2,
+"per100Trips": 0.212,
+"compared": "fewer than most"
+},
+"954": {
+"perWeek": 2.1,
+"per100Trips": 0.507,
+"compared": "more than most"
+},
+"96": {
+"perWeek": 13.5,
+"per100Trips": 0.617,
+"compared": "more than most"
+},
+"960": {
+"perWeek": 4.6,
+"per100Trips": 0.299,
+"compared": "about typical"
+},
+"968": {
+"perWeek": 1.2,
+"per100Trips": 0.391,
+"compared": "about typical"
+},
+"97": {
+"perWeek": 9.6,
+"per100Trips": 0.807,
+"compared": "more than most"
+},
+"98": {
+"perWeek": 3.3,
+"per100Trips": 0.468,
+"compared": "more than most"
+},
+"984": {
+"perWeek": 1.6,
+"per100Trips": 0.303,
+"compared": "about typical"
+},
+"985": {
+"perWeek": 2.2,
+"per100Trips": 0.415,
+"compared": "about typical"
+},
+"986": {
+"perWeek": 1.7,
+"per100Trips": 0.382,
+"compared": "about typical"
+},
+"989": {
+"perWeek": 3.7,
+"per100Trips": 1.102,
+"compared": "more than most"
+},
+"99": {
+"perWeek": 1.0,
+"per100Trips": 0.118,
+"compared": "fewer than most"
+},
+"995": {
+"perWeek": 6.1,
+"per100Trips": 0.507,
+"compared": "more than most"
+},
+"996": {
+"perWeek": 6.4,
+"per100Trips": 0.754,
+"compared": "more than most"
+}
+}
+}

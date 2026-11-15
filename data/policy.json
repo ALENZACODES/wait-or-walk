@@ -11,5 +11,6 @@
  "chosenOn": "2026-07-02 to 2026-09-30",
  "delays": 2220,
  "averageMinutesAtMargin": 5.806,
- "averageMinutesAlwaysWait": 5.96
+ "averageMinutesAlwaysWait": 5.96,
+ "closeBand": 0.0
 }

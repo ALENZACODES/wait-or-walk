@@ -15,3 +15,4 @@ jobs:
         with:
           node-version: 20
       - run: for t in tests/*.mjs; do node "$t"; done
+      - run: python3 -m unittest discover -s tests -p 'test_*.py' -v

@@ -27,9 +27,13 @@
   }
   // The shipped decision rule: switch when the expected logged delay minus the scheduled switch cost reaches the margin
   // chosen on earlier data (data/policy.json). Switch cost: scheduled arrival by Plan B minus an on time subway arrival, at least 0.
-  function switchCall(expected, cost, margin) {
+  // band: the "too close to call" width above the margin (data/policy.json closeBand, picked on earlier data; 0 means none).
+  // Inside the band the page says too close to call and the rule waits. slack: minutes by which switching wins (positive)
+  // or loses (negative) by the schedule, after the margin: the break even for a late or missed bus.
+  function switchCall(expected, cost, margin, band) {
     if (expected === null || cost === null || cost === undefined) return null;
-    return { switch: expected - Math.max(cost, 0) >= margin, expected, cost: Math.max(cost, 0) };
+    const c = Math.max(cost, 0), slack = expected - c - margin, b = band || 0;
+    return { switch: slack >= b, close: b > 0 && slack >= -b && slack < b, slack, expected, cost: c };
   }
 
   // "Already underway": condition the same calibrated bands on the delay having reached 5 or 10 minutes, with no refit.

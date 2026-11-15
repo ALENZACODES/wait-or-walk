@@ -10,6 +10,12 @@
    used for recalibration) as the one with the fewest minutes when every bus runs 5 minutes late (busLate5), then the
    full stress table is run with it on the test period. It ships only if it is at least as good as the shipped rule as
    scheduled and loses less under slippage.
+4. A "too close to call" band: when the expected cost difference is within b minutes above the margin, the page would
+   say too close to call and the rider waits. b is picked on each earlier window as the largest of 0.5 to 5 minutes
+   that costs at most 0.01 minutes per delay there, then scored on the later test period. Rule set in advance: it
+   ships only if, as scheduled, it is not worse than the shipped rule on the test periods (point estimate at least
+   minus 0.01 minutes per delay and the 95% interval not entirely below zero).
+5. Per period results of the shipped rule, so each evaluation period can be shown on its own.
 Reads the evaluation forecasts train.py saves in the cache (preds.pkl). Writes data/decision_checks.json.
 Run after train.py: python3 scripts/decision_checks.py [cache_dir]
 """
@@ -112,6 +118,10 @@ def main():
         m_recent = min(T0.MARGIN_GRID, key=lambda mg: cost(rows_c, Dc, lambda r, x: ew_c[r] - x >= mg).mean())
         ew_cb = exp_wait(cs['p5'], cs['p10'], cs['p20'], bm_base)
         m_robust = min(T0.MARGIN_GRID, key=lambda mg: cost(rows_c, Dc, lambda r, x: ew_cb[r] - x >= mg, 'busLate5').mean())
+        base_c = cost(rows_c, Dc, lambda r, x: ew_cb[r] - x >= margins[k]).mean()
+        b_close = 0.0
+        for bb in [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5]:
+            if cost(rows_c, Dc, lambda r, x: ew_cb[r] - x >= margins[k] + bb).mean() - base_c <= 0.01: b_close = bb
         rows = directions(te, pb, deps, cands)
         C = {'alwaysWait': cost(rows, D, lambda r, x: False),
              'shippedRule': cost(rows, D, lambda r, x: ew_base[r] - x >= margins[k]),
@@ -119,12 +129,14 @@ def main():
         for sc in SCENARIOS:
             C['stress_' + sc] = cost(rows, D, lambda r, x: ew_base[r] - x >= margins[k], sc)
             C['robust_' + sc] = cost(rows, D, lambda r, x: ew_base[r] - x >= m_robust, sc)
+            C['close_' + sc] = cost(rows, D, lambda r, x: ew_base[r] - x >= margins[k] + b_close, sc)
         drift.append({'test': metrics['folds'][k]['test'], 'binMeansBase': [round(x, 2) for x in bm_base], 'binMeansRecent': [round(x, 2) for x in bm_recent],
                       'loggedMinutesAverage': round(float(D.mean()), 2), 'expectedDelayBase': round(float(ew_base.mean()), 2),
                       'expectedDelayRecent': round(float(ew_recent.mean()), 2), 'recentMargin': m_recent,
-                      'shippedMargin': margins[k], 'robustMargin': m_robust})
-        tests.append(dict(C, D=D, y=te['y'], date=te['date']))
-    allC = {q: np.concatenate([t[q] for t in tests]) for q in tests[0] if q not in ('D', 'y', 'date')}
+                      'shippedMargin': margins[k], 'robustMargin': m_robust, 'closeBand': b_close})
+        tests.append(dict(C, D=D, y=te['y'], date=te['date'], k=np.full(len(D), k)))
+    allC = {q: np.concatenate([t[q] for t in tests]) for q in tests[0] if q not in ('D', 'y', 'date', 'k')}
+    K = np.concatenate([t['k'] for t in tests])
     D = np.concatenate([t['D'] for t in tests])
     parts = [{'y': t['y'], 'date': t['date']} for t in tests]
     draw = T0.resampler(parts, 'day', rng); idxs = [draw() for _ in range(T0.BOOT)]
@@ -147,6 +159,20 @@ def main():
             rob[sc] = {'minutes': round(float(allC['robust_' + sc][mask].mean()), 2), 'savedVsWait': ci(allC['alwaysWait'] - allC['robust_' + sc], mask),
                        'robustMinusShipped': ci(allC['stress_' + sc] - allC['robust_' + sc], mask)}
         out['robust']['subsets'][name] = rob
+    out['closeCall'] = {'bands': [d['closeBand'] for d in drift], 'subsets': {}}
+    for name, mask in subsets.items():
+        row = {'delays': int(mask.sum())}
+        for sc in ('asScheduled', 'busLate5', 'missedDeparture', 'allBad'):
+            row[sc] = {'savedVsWait': ci(allC['alwaysWait'] - allC['close_' + sc], mask), 'closeMinusShipped': ci(allC['stress_' + sc] - allC['close_' + sc], mask)}
+        out['closeCall']['subsets'][name] = row
+    cc = out['closeCall']['subsets']['all']['asScheduled']['closeMinusShipped']
+    out['closeCall']['ship'] = bool(cc['value'] >= -0.01 and cc['high'] >= 0)
+    out['periods'] = []
+    for k in range(len(tests)):
+        mk = K == k
+        out['periods'].append({'test': drift[k]['test'], 'margin': margins[k], 'delays': int(mk.sum()),
+                               'shippedSavedVsWait': ci(allC['alwaysWait'] - allC['shippedRule'], mk),
+                               'shippedSavedVsWait20': ci(allC['alwaysWait'] - allC['shippedRule'], mk & (D >= 20))})
     a = out['robust']['subsets']['all']
     sched_ok = a['asScheduled']['robustMinusShipped']['value'] >= 0
     slip_ok = a['busLate5']['robustMinusShipped']['value'] > 0
@@ -154,7 +180,7 @@ def main():
     out['robust']['reason'] = ('at least as good as scheduled and better under slippage' if sched_ok and slip_ok else
                                'worse as scheduled than the shipped rule' if not sched_ok else 'not better under slippage')
     json.dump(out, open(os.path.join(ROOT, 'data', 'decision_checks.json'), 'w'), indent=1)
-    print(json.dumps(out['robust'], indent=1))
+    print(json.dumps(out['closeCall'], indent=1)); print(json.dumps(out['periods'], indent=1))
 
 if __name__ == '__main__':
     main()
