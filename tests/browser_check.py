@@ -100,7 +100,7 @@ with sync_playwright() as p:
     check('no rider testing has been done' in q.inner_text('#verdict').lower(), 'the page says plainly that no rider testing has been done')
     # Already underway
     p10 = q.inner_text('#pct'); q.click('[data-elapsed="5"]'); q.wait_for_timeout(200)
-    check(q.inner_text('#pct') != p10 and q.locator('#bands span').count() == 2 and 'reached 5' in q.inner_text('#pctlab') and q.inner_text('#suggest').count('About 5 minutes in') == 1 and q.get_attribute('[data-elapsed="5"]', 'aria-pressed') == 'true', f'about 5 minutes in: conditional chance {q.inner_text("#pct")} replaces {p10}, verdict uses the remaining minutes')
+    check(q.inner_text('#pct') != p10 and q.locator('#bands span').count() == 2 and 'reached 5' in q.inner_text('#pctlab') and q.inner_text('#suggest').count('the delay already at 5 minutes') == 1 and q.get_attribute('[data-elapsed="5"]', 'aria-pressed') == 'true', f'delay already reached 5 min: conditional chance {q.inner_text("#pct")} replaces {p10}, verdict uses the remaining minutes')
     q.click('[data-elapsed="10"]'); q.wait_for_timeout(200)
     check(q.locator('#bands span').count() == 1 and '20 minutes or more in total' in q.inner_text('#pctlab') and 'Already a long delay' in q.inner_text('#advice'), f'about 10 minutes in: chance of 20+ in total ({q.inner_text("#pct")})')
     q.click('[data-elapsed="0"]'); q.wait_for_timeout(200)
