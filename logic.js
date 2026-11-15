@@ -54,10 +54,11 @@
 
   function labelFor(model, name) { const s = model.stations.find((t) => t.name === name); return s ? s.label : name; }
 
+  // Risk bands for the chance that a comparable logged incident delayed service 10 minutes or more.
   function advice(p) {
-    if (p >= 0.35) return { call: 'walk', text: 'Lean towards walking to a bus or streetcar.' };
-    if (p >= 0.15) return { call: 'either', text: 'Could go either way. Give it a few minutes, but know your other route.' };
-    return { call: 'wait', text: 'Most delays like this clear in a few minutes. Waiting is usually fine.' };
+    if (p >= 0.35) return { level: 'high', title: 'High risk of a long delay', text: 'Worth checking another route now.' };
+    if (p >= 0.15) return { level: 'moderate', title: 'Moderate risk of a long delay', text: 'Know your other route and check the alert again in a few minutes.' };
+    return { level: 'low', title: 'Low risk of a long delay', text: 'Comparable incidents rarely held up service 10 minutes or more. Waiting is usually reasonable.' };
   }
 
   // Order matters: more specific phrases first.
@@ -81,7 +82,7 @@
 
   function readAlert(text, model) {
     const t = ' ' + String(text || '').toLowerCase().replace(/st\.\s/g, 'st ').replace(/\s+/g, ' ') + ' ';
-    const out = { group: null, station: null, line: null, found: [] };
+    const out = { group: null, station: null, line: null, found: [], flags: [] };
     if (/line 1\b|yonge.university|\byus?\b/.test(t)) out.line = 'YU';
     else if (/line 2\b|bloor.danforth|\bbd\b/.test(t)) out.line = 'BD';
     else if (/line 4\b|sheppard line/.test(t)) out.line = 'SHP';
@@ -100,8 +101,73 @@
     }
     cands.sort((a, b) => a.i - b.i || b.len - a.len);
     if (cands.length) out.station = cands[0].name;
-    if (!out.line && out.station) { const s = model.stations.find((x) => x.name === out.station); if (s && s.lines.length === 1) out.line = s.lines[0]; }
+    const distinct = [...new Set(cands.map((c) => c.name))];
+    if (distinct.length > 1) out.flags.push({ field: 'station', text: `The alert names more than one station. Used the first one, ${labelFor(model, out.station)}.` });
+    if (out.station && (out.station === 'Bloor' || out.station === 'Yonge') && !out.line) out.flags.push({ field: 'station', text: 'Bloor-Yonge serves two lines and the alert does not say which. Check the line.' });
+    if (!out.line && out.station) { const s = model.stations.find((x) => x.name === out.station); if (s && s.lines.length === 1) out.line = s.lines[0]; else if (s) out.flags.push({ field: 'line', text: `${s.label} serves more than one line. Pick the line.` }); }
+    if (out.line && out.station) { const s = model.stations.find((x) => x.name === out.station); if (s && !s.lines.includes(out.line)) out.flags.push({ field: 'station', text: `${s.label} is not on ${LABELS[out.line]}. Check the station.` }); }
     for (const k of ['line', 'station', 'group']) if (out[k]) out.found.push(k);
+    return out;
+  }
+
+  // Plan B from the schedule. pb: data/planb.json. from, to: station names (to may be empty).
+  function planB(pb, from, to) {
+    const out = { direct: [], via: [], all: [], night: [] };
+    const seen = new Set();
+    const lineOf = (n) => Object.keys(pb.lines).filter((l) => pb.lines[l].includes(n));
+    if (!to || to === from) {
+      const byRoute = new Map();
+      for (const q of pb.patterns) {
+        const i = q.visits.findIndex((v) => v.station === from);
+        if (i < 0) continue;
+        const next = q.visits.slice(i + 1).map((v) => v.station);
+        const key = q.route + '|' + q.heading;
+        if (seen.has(key)) continue; seen.add(key);
+        const r = byRoute.get(q.route) || { route: q.route, name: q.name, kind: q.kind, night: q.night, stop: q.visits[i].stop, metres: q.visits[i].metres, directions: [] };
+        if (q.visits[i].metres < r.metres) { r.metres = q.visits[i].metres; r.stop = q.visits[i].stop; }
+        r.directions.push({ heading: q.heading, next: next[0] || null });
+        byRoute.set(q.route, r);
+      }
+      for (const r of byRoute.values()) (r.night ? out.night : out.all).push(r);
+      out.all.sort((a, b) => a.metres - b.metres || a.route.localeCompare(b.route, 'en', { numeric: true }));
+      return out;
+    }
+    const fromLines = lineOf(from), toLines = lineOf(to);
+    const shared = fromLines.find((l) => toLines.includes(l));
+    for (const q of pb.patterns) {
+      const i = q.visits.findIndex((v) => v.station === from);
+      if (i < 0) continue;
+      const j = q.visits.findIndex((v, k) => k > i && v.station === to);
+      const key = q.route + '|' + q.heading;
+      if (j > 0) {
+        if (seen.has(key)) continue; seen.add(key);
+        (q.night ? out.night : out.direct).push({ route: q.route, name: q.name, kind: q.kind, night: q.night, heading: q.heading, stop: q.visits[i].stop, metres: q.visits[i].metres, alight: q.visits[j].stop });
+      }
+    }
+    const directRoutes = new Set(out.direct.map((r) => r.route));
+    // Otherwise: routes that carry you past the delay to a station closer to where you are going, then the subway onward.
+    let useful = null;
+    if (shared) {
+      const o = pb.lines[shared], a = o.indexOf(from), b = o.indexOf(to);
+      const between = a < b ? o.slice(a + 1, b) : o.slice(b + 1, a).reverse();
+      useful = new Map(between.map((n, k) => [n, { rank: k, line: shared }]));
+    } else {
+      useful = new Map();
+      for (const l of toLines) { const o = pb.lines[l], b = o.indexOf(to); o.forEach((n, k) => { if (n !== to && n !== from) useful.set(n, { rank: -Math.abs(k - b), line: l }); }); }
+    }
+    const best = new Map();
+    for (const q of pb.patterns) {
+      if (q.night || directRoutes.has(q.route)) continue;
+      const i = q.visits.findIndex((v) => v.station === from);
+      if (i < 0) continue;
+      let pick = null;
+      q.visits.slice(i + 1).forEach((v) => { const u = useful.get(v.station); if (u && (!pick || u.rank > pick.u.rank)) pick = { v, u }; });
+      if (!pick) continue;
+      const key = q.route + '|' + q.heading;
+      const cur = best.get(key);
+      if (!cur || pick.u.rank > cur.rank) best.set(key, { route: q.route, name: q.name, kind: q.kind, heading: q.heading, stop: q.visits[i].stop, metres: q.visits[i].metres, transfer: pick.v.station, line: pick.u.line, rank: pick.u.rank });
+    }
+    out.via = [...best.values()].sort((a, b) => b.rank - a.rank || a.metres - b.metres).slice(0, 6);
     return out;
   }
 
@@ -112,5 +178,5 @@
     return { hour, weekend: wd === 'Sat' || wd === 'Sun' };
   }
 
-  return { predict, explain, advice, readAlert, timeBucket, torontoNow, labelFor };
+  return { predict, explain, advice, readAlert, planB, timeBucket, torontoNow, labelFor, LABELS };
 });

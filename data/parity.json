@@ -5,7 +5,7 @@
   "line": "YU",
   "time": "am_peak",
   "weekend": true,
-  "p": 0.194977
+  "p": 0.223088
  },
  {
   "group": "security",
@@ -13,7 +13,7 @@
   "line": "YU",
   "time": "midday",
   "weekend": true,
-  "p": 0.156841
+  "p": 0.158692
  },
  {
   "group": "track",
@@ -21,7 +21,7 @@
   "line": "BD",
   "time": "midday",
   "weekend": false,
-  "p": 0.121708
+  "p": 0.123878
  },
  {
   "group": "doors",
@@ -29,7 +29,7 @@
   "line": "BD",
   "time": "am_peak",
   "weekend": false,
-  "p": 0.03495
+  "p": 0.035301
  },
  {
   "group": "alarm",
@@ -37,7 +37,7 @@
   "line": "YU",
   "time": "midday",
   "weekend": true,
-  "p": 0.032727
+  "p": 0.041558
  },
  {
   "group": "doors",
@@ -45,7 +45,7 @@
   "line": "YU",
   "time": "night",
   "weekend": false,
-  "p": 0.104599
+  "p": 0.108504
  },
  {
   "group": "doors",
@@ -53,7 +53,7 @@
   "line": "BD",
   "time": "am_peak",
   "weekend": false,
-  "p": 0.02449
+  "p": 0.025217
  },
  {
   "group": "medical",
@@ -61,7 +61,7 @@
   "line": "BD",
   "time": "evening",
   "weekend": false,
-  "p": 0.261695
+  "p": 0.281469
  },
  {
   "group": "doors",
@@ -69,7 +69,7 @@
   "line": "YU",
   "time": "pm_peak",
   "weekend": false,
-  "p": 0.032815
+  "p": 0.028278
  },
  {
   "group": "signals",
@@ -77,7 +77,7 @@
   "line": "YU",
   "time": "pm_peak",
   "weekend": false,
-  "p": 0.118349
+  "p": 0.13759
  },
  {
   "group": "weather",
@@ -85,7 +85,7 @@
   "line": "YU",
   "time": "midday",
   "weekend": true,
-  "p": 0.140326
+  "p": 0.15266
  },
  {
   "group": "operations",
@@ -93,7 +93,7 @@
   "line": "SHP",
   "time": "am_peak",
   "weekend": false,
-  "p": 0.044714
+  "p": 0.040646
  },
  {
   "group": "security",
@@ -101,7 +101,7 @@
   "line": "BD",
   "time": "midday",
   "weekend": false,
-  "p": 0.075617
+  "p": 0.078308
  },
  {
   "group": "train",
@@ -109,7 +109,7 @@
   "line": "BD",
   "time": "pm_peak",
   "weekend": false,
-  "p": 0.074864
+  "p": 0.096376
  },
  {
   "group": "track_person",
@@ -117,7 +117,7 @@
   "line": "BD",
   "time": "pm_peak",
   "weekend": false,
-  "p": 0.409525
+  "p": 0.445255
  },
  {
   "group": "medical",
@@ -125,7 +125,7 @@
   "line": "BD",
   "time": "evening",
   "weekend": false,
-  "p": 0.274011
+  "p": 0.310745
  },
  {
   "group": "medical",
@@ -133,7 +133,7 @@
   "line": "YU",
   "time": "am_peak",
   "weekend": false,
-  "p": 0.221677
+  "p": 0.274256
  },
  {
   "group": "medical",
@@ -141,7 +141,7 @@
   "line": "YU",
   "time": "pm_peak",
   "weekend": true,
-  "p": 0.320072
+  "p": 0.336811
  },
  {
   "group": "medical",
@@ -149,7 +149,7 @@
   "line": "YU",
   "time": "am_peak",
   "weekend": false,
-  "p": 0.167799
+  "p": 0.157215
  },
  {
   "group": "weather",
@@ -157,7 +157,7 @@
   "line": "BD",
   "time": "midday",
   "weekend": false,
-  "p": 0.108693
+  "p": 0.124156
  },
  {
   "group": "security",
@@ -165,7 +165,7 @@
   "line": "BD",
   "time": "night",
   "weekend": false,
-  "p": 0.289575
+  "p": 0.243697
  },
  {
   "group": "doors",
@@ -173,7 +173,7 @@
   "line": "YU",
   "time": "evening",
   "weekend": false,
-  "p": 0.057578
+  "p": 0.062373
  },
  {
   "group": "alarm",
@@ -181,7 +181,7 @@
   "line": "BD",
   "time": "evening",
   "weekend": false,
-  "p": 0.06809
+  "p": 0.09426
  },
  {
   "group": "fire",
@@ -189,7 +189,7 @@
   "line": "BD",
   "time": "midday",
   "weekend": true,
-  "p": 0.65871
+  "p": 0.637043
  },
  {
   "group": "security",
@@ -197,7 +197,7 @@
   "line": "BD",
   "time": "pm_peak",
   "weekend": true,
-  "p": 0.295894
+  "p": 0.321062
  },
  {
   "group": "security",
@@ -205,7 +205,7 @@
   "line": "YU",
   "time": "evening",
   "weekend": false,
-  "p": 0.073677
+  "p": 0.068145
  },
  {
   "group": "security",
@@ -213,7 +213,7 @@
   "line": "BD",
   "time": "midday",
   "weekend": true,
-  "p": 0.208602
+  "p": 0.230847
  },
  {
   "group": "track",
@@ -221,7 +221,7 @@
   "line": "YU",
   "time": "am_peak",
   "weekend": true,
-  "p": 0.22841
+  "p": 0.274376
  },
  {
   "group": "other",
@@ -229,7 +229,7 @@
   "line": "BD",
   "time": "evening",
   "weekend": false,
-  "p": 0.105826
+  "p": 0.158519
  },
  {
   "group": "medical",
@@ -237,6 +237,6 @@
   "line": "YU",
   "time": "pm_peak",
   "weekend": false,
-  "p": 0.18705
+  "p": 0.182178
  }
 ]

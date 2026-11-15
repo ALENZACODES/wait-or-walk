@@ -1,204 +1,295 @@
 {
  "trainedThrough": "2026-09-30",
+ "baseTrainedThrough": "2026-07-01",
+ "calibratedOn": "2026-07-02 to 2026-09-30",
  "trainedFrom": "2025-01-01",
  "delays": 16548,
  "longMinutes": 10,
  "halfLifeDays": 180,
  "calibrationDays": 91,
- "intercept": -1.066565,
+ "intercept": -1.052761,
  "weights": {
-  "group=medical": 0.325153,
-  "group=track_person": 1.022082,
-  "group=injury_track": 2.905388,
-  "group=security": -0.043283,
-  "group=alarm": -1.720839,
-  "group=fire": 2.623282,
-  "group=doors": -1.355832,
-  "group=weather": -0.264978,
-  "group=power": -0.438028,
-  "group=cleaning": -2.543292,
-  "group=signals": -0.412821,
-  "group=track": 0.249229,
-  "group=train": -0.859132,
-  "group=operations": -1.040009,
-  "group=other": -1.012352,
-  "station=Bathurst": -0.013677,
-  "station=Bay": 0.20921,
-  "station=Bayview": -0.06377,
-  "station=Bessarion": 0.098088,
-  "station=Bloor": -0.969254,
-  "station=Broadview": 0.217038,
-  "station=Castle Frank": 0.577065,
-  "station=Cedarvale": 0.170288,
-  "station=Chester": 0.254279,
-  "station=Christie": 0.35608,
-  "station=College": 0.449197,
-  "station=Coxwell": -0.374127,
-  "station=Davisville": -0.045554,
-  "station=Don Mills": -0.133379,
-  "station=Donlands": -0.182054,
-  "station=Downsview Park": 0.030786,
-  "station=Dufferin": 0.081184,
-  "station=Dundas West": -0.015125,
-  "station=Dupont": 0.423367,
-  "station=Eglinton": 0.00472,
-  "station=Finch": -1.027426,
-  "station=Finch West": -0.04663,
-  "station=Glencairn": 0.262298,
-  "station=Greenwood": 0.182554,
-  "station=High Park": -0.506655,
-  "station=Highway 407": 0.434523,
-  "station=Islington": 0.231077,
-  "station=Jane": -0.166785,
-  "station=Keele": -0.225723,
-  "station=Kennedy": -0.647356,
-  "station=King": -0.074142,
-  "station=Kipling": -0.730583,
-  "station=Lansdowne": -0.014513,
-  "station=Lawrence": 0.453952,
-  "station=Lawrence West": 0.009933,
-  "station=Leslie": -0.311291,
-  "station=Main Street": -0.008458,
-  "station=Museum": 0.079292,
-  "station=North York Centre": 0.016414,
-  "station=Old Mill": 0.401322,
-  "station=Osgoode": -0.00292,
-  "station=Ossington": -0.092488,
-  "station=Pape": 0.060271,
-  "station=Pioneer Village": -0.25415,
-  "station=Queen": -0.142414,
-  "station=Queen's Park": -0.240099,
-  "station=Rosedale": 0.090748,
-  "station=Royal York": -0.117673,
-  "station=Runnymede": -0.033032,
-  "station=Sheppard West": 0.164441,
-  "station=Sheppard-Yonge": -0.075524,
-  "station=Sherbourne": 0.151873,
-  "station=Spadina": 0.263923,
-  "station=St Andrew": 0.115541,
-  "station=St Clair": -0.035862,
-  "station=St Clair West": 0.074672,
-  "station=St George": -0.046757,
-  "station=St Patrick": 0.235806,
-  "station=Summerhill": 0.105223,
-  "station=TMU": -0.26133,
-  "station=Union": 0.038836,
-  "station=Vaughan Metropolitan Centre": -0.974807,
-  "station=Victoria Park": -0.06449,
-  "station=Warden": 0.053087,
-  "station=Wellesley": -0.10733,
-  "station=Wilson": 0.126212,
-  "station=Woodbine": 0.490215,
-  "station=Yonge": -0.614341,
-  "station=York Mills": 0.224588,
-  "station=York University": 0.258175,
-  "station=Yorkdale": 0.361068,
-  "station=Other": 0.577328,
-  "line=YU": -0.199196,
-  "line=BD": -0.06982,
-  "line=SHP": -0.016032,
-  "time=night": 0.396937,
-  "time=am_peak": -0.430265,
-  "time=midday": -0.228988,
-  "time=pm_peak": -0.139821,
-  "time=evening": 0.11709,
-  "weekend": 0.206637
+  "group=medical": 0.340317,
+  "group=track_person": 1.034386,
+  "group=injury_track": 3.452638,
+  "group=security": -0.079548,
+  "group=alarm": -1.636379,
+  "group=fire": 2.372895,
+  "group=doors": -1.29955,
+  "group=weather": -0.21019,
+  "group=power": -1.023147,
+  "group=cleaning": -2.523048,
+  "group=signals": -0.445912,
+  "group=track": 0.15982,
+  "group=train": -0.742122,
+  "group=operations": -0.927654,
+  "group=other": -0.856976,
+  "station=Bathurst": 0.005318,
+  "station=Bay": 0.270521,
+  "station=Bayview": -0.213629,
+  "station=Bessarion": -0.081279,
+  "station=Bloor": -0.734915,
+  "station=Broadview": -0.05074,
+  "station=Castle Frank": 0.592906,
+  "station=Cedarvale": 0.301173,
+  "station=Chester": 0.434035,
+  "station=Christie": 0.35902,
+  "station=College": 0.402363,
+  "station=Coxwell": -0.485346,
+  "station=Davisville": -0.140075,
+  "station=Don Mills": -0.309688,
+  "station=Donlands": -0.146034,
+  "station=Downsview Park": 0.108946,
+  "station=Dufferin": 0.23168,
+  "station=Dundas West": -0.143487,
+  "station=Dupont": 0.664915,
+  "station=Eglinton": 0.079062,
+  "station=Finch": -1.039751,
+  "station=Finch West": -0.030766,
+  "station=Glencairn": 0.188242,
+  "station=Greenwood": 0.124291,
+  "station=High Park": -0.440853,
+  "station=Highway 407": 0.368432,
+  "station=Islington": 0.152669,
+  "station=Jane": -0.253447,
+  "station=Keele": -0.303992,
+  "station=Kennedy": -0.775653,
+  "station=King": 0.047131,
+  "station=Kipling": -0.703628,
+  "station=Lansdowne": 0.057318,
+  "station=Lawrence": 0.677332,
+  "station=Lawrence West": 0.217067,
+  "station=Leslie": -0.314874,
+  "station=Main Street": -0.041528,
+  "station=Museum": 0.009391,
+  "station=North York Centre": -0.028841,
+  "station=Old Mill": 0.403229,
+  "station=Osgoode": -0.02838,
+  "station=Ossington": 0.114391,
+  "station=Pape": -0.046926,
+  "station=Pioneer Village": -0.220106,
+  "station=Queen": 0.003928,
+  "station=Queen's Park": -0.506694,
+  "station=Rosedale": 0.057012,
+  "station=Royal York": -0.068321,
+  "station=Runnymede": 0.221441,
+  "station=Sheppard West": 0.317087,
+  "station=Sheppard-Yonge": 0.002373,
+  "station=Sherbourne": 0.160908,
+  "station=Spadina": 0.154033,
+  "station=St Andrew": -0.018634,
+  "station=St Clair": 0.007443,
+  "station=St Clair West": 0.241299,
+  "station=St George": -0.017732,
+  "station=St Patrick": -0.164288,
+  "station=Summerhill": 0.056217,
+  "station=TMU": -0.59528,
+  "station=Union": -0.09612,
+  "station=Vaughan Metropolitan Centre": -1.117261,
+  "station=Victoria Park": -0.070686,
+  "station=Warden": 0.097031,
+  "station=Wellesley": -0.335469,
+  "station=Wilson": 0.035656,
+  "station=Woodbine": 0.628439,
+  "station=Yonge": -0.482682,
+  "station=York Mills": 0.319881,
+  "station=York University": 0.21917,
+  "station=Yorkdale": 0.588414,
+  "station=Other": 0.822399,
+  "line=YU": -0.17389,
+  "line=BD": -0.014914,
+  "line=SHP": -0.076137,
+  "time=night": 0.400029,
+  "time=am_peak": -0.431804,
+  "time=midday": -0.261248,
+  "time=pm_peak": -0.135435,
+  "time=evening": 0.163517,
+  "weekend": 0.270006
  },
  "platt": {
-  "a": 1.020621,
-  "b": -0.320091
+  "a": 1.014369,
+  "b": -0.323119
  },
  "groups": {
   "medical": {
    "label": "Medical emergency",
    "delays": 1971,
+   "longDelays": 564,
    "medianMinutes": 6.0,
-   "recentShareLong": 0.227
+   "recentShareLong": 0.223
   },
   "track_person": {
    "label": "Person at track level",
    "delays": 563,
+   "longDelays": 270,
    "medianMinutes": 9.0,
-   "recentShareLong": 0.407
+   "recentShareLong": 0.412
   },
   "injury_track": {
    "label": "Personal injury at track level",
    "delays": 34,
+   "longDelays": 30,
    "medianMinutes": 84.0,
    "recentShareLong": 0.75
   },
   "security": {
    "label": "Security or police incident",
    "delays": 3193,
+   "longDelays": 687,
    "medianMinutes": 5.0,
-   "recentShareLong": 0.177
+   "recentShareLong": 0.18
   },
   "alarm": {
    "label": "Passenger alarm",
    "delays": 1435,
+   "longDelays": 77,
    "medianMinutes": 4.0,
-   "recentShareLong": 0.031
+   "recentShareLong": 0.032
   },
   "fire": {
    "label": "Fire or smoke",
    "delays": 94,
+   "longDelays": 77,
    "medianMinutes": 26.5,
    "recentShareLong": 0.917
   },
   "doors": {
    "label": "Door problem",
    "delays": 1955,
+   "longDelays": 170,
    "medianMinutes": 4.0,
    "recentShareLong": 0.045
   },
   "weather": {
    "label": "Weather",
    "delays": 413,
+   "longDelays": 69,
    "medianMinutes": 4.0,
    "recentShareLong": 0.062
   },
   "power": {
    "label": "Power problem",
    "delays": 58,
+   "longDelays": 7,
    "medianMinutes": 4.0,
    "recentShareLong": 0.4
   },
   "cleaning": {
    "label": "Cleaning or unsanitary train",
    "delays": 1005,
+   "longDelays": 14,
    "medianMinutes": 4.0,
    "recentShareLong": 0.012
   },
   "signals": {
    "label": "Signal problem",
    "delays": 687,
+   "longDelays": 122,
    "medianMinutes": 5.0,
    "recentShareLong": 0.134
   },
   "track": {
    "label": "Track or switch problem",
    "delays": 911,
+   "longDelays": 240,
    "medianMinutes": 6.0,
-   "recentShareLong": 0.278
+   "recentShareLong": 0.27
   },
   "train": {
    "label": "Train mechanical problem",
    "delays": 1318,
+   "longDelays": 148,
    "medianMinutes": 4.0,
    "recentShareLong": 0.068
   },
   "operations": {
    "label": "Operator or service management",
    "delays": 2264,
+   "longDelays": 199,
    "medianMinutes": 4.0,
    "recentShareLong": 0.047
   },
   "other": {
    "label": "Other or not stated",
    "delays": 647,
+   "longDelays": 68,
    "medianMinutes": 4.0,
-   "recentShareLong": 0.049
+   "recentShareLong": 0.05
   }
+ },
+ "stationDelays": {
+  "Kipling": 762,
+  "Kennedy": 715,
+  "Finch": 652,
+  "St George": 578,
+  "Bloor": 546,
+  "Wilson": 530,
+  "Eglinton": 473,
+  "Sheppard-Yonge": 430,
+  "Vaughan Metropolitan Centre": 396,
+  "Davisville": 364,
+  "Union": 357,
+  "Yonge": 345,
+  "Warden": 336,
+  "Coxwell": 318,
+  "St Clair": 303,
+  "Donlands": 292,
+  "Spadina": 290,
+  "Greenwood": 288,
+  "Sheppard West": 271,
+  "Victoria Park": 267,
+  "Lawrence": 263,
+  "College": 257,
+  "TMU": 248,
+  "St Clair West": 238,
+  "Wellesley": 235,
+  "York Mills": 233,
+  "Keele": 229,
+  "Rosedale": 222,
+  "King": 221,
+  "Islington": 208,
+  "Other": 204,
+  "Don Mills": 202,
+  "North York Centre": 200,
+  "Broadview": 199,
+  "Ossington": 191,
+  "Cedarvale": 181,
+  "Queen": 174,
+  "Pape": 172,
+  "Yorkdale": 167,
+  "Dundas West": 157,
+  "Museum": 156,
+  "Osgoode": 156,
+  "Summerhill": 152,
+  "Christie": 150,
+  "Glencairn": 150,
+  "Lawrence West": 149,
+  "Woodbine": 147,
+  "Castle Frank": 143,
+  "Chester": 141,
+  "Queen's Park": 139,
+  "Sherbourne": 138,
+  "Main Street": 137,
+  "St Andrew": 137,
+  "High Park": 137,
+  "Bay": 136,
+  "Dupont": 130,
+  "Bathurst": 129,
+  "Jane": 125,
+  "Royal York": 120,
+  "St Patrick": 119,
+  "Old Mill": 114,
+  "Downsview Park": 113,
+  "Finch West": 112,
+  "Highway 407": 98,
+  "Lansdowne": 96,
+  "Dufferin": 94,
+  "Bayview": 85,
+  "Leslie": 78,
+  "Pioneer Village": 73,
+  "York University": 69,
+  "Runnymede": 64,
+  "Bessarion": 47
  },
  "stations": [
   {
@@ -265,7 +356,7 @@
      "route": "19",
      "name": "Bay",
      "kind": "bus",
-     "stop": "Bay St at Bloor St West - Bay Station",
+     "stop": "Bay St at Bloor St West, Bay Station",
      "metres": 100,
      "night": false
     },
@@ -292,7 +383,7 @@
      "route": "185",
      "name": "Sheppard Central",
      "kind": "bus",
-     "stop": "Sheppard Ave East at Bayview Ave East Side - Bayview Station",
+     "stop": "Sheppard Ave East at Bayview Ave East Side, Bayview Station",
      "metres": 60,
      "night": false
     },
@@ -300,7 +391,7 @@
      "route": "385",
      "name": "Sheppard East",
      "kind": "bus",
-     "stop": "Sheppard Ave East at Bayview Ave East Side - Bayview Station",
+     "stop": "Sheppard Ave East at Bayview Ave East Side, Bayview Station",
      "metres": 60,
      "night": true
     },
@@ -308,7 +399,7 @@
      "route": "11",
      "name": "Bayview",
      "kind": "bus",
-     "stop": "Bayview Ave at Sheppard Ave East North Side - Bayview Station",
+     "stop": "Bayview Ave at Sheppard Ave East North Side, Bayview Station",
      "metres": 100,
      "night": false
     }
@@ -327,7 +418,7 @@
      "route": "185",
      "name": "Sheppard Central",
      "kind": "bus",
-     "stop": "Sheppard Ave East at Bessarion Rd East Side - Bessarion Station",
+     "stop": "Sheppard Ave East at Bessarion Rd East Side, Bessarion Station",
      "metres": 20,
      "night": false
     },
@@ -335,7 +426,7 @@
      "route": "385",
      "name": "Sheppard East",
      "kind": "bus",
-     "stop": "Sheppard Ave East at Bessarion Rd East Side - Bessarion Station",
+     "stop": "Sheppard Ave East at Bessarion Rd East Side, Bessarion Station",
      "metres": 20,
      "night": true
     }
@@ -362,7 +453,7 @@
      "route": "320",
      "name": "Yonge",
      "kind": "bus",
-     "stop": "Yonge St at Bloor St East North Side - Bloor Station",
+     "stop": "Yonge St at Bloor St East North Side, Bloor Station",
      "metres": 100,
      "night": true
     },
@@ -370,7 +461,7 @@
      "route": "97",
      "name": "Yonge",
      "kind": "bus",
-     "stop": "Yonge St at Bloor St East North Side - Bloor Station",
+     "stop": "Yonge St at Bloor St East North Side, Bloor Station",
      "metres": 100,
      "night": false
     }
@@ -652,7 +743,7 @@
      "route": "306",
      "name": "Carlton",
      "kind": "streetcar",
-     "stop": "College St at Yonge St - College Station",
+     "stop": "College St at Yonge St, College Station",
      "metres": 60,
      "night": true
     },
@@ -660,7 +751,7 @@
      "route": "506",
      "name": "Carlton",
      "kind": "streetcar",
-     "stop": "College St at Yonge St - College Station",
+     "stop": "College St at Yonge St, College Station",
      "metres": 60,
      "night": false
     },
@@ -668,7 +759,7 @@
      "route": "97",
      "name": "Yonge",
      "kind": "bus",
-     "stop": "Yonge St at College St - College Station",
+     "stop": "Yonge St at College St, College Station",
      "metres": 80,
      "night": false
     },
@@ -676,7 +767,7 @@
      "route": "320",
      "name": "Yonge",
      "kind": "bus",
-     "stop": "Yonge St at College St - College Station",
+     "stop": "Yonge St at College St, College Station",
      "metres": 80,
      "night": true
     },
@@ -955,7 +1046,7 @@
      "route": "108",
      "name": "Driftwood",
      "kind": "bus",
-     "stop": "Sheppard Ave West at Vitti St - Downsview Park Station",
+     "stop": "Sheppard Ave West at Vitti St, Downsview Park Station",
      "metres": 170,
      "night": false
     },
@@ -963,7 +1054,7 @@
      "route": "106",
      "name": "Sentinel",
      "kind": "bus",
-     "stop": "Sheppard Ave West at Vitti St - Downsview Park Station",
+     "stop": "Sheppard Ave West at Vitti St, Downsview Park Station",
      "metres": 170,
      "night": false
     },
@@ -971,7 +1062,7 @@
      "route": "84",
      "name": "Sheppard West",
      "kind": "bus",
-     "stop": "Sheppard Ave West at Vitti St - Downsview Park Station",
+     "stop": "Sheppard Ave West at Vitti St, Downsview Park Station",
      "metres": 170,
      "night": false
     },
@@ -979,7 +1070,7 @@
      "route": "984",
      "name": "Sheppard West Express",
      "kind": "bus",
-     "stop": "Sheppard Ave West at Vitti St - Downsview Park Station",
+     "stop": "Sheppard Ave West at Vitti St, Downsview Park Station",
      "metres": 170,
      "night": false
     },
@@ -987,7 +1078,7 @@
      "route": "384",
      "name": "Sheppard West",
      "kind": "bus",
-     "stop": "Sheppard Ave West at Vitti St - Downsview Park Station",
+     "stop": "Sheppard Ave West at Vitti St, Downsview Park Station",
      "metres": 170,
      "night": true
     }
@@ -1006,7 +1097,7 @@
      "route": "29",
      "name": "Dufferin",
      "kind": "bus",
-     "stop": "Dufferin St at Bloor St West - Dufferin Station",
+     "stop": "Dufferin St at Bloor St West, Dufferin Station",
      "metres": 70,
      "night": false
     },
@@ -1014,7 +1105,7 @@
      "route": "329",
      "name": "Dufferin",
      "kind": "bus",
-     "stop": "Dufferin St at Bloor St West - Dufferin Station",
+     "stop": "Dufferin St at Bloor St West, Dufferin Station",
      "metres": 70,
      "night": true
     },
@@ -1022,7 +1113,7 @@
      "route": "929",
      "name": "Dufferin Express",
      "kind": "bus",
-     "stop": "Dufferin St at Bloor St West - Dufferin Station",
+     "stop": "Dufferin St at Bloor St West, Dufferin Station",
      "metres": 70,
      "night": false
     },
@@ -1113,7 +1204,7 @@
      "route": "300",
      "name": "Bloor-Danforth",
      "kind": "bus",
-     "stop": "Bloor St West at Dundas St West - Bloor GO Station",
+     "stop": "Bloor St West at Dundas St West, Bloor GO Station",
      "metres": 100,
      "night": true
     },
@@ -1121,7 +1212,7 @@
      "route": "402",
      "name": "Parkdale",
      "kind": "bus",
-     "stop": "Bloor St West at Dundas St West - Bloor GO Station",
+     "stop": "Bloor St West at Dundas St West, Bloor GO Station",
      "metres": 100,
      "night": false
     }
@@ -1140,7 +1231,7 @@
      "route": "127",
      "name": "Davenport",
      "kind": "bus",
-     "stop": "Spadina Rd at Dupont St - Dupont Station",
+     "stop": "Spadina Rd at Dupont St, Dupont Station",
      "metres": 40,
      "night": false
     },
@@ -1148,7 +1239,7 @@
      "route": "26",
      "name": "Dupont",
      "kind": "bus",
-     "stop": "Dupont St at Spadina Rd East Side - Dupont Station",
+     "stop": "Dupont St at Spadina Rd East Side, Dupont Station",
      "metres": 50,
      "night": false
     }
@@ -1413,7 +1504,7 @@
      "route": "41",
      "name": "Keele",
      "kind": "bus",
-     "stop": "Keele St at Four Winds Dr - Finch West Station",
+     "stop": "Keele St at Four Winds Dr, Finch West Station",
      "metres": 70,
      "night": false
     },
@@ -1421,7 +1512,7 @@
      "route": "341",
      "name": "Keele",
      "kind": "bus",
-     "stop": "Keele St at Four Winds Dr - Finch West Station",
+     "stop": "Keele St at Four Winds Dr, Finch West Station",
      "metres": 70,
      "night": true
     },
@@ -1429,7 +1520,7 @@
      "route": "941",
      "name": "Keele Express",
      "kind": "bus",
-     "stop": "Keele St at Four Winds Dr - Finch West Station",
+     "stop": "Keele St at Four Winds Dr, Finch West Station",
      "metres": 70,
      "night": false
     },
@@ -1761,7 +1852,7 @@
      "route": "189",
      "name": "Stockyards",
      "kind": "bus",
-     "stop": "Keele St at Bloor St West - Keele Station",
+     "stop": "Keele St at Bloor St West, Keele Station",
      "metres": 40,
      "night": false
     }
@@ -1780,7 +1871,7 @@
      "route": "905",
      "name": "Eglinton East Express",
      "kind": "bus",
-     "stop": "Kennedy Station - Platform A",
+     "stop": "Kennedy Station, Platform A",
      "metres": 20,
      "night": false
     },
@@ -1788,7 +1879,7 @@
      "route": "986",
      "name": "Scarborough Express",
      "kind": "bus",
-     "stop": "Kennedy Station - Platform A",
+     "stop": "Kennedy Station, Platform A",
      "metres": 20,
      "night": false
     },
@@ -1796,7 +1887,7 @@
      "route": "154",
      "name": "Curran Hall",
      "kind": "bus",
-     "stop": "Kennedy Station - Platform A",
+     "stop": "Kennedy Station, Platform A",
      "metres": 40,
      "night": false
     },
@@ -1804,7 +1895,7 @@
      "route": "86",
      "name": "Scarborough",
      "kind": "bus",
-     "stop": "Kennedy Station - Platform A",
+     "stop": "Kennedy Station, Platform A",
      "metres": 40,
      "night": false
     },
@@ -1820,7 +1911,7 @@
      "route": "12",
      "name": "Kingston Rd",
      "kind": "bus",
-     "stop": "Kennedy Station - Platform A",
+     "stop": "Kennedy Station, Platform A",
      "metres": 60,
      "night": false
     },
@@ -1828,7 +1919,7 @@
      "route": "116",
      "name": "Morningside",
      "kind": "bus",
-     "stop": "Kennedy Station - Platform A",
+     "stop": "Kennedy Station, Platform A",
      "metres": 60,
      "night": false
     },
@@ -1932,7 +2023,7 @@
      "route": "386",
      "name": "Scarborough",
      "kind": "bus",
-     "stop": "Kennedy Station - Platform B",
+     "stop": "Kennedy Station, Platform B",
      "metres": 70,
      "night": true
     },
@@ -1940,7 +2031,7 @@
      "route": "334",
      "name": "Eglinton",
      "kind": "bus",
-     "stop": "Kennedy Station - Platform B",
+     "stop": "Kennedy Station, Platform B",
      "metres": 70,
      "night": true
     },
@@ -1948,7 +2039,7 @@
      "route": "300",
      "name": "Bloor-Danforth",
      "kind": "bus",
-     "stop": "Kennedy Station - Platform B",
+     "stop": "Kennedy Station, Platform B",
      "metres": 70,
      "night": true
     },
@@ -1956,7 +2047,7 @@
      "route": "34",
      "name": "Eglinton",
      "kind": "bus",
-     "stop": "Kennedy Station - Platform A",
+     "stop": "Kennedy Station, Platform A",
      "metres": 80,
      "night": true
     },
@@ -1964,7 +2055,7 @@
      "route": "343",
      "name": "Kennedy",
      "kind": "bus",
-     "stop": "Kennedy Station - Platform B",
+     "stop": "Kennedy Station, Platform B",
      "metres": 120,
      "night": true
     }
@@ -1983,7 +2074,7 @@
      "route": "320",
      "name": "Yonge",
      "kind": "bus",
-     "stop": "Yonge St at King St East - King Station",
+     "stop": "Yonge St at King St East, King Station",
      "metres": 10,
      "night": true
     },
@@ -1991,7 +2082,7 @@
      "route": "97",
      "name": "Yonge",
      "kind": "bus",
-     "stop": "Yonge St at King St West - King Station",
+     "stop": "Yonge St at King St West, King Station",
      "metres": 20,
      "night": false
     },
@@ -1999,7 +2090,7 @@
      "route": "504",
      "name": "King",
      "kind": "streetcar",
-     "stop": "King St West at Yonge St West Side - King Station",
+     "stop": "King St West at Yonge St West Side, King Station",
      "metres": 50,
      "night": false
     },
@@ -2007,7 +2098,7 @@
      "route": "503",
      "name": "Kingston Rd",
      "kind": "streetcar",
-     "stop": "King St West at Yonge St West Side - King Station",
+     "stop": "King St West at Yonge St West Side, King Station",
      "metres": 50,
      "night": false
     },
@@ -2015,7 +2106,7 @@
      "route": "304",
      "name": "King",
      "kind": "streetcar",
-     "stop": "King St West at Yonge St West Side - King Station",
+     "stop": "King St West at Yonge St West Side, King Station",
      "metres": 50,
      "night": true
     },
@@ -2031,7 +2122,7 @@
      "route": "301",
      "name": "Queen",
      "kind": "streetcar",
-     "stop": "Adelaide St West at Yonge St - King Station",
+     "stop": "Adelaide St West at Yonge St, King Station",
      "metres": 150,
      "night": true
     },
@@ -2039,7 +2130,7 @@
      "route": "501",
      "name": "Queen",
      "kind": "streetcar",
-     "stop": "Adelaide St West at Yonge St - King Station",
+     "stop": "Adelaide St West at Yonge St, King Station",
      "metres": 150,
      "night": false
     },
@@ -2205,7 +2296,7 @@
      "route": "47",
      "name": "Lansdowne",
      "kind": "bus",
-     "stop": "Lansdowne Ave at Wade Ave - Lansdowne Station",
+     "stop": "Lansdowne Ave at Wade Ave, Lansdowne Station",
      "metres": 40,
      "night": false
     },
@@ -2264,7 +2355,7 @@
      "route": "320",
      "name": "Yonge",
      "kind": "bus",
-     "stop": "Yonge St at Lawrence Ave East North Side - Lawrence Station",
+     "stop": "Yonge St at Lawrence Ave East North Side, Lawrence Station",
      "metres": 70,
      "night": true
     },
@@ -2272,7 +2363,7 @@
      "route": "97",
      "name": "Yonge",
      "kind": "bus",
-     "stop": "Yonge St at Lawrence Ave East North Side - Lawrence Station",
+     "stop": "Yonge St at Lawrence Ave East North Side, Lawrence Station",
      "metres": 70,
      "night": false
     },
@@ -2280,7 +2371,7 @@
      "route": "352",
      "name": "Lawrence West",
      "kind": "bus",
-     "stop": "Lawrence Ave at Yonge St - Lawrence Station",
+     "stop": "Lawrence Ave at Yonge St, Lawrence Station",
      "metres": 90,
      "night": true
     },
@@ -2288,7 +2379,7 @@
      "route": "162",
      "name": "Lawrence-Donway",
      "kind": "bus",
-     "stop": "Lawrence Ave at Yonge St - Lawrence Station",
+     "stop": "Lawrence Ave at Yonge St, Lawrence Station",
      "metres": 90,
      "night": false
     }
@@ -2366,7 +2457,7 @@
      "route": "185",
      "name": "Sheppard Central",
      "kind": "bus",
-     "stop": "Sheppard Ave East at Old Leslie St - Leslie Station",
+     "stop": "Sheppard Ave East at Old Leslie St, Leslie Station",
      "metres": 60,
      "night": false
     },
@@ -2374,7 +2465,7 @@
      "route": "385",
      "name": "Sheppard East",
      "kind": "bus",
-     "stop": "Sheppard Ave East at Old Leslie St - Leslie Station",
+     "stop": "Sheppard Ave East at Old Leslie St, Leslie Station",
      "metres": 60,
      "night": true
     },
@@ -2500,7 +2591,7 @@
      "route": "13",
      "name": "Avenue Rd",
      "kind": "bus",
-     "stop": "Queen's Park at Charles St West - Museum Station",
+     "stop": "Queen's Park at Charles St West, Museum Station",
      "metres": 60,
      "night": false
     },
@@ -2597,7 +2688,7 @@
      "route": "301",
      "name": "Queen",
      "kind": "streetcar",
-     "stop": "Queen St West at University Ave - Osgoode Station",
+     "stop": "Queen St West at University Ave, Osgoode Station",
      "metres": 40,
      "night": true
     },
@@ -2605,7 +2696,7 @@
      "route": "501",
      "name": "Queen",
      "kind": "streetcar",
-     "stop": "Queen St West at University Ave - Osgoode Station",
+     "stop": "Queen St West at University Ave, Osgoode Station",
      "metres": 40,
      "night": false
     }
@@ -2825,7 +2916,7 @@
      "route": "320",
      "name": "Yonge",
      "kind": "bus",
-     "stop": "Yonge St at Queen St West - Queen Station",
+     "stop": "Yonge St at Queen St West, Queen Station",
      "metres": 30,
      "night": true
     },
@@ -2833,7 +2924,7 @@
      "route": "97",
      "name": "Yonge",
      "kind": "bus",
-     "stop": "Yonge St at Queen St West - Queen Station",
+     "stop": "Yonge St at Queen St West, Queen Station",
      "metres": 30,
      "night": false
     },
@@ -2841,7 +2932,7 @@
      "route": "501",
      "name": "Queen",
      "kind": "streetcar",
-     "stop": "Richmond St West at Yonge St - Queen Station",
+     "stop": "Richmond St West at Yonge St, Queen Station",
      "metres": 120,
      "night": false
     },
@@ -2849,7 +2940,7 @@
      "route": "301",
      "name": "Queen",
      "kind": "streetcar",
-     "stop": "Richmond St West at Yonge St - Queen Station",
+     "stop": "Richmond St West at Yonge St, Queen Station",
      "metres": 120,
      "night": true
     },
@@ -2876,7 +2967,7 @@
      "route": "506",
      "name": "Carlton",
      "kind": "streetcar",
-     "stop": "College St at Queen's Park - Queen's Park Station",
+     "stop": "College St at Queen's Park, Queen's Park Station",
      "metres": 30,
      "night": false
     },
@@ -2884,7 +2975,7 @@
      "route": "306",
      "name": "Carlton",
      "kind": "streetcar",
-     "stop": "College St at Queen's Park - Queen's Park Station",
+     "stop": "College St at Queen's Park, Queen's Park Station",
      "metres": 30,
      "night": true
     },
@@ -2892,7 +2983,7 @@
      "route": "13",
      "name": "Avenue Rd",
      "kind": "bus",
-     "stop": "University Ave at College St - Queen's Park Station",
+     "stop": "University Ave at College St, Queen's Park Station",
      "metres": 30,
      "night": false
     }
@@ -2919,7 +3010,7 @@
      "route": "320",
      "name": "Yonge",
      "kind": "bus",
-     "stop": "Yonge St at Crescent Rd - Rosedale Station",
+     "stop": "Yonge St at Crescent Rd, Rosedale Station",
      "metres": 90,
      "night": true
     },
@@ -2927,7 +3018,7 @@
      "route": "97",
      "name": "Yonge",
      "kind": "bus",
-     "stop": "Yonge St at Crescent Rd - Rosedale Station",
+     "stop": "Yonge St at Crescent Rd, Rosedale Station",
      "metres": 90,
      "night": false
     }
@@ -3120,7 +3211,7 @@
      "route": "107",
      "name": "Alness-Chesswood",
      "kind": "bus",
-     "stop": "Sheppard Ave West at Dufferin St - Sheppard West Station",
+     "stop": "Sheppard Ave West at Dufferin St, Sheppard West Station",
      "metres": 100,
      "night": false
     },
@@ -3128,7 +3219,7 @@
      "route": "384",
      "name": "Sheppard West",
      "kind": "bus",
-     "stop": "Sheppard Ave West at Dufferin St - Sheppard West Station",
+     "stop": "Sheppard Ave West at Dufferin St, Sheppard West Station",
      "metres": 100,
      "night": true
     }
@@ -3164,7 +3255,7 @@
      "route": "320",
      "name": "Yonge",
      "kind": "bus",
-     "stop": "Yonge St at Sheppard Ave West - Sheppard Station",
+     "stop": "Yonge St at Sheppard Ave West, Sheppard Station",
      "metres": 70,
      "night": true
     },
@@ -3172,7 +3263,7 @@
      "route": "384",
      "name": "Sheppard West",
      "kind": "bus",
-     "stop": "Yonge St at Sheppard Ave West - Sheppard Station",
+     "stop": "Yonge St at Sheppard Ave West, Sheppard Station",
      "metres": 70,
      "night": true
     },
@@ -3180,7 +3271,7 @@
      "route": "97",
      "name": "Yonge",
      "kind": "bus",
-     "stop": "Yonge St at Sheppard Ave West - Sheppard Station",
+     "stop": "Yonge St at Sheppard Ave West, Sheppard Station",
      "metres": 70,
      "night": false
     },
@@ -3231,7 +3322,7 @@
      "route": "75",
      "name": "Sherbourne",
      "kind": "bus",
-     "stop": "Sherbourne St at Bloor St East - Sherbourne Station",
+     "stop": "Sherbourne St at Bloor St East, Sherbourne Station",
      "metres": 40,
      "night": false
     }
@@ -3310,7 +3401,7 @@
      "route": "304",
      "name": "King",
      "kind": "streetcar",
-     "stop": "King St West at York St - St Andrew Station",
+     "stop": "King St West at York St, St Andrew Station",
      "metres": 90,
      "night": true
     },
@@ -3318,7 +3409,7 @@
      "route": "503",
      "name": "Kingston Rd",
      "kind": "streetcar",
-     "stop": "King St West at York St - St Andrew Station",
+     "stop": "King St West at York St, St Andrew Station",
      "metres": 90,
      "night": false
     },
@@ -3326,7 +3417,7 @@
      "route": "504",
      "name": "King",
      "kind": "streetcar",
-     "stop": "King St West at York St - St Andrew Station",
+     "stop": "King St West at York St, St Andrew Station",
      "metres": 90,
      "night": false
     },
@@ -3369,7 +3460,7 @@
      "route": "320",
      "name": "Yonge",
      "kind": "bus",
-     "stop": "Yonge St at St Clair Ave East - St. Clair Station",
+     "stop": "Yonge St at St Clair Ave East, St. Clair Station",
      "metres": 50,
      "night": true
     },
@@ -3377,7 +3468,7 @@
      "route": "97",
      "name": "Yonge",
      "kind": "bus",
-     "stop": "Yonge St at St Clair Ave East - St. Clair Station",
+     "stop": "Yonge St at St Clair Ave East, St. Clair Station",
      "metres": 50,
      "night": false
     },
@@ -3496,7 +3587,7 @@
      "route": "300",
      "name": "Bloor-Danforth",
      "kind": "bus",
-     "stop": "Bloor St West at Bedford Rd West Side - St. George Station",
+     "stop": "Bloor St West at Bedford Rd West Side, St. George Station",
      "metres": 90,
      "night": true
     }
@@ -3515,7 +3606,7 @@
      "route": "305",
      "name": "Dundas",
      "kind": "streetcar",
-     "stop": "Dundas St West at University Ave - St Patrick Station",
+     "stop": "Dundas St West at University Ave, St Patrick Station",
      "metres": 40,
      "night": true
     },
@@ -3523,7 +3614,7 @@
      "route": "505",
      "name": "Dundas",
      "kind": "streetcar",
-     "stop": "Dundas St West at University Ave - St Patrick Station",
+     "stop": "Dundas St West at University Ave, St Patrick Station",
      "metres": 40,
      "night": false
     },
@@ -3550,7 +3641,7 @@
      "route": "320",
      "name": "Yonge",
      "kind": "bus",
-     "stop": "Yonge St at Shaftesbury Ave North Side - Summerhill Station",
+     "stop": "Yonge St at Shaftesbury Ave North Side, Summerhill Station",
      "metres": 60,
      "night": true
     },
@@ -3558,7 +3649,7 @@
      "route": "97",
      "name": "Yonge",
      "kind": "bus",
-     "stop": "Yonge St at Shaftesbury Ave North Side - Summerhill Station",
+     "stop": "Yonge St at Shaftesbury Ave North Side, Summerhill Station",
      "metres": 60,
      "night": false
     }
@@ -3577,7 +3668,7 @@
      "route": "320",
      "name": "Yonge",
      "kind": "bus",
-     "stop": "Yonge St at Dundas St West - TMU Station",
+     "stop": "Yonge St at Dundas St West, TMU Station",
      "metres": 10,
      "night": true
     },
@@ -3585,7 +3676,7 @@
      "route": "97",
      "name": "Yonge",
      "kind": "bus",
-     "stop": "Yonge St at Dundas St West - TMU Station",
+     "stop": "Yonge St at Dundas St West, TMU Station",
      "metres": 10,
      "night": false
     },
@@ -3593,7 +3684,7 @@
      "route": "505",
      "name": "Dundas",
      "kind": "streetcar",
-     "stop": "Dundas St East at Yonge St - TMU Station",
+     "stop": "Dundas St East at Yonge St, TMU Station",
      "metres": 20,
      "night": false
     },
@@ -3601,7 +3692,7 @@
      "route": "306",
      "name": "Carlton",
      "kind": "streetcar",
-     "stop": "Dundas St East at Yonge St - TMU Station",
+     "stop": "Dundas St East at Yonge St, TMU Station",
      "metres": 20,
      "night": true
     },
@@ -3609,7 +3700,7 @@
      "route": "506",
      "name": "Carlton",
      "kind": "streetcar",
-     "stop": "Dundas St East at Yonge St - TMU Station",
+     "stop": "Dundas St East at Yonge St, TMU Station",
      "metres": 20,
      "night": false
     },
@@ -3617,7 +3708,7 @@
      "route": "305",
      "name": "Dundas",
      "kind": "streetcar",
-     "stop": "Dundas St East at Yonge St - TMU Station",
+     "stop": "Dundas St East at Yonge St, TMU Station",
      "metres": 20,
      "night": true
     },
@@ -3668,7 +3759,7 @@
      "route": "114",
      "name": "Queens Quay East",
      "kind": "bus",
-     "stop": "Bay St at Front St West South Side - Union Station",
+     "stop": "Bay St at Front St West South Side, Union Station",
      "metres": 130,
      "night": false
     },
@@ -3676,7 +3767,7 @@
      "route": "121",
      "name": "Esplanade-River",
      "kind": "bus",
-     "stop": "Bay St at Front St West South Side - Union Station",
+     "stop": "Bay St at Front St West South Side, Union Station",
      "metres": 130,
      "night": false
     },
@@ -3684,7 +3775,7 @@
      "route": "320",
      "name": "Yonge",
      "kind": "bus",
-     "stop": "Bay St at Front St West South Side - Union Station",
+     "stop": "Bay St at Front St West South Side, Union Station",
      "metres": 130,
      "night": true
     },
@@ -3927,7 +4018,7 @@
      "route": "320",
      "name": "Yonge",
      "kind": "bus",
-     "stop": "Yonge St at Wellesley St East - Wellesley Station",
+     "stop": "Yonge St at Wellesley St East, Wellesley Station",
      "metres": 100,
      "night": true
     },
@@ -3935,7 +4026,7 @@
      "route": "97",
      "name": "Yonge",
      "kind": "bus",
-     "stop": "Yonge St at Wellesley St East - Wellesley Station",
+     "stop": "Yonge St at Wellesley St East, Wellesley Station",
      "metres": 100,
      "night": false
     }
@@ -4120,7 +4211,7 @@
      "route": "320",
      "name": "Yonge",
      "kind": "bus",
-     "stop": "Yonge St at Bloor St East North Side - Bloor Station",
+     "stop": "Yonge St at Bloor St East North Side, Bloor Station",
      "metres": 50,
      "night": true
     },
@@ -4128,7 +4219,7 @@
      "route": "97",
      "name": "Yonge",
      "kind": "bus",
-     "stop": "Yonge St at Bloor St East North Side - Bloor Station",
+     "stop": "Yonge St at Bloor St East North Side, Bloor Station",
      "metres": 50,
      "night": false
     },
@@ -4144,7 +4235,7 @@
      "route": "19",
      "name": "Bay",
      "kind": "bus",
-     "stop": "Bay St at Cumberland St - Bay Station",
+     "stop": "Bay St at Cumberland St, Bay Station",
      "metres": 270,
      "night": false
     }
@@ -4313,7 +4404,7 @@
      "route": "18",
      "name": "Caledonia",
      "kind": "bus",
-     "stop": "Yorkdale Rd at GO Terminal - Yorkdale Station",
+     "stop": "Yorkdale Rd at GO Terminal, Yorkdale Station",
      "metres": 180,
      "night": false
     }

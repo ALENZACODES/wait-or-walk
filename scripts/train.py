@@ -63,6 +63,7 @@ def main():
     gz = zipfile.ZipFile(fetch(GTFS_URL, 'gtfs.zip'))
     stations = build_stations(gz)
     names = {s['name'] for s in stations}
+    zero_excluded = ((d['Min Delay'] <= 0) & d.Line.isin(['YU', 'BD', 'SHP'])).sum()
     d = d[(d['Min Delay'] > 0) & d.Line.isin(['YU', 'BD', 'SHP'])].copy()
     d['group'] = d.Code.map(group_of)
     d['station'] = d.Station.map(canon_delay_station)
@@ -105,46 +106,71 @@ def main():
         prior = (g.y * g.w).sum() / g.w.sum()
         num = (g.y * g.w).groupby(g.g).sum(); den = g.w.groupby(g.g).sum()
         return ((num + prior * 10) / (den + 10)).to_dict(), prior
-    def full_model(tr, ref):
-        """Fit on tr minus the last CAL_DAYS, Platt on those days, then refit on all of tr."""
-        cs = (pd.Timestamp(ref) - pd.Timedelta(days=CAL_DAYS)).strftime('%Y-%m-%d')
-        m0 = fit(tr[tr.Date < cs], cs)
-        a, b = platt(m0, tr[tr.Date >= cs])
-        return fit(tr, ref), a, b
+    def pipeline(tr, cal_start):
+        """The exact deployed process: base model on data before cal_start, Platt on cal_start onward. No refit."""
+        base = tr[tr.Date < cal_start]; cal = tr[tr.Date >= cal_start]
+        m = fit(base, cal_start)
+        a, b = platt(m, cal)
+        return m, a, b, base, cal
+    def cal_start_for(ref):
+        return (pd.Timestamp(ref) - pd.Timedelta(days=CAL_DAYS)).strftime('%Y-%m-%d')
     def score(y, p):
         return {'auc': round(float(roc_auc_score(y, p)), 3), 'brier': round(float(brier_score_loss(y, p)), 4), 'logLoss': round(float(log_loss(y, p)), 4), 'meanPredicted': round(float(np.mean(p)), 3)}
+    def bins(y, p, edges=(0, .05, .1, .15, .2, .3, .45, 1.01)):
+        out = []
+        for lo, hi in zip(edges[:-1], edges[1:]):
+            k = (p >= lo) & (p < hi)
+            if k.sum(): out.append({'from': lo, 'to': min(hi, 1), 'delays': int(k.sum()), 'predicted': round(float(p[k].mean()), 3), 'actual': round(float(np.asarray(y)[k].mean()), 3)})
+        return out
 
-    folds = []
-    for start, end in [('2026-04-01', '2026-07-01'), ('2026-07-01', '2026-10-01')]:
+    folds = []; pooled_y = []; pooled_p = []
+    for start, end in [('2026-01-01', '2026-04-01'), ('2026-04-01', '2026-07-01'), ('2026-07-01', '2026-10-01')]:
         tr = d[d.Date < start]; te = d[(d.Date >= start) & (d.Date < end)]
-        rate, prior = group_rate(tr, start)
+        cs = cal_start_for(start)
+        m, a, b, base, cal = pipeline(tr, cs)
+        raw = m.predict_proba(X(te))[:, 1]
+        p = sig(a * logit(raw) + b)
+        rate, prior = group_rate(base, cs)
+        cr_cal = np.array([rate.get(g, prior) for g in cal.group]); cr_te = np.array([rate.get(g, prior) for g in te.group])
+        pl = LogisticRegression(C=1e6).fit(logit(cr_cal).reshape(-1, 1), cal.y)
+        cr_te_cal = sig(pl.coef_[0][0] * logit(cr_te) + pl.intercept_[0])
         m_raw = LogisticRegression(C=0.5, max_iter=5000).fit(X(tr), tr.y)
-        m, a, b = full_model(tr, start)
-        p = sig(a * logit(m.predict_proba(X(te))[:, 1]) + b)
-        folds.append({'test': f'{start} to {te.Date.max()}', 'trainedThrough': tr.Date.max(), 'testDelays': int(len(te)), 'actualShareLong': round(float(te.y.mean()), 3),
+        pooled_y += list(te.y); pooled_p += list(p)
+        folds.append({'test': f'{start} to {te.Date.max()}', 'baseTrainedThrough': base.Date.max(), 'calibratedOn': f'{cal.Date.min()} to {cal.Date.max()}',
+                      'testDelays': int(len(te)), 'actualShareLong': round(float(te.y.mean()), 3),
                       'overallRate': score(te.y, np.full(len(te), tr.y.mean())),
-                      'causeOnlyRate': score(te.y, te.group.map(rate).fillna(prior).values),
+                      'causeOnlyRate': score(te.y, cr_te_cal),
                       'firstModel': score(te.y, m_raw.predict_proba(X(te))[:, 1]),
-                      'waitOrWalk': score(te.y, p)})
+                      'beforeCalibration': score(te.y, raw),
+                      'waitOrWalk': score(te.y, p),
+                      'reliability': bins(te.y.values, p)})
 
-    m, a, b = full_model(d, last)
+    cs = cal_start_for((pd.Timestamp(last) + pd.Timedelta(days=1)).strftime('%Y-%m-%d'))
+    m, a, b, base, cal = pipeline(d, cs)
     w = dict(zip(COLS, (round(float(v) * (GROUP_SCALE if c.startswith('group=') else 1), 6) for c, v in zip(COLS, m.coef_[0]))))
-    model = {'trainedThrough': last, 'trainedFrom': d.Date.min(), 'delays': int(len(d)), 'longMinutes': LONG, 'halfLifeDays': HALF_LIFE_DAYS, 'calibrationDays': CAL_DAYS,
+    recent = d[d.Date >= cs]
+    model = {'trainedThrough': last, 'baseTrainedThrough': base.Date.max(), 'calibratedOn': f'{cal.Date.min()} to {cal.Date.max()}', 'trainedFrom': d.Date.min(), 'delays': int(len(d)),
+             'longMinutes': LONG, 'halfLifeDays': HALF_LIFE_DAYS, 'calibrationDays': CAL_DAYS,
              'intercept': round(float(m.intercept_[0]), 6), 'weights': w, 'platt': {'a': round(a, 6), 'b': round(b, 6)},
              'groups': {g: {'label': GROUPS[g][0] if g in GROUPS else EXTRA_LABELS[g], 'delays': int((d.group == g).sum()),
+                            'longDelays': int(((d.group == g) & (d.y == 1)).sum()),
                             'medianMinutes': float(d[d.group == g]['Min Delay'].median()) if (d.group == g).any() else None,
-                            'recentShareLong': round(float(d[(d.group == g) & (d.Date >= (pd.Timestamp(last) - pd.Timedelta(days=CAL_DAYS)).strftime('%Y-%m-%d'))].y.mean()), 3) if ((d.group == g) & (d.Date >= (pd.Timestamp(last) - pd.Timedelta(days=CAL_DAYS)).strftime('%Y-%m-%d'))).any() else None}
+                            'recentShareLong': round(float(recent[recent.group == g].y.mean()), 3) if (recent.group == g).any() else None}
                         for g in groups},
+             'stationDelays': {s: int(v) for s, v in d.station.value_counts().items()},
              'stations': stations,
              'source': 'City of Toronto Open Data: TTC Subway Delay Data since 2025 and TTC Routes and Schedules (GTFS). Open Government Licence Toronto.'}
     os.makedirs(OUT, exist_ok=True)
     json.dump(model, open(os.path.join(OUT, 'model.json'), 'w'), indent=1)
-    json.dump({'folds': folds, 'monthlyShareLong': {k: round(float(v), 3) for k, v in d.groupby(d.Date.str.slice(0, 7)).y.mean().items()}}, open(os.path.join(OUT, 'metrics.json'), 'w'), indent=1)
+    pooled = {'tests': len(folds), 'delays': len(pooled_y), 'reliability': bins(np.array(pooled_y), np.array(pooled_p))}
+    json.dump({'folds': folds, 'pooled': pooled, 'zeroMinuteRecordsExcluded': int(zero_excluded),
+               'monthlyShareLong': {k: round(float(v), 3) for k, v in d.groupby(d.Date.str.slice(0, 7)).y.mean().items()}},
+              open(os.path.join(OUT, 'metrics.json'), 'w'), indent=1)
     samp = d.sample(30, random_state=7)
     ps = sig(a * logit(m.predict_proba(X(samp))[:, 1]) + b)
     json.dump([{'group': g, 'station': s, 'line': l, 'time': t, 'weekend': bool(wk), 'p': round(float(p), 6)} for g, s, l, t, wk, p in zip(samp.group, samp.station, samp.Line, samp.time, samp.weekend, ps)],
               open(os.path.join(OUT, 'parity.json'), 'w'), indent=1)
-    print(json.dumps(folds, indent=1))
+    print(json.dumps([{k: v for k, v in f.items() if k != 'reliability'} for f in folds], indent=1)); print(json.dumps(pooled))
 
 def build_stations(gz):
     r = pd.read_csv(gz.open('routes.txt')); s = pd.read_csv(gz.open('stops.txt'))
@@ -162,7 +188,7 @@ def build_stations(gz):
         dist = np.sqrt(dx * dx + dy * dy)
         near = surf.assign(m=dist)[dist <= 300].sort_values('m').drop_duplicates('route_id')
         routes = [{'route': str(x.route_short_name), 'name': str(x.route_long_name).title(), 'kind': 'streetcar' if x.route_type == 0 else 'bus',
-                   'stop': str(x.stop_name), 'metres': int(round(x.m / 10) * 10), 'night': str(x.route_short_name).startswith('3')} for x in near.itertuples()]
+                   'stop': re.sub(r'\s+-\s+', ', ', str(x.stop_name)), 'metres': int(round(x.m / 10) * 10), 'night': str(x.route_short_name).startswith('3')} for x in near.itertuples()]
         label = {'Bloor': 'Bloor-Yonge (Line 1)', 'Yonge': 'Bloor-Yonge (Line 2)'}.get(name, name)
         out.append({'name': name, 'label': label, 'lines': sorted({line_of[int(i)] for i in g.route_id}), 'lat': round(lat, 5), 'lon': round(lon, 5), 'nearby': routes})
     return out
