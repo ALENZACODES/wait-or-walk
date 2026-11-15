@@ -1,0 +1,8 @@
+{
+ "checked": "2026-11-15",
+ "sourceLastModified": "Mon, 26 Oct 2026 12:50:38 GMT",
+ "latestDelayDate": "2026-09-30",
+ "modelTrainedThrough": "2026-09-30",
+ "delaysAfterFreeze": 0,
+ "note": "No delays after the training data yet, so there is no fresh frozen test. Run this again when the City publishes newer delays."
+}

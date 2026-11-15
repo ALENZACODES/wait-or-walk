@@ -19,6 +19,22 @@
     return ['group=' + x.group, 'station=' + (known.has(x.station) ? x.station : 'Other'), 'line=' + x.line, 'time=' + x.time].concat(x.weekend ? ['weekend'] : []);
   }
 
+  // Expected logged delay in minutes (capped at 60) from the three bands: P(under 5) m1 + P(5 to 10) m2 + P(10 to 20) m3 + P(20+) m4,
+  // with m1 to m4 the average logged minutes in each range in the base training data (data/policy.json binMeans).
+  function expectedDelay(b, bm) {
+    if (!b || b.p5 === null || b.p20 === null || !bm) return null;
+    return (1 - b.p5) * bm[0] + (b.p5 - b.p10) * bm[1] + (b.p10 - b.p20) * bm[2] + b.p20 * bm[3];
+  }
+  // The shipped decision rule: switch when the expected logged delay minus the scheduled switch cost reaches the margin
+  // chosen on earlier data (data/policy.json). Switch cost: scheduled arrival by Plan B minus an on time subway arrival, at least 0.
+  function switchCall(expected, cost, margin) {
+    if (expected === null || cost === null || cost === undefined) return null;
+    return { switch: expected - Math.max(cost, 0) >= margin, expected, cost: Math.max(cost, 0) };
+  }
+
+  // Overnight hours, the same band the model uses for its night time (midnight to 6 a.m.): when Blue Night routes matter.
+  function isOvernight(minutes) { return minutes >= 0 && minutes < 360; }
+
   // x: {group, station, line, time, weekend}
   function predict(model, x) {
     const keys = featureKeys(x, model);
@@ -70,7 +86,7 @@
 
   // Risk bands for the chance that a comparable logged incident delayed service 10 minutes or more.
   function advice(p) {
-    if (p >= 0.35) return { level: 'high', title: 'High risk of a long delay', text: 'Worth checking another route now.' };
+    if (p >= 0.35) return { level: 'high', title: 'High risk of a long delay', text: 'Incidents like this often run long. See the wait or switch line below.' };
     if (p >= 0.15) return { level: 'moderate', title: 'Moderate risk of a long delay', text: 'Know your other route and check the alert again in a few minutes.' };
     return { level: 'low', title: 'Low risk of a long delay', text: 'Comparable incidents rarely held up service 10 minutes or more. Waiting is usually reasonable.' };
   }
@@ -308,5 +324,5 @@
     return { hour, weekend: wd === 'Sat' || wd === 'Sun' };
   }
 
-  return { predict, predictBands, reachable, rankByArrival, subwayMinutes, scheduleRange, BOARD_MINUTES, explain, advice, readAlert, planB, applyAlert, chooseOption, canForecast, mismatch, activeServices, decodeTimes, nextDepartures, torontoClock, walkMinutes, timeBucket, torontoNow, labelFor, LABELS };
+  return { predict, isOvernight, expectedDelay, switchCall, predictBands, reachable, rankByArrival, subwayMinutes, scheduleRange, BOARD_MINUTES, explain, advice, readAlert, planB, applyAlert, chooseOption, canForecast, mismatch, activeServices, decodeTimes, nextDepartures, torontoClock, walkMinutes, timeBucket, torontoNow, labelFor, LABELS };
 });

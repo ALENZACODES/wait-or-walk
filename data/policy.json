@@ -1,0 +1,15 @@
+{
+ "rule": "expectedCost",
+ "margin": 0.0,
+ "binMeans": [
+  3.4,
+  6.15,
+  13.12,
+  33.87
+ ],
+ "binMeansFrom": "2025-01-01 to 2026-07-01",
+ "chosenOn": "2026-07-02 to 2026-09-30",
+ "delays": 2220,
+ "averageMinutesAtMargin": 5.806,
+ "averageMinutesAlwaysWait": 5.96
+}

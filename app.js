@@ -1,8 +1,8 @@
 (function () {
   const $ = (s) => document.querySelector(s);
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-  const VERSION = 'r5';
-  let model = null, planb = null, ptimes = null;
+  const VERSION = 'r6';
+  let model = null, planb = null, ptimes = null, policy = null, best = null;
   let state = { line: '', station: '', group: '', derived: new Set(), pending: null };
   const sync = () => { $('#line').value = state.line; $('#station').value = state.station; $('#group').value = state.group; ['line', 'station', 'group'].forEach((k) => tag(k, state.derived.has(k))); };
   const pct = (p) => Math.round(p * 100) + '%';
@@ -51,6 +51,12 @@
     $('.result').className = 'card result ' + a.level;
     $('#advice').textContent = a.title + '.';
     $('#adviceText').textContent = a.text;
+    const ew = WaitOrWalk.expectedDelay(bands, policy && policy.binMeans);
+    const call = best && WaitOrWalk.switchCall(ew, best.cost, policy.margin);
+    const em = ew === null ? null : Math.round(ew);
+    $('#suggest').innerHTML = em === null ? '' : call
+      ? `<b>Wait or switch: ${call.switch ? 'switch' : 'wait'}.</b> Incidents like this delay service about ${em} minutes on average, by this estimate. By the schedule, route ${esc(best.route)} gets you to ${esc(best.dest)} about ${Math.round(call.cost)} minutes later than an on time subway. That is ${call.switch ? 'no more than' : 'more than'} the expected delay.`
+      : `<b>Wait or switch:</b> incidents like this delay service about ${em} minutes on average, by this estimate. ${!$('#dest').value ? 'Choose where you are headed under Plan B to compare it with the best scheduled switch.' : ctx && !ctx.covered ? 'The schedule data has ended, so there is no switch to compare and no suggestion.' : 'No scheduled switch you can catch could be compared for that trip (the comparison needs a destination on the same line), so there is no suggestion.'}`;
     const g = model.groups[x.group];
     $('#typical').textContent = `This cause: ${g.delays.toLocaleString('en-CA')} logged delays, ${g.longDelays.toLocaleString('en-CA')} of them 10 minutes or more; half were over in ${g.medianMinutes} minutes or less.`;
     const share = g.longDelays / g.delays;
@@ -98,7 +104,7 @@
   function renderPlanB(s) {
     const out = $('#planbOut');
     if (!s) { out.innerHTML = WaitOrWalk.mismatch(state, model) ? '<p class="small">Fix the line or station first: they do not match.</p>' : '<p class="small">Choose the station of the delay to see nearby routes.</p>'; return; }
-    ctx = timeContext();
+    ctx = timeContext(); best = null;
     const dest = $('#dest').value;
     const d = dest && model.stations.find((t) => t.name === dest);
     const r = WaitOrWalk.planB(planb, s.name, dest);
@@ -108,6 +114,9 @@
     else html += `<p class="warn" id="planbClock"><b>Schedule data ends on ${ymdWords(rg.to)}.</b> ${ctx.ymd > rg.to ? 'Today is after that' : `It starts on ${ymdWords(rg.from)}, and today is before that`}, so departure times are not shown. Routes and stops below are from that schedule and may have changed.</p>`;
     if (d && d.name !== s.name) {
       const ranked = ctx.covered ? WaitOrWalk.rankByArrival(planb, ptimes.times, r.direct.concat(r.via), ctx.today, ctx.yesterday, ctx.now, d.name) : r.direct.concat(r.via).map((x) => Object.assign({}, x, { first: null, estimate: null }));
+      const top = ranked.find((x) => x.estimate !== null);
+      const line = $('#line').value, sub = WaitOrWalk.subwayMinutes(planb, line, s.name, d.name);
+      if (ctx.covered && top && sub !== null) best = { cost: top.estimate - ctx.now - sub, route: `${top.route} ${top.name}`, dest: d.label };
       if (ranked.length) {
         html += `<h3>From ${esc(s.label)} towards ${esc(d.label)}${ctx.covered ? ', earliest scheduled arrival first' : ''}</h3>`;
         if (ctx.covered) html += '<p class="small">Ordered by the first departure you can catch plus the scheduled ride (and the scheduled subway time onward where you change). These are schedule estimates, not live times and not a promise of the quickest way.</p>';
@@ -121,7 +130,7 @@
       html += `<h3>Scheduled routes within 300 metres of ${esc(s.label)}, by direction</h3>` + listAll(r);
     }
     const nights = [...new Set(r.night.map((x) => x.route))];
-    if (nights.length) html += `<p class="small"><b>Overnight:</b> ${nights.length > 1 ? `Blue Night routes ${nights.join(', ')} also stop` : `Blue Night route ${nights[0]} also stops`} here.</p>`;
+    if (nights.length && WaitOrWalk.isOvernight(ctx.now)) html += `<p class="small"><b>Overnight:</b> ${nights.length > 1 ? `Blue Night routes ${nights.join(', ')} also stop` : `Blue Night route ${nights[0]} also stops`} here.</p>`;
     out.innerHTML = html;
   }
 
@@ -179,6 +188,7 @@
   const DHEAD = '<thead><tr><th scope="col">Compared</th><th scope="col">AUC</th><th scope="col">Log loss</th><th scope="col">Brier score</th><th scope="col">Calibration error</th></tr></thead>';
   const tbl = (head, body) => `<table>${head}<tbody>${body}</tbody></table>`;
   const mins2 = (x) => x.toFixed(2);
+  const mg = (x) => (x === 0 ? '0 minutes' : `${Math.abs(x)} ${Math.abs(x) === 1 ? 'minute' : 'minutes'} ${x < 0 ? 'below' : 'above'}`);
   const saved = (x) => dci(x, 2, true, 'min saved', 'min lost');
   function metrics(m) {
     const ev = m.evidence;
@@ -195,6 +205,11 @@
     const ss = ev.stationSimulation, SN = { all: 'All delays', under10: 'Under 10 minutes', atLeast20: '20 minutes or more', atLeast30: '30 minutes or more' };
     $('#stationSimTable').innerHTML = `<table><thead><tr><th scope="col">Delays</th><th scope="col">Always wait</th><th scope="col">Always switch</th><th scope="col">Cause only rule</th><th scope="col">First model</th><th scope="col">Wait or Walk</th><th scope="col">Hindsight best</th><th scope="col">Wait or Walk against always wait (95% interval)</th><th scope="col">Wait or Walk against cause only</th></tr></thead><tbody>${['all', 'under10', 'atLeast20', 'atLeast30'].map((k) => { const r = ss.subsets[k]; return `<tr><td>${SN[k]} (${r.delays.toLocaleString('en-CA')})</td><td>${mins2(r.alwaysWait)}</td><td>${mins2(r.alwaysSwitch)}</td><td>${mins2(r.causeOnly)}</td><td>${mins2(r.firstModel)}</td><td><b>${mins2(r.waitOrWalk)}</b></td><td>${mins2(r.hindsightBest)}</td><td>${saved(r.savedVsWait_waitOrWalk)}</td><td>${saved(r.savedVs_causeOnly)}</td></tr>`; }).join('')}</tbody></table>`;
     $('#stationSimNote').textContent = `${ss.directionsWithAlternative.toLocaleString('en-CA')} of ${ss.directions.toLocaleString('en-CA')} delay and direction pairs had a scheduled alternative leaving within 3 hours; the median switch cost was ${ss.medianSwitchCost} extra minutes.`;
+    $('#foldTable').innerHTML = `<table><thead><tr><th scope="col">Test period</th><th scope="col">Base model trained on</th><th scope="col">Recalibrated on</th><th scope="col">Test delays</th></tr></thead><tbody>${m.folds.map((f) => `<tr><td>${span(f.test)}</td><td>Jan 1, 2025 to ${day(f.baseTrainedThrough)}</td><td>${span(f.calibratedOn)}</td><td>${f.testDelays.toLocaleString('en-CA')}</td></tr>`).join('')}<tr class="ours"><td>None: the shipped model</td><td>Jan 1, 2025 to ${day(model.baseTrainedThrough)}</td><td>${span(model.calibratedOn)}</td><td>not scored</td></tr></tbody></table>`;
+    $('#firstTwoTable').innerHTML = tbl(MHEAD, methodRows(ev.pooledFirstTwo.byDelay)) + tbl(DHEAD, diffRows(ev.pooledFirstTwo.byDelay));
+    const dp = ev.decisionPolicy;
+    $('#policyTable').innerHTML = `<table><thead><tr><th scope="col">Delays</th><th scope="col">Always wait</th><th scope="col">Cause only at 35%</th><th scope="col">Old rule: 35%</th><th scope="col">20+ chance rule</th><th scope="col">Expected cost rule (shipped)</th><th scope="col">Expected cost against always wait (95% interval)</th><th scope="col">Expected cost against the old rule</th><th scope="col">Expected cost against cause only</th></tr></thead><tbody>${['all', 'under10', 'atLeast20', 'atLeast30'].map((k) => { const r = dp.subsets[k]; return `<tr><td>${SN[k]} (${r.delays.toLocaleString('en-CA')})</td><td>${mins2(r.alwaysWait)}</td><td>${mins2(r.causeOnly35)}</td><td>${mins2(r.current35)}</td><td>${mins2(r.p20Rule)}</td><td><b>${mins2(r.expectedCost)}</b></td><td>${saved(r.expectedCost_savedVsWait)}</td><td>${saved(r.expectedCost_savedVsCurrent)}</td><td>${saved(r.expectedCost_savedVsCause)}</td></tr>`; }).join('')}</tbody></table>`;
+    $('#policyChosen').textContent = 'Picked on earlier data only: ' + dp.chosen.map((c) => `for ${span(c.test)}, on ${span(c.chosenOn)}: 20+ chance at least ${pct(c.p20Threshold)}, expected cost margin ${mg(c.expectedCostMargin)}`).join('; ') + `. Shipped: margin ${mg(policy.margin)}, picked the same way on ${span(policy.chosenOn)}.`;
     const sim = ev.simulation;
     $('#simTable').innerHTML = `<table><thead><tr><th scope="col">Assumed extra minutes to switch</th><th scope="col">Always wait</th><th scope="col">Cause only rule</th><th scope="col">Wait or Walk</th><th scope="col">Hindsight best</th><th scope="col">Wait or Walk against cause only (95% interval)</th></tr></thead><tbody>${sim.rows.map((r) => `<tr><td>${r.switchCost} min</td><td>${r.alwaysWait.toFixed(2)}</td><td>${r.causeOnly.toFixed(2)}</td><td>${r.waitOrWalk.toFixed(2)}</td><td>${r.hindsightBest.toFixed(2)}</td><td>${dci(r.waitOrWalkMinusCauseOnly, 2, false, 'min fewer', 'min more')}</td></tr>`).join('')}</tbody></table>`;
     $('#sensTable').innerHTML = `<table><thead><tr><th scope="col">Half life</th><th scope="col">Recalibration window</th><th scope="col">AUC</th><th scope="col">Log loss</th><th scope="col">Calibration error</th></tr></thead><tbody>${ev.sensitivity.map((r) => `<tr class="${r.shipped ? 'ours' : ''}"><td>${r.halfLifeDays ? r.halfLifeDays + ' days' : 'none (equal weights)'}</td><td>${r.calibrationDays} days</td><td>${r.auc.toFixed(4)}</td><td>${r.logLoss.toFixed(4)}</td><td>${r.calError.toFixed(1)} pts${r.shipped ? ' (shipped)' : ''}</td></tr>`).join('')}</tbody></table>`;
@@ -222,8 +237,8 @@
     $('#loading').hidden = false; $('#loadError').hidden = true;
     const get = (f) => fetch(f).then((r) => { if (!r.ok) throw new Error(f + ' ' + r.status); return r.json(); });
     const v = (f) => get(f + '?v=' + VERSION);
-    Promise.all([v('data/model.json'), v('data/metrics.json'), v('data/planb.json'), v('data/planb_times.json')]).then(([mo, me, pb, pt]) => {
-      model = mo; planb = pb; ptimes = pt;
+    Promise.all([v('data/model.json'), v('data/metrics.json'), v('data/planb.json'), v('data/planb_times.json'), v('data/policy.json')]).then(([mo, me, pb, pt, po]) => {
+      model = mo; planb = pb; ptimes = pt; policy = po;
       $('#baseThrough').textContent = day(mo.baseTrainedThrough); $('#calOn').textContent = span(mo.calibratedOn);
       fillSelects(); metrics(me);
       $('#loading').hidden = true; $('#app').hidden = false;

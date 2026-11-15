@@ -200,4 +200,21 @@ assert.equal(ev.survival.length, 32);
 assert.ok(ev.sensitivity.filter((x) => x.shipped).length === 1);
 const ss = ev.stationSimulation; assert.ok(ss.directionsWithAlternative > 0 && ss.subsets.all.delays === metrics.pooled.delays);
 
+// No leakage: each test period's recalibration and decision rule settings come from data before it; the shipped model is never scored
+for (const c of ev.decisionPolicy.chosen) assert.ok(c.chosenOn.slice(-10) < c.test.slice(0, 10), `decision rule picked on ${c.chosenOn} before ${c.test}`);
+for (const f of metrics.folds) assert.ok(model.calibratedOn.slice(0, 10) > f.calibratedOn.slice(-10));
+assert.equal(ev.pooledFirstTwo.byDelay.delays, metrics.folds[0].testDelays + metrics.folds[1].testDelays);
+// The shipped wait or switch rule
+const policy = load('policy.json');
+assert.equal(policy.rule, 'expectedCost'); assert.equal(policy.chosenOn, model.calibratedOn); assert.equal(policy.binMeans.length, 4);
+assert.equal(ev.decisionPolicy.shipped, 'expectedCost');
+const dpa = ev.decisionPolicy.subsets.all;
+assert.ok(dpa.expectedCost_savedVsCurrent.low > 0 && dpa.expectedCost_savedVsWait.low > 0, 'shipped rule clearly better than the old rule and always waiting');
+const eb = W.expectedDelay({ p5: 0.4, p10: 0.23, p20: 0.1 }, [3.4, 6.15, 13.12, 33.87]);
+assert.ok(Math.abs(eb - (0.6 * 3.4 + 0.17 * 6.15 + 0.13 * 13.12 + 0.1 * 33.87)) < 1e-9);
+assert.equal(W.switchCall(8.2, 19, 0).switch, false); assert.equal(W.switchCall(20, 9, 0).switch, true); assert.equal(W.switchCall(5, -3, 0).cost, 0);
+assert.equal(W.switchCall(null, 5, 0), null); assert.equal(W.switchCall(5, null, 0), null);
+// Blue Night routes only overnight (midnight to 6 a.m., the model's night band)
+assert.ok(W.isOvernight(0) && W.isOvernight(180) && W.isOvernight(359) && !W.isOvernight(360) && !W.isOvernight(1050) && !W.isOvernight(1439));
+
 console.log('Wait or Walk tests passed.');

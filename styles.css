@@ -78,11 +78,13 @@ footer { max-width: 980px; margin: 0 auto; padding: 18px 20px 30px; color: #555;
 #pooledDiff, #periodTables .tablewrap { margin-top: 8px; }
 h4 { color: var(--blue); margin: 14px 0 6px; font-size: .95rem; }
 
-.estlab { margin: 0 0 -4px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; font-size: .8rem; color: #00205b; }
+.estlab { margin: 0 0 -4px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; font-size: .8rem; color: var(--blue); }
 .bands { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 4px; }
 .bands span { border: 1px solid #c9d1e3; border-radius: 6px; padding: 2px 8px; font-size: .92rem; background: #fff; }
-.bands span.on { border-color: #00205b; background: #eef2fa; }
+.bands span.on { border-color: var(--blue); background: #eef2fa; }
 .safety { margin: 12px 0 0; padding: 8px 10px; background: #fff8e6; border-left: 4px solid #b26b00; font-size: .92rem; }
-.eta { color: #00205b; font-weight: 600; }
-.verdict { border: 2px solid #00205b; border-radius: 8px; padding: 8px 12px; margin: 0 0 12px; background: #f4f7fc; }
+.eta { color: var(--blue); font-weight: 600; }
+.verdict { border: 2px solid var(--blue); border-radius: 8px; padding: 8px 12px; margin: 0 0 12px; background: #f4f7fc; }
 .verdict p { margin: 4px 0; }
+.scope { margin: 4px 0 6px; font-size: .92rem; color: #3a3f4b; }
+.suggest { margin: 6px 0; padding: 6px 10px; border-left: 4px solid var(--blue); background: #f4f7fc; }

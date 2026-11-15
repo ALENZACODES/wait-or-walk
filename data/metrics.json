@@ -3872,6 +3872,457 @@
     }
    }
   },
+  "pooledFirstTwo": {
+   "byDelay": {
+    "delays": 5207,
+    "resampling": "delay",
+    "methods": {
+     "waitOrWalk": {
+      "auc": {
+       "value": 0.7416,
+       "low": 0.7231,
+       "high": 0.7594
+      },
+      "logLoss": {
+       "value": 0.3833,
+       "low": 0.3681,
+       "high": 0.3985
+      },
+      "brier": {
+       "value": 0.1176,
+       "low": 0.1118,
+       "high": 0.1234
+      },
+      "calError": {
+       "value": 0.0185,
+       "low": 0.0117,
+       "high": 0.0284
+      }
+     },
+     "causeOnly": {
+      "auc": {
+       "value": 0.707,
+       "low": 0.6884,
+       "high": 0.7255
+      },
+      "logLoss": {
+       "value": 0.3963,
+       "low": 0.3813,
+       "high": 0.4111
+      },
+      "brier": {
+       "value": 0.1216,
+       "low": 0.1157,
+       "high": 0.1274
+      },
+      "calError": {
+       "value": 0.0198,
+       "low": 0.0132,
+       "high": 0.031
+      }
+     },
+     "firstModel": {
+      "auc": {
+       "value": 0.7455,
+       "low": 0.7271,
+       "high": 0.7636
+      },
+      "logLoss": {
+       "value": 0.3808,
+       "low": 0.3651,
+       "high": 0.3961
+      },
+      "brier": {
+       "value": 0.1168,
+       "low": 0.1109,
+       "high": 0.1226
+      },
+      "calError": {
+       "value": 0.0158,
+       "low": 0.0111,
+       "high": 0.026
+      }
+     }
+    },
+    "differences": {
+     "causeOnly": {
+      "auc": {
+       "value": 0.0346,
+       "low": 0.025,
+       "high": 0.0443,
+       "distinguishable": true
+      },
+      "logLoss": {
+       "value": -0.013,
+       "low": -0.0169,
+       "high": -0.009,
+       "distinguishable": true
+      },
+      "brier": {
+       "value": -0.004,
+       "low": -0.0054,
+       "high": -0.0026,
+       "distinguishable": true
+      },
+      "calError": {
+       "value": -0.0013,
+       "low": -0.0075,
+       "high": 0.0027,
+       "distinguishable": false
+      }
+     },
+     "firstModel": {
+      "auc": {
+       "value": -0.0039,
+       "low": -0.0077,
+       "high": -0.0001,
+       "distinguishable": true
+      },
+      "logLoss": {
+       "value": 0.0025,
+       "low": 0.0008,
+       "high": 0.0042,
+       "distinguishable": true
+      },
+      "brier": {
+       "value": 0.0008,
+       "low": 0.0003,
+       "high": 0.0013,
+       "distinguishable": true
+      },
+      "calError": {
+       "value": 0.0027,
+       "low": -0.0042,
+       "high": 0.0058,
+       "distinguishable": false
+      }
+     }
+    }
+   },
+   "byDay": {
+    "delays": 5207,
+    "resampling": "day",
+    "methods": {
+     "waitOrWalk": {
+      "auc": {
+       "value": 0.7416,
+       "low": 0.7221,
+       "high": 0.7613
+      },
+      "logLoss": {
+       "value": 0.3833,
+       "low": 0.3656,
+       "high": 0.4008
+      },
+      "brier": {
+       "value": 0.1176,
+       "low": 0.1109,
+       "high": 0.1242
+      },
+      "calError": {
+       "value": 0.0185,
+       "low": 0.0111,
+       "high": 0.0299
+      }
+     },
+     "causeOnly": {
+      "auc": {
+       "value": 0.707,
+       "low": 0.6868,
+       "high": 0.7277
+      },
+      "logLoss": {
+       "value": 0.3963,
+       "low": 0.3791,
+       "high": 0.4134
+      },
+      "brier": {
+       "value": 0.1216,
+       "low": 0.1149,
+       "high": 0.1282
+      },
+      "calError": {
+       "value": 0.0198,
+       "low": 0.0127,
+       "high": 0.0321
+      }
+     },
+     "firstModel": {
+      "auc": {
+       "value": 0.7455,
+       "low": 0.726,
+       "high": 0.7651
+      },
+      "logLoss": {
+       "value": 0.3808,
+       "low": 0.363,
+       "high": 0.3986
+      },
+      "brier": {
+       "value": 0.1168,
+       "low": 0.1101,
+       "high": 0.1234
+      },
+      "calError": {
+       "value": 0.0158,
+       "low": 0.0106,
+       "high": 0.0273
+      }
+     }
+    },
+    "differences": {
+     "causeOnly": {
+      "auc": {
+       "value": 0.0346,
+       "low": 0.0241,
+       "high": 0.0443,
+       "distinguishable": true
+      },
+      "logLoss": {
+       "value": -0.013,
+       "low": -0.0171,
+       "high": -0.0088,
+       "distinguishable": true
+      },
+      "brier": {
+       "value": -0.004,
+       "low": -0.0054,
+       "high": -0.0026,
+       "distinguishable": true
+      },
+      "calError": {
+       "value": -0.0013,
+       "low": -0.0077,
+       "high": 0.0035,
+       "distinguishable": false
+      }
+     },
+     "firstModel": {
+      "auc": {
+       "value": -0.0039,
+       "low": -0.0076,
+       "high": -0.0001,
+       "distinguishable": true
+      },
+      "logLoss": {
+       "value": 0.0025,
+       "low": 0.0007,
+       "high": 0.0042,
+       "distinguishable": true
+      },
+      "brier": {
+       "value": 0.0008,
+       "low": 0.0003,
+       "high": 0.0013,
+       "distinguishable": true
+      },
+      "calError": {
+       "value": 0.0027,
+       "low": -0.0049,
+       "high": 0.006,
+       "distinguishable": false
+      }
+     }
+    }
+   }
+  },
+  "decisionPolicy": {
+   "chosen": [
+    {
+     "test": "2026-01-01 to 2026-03-31",
+     "chosenOn": "2025-10-02 to 2025-12-31",
+     "p20Threshold": 0.35,
+     "expectedCostMargin": -0.5
+    },
+    {
+     "test": "2026-04-01 to 2026-06-30",
+     "chosenOn": "2025-12-31 to 2026-03-31",
+     "p20Threshold": 0.35,
+     "expectedCostMargin": 1.0
+    },
+    {
+     "test": "2026-07-01 to 2026-09-30",
+     "chosenOn": "2026-04-01 to 2026-06-30",
+     "p20Threshold": 0.24,
+     "expectedCostMargin": 0.5
+    }
+   ],
+   "subsets": {
+    "all": {
+     "delays": 7455,
+     "alwaysWait": 6.56,
+     "causeOnly35": 6.71,
+     "current35": 6.91,
+     "p20Rule": 6.53,
+     "expectedCost": 6.4,
+     "p20Rule_savedVsCurrent": {
+      "value": 0.38,
+      "low": 0.3,
+      "high": 0.46
+     },
+     "p20Rule_savedVsWait": {
+      "value": 0.03,
+      "low": 0.0,
+      "high": 0.06
+     },
+     "p20Rule_savedVsCause": {
+      "value": 0.18,
+      "low": 0.12,
+      "high": 0.25
+     },
+     "expectedCost_savedVsCurrent": {
+      "value": 0.5,
+      "low": 0.41,
+      "high": 0.6
+     },
+     "expectedCost_savedVsWait": {
+      "value": 0.16,
+      "low": 0.11,
+      "high": 0.2
+     },
+     "expectedCost_savedVsCause": {
+      "value": 0.31,
+      "low": 0.24,
+      "high": 0.38
+     },
+     "current35_savedVsWait": {
+      "value": -0.35,
+      "low": -0.44,
+      "high": -0.26
+     }
+    },
+    "under10": {
+     "delays": 6363,
+     "alwaysWait": 4.45,
+     "causeOnly35": 4.67,
+     "current35": 4.86,
+     "p20Rule": 4.47,
+     "expectedCost": 4.49,
+     "p20Rule_savedVsCurrent": {
+      "value": 0.39,
+      "low": 0.31,
+      "high": 0.48
+     },
+     "p20Rule_savedVsWait": {
+      "value": -0.02,
+      "low": -0.03,
+      "high": -0.01
+     },
+     "p20Rule_savedVsCause": {
+      "value": 0.2,
+      "low": 0.13,
+      "high": 0.28
+     },
+     "expectedCost_savedVsCurrent": {
+      "value": 0.37,
+      "low": 0.29,
+      "high": 0.46
+     },
+     "expectedCost_savedVsWait": {
+      "value": -0.04,
+      "low": -0.05,
+      "high": -0.03
+     },
+     "expectedCost_savedVsCause": {
+      "value": 0.18,
+      "low": 0.11,
+      "high": 0.26
+     },
+     "current35_savedVsWait": {
+      "value": -0.41,
+      "low": -0.5,
+      "high": -0.33
+     }
+    },
+    "atLeast20": {
+     "delays": 309,
+     "alwaysWait": 34.02,
+     "causeOnly35": 32.42,
+     "current35": 32.34,
+     "p20Rule": 32.89,
+     "expectedCost": 30.94,
+     "p20Rule_savedVsCurrent": {
+      "value": -0.55,
+      "low": -0.95,
+      "high": -0.2
+     },
+     "p20Rule_savedVsWait": {
+      "value": 1.13,
+      "low": 0.52,
+      "high": 1.82
+     },
+     "p20Rule_savedVsCause": {
+      "value": -0.48,
+      "low": -0.8,
+      "high": -0.2
+     },
+     "expectedCost_savedVsCurrent": {
+      "value": 1.4,
+      "low": 0.61,
+      "high": 2.26
+     },
+     "expectedCost_savedVsWait": {
+      "value": 3.08,
+      "low": 2.23,
+      "high": 4.04
+     },
+     "expectedCost_savedVsCause": {
+      "value": 1.47,
+      "low": 0.68,
+      "high": 2.36
+     },
+     "current35_savedVsWait": {
+      "value": 1.68,
+      "low": 1.02,
+      "high": 2.44
+     }
+    },
+    "atLeast30": {
+     "delays": 139,
+     "alwaysWait": 46.64,
+     "causeOnly35": 43.63,
+     "current35": 43.48,
+     "p20Rule": 44.47,
+     "expectedCost": 41.83,
+     "p20Rule_savedVsCurrent": {
+      "value": -0.99,
+      "low": -1.79,
+      "high": -0.34
+     },
+     "p20Rule_savedVsWait": {
+      "value": 2.17,
+      "low": 0.98,
+      "high": 3.63
+     },
+     "p20Rule_savedVsCause": {
+      "value": -0.83,
+      "low": -1.58,
+      "high": -0.27
+     },
+     "expectedCost_savedVsCurrent": {
+      "value": 1.65,
+      "low": -0.03,
+      "high": 3.45
+     },
+     "expectedCost_savedVsWait": {
+      "value": 4.81,
+      "low": 3.17,
+      "high": 6.74
+     },
+     "expectedCost_savedVsCause": {
+      "value": 1.8,
+      "low": 0.09,
+      "high": 3.58
+     },
+     "current35_savedVsWait": {
+      "value": 3.16,
+      "low": 1.87,
+      "high": 4.69
+     }
+    }
+   },
+   "shipped": "expectedCost"
+  },
   "bandCrossingBeforeClamp": [
    {
     "test": "2026-01-01",

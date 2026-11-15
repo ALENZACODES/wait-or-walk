@@ -152,7 +152,7 @@ def main():
         return out
 
     PERIODS = [('2026-01-01', '2026-04-01'), ('2026-04-01', '2026-07-01'), ('2026-07-01', '2026-10-01')]
-    folds = []; pooled_y = []; pooled_p = []; preds = {k: [] for k in BANDS}; crossing = []; cell_info = []
+    folds = []; pooled_y = []; pooled_p = []; preds = {k: [] for k in BANDS}; crossing = []; cell_info = []; calsets = []
     for start, end in PERIODS:
         tr = d[d.Date < start]; te = d[(d.Date >= start) & (d.Date < end)]
         cs = cal_start_for(start)
@@ -164,11 +164,18 @@ def main():
             cr_cal = np.array([rate.get(g, prior) for g in cal.group]); cr_te = np.array([rate.get(g, prior) for g in te.group])
             pa, pb_ = T['platt_on'](cr_cal, cal[yc])
             fm = LogisticRegression(C=0.5, max_iter=5000).fit(X(tr), tr[yc]).predict_proba(X(te))[:, 1]
-            out[k] = {'waitOrWalk': sig(a * logit(raw) + b), 'causeOnly': sig(pa * logit(cr_te) + pb_), 'firstModel': fm, 'raw': raw}
+            out[k] = {'waitOrWalk': sig(a * logit(raw) + b), 'causeOnly': sig(pa * logit(cr_te) + pb_), 'firstModel': fm, 'raw': raw,
+                      'calWindow': sig(a * logit(m.predict_proba(X(cal))[:, 1]) + b)}   # earlier data only, used to pick decision thresholds
             if k == 10: m10 = (m, a, b, base, cal)
         crossing.append({'test': start, 'delays': int(len(te)), 'share': round(float(((out[5]['waitOrWalk'] < out[10]['waitOrWalk']) | (out[20]['waitOrWalk'] > out[10]['waitOrWalk'])).mean()), 4)})
         for meth in ['waitOrWalk', 'causeOnly', 'firstModel']:   # the page shows 5+ >= 10+ >= 20+, so clamp the same way here
             out[5][meth] = np.maximum(out[5][meth], out[10][meth]); out[20][meth] = np.minimum(out[20][meth], out[10][meth])
+        cal10 = m10[4]; bD = np.minimum(m10[3]['Min Delay'].values.astype(float), WAIT_CAP)
+        calsets.append({'minutes': cal10['Min Delay'].values.astype(float), 'date': cal10.Date.values, 'station': cal10.station.values, 'line': cal10.Line.values,
+                        'tmin': cal10.tmin.values, 'day': cal10.Day.values, 'y': cal10.y.values,
+                        'p5': np.maximum(out[5]['calWindow'], out[10]['calWindow']), 'p10': out[10]['calWindow'], 'p20': np.minimum(out[20]['calWindow'], out[10]['calWindow']),
+                        'binMeans': [float(bD[(bD >= lo) & (bD < hi)].mean()) for lo, hi in [(0, 5), (5, 10), (10, 20), (20, 1e9)]],
+                        'calibratedOn': f'{cal10.Date.min()} to {cal10.Date.max()}'})
         info = {'y': None, 'minutes': te['Min Delay'].values.astype(float), 'date': te.Date.values, 'station': te.station.values, 'line': te.Line.values, 'tmin': te.tmin.values, 'day': te.Day.values}
         for k, yc in BANDS.items():
             preds[k].append(dict(info, y=te[yc].values, **{q: out[k][q] for q in ['waitOrWalk', 'causeOnly', 'firstModel']}))
@@ -230,8 +237,9 @@ def main():
     os.makedirs(OUT, exist_ok=True)
     json.dump(model, open(os.path.join(OUT, 'model.json'), 'w'), indent=1)
     pooled = {'tests': len(folds), 'delays': len(pooled_y), 'reliability': bins(np.array(pooled_y), np.array(pooled_p))}
-    import pickle; pickle.dump({'preds': preds, 'names': [f['test'] for f in folds]}, open(os.path.join(CACHE, 'preds.pkl'), 'wb'))   # for quick reruns of the evidence
+    import pickle; pickle.dump({'preds': preds, 'calsets': calsets, 'names': [f['test'] for f in folds]}, open(os.path.join(CACHE, 'preds.pkl'), 'wb'))   # for quick reruns of the evidence
     evidence = evaluate(preds, [f['test'] for f in folds])
+    evidence['decisionPolicy'] = policy_test(preds, calsets, [f['test'] for f in folds], np.random.default_rng(20261116))
     evidence['bandCrossingBeforeClamp'] = crossing
     evidence['cellShrinkage']['prior'] = cell_info
     evidence['sensitivity'] = sens
@@ -352,6 +360,9 @@ def evaluate(preds, names):
         sim['rows'].append(row)
     ev['simulation'] = sim
     ev['stationSimulation'] = station_simulation(P10, rng)
+    r2 = np.random.default_rng(20261117)   # its own seed, so adding it left every earlier interval unchanged
+    ev['pooledFirstTwo'] = {'byDelay': block(P10[:2], METHODS, 'waitOrWalk', ['causeOnly', 'firstModel'], 'delay', r2),
+                            'byDay': block(P10[:2], METHODS, 'waitOrWalk', ['causeOnly', 'firstModel'], 'day', r2)}
     return ev
 
 def schedule_tables():
@@ -373,33 +384,31 @@ def schedule_tables():
     deps = {dt: [[np.array(sorted({m for s in svc for m in dec(v.get(s))})) for v in pat] for pat in pt['times']] for dt, svc in days.items()}
     return pb, deps
 
-def station_simulation(P10, rng):
-    """A decision simulation with a switch cost for each station and time from the schedule.
-    For each test delay and each direction of travel along its line: walking to the stop (80 metres a minute) plus 1 minute
-    to board, waiting for the next scheduled departure after that, and the scheduled ride to the first station past the delay
-    (at most 3 stops along the line),
-    minus the scheduled subway time for the same two stations (floored at 0, since the subway's own wait for a train is
-    not modelled). Waiting costs the logged delay minutes, capped at 60.
-    A rider switches when the forecast is 35% or more and an alternative leaves within 3 hours in their direction."""
-    pb, deps = schedule_tables()
-    cands = {}
-    for l, order in pb['lines'].items():
-        pos = {n: i for i, n in enumerate(order)}; cum = pb['subwayMinutes'][l]
-        for pi, q in enumerate(pb['patterns']):
-            if q['night']: continue
-            for i, v in enumerate(q['visits']):
-                if v['station'] not in pos or v.get('end'): continue
-                a = pos[v['station']]
-                for j in range(i + 1, len(q['visits'])):
-                    s2 = q['visits'][j]['station']
-                    if s2 in pos and s2 != v['station']:
-                        if abs(pos[s2] - a) > MAX_STEPS: break   # a crosstown jump (such as across the U of Line 1) is not a way past the delay
-                        dirn = 1 if pos[s2] > a else -1
-                        walk = max(1, int(np.ceil(v['metres'] / 80)))
-                        cands.setdefault((v['station'], l, dirn), []).append((pi, i, walk, q['visits'][j]['ride'] - v['ride'], abs(cum[pos[s2]] - cum[a])))
-                        break
+_TABLES = {}
+def switch_rows(parts):
+    """For each delay, the scheduled switch cost in each direction along its line (None where no alternative leaves within 3 hours)."""
+    if not _TABLES:
+        pb, deps = schedule_tables()
+        cands = {}
+        for l, order in pb['lines'].items():
+            pos = {n: i for i, n in enumerate(order)}; cum = pb['subwayMinutes'][l]
+            for pi, q in enumerate(pb['patterns']):
+                if q['night']: continue
+                for i, v in enumerate(q['visits']):
+                    if v['station'] not in pos or v.get('end'): continue
+                    a = pos[v['station']]
+                    for j in range(i + 1, len(q['visits'])):
+                        s2 = q['visits'][j]['station']
+                        if s2 in pos and s2 != v['station']:
+                            if abs(pos[s2] - a) > MAX_STEPS: break   # a crosstown jump (such as across the U of Line 1) is not a way past the delay
+                            dirn = 1 if pos[s2] > a else -1
+                            walk = max(1, int(np.ceil(v['metres'] / 80)))
+                            cands.setdefault((v['station'], l, dirn), []).append((pi, i, walk, q['visits'][j]['ride'] - v['ride'], abs(cum[pos[s2]] - cum[a])))
+                            break
+        _TABLES.update(pb=pb, deps=deps, cands=cands)
+    pb, deps, cands = _TABLES['pb'], _TABLES['deps'], _TABLES['cands']
     rows = []; raw_extra = []
-    for q in P10:
+    for q in parts:
         for r in range(len(q['y'])):
             st, l, t = q['station'][r], q['line'][r], int(q['tmin'][r])
             dt = 'saturday' if q['day'][r] == 'Saturday' else 'sunday' if q['day'][r] == 'Sunday' else 'weekday'
@@ -420,6 +429,17 @@ def station_simulation(P10, rng):
                                 best = extra if best is None else min(best, extra)
                         dirs.append(best)
             rows.append(dirs)
+    return rows, raw_extra
+
+def station_simulation(P10, rng):
+    """A decision simulation with a switch cost for each station and time from the schedule.
+    For each test delay and each direction of travel along its line: walking to the stop (80 metres a minute) plus 1 minute
+    to board, waiting for the next scheduled departure after that, and the scheduled ride to the first station past the delay
+    (at most 3 stops along the line),
+    minus the scheduled subway time for the same two stations (floored at 0, since the subway's own wait for a train is
+    not modelled). Waiting costs the logged delay minutes, capped at 60.
+    A rider switches when the forecast is 35% or more and an alternative leaves within 3 hours in their direction."""
+    rows, raw_extra = switch_rows(P10)
     n = len(rows)
     y = np.concatenate([q['y'] for q in P10]); D = np.minimum(np.concatenate([q['minutes'] for q in P10]), WAIT_CAP)
     P = {m: np.concatenate([q[m] for q in P10]) for m in METHODS}
@@ -456,6 +476,62 @@ def station_simulation(P10, rng):
             vals = [diff[i][mask[i]].mean() for i in idxs]
             row['savedVs_' + other] = {'value': round(float(diff[mask].mean()), 2), 'low': round(float(np.percentile(vals, 2.5)), 2), 'high': round(float(np.percentile(vals, 97.5)), 2)}
         res['subsets'][name] = row
+    return res
+
+def policy_costs(rows, D, switch):
+    """Average minutes over directions: switch(r, x) says whether to switch for delay r with switch cost x."""
+    out = np.empty(len(rows))
+    for r, dirs in enumerate(rows):
+        out[r] = D[r] if not dirs else np.mean([D[r] if (x is None or not switch(r, x)) else x for x in dirs])
+    return out
+
+P20_GRID = [round(0.02 + 0.01 * i, 2) for i in range(39)]
+MARGIN_GRID = [round(-5 + 0.5 * i, 1) for i in range(41)]
+def policy_test(preds, calsets, names, rng):
+    """Decision rules whose threshold is picked on earlier data only (each period's recalibration window, which ends
+    before the period), then tested on that period. P20: switch when the 20+ chance reaches t. Expected cost: switch when
+    the expected wait from the three bands minus the station's scheduled switch cost reaches a margin."""
+    def exp_wait(p5, p10, p20, bm):
+        return (1 - p5) * bm[0] + (p5 - p10) * bm[1] + (p10 - p20) * bm[2] + p20 * bm[3]
+    chosen = []; tests = []
+    for k, cs in enumerate(calsets):
+        rows_c, _ = switch_rows([cs]); Dc = np.minimum(cs['minutes'], WAIT_CAP)
+        t_best = min(P20_GRID, key=lambda t: policy_costs(rows_c, Dc, lambda r, x: cs['p20'][r] >= t).mean())
+        ew_c = exp_wait(cs['p5'], cs['p10'], cs['p20'], cs['binMeans'])
+        m_best = min(MARGIN_GRID, key=lambda mg: policy_costs(rows_c, Dc, lambda r, x: ew_c[r] - x >= mg).mean())
+        te = {q: preds[10][k][q] for q in ['minutes', 'date', 'station', 'line', 'tmin', 'day', 'y']}
+        te.update(p5=preds[5][k]['waitOrWalk'], p10=preds[10][k]['waitOrWalk'], p20=preds[20][k]['waitOrWalk'], cause=preds[10][k]['causeOnly'])
+        rows_t, _ = switch_rows([te]); Dt = np.minimum(te['minutes'], WAIT_CAP)
+        ew_t = exp_wait(te['p5'], te['p10'], te['p20'], cs['binMeans'])
+        C = {'alwaysWait': policy_costs(rows_t, Dt, lambda r, x: False),
+             'causeOnly35': policy_costs(rows_t, Dt, lambda r, x: te['cause'][r] >= SWITCH_AT),
+             'current35': policy_costs(rows_t, Dt, lambda r, x: te['p10'][r] >= SWITCH_AT),
+             'p20Rule': policy_costs(rows_t, Dt, lambda r, x: te['p20'][r] >= t_best),
+             'expectedCost': policy_costs(rows_t, Dt, lambda r, x: ew_t[r] - x >= m_best)}
+        chosen.append({'test': names[k], 'chosenOn': cs['calibratedOn'], 'p20Threshold': t_best, 'expectedCostMargin': m_best})
+        tests.append(dict(C, date=te['date'], D=Dt, y=te['y']))
+    allC = {q: np.concatenate([t[q] for t in tests]) for q in tests[0] if q not in ('date', 'D', 'y')}
+    D = np.concatenate([t['D'] for t in tests])
+    parts = [{'y': t['y'], 'date': t['date']} for t in tests]
+    draw = resampler(parts, 'day', rng); idxs = [draw() for _ in range(BOOT)]
+    subsets = {'all': np.ones(len(D), bool), 'under10': D < 10, 'atLeast20': D >= 20, 'atLeast30': D >= 30}
+    def ci(diff, mask):
+        vals = [diff[i][mask[i]].mean() for i in idxs]
+        return {'value': round(float(diff[mask].mean()), 2), 'low': round(float(np.percentile(vals, 2.5)), 2), 'high': round(float(np.percentile(vals, 97.5)), 2)}
+    res = {'chosen': chosen, 'subsets': {}}
+    for name, mask in subsets.items():
+        row = {'delays': int(mask.sum())}
+        for q in allC: row[q] = round(float(allC[q][mask].mean()), 2)
+        for q in ['p20Rule', 'expectedCost']:
+            row[q + '_savedVsCurrent'] = ci(allC['current35'] - allC[q], mask)
+            row[q + '_savedVsWait'] = ci(allC['alwaysWait'] - allC[q], mask)
+            row[q + '_savedVsCause'] = ci(allC['causeOnly35'] - allC[q], mask)
+        row['current35_savedVsWait'] = ci(allC['alwaysWait'] - allC['current35'], mask)
+        res['subsets'][name] = row
+    a = res['subsets']['all']
+    res['shipped'] = None
+    for q in ['p20Rule', 'expectedCost']:
+        if a[q + '_savedVsCurrent']['low'] > 0 and a[q + '_savedVsWait']['low'] > 0: res['shipped'] = q
     return res
 
 def build_stations(gz):
