@@ -58,7 +58,7 @@ with sync_playwright() as p:
         check(warn.is_visible() and warn.bounding_box()['y'] < lst.bounding_box()['y'], f'{w}: "might not be running" warning sits above the Plan B list')
         check('LRT (light rail)' in pg.inner_text('#planbOut') and 'Line 5 Eglinton streetcar' not in pg.inner_text('#planbOut'), f'{w}: Line 5 Eglinton shown as LRT')
         check('min walk' in pg.inner_text('#planbOut'), f'{w}: Plan B shows walking time')
-        check('Version r14' in pg.inner_text('footer') and 'Not affiliated' in pg.inner_text('footer'), f'{w}: footer shows version r14 and the not affiliated line')
+        check('Version r15' in pg.inner_text('footer') and 'Not affiliated' in pg.inner_text('footer'), f'{w}: footer shows version r15 and the not affiliated line')
         check(pg.is_visible('#pasteBtn') and 'nothing is sent anywhere' in pg.text_content('.pastenote'), f'{w}: paste button and the privacy note')
         check(pg.is_visible('#scope') and pg.inner_text('#scope') == 'Not the chance your alert causes this delay, or your remaining wait.' and 'among comparable TTC incidents with a recorded delay of 1 minute or more' in pg.inner_text('#pctlab'), f'{w}: card says which population the number is about')
         pg.click('.meaning summary'); check('Among comparable TTC incidents with a recorded delay of 1 minute or more, the model estimates a' in pg.inner_text('#meaning') and re.search(r'all incidents view shown beside it \(\d+% instead of \d+% here\)', pg.inner_text('#meaning')) and 'not the chance your current alert causes that delay, or your remaining wait' in pg.inner_text('#meaning'), f'{w}: full wording in the card details')
@@ -161,7 +161,7 @@ with sync_playwright() as p:
     q.close()
     # The alerts copy: shown with its time, one tap fills the alert; a missing copy leaves paste working
     import json, time as _t
-    fx = {'source': 'TTC GTFS Realtime alerts, subway feed (https://gtfsrt.ttc.ca/alerts/subway)', 'licence': 'Open Government Licence Toronto', 'fetchedAt': 1794772174, 'feedTimestamp': 1794772174,
+    fx = {'source': 'TTC GTFS Realtime alerts, subway feed (https://gtfsrt.ttc.ca/alerts/subway)', 'licence': 'Open Government Licence Toronto', 'fetchedAt': 1794772174, 'checkedAt': 1794772174, 'feedTimestamp': 1794772174,
           'alerts': [{'id': '1', 'lines': ['YU'], 'cause': 'MEDICAL_EMERGENCY', 'effect': 'SIGNIFICANT_DELAYS', 'header': 'Line 1 Yonge-University: Delays northbound at Museum station due to a medical emergency.', 'description': '', 'start': 1794772035, 'end': 0}]}
     q = b.new_page(viewport={'width': 1280, 'height': 900}); q.clock.set_fixed_time('2026-11-15T20:30:00Z')
     q.route('**/data/live_alerts.json*', lambda r: r.fulfill(status=200, content_type='application/json', body=json.dumps(fx)))
@@ -171,17 +171,41 @@ with sync_playwright() as p:
     check(q.input_value('#station') == 'Museum' and q.input_value('#group') == 'medical' and q.is_visible('#pct'), 'one tap on a copied alert fills it and shows a number')
     q.close()
     q.close()
-    # Stale copy: older than 90 minutes and the job status unknown, a red banner; a recent successful job run (feed unchanged) clears it
-    old = dict(fx, fetchedAt=1794772174 - 3 * 3600)
-    for api, want, label in [(None, True, 'no job status'), ({'workflow_runs': [{'updated_at': '2026-11-15T20:20:00Z'}]}, False, 'job ran 10 minutes ago, feed unchanged'), ({'workflow_runs': [{'updated_at': '2026-11-15T17:00:00Z'}]}, True, 'job last ran 3.5 hours ago (delayed schedule)')]:
+    # Stale copy: older than 90 minutes, a red banner, even if a copy job is queued, running, failed, or finished without a new committed checkedAt; a recent committed checkedAt clears it
+    old = dict(fx, fetchedAt=1794772174 - 3 * 3600, checkedAt=1794772174 - 3 * 3600)
+    recent = dict(old, checkedAt=1794774000)  # 3:20 p.m. UTC-5, 10 minutes before the fixed clock
+    cases = [
+        (old, None, True, 'no job status', None),
+        (old, {'workflow_runs': [{'status': 'completed', 'conclusion': 'success', 'created_at': '2026-11-15T20:20:00Z', 'updated_at': '2026-11-15T20:20:00Z'}]}, True, 'success without a new checkedAt', 'The last copy job finished.'),
+        (old, {'workflow_runs': [{'status': 'queued', 'conclusion': None, 'created_at': '2026-11-15T20:29:00Z', 'updated_at': '2026-11-15T20:29:00Z'}]}, True, 'queued run', 'A copy job is queued.'),
+        (old, {'workflow_runs': [{'status': 'in_progress', 'conclusion': None, 'created_at': '2026-11-15T20:28:00Z', 'updated_at': '2026-11-15T20:29:00Z'}]}, True, 'in-progress run', 'A copy job is running.'),
+        (old, {'workflow_runs': [{'status': 'completed', 'conclusion': 'failure', 'created_at': '2026-11-15T20:20:00Z', 'updated_at': '2026-11-15T20:20:00Z'}]}, True, 'failed run', 'The last copy job failed.'),
+        (recent, {'workflow_runs': [{'status': 'completed', 'conclusion': 'success', 'created_at': '2026-11-15T20:20:00Z', 'updated_at': '2026-11-15T20:20:00Z'}]}, False, 'committed checkedAt 10 minutes ago', 'The last copy job finished.'),
+    ]
+    for copy, api, want, label, job in cases:
         q = b.new_page(viewport={'width': 1280, 'height': 900}); q.clock.set_fixed_time('2026-11-15T20:30:00Z')
-        q.route('**/data/live_alerts.json*', lambda r: r.fulfill(status=200, content_type='application/json', body=json.dumps(old)))
-        def handler(body):
-            return (lambda r: r.abort()) if body is None else (lambda r: r.fulfill(status=200, content_type='application/json', body=json.dumps(body)))
-        q.route('https://api.github.com/**', handler(api))
-        q.goto(URL); q.wait_for_selector('#live:not([hidden])', timeout=8000); q.wait_for_timeout(300)
+        def make_live(body):
+            def fulfill_live(route):
+                route.fulfill(status=200, content_type='application/json', body=body)
+            return fulfill_live
+        q.route('**/data/live_alerts.json*', make_live(json.dumps(copy)))
+        def make_api(body):
+            def fulfill_api(route):
+                if body is None:
+                    route.abort()
+                else:
+                    route.fulfill(status=200, content_type='application/json', body=json.dumps(body), headers={'Access-Control-Allow-Origin': '*'})
+            return fulfill_api
+        q.route('https://api.github.com/**', make_api(api))
+        q.goto(URL); q.wait_for_selector('#live:not([hidden])', timeout=8000)
+        if job:
+            q.wait_for_function('(j) => { const n = document.querySelector("#liveNote"); return n && n.textContent.includes(j); }', arg=job, timeout=5000)
+        else:
+            q.wait_for_timeout(300)
         shown = 'isstale' in (q.get_attribute('#live', 'class') or '')
-        check(shown == want and (not want or ('may be out of date' in q.inner_text('#liveSum') and 'may be out of date' in q.text_content('#liveStale'))), f'stale banner {"shown" if want else "hidden"}: {label} ({q.inner_text("#liveSum")})')
+        note = q.text_content('#liveNote') or ''
+        ok_job = (job is None) or (job in note)
+        check(shown == want and ok_job and (not want or ('may be out of date' in q.inner_text('#liveSum') and 'may be out of date' in q.text_content('#liveStale'))), f'stale banner {"shown" if want else "hidden"}: {label} ({q.inner_text("#liveSum")}; job ok={ok_job})')
         q.close()
     hist = {'since': 1794772174, 'alerts': {'1': {'firstSeen': 1794772174, 'lastSeen': 1794772174, 'goneBy': 1794773282, 'header': 'Line 1: Delays at Museum due to a medical emergency.', 'lines': ['YU'], 'cause': 'MEDICAL_EMERGENCY', 'effect': 'SIGNIFICANT_DELAYS'},
             '2': {'firstSeen': 1794772174, 'lastSeen': 1794773282, 'header': 'Line 2: No service between Victoria Park and Kennedy due to planned track work.', 'lines': ['BD'], 'cause': 'MAINTENANCE', 'effect': 'NO_SERVICE'}}}

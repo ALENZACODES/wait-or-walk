@@ -27,14 +27,16 @@ SAVED = re.compile(r'\b(saved?|saves|saving|gains?|gained)\b', re.I)
 MINS = re.compile(r'\b\d+(\.\d+)? (minutes?|min)\b')
 LABEL = re.compile(r'simulat|timetable', re.I)
 NEED_ALL = ['No rider testing has been done', 'not real time', 'No manual screen reader test has been done', 'late bus check', 'NextBus',
-            'with a recorded delay of 1 minute or more', 'Only the stop code is sent to the NextBus host', 'also sees your IP address', 'about 1 in 120', 'Next to existing transit apps', 'rider-check.md', '107 of 13,174', 'not a rider benefit', '98%']
+            'with a recorded delay of 1 minute or more', 'Only the stop code is sent to the NextBus host', 'also sees your IP address', 'about 1 in 120', 'Next to existing transit apps', 'rider-check.md', '107 of 13,174', 'not a rider benefit', '98%',
+            'attempts to check every 25 to 30 minutes', 'There is no untouched post September evaluation yet']
 NEED_BOTH = ['all incidents view', 'does not confirm it is the same vehicle']
 # DEVPOST is the short presentation; README carries the full evidence set.
 NEED_DEVPOST = ['23%', '15%', '4%', '0.751', '7,455', '2 minute judge path', 'slay-hacks-submission', 'Zero minute', 'freeze', 'Delay already reached 5 min',
                 'Copy TTC subway alerts', 'Bike Share Toronto', 'axe-core', 'Open Government Licence Toronto', '0.06 minutes per trip', '0.63', '102 real TTC alerts',
-                'Timetable risk for this trip', 'not the headline', 'Live check', 'Scheduled runs so far', 'README', 'Contains information licensed under the Open Government Licence']
+                'Timetable risk for this trip', 'not the headline', 'Live check', 'Scheduled runs so far', 'README', 'Contains information licensed under the Open Government Licence',
+                'attempts to check every 25 to 30 minutes', 'There is no untouched post September evaluation yet', 'run 43777263323']
 NEED_DOCS = ['23%', '0.751', '7,455', '2 minute judge path', 'slay-hacks-submission', 'zero_minute_check.py', 'Zero minute records', 'freeze_check.mjs', 'parser_fresh', 'alerts-backup.yml', 'Scheduled runs so far', 'liveCheck', 'check_forecast_log.mjs', 'Delay already reached 5 min', 'The model is calibrated on recorded delay length, not time since the alert',
-             'Copy TTC subway alerts', 'Exploratory: looked at while the rules were chosen', 'alerts seen this month',
+             'Copy TTC subway alerts', 'Exploratory: looked at while the rules were chosen', 'alerts seen this month', 'attempts to check every 25 to 30 minutes', 'There is no untouched post September evaluation yet',
              'Bike Share Toronto', 'axe-core', 'Open Government Licence Toronto',
              '0.06', '0.95', '0.63', 'alert_forecasts.jsonl', '102 real TTC alerts', 'calibration in the large', 'Narrow margin', 'Timetable risk for this trip',
              'run 43777263323', '15% instead of 23%', 'not the headline', '7 of the 102', '0.06 minutes per trip', 'Same simulation, two units', 'Live check', 'Contains information licensed under the Open Government Licence']
@@ -88,7 +90,7 @@ def main(extra):
         if b.startswith('PASTE') and HERO not in T[b]: fails.append(f'{b}: pitch differs from the hero line')
         if b.startswith('PASTE') and FIGS not in T[b]: fails.append(f'{b}: figures line missing')
     page = T['index.html'] + ' ' + T['app.js']
-    for n in NEED_BOTH + ['Delay already reached 5 min', 'Delay already reached 10 min', 'calibrated on recorded delay length', 'Scheduled departures you may be able to catch', 'Timetable estimate', 'This switch call uses the first chance']:
+    for n in NEED_BOTH + ['Delay already reached 5 min', 'Delay already reached 10 min', 'calibrated on recorded delay length', 'Scheduled departures you may be able to catch', 'Timetable estimate', 'This switch call uses the first chance', 'attempts to check every 25 to 30 minutes', 'from the committed copy']:
         if n not in page: fails.append(f'page: missing "{n}"')
     print('\n'.join(fails) if fails else f'Consistent: {", ".join(sorted(T))}')
     return 1 if fails else 0

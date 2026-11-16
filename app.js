@@ -1,7 +1,7 @@
 (function () {
   const $ = (s) => document.querySelector(s);
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-  const VERSION = 'r14';
+  const VERSION = 'r15';
   let allInc = null, model = null, planb = null, ptimes = null, policy = null, best = null, checks = null, underwayChecks = null;
   // sim: the fixed example clock (WaitOrWalk.SIM) or null for live time; elapsed: the "already underway" setting.
   let sim = null, elapsed = 0, planned = false, live = null, access = null, bikes = null, bikeNear = null, surface = null;
@@ -505,40 +505,42 @@
     if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(() => done('Link copied.'), () => done(url));
     else done(url);
   }
-  // The TTC's open subway alerts, copied into this site every 30 minutes by a scheduled job (data/live_alerts.json).
+  // The TTC's open subway alerts, copied into this site by a job that attempts to check every 25 to 30 minutes (data/live_alerts.json).
   const when = (sec) => { const d = new Date(sec * 1000), c = WaitOrWalk.torontoClock(d); return `${clock(c.minutes)} on ${ymdWords(c.ymd)}`; };
-  // Last checked: prefer checkedAt from the copy (written on every successful fetch). Also ask GitHub's public API
-  // for recent runs of the two schedules and the relay (the page still works if this request fails). For the relay,
-  // use created_at: the copy runs first, then the job waits about 25 minutes, so updated_at is later than the copy.
+  // Last checked uses only the committed checkedAt on the copy (WaitOrWalk.alertFreshness). The public API is asked
+  // only so the page can show whether a copy job is queued, running, failed or finished; that status is never used
+  // as the last checked time. The page still works if this request fails.
   const RUNS = [
-    { w: 'alerts.yml', field: 'updated_at' },
-    { w: 'alerts-backup.yml', field: 'updated_at' },
-    { w: 'alerts-chain.yml', field: 'created_at' },
+    { w: 'alerts.yml' },
+    { w: 'alerts-backup.yml' },
+    { w: 'alerts-chain.yml' },
   ].map((r) => ({ ...r, url: `https://api.github.com/repos/ALENZACODES/wait-or-walk/actions/workflows/${r.w}/runs?per_page=5` }));
   const STALE_MIN = 90;
   const BIKE_STATUS = 'https://toronto.publicbikesystem.net/customer/gbfs/v3.0/station_status';
   function loadLive(get) {
-    const lastRun = Promise.all(RUNS.map((r) => fetch(r.url).then((res) => (res.ok ? res.json() : null)).then((j) => {
-        const runs = (j && j.workflow_runs) || [];
-        const bad = { failure: 1, cancelled: 1, timed_out: 1, startup_failure: 1, action_required: 1 };
-        const times = runs.filter((x) => !bad[x.conclusion]).map((x) => Date.parse(x[r.field] || x.updated_at || x.created_at) / 1000).filter((t) => t);
-        return times.length ? Math.max(...times) : null;
-      }).catch(() => null)))
-      .then((a) => { const v = a.filter((x) => x); return v.length ? Math.max(...v) : null; });
-    Promise.all([get('data/live_alerts.json?t=' + Math.floor(Date.now() / 60000)), lastRun]).then(([L, ran]) => {
+    const runList = Promise.all(RUNS.map((r) => fetch(r.url).then((res) => (res.ok ? res.json() : null)).then((j) => {
+        return ((j && j.workflow_runs) || []).map((x) => ({ status: x.status, conclusion: x.conclusion, created_at: x.created_at, updated_at: x.updated_at }));
+      }).catch(() => [])))
+      .then((a) => a.flat());
+    const showLive = (L, runs) => {
       live = L; const now = Date.now() / 1000;
       const act = L.alerts.filter((a) => !a.end || a.end > now);
-      const checked = Math.max(L.checkedAt || 0, L.fetchedAt || 0, ran || 0), age = Math.round((now - checked) / 60);
-      const ago = age < 120 ? `${age} minutes ago` : `${Math.round(age / 60)} hours ago`;
+      const fresh = WaitOrWalk.alertFreshness(L, runs, now, STALE_MIN);
+      const age = fresh.ageMinutes, stale = fresh.stale;
+      const ago = age == null ? 'unknown' : (age < 120 ? `${age} minutes ago` : `${Math.round(age / 60)} hours ago`);
       $('#liveSum').textContent = `TTC subway alerts (${act.length}), copied ${when(L.fetchedAt)}, last checked ${ago}`;
       $('#liveList').innerHTML = act.length ? act.map((a, i) => `<li><span>${esc(a.header)}</span> <button type="button" data-live="${i}">Use this alert</button></li>`).join('') : '<li>No subway alerts in the latest copy.</li>';
       $('#liveList').querySelectorAll('[data-live]').forEach((b) => b.addEventListener('click', () => { setSim(false); $('#alert').value = act[+b.dataset.live].header; readAlert(); savedDest(); }));
-      $('#liveNote').textContent = `Copied from the TTC's open GTFS Realtime feed (Open Government Licence Toronto) by a job that checks about every 25 to 30 minutes and writes the last checked time on every successful check; the alert list is saved again only when it changes. Last checked ${ago}${ran || L.checkedAt ? '' : ' (from the copy itself; the job status could not be read)'}.${L.feedTimestamp ? ` The TTC feed's own timestamp on this copy: ${when(L.feedTimestamp)}.` : ''} Shown as out of date after ${STALE_MIN} minutes. Scheduled runs can be late. For the newest alert, paste it from the TTC.`;
-      const stale = age > STALE_MIN;
+      const job = fresh.workflow && fresh.workflow.text ? ` ${fresh.workflow.text}` : '';
+      $('#liveNote').textContent = `Copied from the TTC's open GTFS Realtime feed (Open Government Licence Toronto) by a job that attempts to check every 25 to 30 minutes and writes the last checked time on every successful check; the alert list is saved again only when it changes. Last checked ${ago}, from the committed copy.${job}${L.feedTimestamp ? ` The TTC feed's own timestamp on this copy: ${when(L.feedTimestamp)}.` : ''} Shown as out of date after ${STALE_MIN} minutes. Scheduled runs can be late. For the newest alert, paste it from the TTC.`;
       $('#liveStale').hidden = !stale; $('#live').classList.toggle('isstale', stale);
       if (stale) $('#liveSum').textContent = `Copied TTC alerts may be out of date: last checked ${ago}`;
       if (stale) $('#liveStale').innerHTML = `<b>These copied TTC alerts may be out of date:</b> last checked ${ago}. <a href="https://www.ttc.ca/service-alerts" target="_blank" rel="noopener">Check TTC service alerts</a> or paste the current alert.`;
       $('#live').hidden = false;
+    };
+    get('data/live_alerts.json?t=' + Math.floor(Date.now() / 60000)).then((L) => {
+      showLive(L, null);
+      runList.then((runs) => showLive(L, runs));
     }).catch(() => { $('#live').hidden = true; $('#liveStale').hidden = true; });
     get('data/surface_delays.json').then((S) => { surface = S; if (model) render(); }).catch(() => { surface = null; });
     get('data/bikeshare_near.json').then((B) => { bikeNear = B; if (model) render(); }).catch(() => { bikeNear = null; });
