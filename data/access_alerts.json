@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1794839220,
- "checkedAt": 1794839220,
- "feedTimestamp": 1794839221,
+ "fetchedAt": 1794840742,
+ "checkedAt": 1794840742,
+ "feedTimestamp": 1794840743,
  "alerts": [
   {
    "id": "71415",
@@ -142,6 +142,12 @@
    "station": "Finch",
    "kind": "escalator",
    "header": "Finch: Escalator 22Y3E out of service from Fares concourse to Line 1 platform due to a technical problem."
+  },
+  {
+   "id": "80454",
+   "station": "Leaside",
+   "kind": "escalator",
+   "header": "Leaside: Escalator 5 out of service between service level (landing) and grade level (main entrance) due to a technical problem."
   }
  ]
 }
