@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1794826984,
- "checkedAt": 1794830034,
- "feedTimestamp": 1794826985,
+ "fetchedAt": 1794831568,
+ "checkedAt": 1794831568,
+ "feedTimestamp": 1794831568,
  "alerts": [
   {
    "id": "71415",
@@ -46,6 +46,18 @@
    "station": "Finch",
    "kind": "elevator",
    "header": "Finch: Elevator out of service between GO and YRT bus platform and fares concourse while we perform maintenance."
+  },
+  {
+   "id": "80228",
+   "station": "York University",
+   "kind": "escalator",
+   "header": "York University: Escalator 12S2E out of service from concourse to Line 1 platform while we perform maintenance. Escalator is expected to be back in service November 16, 2026."
+  },
+  {
+   "id": "80230",
+   "station": "Finch West",
+   "kind": "escalator",
+   "header": "Finch West: Escalator 11S6E out of service from concourse to Keele St west side entrance while we perform maintenance. Escalator is expected to be back in service November 16, 2026."
   },
   {
    "id": "80308",
