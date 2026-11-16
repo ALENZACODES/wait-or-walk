@@ -5,7 +5,7 @@ and keep a log of when each alert was seen in data/alert_history.json. Also copi
 Source: the TTC GTFS Realtime alerts feed (https://gtfsrt.ttc.ca/alerts/subway), published on City of Toronto Open Data
 ("TTC GTFS Realtime (GTFS-RT)") under the Open Government Licence Toronto. The page cannot read the feed directly
 (no cross origin headers), so a scheduled GitHub Action runs this every 30 minutes and commits only when the alerts
-changed. Those automated commits are titled "Copy TTC subway alerts" and change only these three data files.
+changed. Those automated commits are titled "Copy TTC subway alerts" and change only these data files and the alert time forecast log (data/alert_forecasts.jsonl, written by scripts/log_forecasts.mjs).
 Keeps the alerts active at fetch time: id, line, cause, effect, text, start and end (Unix seconds).
 
 History: firstSeen is the first saved copy with the alert; lastSeen is the latest saved copy that still had it; goneBy

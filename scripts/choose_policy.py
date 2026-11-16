@@ -49,7 +49,9 @@ def main():
         if float(T0.policy_costs(rows, D, lambda r, x: ew[r] - x >= best + bb).mean()) - costs[best] <= 0.01: band_close = bb
     out = {'rule': 'expectedCost', 'margin': best, 'binMeans': [round(x, 2) for x in bm], 'binMeansFrom': f"{base.Date.min()} to {model['baseTrainedThrough']}",
            'chosenOn': model['calibratedOn'], 'delays': int(len(cal)), 'averageMinutesAtMargin': round(costs[best], 3),
-           'averageMinutesAlwaysWait': round(float(D.mean()), 3), 'closeBand': band_close}
+           'averageMinutesAlwaysWait': round(float(D.mean()), 3), 'closeBand': band_close,
+           # late bus check: switch only if switching still wins with the bus 5 minutes late (scripts/decision_checks.py, item 4b)
+           'lateBusMinutes': 5}
     json.dump(out, open(os.path.join(ROOT, 'data', 'policy.json'), 'w'), indent=1)
     print(out)
 

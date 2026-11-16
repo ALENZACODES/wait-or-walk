@@ -1,0 +1,436 @@
+{
+ "measures": {
+  "forecastVsActual": "calibration in the large: average forecast against actual share",
+  "calError": "expected calibration error, seven forecast bins, weighted average gap in points",
+  "logLoss": "log loss"
+ },
+ "windows": {
+  "30": {
+   "5": {
+    "periods": [
+     {
+      "test": "2026-01-01 to 2026-03-31",
+      "shift": 0.079,
+      "actual": 0.533,
+      "shipped": 0.5168,
+      "shifted": 0.5347,
+      "calErrorShipped": 1.72,
+      "calErrorShifted": 0.54,
+      "logLossShipped": 0.6362,
+      "logLossShifted": 0.6356
+     },
+     {
+      "test": "2026-04-01 to 2026-06-30",
+      "shift": -0.108,
+      "actual": 0.4569,
+      "shipped": 0.5265,
+      "shifted": 0.5028,
+      "calErrorShipped": 7.18,
+      "calErrorShifted": 4.77,
+      "logLossShipped": 0.6327,
+      "logLossShifted": 0.6265
+     },
+     {
+      "test": "2026-07-01 to 2026-09-30",
+      "shift": -0.089,
+      "actual": 0.444,
+      "shipped": 0.4592,
+      "shifted": 0.4401,
+      "calErrorShipped": 2.32,
+      "calErrorShifted": 2.61,
+      "logLossShipped": 0.6129,
+      "logLossShifted": 0.6124
+     }
+    ],
+    "pooled": {
+     "actual": 0.4793,
+     "shipped": 0.5029,
+     "shifted": 0.4949,
+     "calErrorShipped": 2.39,
+     "calErrorShifted": 1.61,
+     "logLossShipped": 0.6279,
+     "logLossShifted": 0.6254
+    }
+   },
+   "10": {
+    "periods": [
+     {
+      "test": "2026-01-01 to 2026-03-31",
+      "shift": 0.08,
+      "actual": 0.1797,
+      "shipped": 0.1802,
+      "shifted": 0.1911,
+      "calErrorShipped": 1.46,
+      "calErrorShifted": 1.73,
+      "logLossShipped": 0.4189,
+      "logLossShifted": 0.4193
+     },
+     {
+      "test": "2026-04-01 to 2026-06-30",
+      "shift": -0.186,
+      "actual": 0.1365,
+      "shipped": 0.1726,
+      "shifted": 0.151,
+      "calErrorShipped": 3.61,
+      "calErrorShifted": 1.55,
+      "logLossShipped": 0.3484,
+      "logLossShifted": 0.3437
+     },
+     {
+      "test": "2026-07-01 to 2026-09-30",
+      "shift": 0.013,
+      "actual": 0.1201,
+      "shipped": 0.1357,
+      "shifted": 0.1371,
+      "calErrorShipped": 1.58,
+      "calErrorShifted": 1.7,
+      "logLossShipped": 0.3154,
+      "logLossShifted": 0.3156
+     }
+    ],
+    "pooled": {
+     "actual": 0.1465,
+     "shipped": 0.1641,
+     "shifted": 0.1607,
+     "calErrorShipped": 1.76,
+     "calErrorShifted": 1.42,
+     "logLossShipped": 0.3628,
+     "logLossShifted": 0.3614
+    }
+   },
+   "20": {
+    "periods": [
+     {
+      "test": "2026-01-01 to 2026-03-31",
+      "shift": -0.049,
+      "actual": 0.0528,
+      "shipped": 0.0461,
+      "shifted": 0.0442,
+      "calErrorShipped": 1.39,
+      "calErrorShifted": 1.41,
+      "logLossShipped": 0.1816,
+      "logLossShifted": 0.182
+     },
+     {
+      "test": "2026-04-01 to 2026-06-30",
+      "shift": -0.135,
+      "actual": 0.0399,
+      "shipped": 0.0517,
+      "shifted": 0.0461,
+      "calErrorShipped": 1.47,
+      "calErrorShifted": 0.87,
+      "logLossShipped": 0.1404,
+      "logLossShifted": 0.1391
+     },
+     {
+      "test": "2026-07-01 to 2026-09-30",
+      "shift": 0.008,
+      "actual": 0.0302,
+      "shipped": 0.0387,
+      "shifted": 0.0389,
+      "calErrorShipped": 1.03,
+      "calErrorShifted": 1.06,
+      "logLossShipped": 0.1133,
+      "logLossShifted": 0.1134
+     }
+    ],
+    "pooled": {
+     "actual": 0.0414,
+     "shipped": 0.0459,
+     "shifted": 0.0433,
+     "calErrorShipped": 0.68,
+     "calErrorShifted": 0.51,
+     "logLossShipped": 0.1465,
+     "logLossShifted": 0.1462
+    }
+   },
+   "ship": false,
+   "why": "10+ gap not smaller in every period"
+  },
+  "46": {
+   "5": {
+    "periods": [
+     {
+      "test": "2026-01-01 to 2026-03-31",
+      "shift": -0.01,
+      "actual": 0.533,
+      "shipped": 0.5168,
+      "shifted": 0.5145,
+      "calErrorShipped": 1.72,
+      "calErrorShifted": 1.92,
+      "logLossShipped": 0.6362,
+      "logLossShifted": 0.6363
+     },
+     {
+      "test": "2026-04-01 to 2026-06-30",
+      "shift": -0.086,
+      "actual": 0.4569,
+      "shipped": 0.5265,
+      "shifted": 0.5077,
+      "calErrorShipped": 7.18,
+      "calErrorShifted": 5.28,
+      "logLossShipped": 0.6327,
+      "logLossShifted": 0.6275
+     },
+     {
+      "test": "2026-07-01 to 2026-09-30",
+      "shift": -0.053,
+      "actual": 0.444,
+      "shipped": 0.4592,
+      "shifted": 0.4478,
+      "calErrorShipped": 2.32,
+      "calErrorShifted": 2.42,
+      "logLossShipped": 0.6129,
+      "logLossShifted": 0.6124
+     }
+    ],
+    "pooled": {
+     "actual": 0.4793,
+     "shipped": 0.5029,
+     "shifted": 0.492,
+     "calErrorShipped": 2.39,
+     "calErrorShifted": 1.31,
+     "logLossShipped": 0.6279,
+     "logLossShifted": 0.626
+    }
+   },
+   "10": {
+    "periods": [
+     {
+      "test": "2026-01-01 to 2026-03-31",
+      "shift": -0.069,
+      "actual": 0.1797,
+      "shipped": 0.1802,
+      "shifted": 0.1713,
+      "calErrorShipped": 1.46,
+      "calErrorShifted": 1.29,
+      "logLossShipped": 0.4189,
+      "logLossShifted": 0.4191
+     },
+     {
+      "test": "2026-04-01 to 2026-06-30",
+      "shift": -0.055,
+      "actual": 0.1365,
+      "shipped": 0.1726,
+      "shifted": 0.166,
+      "calErrorShipped": 3.61,
+      "calErrorShifted": 3.01,
+      "logLossShipped": 0.3484,
+      "logLossShifted": 0.3466
+     },
+     {
+      "test": "2026-07-01 to 2026-09-30",
+      "shift": -0.003,
+      "actual": 0.1201,
+      "shipped": 0.1357,
+      "shifted": 0.1354,
+      "calErrorShipped": 1.58,
+      "calErrorShifted": 1.6,
+      "logLossShipped": 0.3154,
+      "logLossShifted": 0.3153
+     }
+    ],
+    "pooled": {
+     "actual": 0.1465,
+     "shipped": 0.1641,
+     "shifted": 0.1586,
+     "calErrorShipped": 1.76,
+     "calErrorShifted": 1.21,
+     "logLossShipped": 0.3628,
+     "logLossShifted": 0.3622
+    }
+   },
+   "20": {
+    "periods": [
+     {
+      "test": "2026-01-01 to 2026-03-31",
+      "shift": -0.237,
+      "actual": 0.0528,
+      "shipped": 0.0461,
+      "shifted": 0.0373,
+      "calErrorShipped": 1.39,
+      "calErrorShifted": 1.81,
+      "logLossShipped": 0.1816,
+      "logLossShifted": 0.1843
+     },
+     {
+      "test": "2026-04-01 to 2026-06-30",
+      "shift": 0.05,
+      "actual": 0.0399,
+      "shipped": 0.0517,
+      "shifted": 0.054,
+      "calErrorShipped": 1.47,
+      "calErrorShifted": 1.62,
+      "logLossShipped": 0.1404,
+      "logLossShifted": 0.141
+     },
+     {
+      "test": "2026-07-01 to 2026-09-30",
+      "shift": -0.084,
+      "actual": 0.0302,
+      "shipped": 0.0387,
+      "shifted": 0.036,
+      "calErrorShipped": 1.03,
+      "calErrorShifted": 0.82,
+      "logLossShipped": 0.1133,
+      "logLossShifted": 0.1127
+     }
+    ],
+    "pooled": {
+     "actual": 0.0414,
+     "shipped": 0.0459,
+     "shifted": 0.0428,
+     "calErrorShipped": 0.68,
+     "calErrorShifted": 0.81,
+     "logLossShipped": 0.1465,
+     "logLossShifted": 0.1474
+    }
+   },
+   "ship": false,
+   "why": "10+ gap not smaller in every period"
+  },
+  "61": {
+   "5": {
+    "periods": [
+     {
+      "test": "2026-01-01 to 2026-03-31",
+      "shift": -0.016,
+      "actual": 0.533,
+      "shipped": 0.5168,
+      "shifted": 0.5131,
+      "calErrorShipped": 1.72,
+      "calErrorShifted": 2.06,
+      "logLossShipped": 0.6362,
+      "logLossShifted": 0.6365
+     },
+     {
+      "test": "2026-04-01 to 2026-06-30",
+      "shift": -0.055,
+      "actual": 0.4569,
+      "shipped": 0.5265,
+      "shifted": 0.5144,
+      "calErrorShipped": 7.18,
+      "calErrorShifted": 5.98,
+      "logLossShipped": 0.6327,
+      "logLossShifted": 0.6292
+     },
+     {
+      "test": "2026-07-01 to 2026-09-30",
+      "shift": -0.046,
+      "actual": 0.444,
+      "shipped": 0.4592,
+      "shifted": 0.4493,
+      "calErrorShipped": 2.32,
+      "calErrorShifted": 2.36,
+      "logLossShipped": 0.6129,
+      "logLossShifted": 0.6125
+     }
+    ],
+    "pooled": {
+     "actual": 0.4793,
+     "shipped": 0.5029,
+     "shifted": 0.4943,
+     "calErrorShipped": 2.39,
+     "calErrorShifted": 1.55,
+     "logLossShipped": 0.6279,
+     "logLossShifted": 0.6267
+    }
+   },
+   "10": {
+    "periods": [
+     {
+      "test": "2026-01-01 to 2026-03-31",
+      "shift": -0.081,
+      "actual": 0.1797,
+      "shipped": 0.1802,
+      "shifted": 0.1697,
+      "calErrorShipped": 1.46,
+      "calErrorShifted": 1.49,
+      "logLossShipped": 0.4189,
+      "logLossShifted": 0.4193
+     },
+     {
+      "test": "2026-04-01 to 2026-06-30",
+      "shift": -0.076,
+      "actual": 0.1365,
+      "shipped": 0.1726,
+      "shifted": 0.1635,
+      "calErrorShipped": 3.61,
+      "calErrorShifted": 2.76,
+      "logLossShipped": 0.3484,
+      "logLossShifted": 0.346
+     },
+     {
+      "test": "2026-07-01 to 2026-09-30",
+      "shift": -0.021,
+      "actual": 0.1201,
+      "shipped": 0.1357,
+      "shifted": 0.1335,
+      "calErrorShipped": 1.58,
+      "calErrorShifted": 1.6,
+      "logLossShipped": 0.3154,
+      "logLossShifted": 0.3151
+     }
+    ],
+    "pooled": {
+     "actual": 0.1465,
+     "shipped": 0.1641,
+     "shifted": 0.1566,
+     "calErrorShipped": 1.76,
+     "calErrorShifted": 1.02,
+     "logLossShipped": 0.3628,
+     "logLossShifted": 0.362
+    }
+   },
+   "20": {
+    "periods": [
+     {
+      "test": "2026-01-01 to 2026-03-31",
+      "shift": -0.137,
+      "actual": 0.0528,
+      "shipped": 0.0461,
+      "shifted": 0.0408,
+      "calErrorShipped": 1.39,
+      "calErrorShifted": 1.44,
+      "logLossShipped": 0.1816,
+      "logLossShifted": 0.1829
+     },
+     {
+      "test": "2026-04-01 to 2026-06-30",
+      "shift": -0.075,
+      "actual": 0.0399,
+      "shipped": 0.0517,
+      "shifted": 0.0486,
+      "calErrorShipped": 1.47,
+      "calErrorShifted": 1.17,
+      "logLossShipped": 0.1404,
+      "logLossShifted": 0.1396
+     },
+     {
+      "test": "2026-07-01 to 2026-09-30",
+      "shift": -0.073,
+      "actual": 0.0302,
+      "shipped": 0.0387,
+      "shifted": 0.0363,
+      "calErrorShipped": 1.03,
+      "calErrorShifted": 0.82,
+      "logLossShipped": 0.1133,
+      "logLossShifted": 0.1128
+     }
+    ],
+    "pooled": {
+     "actual": 0.0414,
+     "shipped": 0.0459,
+     "shifted": 0.0422,
+     "calErrorShipped": 0.68,
+     "calErrorShifted": 0.59,
+     "logLossShipped": 0.1465,
+     "logLossShifted": 0.1465
+    }
+   },
+   "ship": false,
+   "why": "10+ gap not smaller in every period"
+  }
+ },
+ "shipped": []
+}

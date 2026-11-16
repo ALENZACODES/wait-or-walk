@@ -6,11 +6,13 @@ import json, os, re, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.join(HERE, '..')
 HERO = 'Subway stopped? Paste the TTC alert to see the chance of a long delay, timetabled buses nearby, and whether to wait.'
-RETIRED = [r'can still catch', r'you can catch', r'\bcatchable\b', r'about (5|10) minutes in\b', r'About (5|10) min in', r'not been tested with riders']
-NEED_ALL = ['No rider testing has been done', 'not real time']
+RETIRED = [r'can still catch', r'you can catch', r'\bcatchable\b', r'about (5|10) minutes in\b', r'About (5|10) min in', r'not been tested with riders', r'and it runs on time', r'Bike Share and weather', r'Toronto weather now']
+NEED_ALL = ['No rider testing has been done', 'not real time', 'No manual screen reader test has been done', 'late bus check', 'NextBus']
 NEED_DOCS = ['23%', '0.751', '3.08', '0.16', '7,455', 'Delay already reached 5 min', 'The model is calibrated on recorded delay length, not time since the alert',
              'Copy TTC subway alerts', 'too close to call', 'Exploratory: looked at while the rules were chosen', 'alerts seen this month',
-             'Environment and Climate Change Canada', 'Bike Share Toronto', 'axe-core', 'Open Government Licence Toronto']
+             'Bike Share Toronto', 'axe-core', 'Open Government Licence Toronto',
+             '0.06', '0.95', '0.63', 'alert_forecasts.jsonl', '102 real TTC alerts', 'calibration in the large', 'Narrow margin', 'Timetable risk for this trip',
+             'run 43777263323']
 
 def text_of(p):
     s = open(p, encoding='utf-8').read()

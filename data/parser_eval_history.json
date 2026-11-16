@@ -1,0 +1,588 @@
+{
+ "note": "Parser scores at each step on the same 102 labelled alerts. Step 1 fixes were made from errors on the development half only, so the held out half after step 1 is a fair check. Step 2 fixed the three errors left in the held out half, so the final held out score is no longer independent.",
+ "before": {
+  "parser": "logic.js at commit 5b27785",
+  "development": {
+   "alerts": 51,
+   "incidents": 48,
+   "planned": 3,
+   "line": {
+    "correct": 51,
+    "accuracy": 100
+   },
+   "station": {
+    "correct": 47,
+    "wrong": 4,
+    "missed": 0,
+    "precision": 92.2,
+    "recall": 92.2,
+    "note": "correct means the one station named, or for alerts naming two or more stations, a choice listing exactly those stations"
+   },
+   "cause": {
+    "predicted": 44,
+    "correct": 44,
+    "wrong": 0,
+    "labelledKnown": 48,
+    "precision": 100,
+    "recall": 91.7
+   },
+   "plannedWork": {
+    "truePositive": 3,
+    "falsePositive": 0,
+    "falseNegative": 0,
+    "precision": 100,
+    "recall": 100
+   },
+   "readyWithoutHelp": {
+    "count": 30,
+    "of": 33,
+    "share": 90.9,
+    "note": "single station incident alerts where line, station and cause were all read correctly with no question asked"
+   },
+   "errors": [
+    {
+     "id": "2086283604414345417",
+     "text": "Line 1 Yonge-University: Delays northbound at Wilson station while we deal with an operational problem.",
+     "errors": [
+      "no cause (label operations)"
+     ]
+    },
+    {
+     "id": "2086682861738819758",
+     "text": "Line 1 Yonge-University: No service between St Clair West and Union stations as power has been shut down. We are investigating the cause and working to fix it as quickly as possible.",
+     "errors": [
+      "station St Clair, St Clair West, Union (label St Clair West, Union)"
+     ]
+    },
+    {
+     "id": "2094531163259855129",
+     "text": "Line 2 Bloor-Danforth: Delays westbound at Victoria Park station while we deal with an operational problem.",
+     "errors": [
+      "no cause (label operations)"
+     ]
+    },
+    {
+     "id": "2099925337945575563",
+     "text": "Line 1 Yonge-University: Delays between Vaughan and Finch stations due to a communication issue.",
+     "errors": [
+      "station Finch (label Finch, Vaughan Metropolitan Centre)",
+      "no cause (label signals)"
+     ]
+    },
+    {
+     "id": "2105048768924066169",
+     "text": "Line 1 Yonge-University: No service between St Clair West and St George stations due to a security incident.",
+     "errors": [
+      "station St Clair, St Clair West, St George (label St Clair West, St George)"
+     ]
+    },
+    {
+     "id": "2105130516278030796",
+     "text": "Line 1 Yonge-University: There is limited subway service between Vaughan and Finch West stations due to planned track work.",
+     "errors": [
+      "station Finch, Finch West (label Finch West, Vaughan Metropolitan Centre)"
+     ]
+    },
+    {
+     "id": "2110585280226902080",
+     "text": "Line 1 Yonge-University: Trains are not stopping at Wellesley station due to a TPS investigation.",
+     "errors": [
+      "no cause (label security)"
+     ]
+    }
+   ]
+  },
+  "heldOut": {
+   "alerts": 51,
+   "incidents": 47,
+   "planned": 4,
+   "line": {
+    "correct": 51,
+    "accuracy": 100
+   },
+   "station": {
+    "correct": 42,
+    "wrong": 9,
+    "missed": 0,
+    "precision": 82.4,
+    "recall": 82.4,
+    "note": "correct means the one station named, or for alerts naming two or more stations, a choice listing exactly those stations"
+   },
+   "cause": {
+    "predicted": 43,
+    "correct": 42,
+    "wrong": 1,
+    "labelledKnown": 46,
+    "precision": 97.7,
+    "recall": 91.3
+   },
+   "plannedWork": {
+    "truePositive": 3,
+    "falsePositive": 0,
+    "falseNegative": 1,
+    "precision": 100,
+    "recall": 75
+   },
+   "readyWithoutHelp": {
+    "count": 23,
+    "of": 28,
+    "share": 82.1,
+    "note": "single station incident alerts where line, station and cause were all read correctly with no question asked"
+   },
+   "errors": [
+    {
+     "id": "2110611465359041022",
+     "text": "Line 1 Yonge-University: Delays northbound at Lawrence West station due to a mechanical issue.",
+     "errors": [
+      "station Lawrence, Lawrence West (label Lawrence West)"
+     ]
+    },
+    {
+     "id": "2110764073071628501",
+     "text": "Line 1 Yonge-University: Delays between Finch West and Lawrence West stations due to a trespasser at track level.",
+     "errors": [
+      "station Finch, Finch West, Lawrence, Lawrence West (label Finch West, Lawrence West)"
+     ]
+    },
+    {
+     "id": "2110764864553591098",
+     "text": "Line 1 Yonge-University: No service between Lawrence West and Sheppard West stations due to a trespasser at track level.",
+     "errors": [
+      "station Lawrence, Lawrence West, Sheppard West, Sheppard-Yonge (label Lawrence West, Sheppard West)"
+     ]
+    },
+    {
+     "id": "2110875594271404406",
+     "text": "Line 4 Sheppard: No service between Don Mills and Bayview stations due to a security incident.",
+     "errors": [
+      "station Bayview, Don Mills, Sheppard-Yonge (label Bayview, Don Mills)"
+     ]
+    },
+    {
+     "id": "2116237760902131810",
+     "text": "Line 1 Yonge-University: There will be no subway service between Lawrence West and St Andrew stations, starting 11:59 p.m., nightly Monday, November 2 to Friday, November 6, due to planned track work. Shuttle buses will operate between Lawrence West and St George.",
+     "errors": [
+      "station Lawrence, Lawrence West, St Andrew, St George (label Lawrence West, St Andrew, St George)"
+     ]
+    },
+    {
+     "id": "2116341412870394200",
+     "text": "Line 2 Bloor-Danforth: Delays westbound at Dundas West station due to an emergency alarm on board a train. Thank you for your patience.",
+     "errors": [
+      "station Dundas West, TMU (label Dundas West)"
+     ]
+    },
+    {
+     "id": "2116374612804063545",
+     "text": "Line 1 Yonge-University: Delays northbound at Sheppard West station due to an emergency alarm on board a train. Thank you for your patience.",
+     "errors": [
+      "station Sheppard West, Sheppard-Yonge (label Sheppard West)"
+     ]
+    },
+    {
+     "id": "2116656980039180354",
+     "text": "Line 1 Yonge-University: Delays northbound from St George to Vaughan stations due to a medical emergency. Thank you for your patience.",
+     "errors": [
+      "station St George (label St George, Vaughan Metropolitan Centre)"
+     ]
+    },
+    {
+     "id": "2121408589122150520",
+     "text": "Line 1 Yonge-University: No service between Union and Bloor-Yonge stations due to the power being shut off at track level. Thank you for your patience.",
+     "errors": [
+      "cause track_person (label power)"
+     ]
+    },
+    {
+     "id": "2121714176380784841",
+     "text": "Line 2 Bloor-Danforth: Trains are not stopping at Lansdowne station due to a TPS investigation. Thank you for your patience.",
+     "errors": [
+      "no cause (label security)"
+     ]
+    },
+    {
+     "id": "2121816682616311971",
+     "text": "Line 2 Bloor-Danforth: No service between Chester and St George stations due to a TPS investigation. Thank you for your patience.",
+     "errors": [
+      "no cause (label security)"
+     ]
+    },
+    {
+     "id": "2122095974298300821",
+     "text": "Line 1 Yonge-University: No service between King and St Andrew stations due to a TPS investigation. Thank you for your patience.",
+     "errors": [
+      "no cause (label security)"
+     ]
+    },
+    {
+     "id": "2122135655845073245",
+     "text": "Line 1 Yonge-University: There will be limited nightly service starting 11 p.m., between Pioneer Village and Sheppard West stations on Monday, November 16 to Wednesday, November 18, for tunnel improvements.",
+     "errors": [
+      "station Pioneer Village, Sheppard West, Sheppard-Yonge (label Pioneer Village, Sheppard West)",
+      "planned work not flagged"
+     ]
+    }
+   ]
+  },
+  "all": {
+   "alerts": 102,
+   "incidents": 95,
+   "planned": 7,
+   "line": {
+    "correct": 102,
+    "accuracy": 100
+   },
+   "station": {
+    "correct": 89,
+    "wrong": 13,
+    "missed": 0,
+    "precision": 87.3,
+    "recall": 87.3,
+    "note": "correct means the one station named, or for alerts naming two or more stations, a choice listing exactly those stations"
+   },
+   "cause": {
+    "predicted": 87,
+    "correct": 86,
+    "wrong": 1,
+    "labelledKnown": 94,
+    "precision": 98.9,
+    "recall": 91.5
+   },
+   "plannedWork": {
+    "truePositive": 6,
+    "falsePositive": 0,
+    "falseNegative": 1,
+    "precision": 100,
+    "recall": 85.7
+   },
+   "readyWithoutHelp": {
+    "count": 53,
+    "of": 61,
+    "share": 86.9,
+    "note": "single station incident alerts where line, station and cause were all read correctly with no question asked"
+   },
+   "errors": [
+    {
+     "id": "2086283604414345417",
+     "text": "Line 1 Yonge-University: Delays northbound at Wilson station while we deal with an operational problem.",
+     "errors": [
+      "no cause (label operations)"
+     ]
+    },
+    {
+     "id": "2086682861738819758",
+     "text": "Line 1 Yonge-University: No service between St Clair West and Union stations as power has been shut down. We are investigating the cause and working to fix it as quickly as possible.",
+     "errors": [
+      "station St Clair, St Clair West, Union (label St Clair West, Union)"
+     ]
+    },
+    {
+     "id": "2094531163259855129",
+     "text": "Line 2 Bloor-Danforth: Delays westbound at Victoria Park station while we deal with an operational problem.",
+     "errors": [
+      "no cause (label operations)"
+     ]
+    },
+    {
+     "id": "2099925337945575563",
+     "text": "Line 1 Yonge-University: Delays between Vaughan and Finch stations due to a communication issue.",
+     "errors": [
+      "station Finch (label Finch, Vaughan Metropolitan Centre)",
+      "no cause (label signals)"
+     ]
+    },
+    {
+     "id": "2105048768924066169",
+     "text": "Line 1 Yonge-University: No service between St Clair West and St George stations due to a security incident.",
+     "errors": [
+      "station St Clair, St Clair West, St George (label St Clair West, St George)"
+     ]
+    },
+    {
+     "id": "2105130516278030796",
+     "text": "Line 1 Yonge-University: There is limited subway service between Vaughan and Finch West stations due to planned track work.",
+     "errors": [
+      "station Finch, Finch West (label Finch West, Vaughan Metropolitan Centre)"
+     ]
+    },
+    {
+     "id": "2110585280226902080",
+     "text": "Line 1 Yonge-University: Trains are not stopping at Wellesley station due to a TPS investigation.",
+     "errors": [
+      "no cause (label security)"
+     ]
+    },
+    {
+     "id": "2110611465359041022",
+     "text": "Line 1 Yonge-University: Delays northbound at Lawrence West station due to a mechanical issue.",
+     "errors": [
+      "station Lawrence, Lawrence West (label Lawrence West)"
+     ]
+    },
+    {
+     "id": "2110764073071628501",
+     "text": "Line 1 Yonge-University: Delays between Finch West and Lawrence West stations due to a trespasser at track level.",
+     "errors": [
+      "station Finch, Finch West, Lawrence, Lawrence West (label Finch West, Lawrence West)"
+     ]
+    },
+    {
+     "id": "2110764864553591098",
+     "text": "Line 1 Yonge-University: No service between Lawrence West and Sheppard West stations due to a trespasser at track level.",
+     "errors": [
+      "station Lawrence, Lawrence West, Sheppard West, Sheppard-Yonge (label Lawrence West, Sheppard West)"
+     ]
+    },
+    {
+     "id": "2110875594271404406",
+     "text": "Line 4 Sheppard: No service between Don Mills and Bayview stations due to a security incident.",
+     "errors": [
+      "station Bayview, Don Mills, Sheppard-Yonge (label Bayview, Don Mills)"
+     ]
+    },
+    {
+     "id": "2116237760902131810",
+     "text": "Line 1 Yonge-University: There will be no subway service between Lawrence West and St Andrew stations, starting 11:59 p.m., nightly Monday, November 2 to Friday, November 6, due to planned track work. Shuttle buses will operate between Lawrence West and St George.",
+     "errors": [
+      "station Lawrence, Lawrence West, St Andrew, St George (label Lawrence West, St Andrew, St George)"
+     ]
+    },
+    {
+     "id": "2116341412870394200",
+     "text": "Line 2 Bloor-Danforth: Delays westbound at Dundas West station due to an emergency alarm on board a train. Thank you for your patience.",
+     "errors": [
+      "station Dundas West, TMU (label Dundas West)"
+     ]
+    },
+    {
+     "id": "2116374612804063545",
+     "text": "Line 1 Yonge-University: Delays northbound at Sheppard West station due to an emergency alarm on board a train. Thank you for your patience.",
+     "errors": [
+      "station Sheppard West, Sheppard-Yonge (label Sheppard West)"
+     ]
+    },
+    {
+     "id": "2116656980039180354",
+     "text": "Line 1 Yonge-University: Delays northbound from St George to Vaughan stations due to a medical emergency. Thank you for your patience.",
+     "errors": [
+      "station St George (label St George, Vaughan Metropolitan Centre)"
+     ]
+    },
+    {
+     "id": "2121408589122150520",
+     "text": "Line 1 Yonge-University: No service between Union and Bloor-Yonge stations due to the power being shut off at track level. Thank you for your patience.",
+     "errors": [
+      "cause track_person (label power)"
+     ]
+    },
+    {
+     "id": "2121714176380784841",
+     "text": "Line 2 Bloor-Danforth: Trains are not stopping at Lansdowne station due to a TPS investigation. Thank you for your patience.",
+     "errors": [
+      "no cause (label security)"
+     ]
+    },
+    {
+     "id": "2121816682616311971",
+     "text": "Line 2 Bloor-Danforth: No service between Chester and St George stations due to a TPS investigation. Thank you for your patience.",
+     "errors": [
+      "no cause (label security)"
+     ]
+    },
+    {
+     "id": "2122095974298300821",
+     "text": "Line 1 Yonge-University: No service between King and St Andrew stations due to a TPS investigation. Thank you for your patience.",
+     "errors": [
+      "no cause (label security)"
+     ]
+    },
+    {
+     "id": "2122135655845073245",
+     "text": "Line 1 Yonge-University: There will be limited nightly service starting 11 p.m., between Pioneer Village and Sheppard West stations on Monday, November 16 to Wednesday, November 18, for tunnel improvements.",
+     "errors": [
+      "station Pioneer Village, Sheppard West, Sheppard-Yonge (label Pioneer Village, Sheppard West)",
+      "planned work not flagged"
+     ]
+    }
+   ]
+  }
+ },
+ "afterStep1": {
+  "changes": [
+   "a station name inside a longer one is ignored (St Clair in St Clair West, Lawrence in Lawrence West, Finch in Finch West, Sheppard in Sheppard West, Dundas in Dundas West)",
+   "Vaughan read as Vaughan Metropolitan Centre",
+   "operational problem read as operations",
+   "communication issue read as signals",
+   "TPS read as police, so security"
+  ],
+  "development": {
+   "alerts": 51,
+   "incidents": 48,
+   "planned": 3,
+   "line": {
+    "correct": 51,
+    "accuracy": 100
+   },
+   "station": {
+    "correct": 51,
+    "wrong": 0,
+    "missed": 0,
+    "precision": 100,
+    "recall": 100,
+    "note": "correct means the one station named, or for alerts naming two or more stations, a choice listing exactly those stations"
+   },
+   "cause": {
+    "predicted": 48,
+    "correct": 48,
+    "wrong": 0,
+    "labelledKnown": 48,
+    "precision": 100,
+    "recall": 100
+   },
+   "plannedWork": {
+    "truePositive": 3,
+    "falsePositive": 0,
+    "falseNegative": 0,
+    "precision": 100,
+    "recall": 100
+   },
+   "readyWithoutHelp": {
+    "count": 33,
+    "of": 33,
+    "share": 100,
+    "note": "single station incident alerts where line, station and cause were all read correctly with no question asked"
+   },
+   "errors": []
+  },
+  "heldOut": {
+   "alerts": 51,
+   "incidents": 47,
+   "planned": 4,
+   "line": {
+    "correct": 51,
+    "accuracy": 100
+   },
+   "station": {
+    "correct": 50,
+    "wrong": 1,
+    "missed": 0,
+    "precision": 98,
+    "recall": 98,
+    "note": "correct means the one station named, or for alerts naming two or more stations, a choice listing exactly those stations"
+   },
+   "cause": {
+    "predicted": 46,
+    "correct": 45,
+    "wrong": 1,
+    "labelledKnown": 46,
+    "precision": 97.8,
+    "recall": 97.8
+   },
+   "plannedWork": {
+    "truePositive": 3,
+    "falsePositive": 0,
+    "falseNegative": 1,
+    "precision": 100,
+    "recall": 75
+   },
+   "readyWithoutHelp": {
+    "count": 27,
+    "of": 28,
+    "share": 96.4,
+    "note": "single station incident alerts where line, station and cause were all read correctly with no question asked"
+   },
+   "errors": [
+    {
+     "id": "2110875594271404406",
+     "text": "Line 4 Sheppard: No service between Don Mills and Bayview stations due to a security incident.",
+     "errors": [
+      "station Bayview, Don Mills, Sheppard-Yonge (label Bayview, Don Mills)"
+     ]
+    },
+    {
+     "id": "2121408589122150520",
+     "text": "Line 1 Yonge-University: No service between Union and Bloor-Yonge stations due to the power being shut off at track level. Thank you for your patience.",
+     "errors": [
+      "cause track_person (label power)"
+     ]
+    },
+    {
+     "id": "2122135655845073245",
+     "text": "Line 1 Yonge-University: There will be limited nightly service starting 11 p.m., between Pioneer Village and Sheppard West stations on Monday, November 16 to Wednesday, November 18, for tunnel improvements.",
+     "errors": [
+      "planned work not flagged"
+     ]
+    }
+   ]
+  },
+  "all": {
+   "alerts": 102,
+   "incidents": 95,
+   "planned": 7,
+   "line": {
+    "correct": 102,
+    "accuracy": 100
+   },
+   "station": {
+    "correct": 101,
+    "wrong": 1,
+    "missed": 0,
+    "precision": 99,
+    "recall": 99,
+    "note": "correct means the one station named, or for alerts naming two or more stations, a choice listing exactly those stations"
+   },
+   "cause": {
+    "predicted": 94,
+    "correct": 93,
+    "wrong": 1,
+    "labelledKnown": 94,
+    "precision": 98.9,
+    "recall": 98.9
+   },
+   "plannedWork": {
+    "truePositive": 6,
+    "falsePositive": 0,
+    "falseNegative": 1,
+    "precision": 100,
+    "recall": 85.7
+   },
+   "readyWithoutHelp": {
+    "count": 60,
+    "of": 61,
+    "share": 98.4,
+    "note": "single station incident alerts where line, station and cause were all read correctly with no question asked"
+   },
+   "errors": [
+    {
+     "id": "2110875594271404406",
+     "text": "Line 4 Sheppard: No service between Don Mills and Bayview stations due to a security incident.",
+     "errors": [
+      "station Bayview, Don Mills, Sheppard-Yonge (label Bayview, Don Mills)"
+     ]
+    },
+    {
+     "id": "2121408589122150520",
+     "text": "Line 1 Yonge-University: No service between Union and Bloor-Yonge stations due to the power being shut off at track level. Thank you for your patience.",
+     "errors": [
+      "cause track_person (label power)"
+     ]
+    },
+    {
+     "id": "2122135655845073245",
+     "text": "Line 1 Yonge-University: There will be limited nightly service starting 11 p.m., between Pioneer Village and Sheppard West stations on Monday, November 16 to Wednesday, November 18, for tunnel improvements.",
+     "errors": [
+      "planned work not flagged"
+     ]
+    }
+   ]
+  }
+ },
+ "afterStep2": {
+  "changes": [
+   "power shut off is read as power before the words track level",
+   "Line 4 Sheppard in the heading is not read as Sheppard-Yonge station",
+   "limited nightly service, tunnel improvements and structural work read as planned work"
+  ],
+  "see": "data/parser_eval.json"
+ }
+}

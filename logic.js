@@ -30,10 +30,18 @@
   // band: the "too close to call" width above the margin (data/policy.json closeBand, picked on earlier data; 0 means none).
   // Inside the band the page says too close to call and the rule waits. slack: minutes by which switching wins (positive)
   // or loses (negative) by the schedule, after the margin: the break even for a late or missed bus.
-  function switchCall(expected, cost, margin, band) {
+  // late: the late bus check (data/policy.json lateBusMinutes): switch only if switching still wins with the bus that
+  // many minutes late. slack stays the timetable figure; narrow means switching wins by the timetable but not by enough.
+  function switchCall(expected, cost, margin, band, late) {
     if (expected === null || cost === null || cost === undefined) return null;
-    const c = Math.max(cost, 0), slack = expected - c - margin, b = band || 0;
-    return { switch: slack >= b, close: b > 0 && slack >= -b && slack < b, slack, expected, cost: c };
+    const c = Math.max(cost, 0), slack = expected - c - margin, b = band || 0, l = late || 0, s = slack - l;
+    const sw = s >= b;
+    return { switch: sw, close: b > 0 && s >= -b && s < b, narrow: !sw && l > 0 && slack >= 0, slack, late: l, expected, cost: c };
+  }
+  // Timetable risk for one comparison: minutes switching wins (positive) or loses (negative) by the timetable,
+  // with the bus 5 minutes late, and if the first bus is missed and the next one is taken (nextGap minutes later).
+  function timetableRisk(slack, nextGap) {
+    return { timetable: slack, late5: slack - 5, missed: nextGap === null || nextGap === undefined ? null : slack - nextGap };
   }
 
   // "Already underway": condition the same calibrated bands on the delay having reached 5 or 10 minutes, with no refit.
@@ -122,21 +130,22 @@
   // Order matters: more specific phrases first.
   const CAUSES = [
     ['injury_track', /personal injury|person struck|struck by|collision with a person|priority one/],
+    ['power', /power (has been |is being |being |was )?(shut|turned) (off|down)|power off/],
     ['track_person', /(person|someone|individual|trespasser|unauthori[sz]ed)[^.]{0,30}(at|on) (the )?track|track level|on the tracks/],
     ['fire', /\bfire\b|smoke/],
     ['medical', /medical|ill (customer|passenger|rider)|injured (customer|passenger|rider)|sick (customer|passenger)/],
-    ['security', /security|police|disorderly|assault|altercation|unruly|fight/],
+    ['security', /security|police|\btps\b|disorderly|assault|altercation|unruly|fight/],
     ['alarm', /alarm|\bpaa\b/],
     ['doors', /\bdoors?\b/],
     ['weather', /weather|\bice\b|icy|snow|freezing/],
     ['power', /power|electrical/],
     ['cleaning', /clean|unsanitary|graffiti|spill/],
-    ['signals', /signal/],
+    ['signals', /signal|communication (issue|problem|system)/],
     ['track', /track|switch|\brail\b|work zone|track work/],
     ['train', /mechanical|train problem|disabled train|brake|equipment|stalled train/],
-    ['operations', /operator|crew|schedule|regulat|service adjustment/]
+    ['operations', /operator|operational|crew|schedule|regulat|service adjustment/]
   ];
-  const STATION_ALIASES = { 'bloor-yonge': null, 'bloor yonge': null, 'dundas': 'TMU', 'eglinton west': 'Cedarvale', 'vmc': 'Vaughan Metropolitan Centre', 'sheppard': 'Sheppard-Yonge', 'yonge-sheppard': 'Sheppard-Yonge' };
+  const STATION_ALIASES = { 'bloor-yonge': null, 'bloor yonge': null, 'dundas': 'TMU', 'eglinton west': 'Cedarvale', 'vmc': 'Vaughan Metropolitan Centre', 'vaughan': 'Vaughan Metropolitan Centre', 'sheppard': 'Sheppard-Yonge', 'yonge-sheppard': 'Sheppard-Yonge' };
 
   function readAlert(text, model) {
     const t = ' ' + String(text || '').toLowerCase().replace(/st\.\s/g, 'st ').replace(/\s+/g, ' ') + ' ';
@@ -147,7 +156,7 @@
     for (const [g, re] of CAUSES) if (re.test(t)) { out.group = g; break; }
     // Station: earliest mention in the text wins (alerts say "between A and B").
     const cands = [];
-    const ts = t.replace(/yonge.university|bloor.danforth|sheppard line|line [124]/g, (m) => ' '.repeat(m.length));
+    const ts = t.replace(/yonge.university|bloor.danforth|line 4 sheppard|sheppard line|line [124]/g, (m) => ' '.repeat(m.length));
     for (const s of model.stations) {
       if (s.name === 'Bloor' || s.name === 'Yonge') continue; // only through "Bloor-Yonge"
       const names = [s.name.toLowerCase(), s.label.toLowerCase()];
@@ -158,6 +167,11 @@
       if (i >= 0) cands.push({ i, len: alias.length + 1, name: name || (out.line === 'BD' ? 'Yonge' : 'Bloor'), byAlias: !name });
     }
     cands.sort((a, b) => a.i - b.i || b.len - a.len);
+    // A name inside a longer name is not a mention ("St Clair" in "St Clair West", "Sheppard" in "Sheppard West").
+    for (let k = cands.length - 1; k >= 0; k--) {
+      const c = cands[k];
+      if (cands.some((o) => o !== c && o.len > c.len && o.i <= c.i && c.i + c.len <= o.i + o.len)) cands.splice(k, 1);
+    }
     const byAlias = new Set(cands.filter((c) => c.byAlias).map((c) => c.name));
     const distinct = [...new Set(cands.map((c) => c.name))];
     const st = (n) => model.stations.find((x) => x.name === n);
@@ -183,7 +197,7 @@
       out.choice = { text, options };
     }
     if (out.line && out.station) { const s = st(out.station); if (s && !s.lines.includes(out.line)) out.flags.push({ field: 'station', text: `${s.label} is not on ${LABELS[out.line]}. Check the station.` }); }
-    if (/planned|slower than usual|slow zone|reduced speed|while we (work|perform)|track work|maintenance|early closure|weekend closure/.test(t)) { out.planned = true; out.flags.push({ field: 'group', text: 'This looks like planned work or a slow zone, not an unplanned incident, so no delay forecast is shown. Check the TTC notice.' }); }
+    if (/planned|slower than usual|slow zone|reduced speed|while we (work|perform)|track work|maintenance|early closure|weekend closure|limited nightly service|tunnel improvement|structural|while we (make|do) (repairs|improvements)/.test(t)) { out.planned = true; out.flags.push({ field: 'group', text: 'This looks like planned work or a slow zone, not an unplanned incident, so no delay forecast is shown. Check the TTC notice.' }); }
     for (const k of ['line', 'station', 'group']) if (out[k]) out.found.push(k);
     return out;
   }
@@ -355,5 +369,5 @@
     return { hour, weekend: wd === 'Sat' || wd === 'Sun' };
   }
 
-  return { predict, underway, SIM, isOvernight, expectedDelay, switchCall, predictBands, reachable, rankByArrival, subwayMinutes, scheduleRange, BOARD_MINUTES, explain, advice, readAlert, planB, applyAlert, chooseOption, canForecast, mismatch, activeServices, decodeTimes, nextDepartures, torontoClock, walkMinutes, timeBucket, torontoNow, labelFor, LABELS };
+  return { predict, underway, SIM, isOvernight, expectedDelay, switchCall, timetableRisk, predictBands, reachable, rankByArrival, subwayMinutes, scheduleRange, BOARD_MINUTES, explain, advice, readAlert, planB, applyAlert, chooseOption, canForecast, mismatch, activeServices, decodeTimes, nextDepartures, torontoClock, walkMinutes, timeBucket, torontoNow, labelFor, LABELS };
 });

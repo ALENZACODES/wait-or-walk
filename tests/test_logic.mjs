@@ -318,4 +318,27 @@ assert.ok(!W.readAlert('Line 1 Yonge-University: Delays northbound at Museum sta
   for (const q of Object.values(S.routes)) assert.ok(q.perWeek >= 0 && q.per100Trips >= 0 && ['more than most', 'fewer than most', 'about typical'].includes(q.compared));
 }
 
+// Parser fixes found on real archived alerts (see data/parser_eval.json)
+{
+  const r1 = W.readAlert('Line 1 Yonge-University: Delays northbound at Lawrence West station due to a mechanical issue.', model);
+  assert.equal(r1.station, 'Lawrence West'); assert.equal(r1.choice, null); assert.equal(r1.group, 'train');
+  const r2 = W.readAlert('Line 1 Yonge-University: No service between St Clair West and Union stations as power has been shut down.', model);
+  assert.deepEqual(r2.choice.options.map((o) => o.station).sort(), ['St Clair West', 'Union']); assert.equal(r2.group, 'power');
+  assert.equal(W.readAlert('Line 1 Yonge-University: No service between Union and Bloor-Yonge stations due to the power being shut off at track level.', model).group, 'power');
+  assert.equal(W.readAlert('Line 2 Bloor-Danforth: Trains are not stopping at Lansdowne station due to a TPS investigation.', model).group, 'security');
+  assert.equal(W.readAlert('Line 2 Bloor-Danforth: Delays westbound at Dundas West station due to an emergency alarm on board a train.', model).station, 'Dundas West');
+  const r3 = W.readAlert('Line 4 Sheppard: No service between Don Mills and Bayview stations due to a security incident.', model);
+  assert.deepEqual(r3.choice.options.map((o) => o.station).sort(), ['Bayview', 'Don Mills']);
+  assert.equal(W.readAlert('Line 1 Yonge-University: There will be limited nightly service starting 11 p.m., between Pioneer Village and Sheppard West stations for tunnel improvements.', model).planned, true);
+  assert.equal(W.readAlert('Line 1 Yonge-University: Delays between Vaughan and Finch stations due to a communication issue.', model).group, 'signals');
+}
+// Late bus check: switch only if switching still wins with the bus 5 minutes late
+{
+  const a = W.switchCall(20, 9, 0, 0, 5); assert.equal(a.switch, true); assert.equal(a.narrow, false); assert.equal(a.slack, 11);
+  const b = W.switchCall(10, 7, 0, 0, 5); assert.equal(b.switch, false); assert.equal(b.narrow, true); assert.equal(b.slack, 3);
+  const c = W.switchCall(8, 19, 0, 0, 5); assert.equal(c.switch, false); assert.equal(c.narrow, false);
+  assert.equal(W.switchCall(10, 5, 0, 0, 5).switch, true);   // wins by exactly 5: still switches
+  assert.deepEqual(W.timetableRisk(11, 23), { timetable: 11, late5: 6, missed: -12 });
+  assert.equal(W.timetableRisk(-11, null).missed, null);
+}
 console.log('Wait or Walk tests passed.');

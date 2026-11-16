@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Wait or Walk · Is this TTC subway delay likely to run long?</title>
 <meta name="description" content="Subway stopped? Paste the TTC alert to see the chance of a long delay, timetabled buses nearby, and whether to wait.">
-<link rel="stylesheet" href="styles.css?v=r9">
+<link rel="stylesheet" href="styles.css?v=r10">
 </head>
 <body>
 <a class="skip" href="#main">Skip to the tool</a>
@@ -44,8 +44,9 @@
     <ul id="flags" class="flags"></ul>
   </section>
 
-  <section class="card result" aria-labelledby="out-h" aria-live="polite">
-    <h2 id="out-h">2. The call</h2>
+  <section class="card result" aria-labelledby="out-h">
+    <h2 id="out-h" tabindex="-1">2. The call</h2>
+    <p id="callStatus" class="sr-only" role="status" aria-live="polite"></p>
     <div id="empty" class="empty">Paste an alert above, or choose the station and cause under “Check the details”.</div>
     <div id="callBody" hidden>
       <p class="estlab">Estimated chance</p>
@@ -81,7 +82,7 @@
     <h2 id="v-h">4. Verdict: wait or switch?</h2>
     <p id="suggest" class="suggest">Paste an alert to see the comparison.</p>
     <p id="mix" class="typical"></p>
-    <p class="small">The rule: switch when the expected recorded delay (or what is left of it, if you say it is already underway) minus the extra minutes by the best scheduled Plan B is at least 0, a margin picked on earlier data. A "too close to call" band above that margin was also tested on earlier and later data (see Evidence); the break even line shows how late the bus can be before switching stops paying off. Switching only helps if you make that bus and it runs on time. <a href="#evidence">Evidence</a></p>
+    <p class="small">The rule: switch only when switching still wins by the timetable with the bus 5 minutes late, that is, when the expected recorded delay (or what is left of it, if you say it is already underway) is at least 5 minutes more than the extra minutes by the best scheduled Plan B. When switching wins by less than 5 minutes, the card says so, names the narrow margin and says wait. There is no "too close to call" answer: a band like that was tested (see Evidence) but its width is 0 on the page, so every comparison ends in wait or switch. The timetable risk lines show the same trip with the bus on time, 5 minutes late, and missed. Switching only helps if you make that bus. <a href="#evidence">Evidence</a></p>
   </section>
 
   <section class="card" aria-labelledby="d-h">
@@ -100,8 +101,10 @@
     <h2 id="m-h">How good is it?</h2>
     <div class="verdict" id="verdict">
       <p><b>Ranking:</b> better than the cause alone (AUC 0.751 against 0.727) and level with the first model (0.751 against 0.753, not distinguishable).</p>
-      <p><b>Calibration:</b> better calibrated than the first model (1.8 against 2.4 points, distinguishable), though forecasts still run a few points high.</p>
-      <p><b>Decisions:</b> on delays of 20 minutes or more, the schedule comparison saves about 3 minutes per delay in simulation (3.08, 95% interval 2.23 to 4.04). Averaged over all delays the gain is small (0.16 minutes, 0.11 to 0.20), exploratory, and gone if buses run 5 minutes late or a departure is missed. </p>
+      <p><b>Calibration:</b> expected calibration error 1.8 points pooled, against 2.4 for the first model (distinguishable). Calibration in the large (average forecast against actual share of 10+ delays) by period: 18% against 18%, 17% against 14% and 14% against 12%, so forecasts ran high in 2026 as long delays kept getting rarer. A fresher recalibration was tested on earlier against later data and did not pass, so it is not shipped.</p>
+      <p><b>Decisions:</b> the card switches only when switching still wins with the bus 5 minutes late. In simulation, as scheduled, that saves 0.06 minutes per delay over all delays (95% interval 0.04 to 0.08) and about 1 minute per delay of 20 minutes or more (0.95, 0.54 to 1.43). The timetable only rule it replaces saved more when buses run on time (0.16 and 3.08) but lost time when they did not; averaged over eight stress scenarios the late bus check is 0.63 minutes per delay better (0.55 to 0.70). A missed bus still erases the gain. Exploratory.</p>
+      <p><b>Reading alerts:</b> on 102 real TTC alerts from August to November 2026 with hand set labels, the first version named the right station in 87% and the right cause in 92% (99% of the causes it named were right). Fixes found on the 51 older alerts lifted the 51 newer ones from 82% to 98% for stations and from 91% to 98% for causes. After three more fixes all 102 are read right, but that last score is on the alerts used to fix it.</p>
+      <p><b>Live times:</b> where the TTC's older NextBus feed has a live prediction for a Plan B stop, it is shown beside the timetable; everything else is a timetable estimate. The verdict uses the timetable.</p>
       <p><b>Riders:</b> no rider testing has been done. A five question test script is ready in <a href="https://github.com/ALENZACODES/wait-or-walk/blob/main/docs/rider-test.md">docs/rider-test.md</a>.</p>
       <p><b>Exploratory:</b> all three evaluation periods were looked at while the rules were chosen, so every result here is exploratory until the frozen model is scored on newer TTC data.</p>
     </div>
@@ -142,8 +145,12 @@
     <p class="small"><b>Exploratory, not confirmed.</b> The expected cost rule was chosen over the 20+ chance rule after both were compared on these same evaluation periods, so its advantage is exploratory: the intervals above do not account for that choice, and it has not been confirmed on an untouched period (none exists yet; see the forecast log). Within the rule, the margin picked on each earlier window varied: 0.5 minutes below, 1 minute above and 0.5 minutes above; the shipped margin is 0.</p>
     <h4>Stress test: when the switch costs more than the schedule says</h4>
     <div id="stressTable" class="tablewrap" tabindex="0" role="region" aria-label="Stress test"></div>
-    <p class="small">Read honestly: across all delays the small gain does not survive late buses, a missed departure or longer boarding; slower walking leaves it level. On delays of 20 minutes or more it still saves time with late buses, slower walking and boarding buffers, but not with a missed departure or everything at once. That is why the card says to switch only if you make that bus.</p>
-    <h4>A rule picked for late buses: tested, not shipped</h4>
+    <p class="small">Read honestly: across all delays the small gain does not survive late buses, a missed departure or longer boarding; slower walking leaves it level. On delays of 20 minutes or more it still saves time with late buses, slower walking and boarding buffers, but not with a missed departure or everything at once. That is why the card says to switch only if you make that bus, and why the late bus check below was added. This table is the timetable only rule, the one used before the late bus check.</p>
+    <h4>The late bus check: shipped</h4>
+    <p class="small">Switch only if switching still wins with the bus 5 minutes late. The 5 minutes was fixed in advance, not tuned. It was scored on each period's earlier window and on the later test period. The rule for shipping, set before the run: not worse than the timetable only rule averaged over all eight stress scenarios on the test periods. It passed, and the earlier windows agree. It was added after the stress test results below were known, so it is exploratory like the rest.</p>
+    <div id="lateTable" class="tablewrap" tabindex="0" role="region" aria-label="Late bus check"></div>
+    <p id="lateNote" class="small"></p>
+    <h4>A margin picked for late buses: tested, not shipped</h4>
     <p class="small">Could a bigger margin protect riders when the bus runs late? For each test period the margin was picked on that period's earlier window as the one with the fewest minutes if every bus ran 5 minutes late, then the full stress test was run with it. The rule had to be at least as good as the shipped one as scheduled and lose less under slippage. Margins picked: 3.5, 12.5 and 4 minutes.</p>
     <div id="robustTable" class="tablewrap" tabindex="0" role="region" aria-label="Slippage robust rule"></div>
     <p id="robustNote" class="small"></p>
@@ -157,6 +164,18 @@
     <div id="stationSimTable" class="tablewrap" tabindex="0" role="region" aria-label="Station simulation, scrolls sideways on small screens"></div>
     <p id="stationSimNote" class="small"></p>
     <p class="small">Read honestly: switching on a high forecast saves 1.68 minutes per delay of 20 minutes or more (95% interval 0.98 to 2.48) and 3.16 per delay of 30 minutes or more (1.80 to 4.79) against always waiting, but costs 0.41 per delay under 10 minutes, so across all delays it is 0.35 minutes behind always waiting (0.26 to 0.44). In the long tail it is level with the cause only rule (0.08 minutes ahead, 0.21 behind to 0.39 ahead); across all delays the cause only rule, which switches less often, loses less. Hindsight shows how much is left: 7.4 minutes per delay of 20+. Intervals resample whole days. The logged minutes are delays to service, not any one rider's wait.</p>
+    <h3>Reading the alert: tested on 102 real TTC alerts</h3>
+    <p class="small">102 distinct subway alerts the TTC posted from August 8 to November 16, 2026 (updates and "service resumed" posts left out), each labelled by hand from the text alone: the line, every station named, the cause group and whether it is planned work. The older 51 (to October 15) were used to find and fix errors; the newer 51 were held out. Station counts as right when the one station named is read, or, for an alert naming two or more, when the choice lists exactly those stations.</p>
+    <div id="parserTable" class="tablewrap" tabindex="0" role="region" aria-label="Alert reading accuracy"></div>
+    <p class="small">Errors found: a station name inside a longer one (St Clair in St Clair West, Lawrence in Lawrence West, Sheppard in Sheppard West, Dundas in Dundas West), "Vaughan" not read as Vaughan Metropolitan Centre, and "operational problem", "communication issue" and "TPS investigation" not read as a cause. Those were fixed from the older half. Three more errors were left in the newer half and then fixed too ("power being shut off at track level" read as a person at track level, "Line 4 Sheppard" read as Sheppard-Yonge station, "limited nightly service for tunnel improvements" not read as planned work), so the final 100% is not an independent test. One alert with only "an investigation" gives no cause and you choose. Labels and script: <a href="https://github.com/ALENZACODES/wait-or-walk/blob/main/data/alerts_labelled.json">data/alerts_labelled.json</a>, <a href="https://github.com/ALENZACODES/wait-or-walk/blob/main/scripts/parser_eval.mjs">scripts/parser_eval.mjs</a>.</p>
+    <h3>Why forecasts run high, and a fix that did not pass</h3>
+    <p class="small">Two measures, named: <i>calibration in the large</i> is the average forecast against the actual share; <i>calibration error</i> is the expected calibration error, the gap in seven forecast bands weighted by delays. The pooled calibration error of 1.8 points hides the direction: by period the 10+ forecasts averaged 18% against 18% actual (Jan to Mar), 17% against 14% (Apr to Jun) and 14% against 12% (Jul to Sep). In the 5 minute underway check, 34% against 31%. The share of 10+ delays kept falling through 2026 (19% in January, 15% in April, 11% in July), and the recalibration averages the 91 days before each period, so it lags a falling trend.</p>
+    <div id="calCheckTable" class="tablewrap" tabindex="0" role="region" aria-label="Fresher recalibration check"></div>
+    <p class="small">Tested: shift each period's forecasts so they match the actual share in only the last 30, 46 or 61 days of its earlier window, then score on the later period. Rule: ship only if the 10+ gap shrinks in all three periods and pooled log loss is no worse for any band. None passed: each helps Apr to Jun a little, but makes Jan to Mar worse and leaves Jul to Sep about where it was. This rule was written after a first look at the numbers. So the forecasts are shipped as they are, with this note.</p>
+    <h3>Alert time forecast log</h3>
+    <p class="small">Each time the alerts job copies the TTC feed, it saves the forecast for every new subway alert as it would have been shown then (time of day, the alert as read, the 5+, 10+ and 20+ chances, the model), one line per alert in <a href="https://github.com/ALENZACODES/wait-or-walk/blob/main/data/alert_forecasts.jsonl">data/alert_forecasts.jsonl</a>, never edited. Lines logged more than 40 minutes after the alert was first seen are marked backfilled. Once the City publishes delays for those dates they can be matched and scored. It has not been scored, so it makes no accuracy claim yet. <span id="logCount"></span></p>
+    <h3>Accessibility</h3>
+    <p class="small">Automated checks on every change: axe-core finds no WCAG 2.1 A or AA violations at phone and desktop widths with every fold open; a keyboard only run tabs to an example, opens it with Enter, presses the underway buttons with Space and picks a station choice with Enter, with focus visible and moved to the result; every control has a name; the call is announced by one short status line; headings do not skip levels. No manual screen reader test has been done.</p>
     <details id="moreChecks" class="tabledetails">
     <summary>More checks: day blocks, 5+ and 20+, station by cause pooling (tested and rejected), settings, fixed switch costs</summary>
     <h4>Resampling whole days instead of single delays</h4>
@@ -188,8 +207,8 @@
   </section>
   </div>
 </main>
-<footer>Made by John Khan in Toronto, Ontario. Not affiliated with or endorsed by the Toronto Transit Commission (TTC). Data: City of Toronto Open Data, <i>TTC Subway Delay Data since 2025</i> and <i>TTC Routes and Schedules</i> (GTFS, files dated Oct 20, 2026, covering Nov 1 to Dec 21, 2026), both under the <a href="https://open.toronto.ca/open-data-licence/">Open Government Licence Toronto</a>. Alerts: TTC GTFS Realtime subway and accessibility (elevator and escalator) feeds, copied every 30 minutes by an automated job (its commits, titled “Copy TTC subway alerts”, change only the alerts data files), same licence; the page asks GitHub's public API when that job last ran. Bike Share: <a href="https://bikesharetoronto.com/">Bike Share Toronto</a> live GBFS feed, read in your browser (Open Government Licence Toronto; the live feed is listed as <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>). Weather: Data Source: <a href="https://eccc-msc.github.io/open-data/licence/readme_en/">Environment and Climate Change Canada</a>, context only. Accessibility checks in testing use <a href="https://github.com/dequelabs/axe-core">axe-core</a> (Mozilla Public License 2.0). No rider testing has been done. What you type stays in your browser. Version r9. <a href="https://github.com/ALENZACODES/wait-or-walk">Source code</a></footer>
-<script src="logic.js?v=r9"></script>
-<script src="app.js?v=r9"></script>
+<footer>Made by John Khan in Toronto, Ontario. Not affiliated with or endorsed by the Toronto Transit Commission (TTC). Data: City of Toronto Open Data, <i>TTC Subway Delay Data since 2025</i> and <i>TTC Routes and Schedules</i> (GTFS, files dated Oct 20, 2026, covering Nov 1 to Dec 21, 2026), both under the <a href="https://open.toronto.ca/open-data-licence/">Open Government Licence Toronto</a>. Alerts: TTC GTFS Realtime subway and accessibility (elevator and escalator) feeds, copied every 30 minutes by an automated job (its commits, titled “Copy TTC subway alerts”, change only the alerts data files and a log of the forecast for each new alert), same licence; the page asks GitHub's public API when that job last ran. Bike Share: <a href="https://bikesharetoronto.com/">Bike Share Toronto</a> live GBFS feed, read in your browser (Open Government Licence Toronto; the live feed is listed as <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>). Live bus predictions: the TTC's NextBus feed on UmoIQ (All data copyright Toronto Transit Commission), listed by the City as TTC Real Time Next Vehicle Arrival under the same licence, read in your browser; the City lists it as decommissioned, so it may stop. Accessibility checks in testing use <a href="https://github.com/dequelabs/axe-core">axe-core</a> (Mozilla Public License 2.0). No rider testing has been done. No manual screen reader test has been done. What you type stays in your browser. Version r10. <a href="https://github.com/ALENZACODES/wait-or-walk">Source code</a></footer>
+<script src="logic.js?v=r10"></script>
+<script src="app.js?v=r10"></script>
 </body>
 </html>

@@ -1,0 +1,1579 @@
+{
+ "source": "Real TTC subway alerts posted by @TTCnotices on X (TTC Service Alerts), Aug 8 to Nov 16, 2026, one per distinct alert (updates with only a time stamp or a closing line removed). Labels set by hand from the alert text alone, before comparing with the parser.",
+ "labelRules": "line: the line named. stations: every station named, in model names (Bloor-Yonge is Bloor on Line 1 and Yonge on Line 2; Vaughan is Vaughan Metropolitan Centre). cause: the model cause group the text describes (security incident and police or TPS investigation: security; emergency alarm: alarm; mechanical issue: train; door problem: doors; operational problem: operations; communication issue: signals, as the TTC signal codes include train control communication; power shut off: power; trespasser at track level or on the tracks: track_person; an unspecified investigation: other). planned: planned work or maintenance, which gets no forecast.",
+ "split": "development: the 51 older alerts (Aug 8 to Oct 15, 2026), used to find and fix parser errors; held out: the 51 newer alerts (Oct 15 to Nov 16, 2026), not used for fixes",
+ "alerts": [
+  {
+   "id": "2086118782745911400",
+   "postedAt": "2026-08-08T15:54:10.000Z",
+   "url": "https://x.com/TTCnotices/status/2086118782745911400",
+   "text": "Line 2 Bloor-Danforth: Delays eastbound at Pape station while we fix a mechanical problem.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Pape"
+    ],
+    "cause": "train",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2086199326410199285",
+   "postedAt": "2026-08-08T21:14:13.000Z",
+   "url": "https://x.com/TTCnotices/status/2086199326410199285",
+   "text": "Line 2 Bloor-Danforth: Delays westbound at Greenwood station while we respond to an emergency alarm.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Greenwood"
+    ],
+    "cause": "alarm",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2086206569813889492",
+   "postedAt": "2026-08-08T21:43:00.000Z",
+   "url": "https://x.com/TTCnotices/status/2086206569813889492",
+   "text": "Line 2 Bloor-Danforth: Delays eastbound at Bloor-Yonge station due to a security incident.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Yonge"
+    ],
+    "cause": "security",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2086209094893928567",
+   "postedAt": "2026-08-08T21:53:02.000Z",
+   "url": "https://x.com/TTCnotices/status/2086209094893928567",
+   "text": "Line 2 Bloor-Danforth: Delays westbound at Sherbourne station while we respond to an emergency alarm.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Sherbourne"
+    ],
+    "cause": "alarm",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2086210442817356024",
+   "postedAt": "2026-08-08T21:58:24.000Z",
+   "url": "https://x.com/TTCnotices/status/2086210442817356024",
+   "text": "Line 1 Yonge-University: Trains are not stopping southbound at TMU station due to a Toronto Police investigation.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "TMU"
+    ],
+    "cause": "security",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2086246055394390447",
+   "postedAt": "2026-08-09T00:19:54.000Z",
+   "url": "https://x.com/TTCnotices/status/2086246055394390447",
+   "text": "Line 2 Bloor-Danforth: Delays westbound at Sherbourne station while we fix a mechanical problem.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Sherbourne"
+    ],
+    "cause": "train",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2086249510712263099",
+   "postedAt": "2026-08-09T00:33:38.000Z",
+   "url": "https://x.com/TTCnotices/status/2086249510712263099",
+   "text": "Line 2 Bloor-Danforth: Delays westbound at Warden station while we respond to an emergency alarm.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Warden"
+    ],
+    "cause": "alarm",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2086267241348162007",
+   "postedAt": "2026-08-09T01:44:05.000Z",
+   "url": "https://x.com/TTCnotices/status/2086267241348162007",
+   "text": "Line 2 Bloor-Danforth: Delays eastbound at Chester station while we respond to a medical emergency.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Chester"
+    ],
+    "cause": "medical",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2086268100966515187",
+   "postedAt": "2026-08-09T01:47:30.000Z",
+   "url": "https://x.com/TTCnotices/status/2086268100966515187",
+   "text": "Line 2 Bloor-Danforth: No service between Woodbine and Broadview stations while we respond to a medical emergency.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Woodbine",
+     "Broadview"
+    ],
+    "cause": "medical",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2086283604414345417",
+   "postedAt": "2026-08-09T02:49:07.000Z",
+   "url": "https://x.com/TTCnotices/status/2086283604414345417",
+   "text": "Line 1 Yonge-University: Delays northbound at Wilson station while we deal with an operational problem.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "Wilson"
+    ],
+    "cause": "operations",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2086293644219228602",
+   "postedAt": "2026-08-09T03:29:00.000Z",
+   "url": "https://x.com/TTCnotices/status/2086293644219228602",
+   "text": "Line 2 Bloor-Danforth: No service between Keele and St George stations while we deal with a trespasser on the tracks.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Keele",
+     "St George"
+    ],
+    "cause": "track_person",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2086654705808130447",
+   "postedAt": "2026-08-10T03:23:44.000Z",
+   "url": "https://x.com/TTCnotices/status/2086654705808130447",
+   "text": "Line 2 Bloor-Danforth: Delays eastbound at Donlands station while we respond to an emergency alarm.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Donlands"
+    ],
+    "cause": "alarm",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2086681726000955796",
+   "postedAt": "2026-08-10T05:11:06.000Z",
+   "url": "https://x.com/TTCnotices/status/2086681726000955796",
+   "text": "Line 1 Yonge-University: Delays at Spadina station as power has been shut down. We are investigating the cause and working to fix it as quickly as possible.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "Spadina"
+    ],
+    "cause": "power",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2086682861738819758",
+   "postedAt": "2026-08-10T05:15:37.000Z",
+   "url": "https://x.com/TTCnotices/status/2086682861738819758",
+   "text": "Line 1 Yonge-University: No service between St Clair West and Union stations as power has been shut down. We are investigating the cause and working to fix it as quickly as possible.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "St Clair West",
+     "Union"
+    ],
+    "cause": "power",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2086754552389247008",
+   "postedAt": "2026-08-10T10:00:29.000Z",
+   "url": "https://x.com/TTCnotices/status/2086754552389247008",
+   "text": "Line 2 Bloor-Danforth: Delays westbound at Christie station while we fix a mechanical problem.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Christie"
+    ],
+    "cause": "train",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2086784053747876221",
+   "postedAt": "2026-08-10T11:57:43.000Z",
+   "url": "https://x.com/TTCnotices/status/2086784053747876221",
+   "text": "Line 2 Bloor-Danforth: Delays westbound at High Park station while we fix a mechanical problem.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "High Park"
+    ],
+    "cause": "train",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2093778387747700945",
+   "postedAt": "2026-08-29T19:10:42.000Z",
+   "url": "https://x.com/TTCnotices/status/2093778387747700945",
+   "text": "Line 1 Yonge-University: No service between Bloor-Yonge and King stations due to a security incident.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "Bloor",
+     "King"
+    ],
+    "cause": "security",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2093885173242699960",
+   "postedAt": "2026-08-30T02:15:02.000Z",
+   "url": "https://x.com/TTCnotices/status/2093885173242699960",
+   "text": "Line 1 Yonge-University: Delays northbound at Bloor-Yonge station due to a security incident.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "Bloor"
+    ],
+    "cause": "security",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2093928926364013052",
+   "postedAt": "2026-08-30T05:08:54.000Z",
+   "url": "https://x.com/TTCnotices/status/2093928926364013052",
+   "text": "Line 2 Bloor-Danforth: No service between Woodbine and St George stations while we deal with a trespasser on the tracks.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Woodbine",
+     "St George"
+    ],
+    "cause": "track_person",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2093933311072600492",
+   "postedAt": "2026-08-30T05:26:19.000Z",
+   "url": "https://x.com/TTCnotices/status/2093933311072600492",
+   "text": "Line 1 Yonge-University: Delays northbound at Wellesley station while we respond to an emergency alarm.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "Wellesley"
+    ],
+    "cause": "alarm",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2094208779520753938",
+   "postedAt": "2026-08-30T23:40:56.000Z",
+   "url": "https://x.com/TTCnotices/status/2094208779520753938",
+   "text": "Line 2 Bloor-Danforth: No service between Broadview and St George stations while we respond to a medical emergency.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Broadview",
+     "St George"
+    ],
+    "cause": "medical",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2094223473321099305",
+   "postedAt": "2026-08-31T00:39:19.000Z",
+   "url": "https://x.com/TTCnotices/status/2094223473321099305",
+   "text": "Line 2 Bloor-Danforth: Delays eastbound at Greenwood station while we respond to a medical emergency.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Greenwood"
+    ],
+    "cause": "medical",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2094257546601071089",
+   "postedAt": "2026-08-31T02:54:43.000Z",
+   "url": "https://x.com/TTCnotices/status/2094257546601071089",
+   "text": "Line 2 Bloor-Danforth: No service between Victoria Park and Kennedy stations due to a security incident.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Victoria Park",
+     "Kennedy"
+    ],
+    "cause": "security",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2094265859531301275",
+   "postedAt": "2026-08-31T03:27:45.000Z",
+   "url": "https://x.com/TTCnotices/status/2094265859531301275",
+   "text": "Line 2 Bloor-Danforth: Delays eastbound at Bloor-Yonge station while we respond to an emergency alarm.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Yonge"
+    ],
+    "cause": "alarm",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2094275627113128000",
+   "postedAt": "2026-08-31T04:06:33.000Z",
+   "url": "https://x.com/TTCnotices/status/2094275627113128000",
+   "text": "Line 2 Bloor-Danforth: Delays eastbound at Christie station while we fix a door problem.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Christie"
+    ],
+    "cause": "doors",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2094460699988636084",
+   "postedAt": "2026-08-31T16:21:58.000Z",
+   "url": "https://x.com/TTCnotices/status/2094460699988636084",
+   "text": "Line 1 Yonge-University: No service between Osgoode and College stations while we deal with a trespasser on the tracks.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "Osgoode",
+     "College"
+    ],
+    "cause": "track_person",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2094466116659576837",
+   "postedAt": "2026-08-31T16:43:30.000Z",
+   "url": "https://x.com/TTCnotices/status/2094466116659576837",
+   "text": "Line 2 Bloor-Danforth: Trains are not stopping at Woodbine station due to a security incident.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Woodbine"
+    ],
+    "cause": "security",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2094501044759810311",
+   "postedAt": "2026-08-31T19:02:17.000Z",
+   "url": "https://x.com/TTCnotices/status/2094501044759810311",
+   "text": "Line 1 Yonge-University: Trains are not stopping at Downsview Park station due to a security incident.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "Downsview Park"
+    ],
+    "cause": "security",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2094531163259855129",
+   "postedAt": "2026-08-31T21:01:58.000Z",
+   "url": "https://x.com/TTCnotices/status/2094531163259855129",
+   "text": "Line 2 Bloor-Danforth: Delays westbound at Victoria Park station while we deal with an operational problem.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Victoria Park"
+    ],
+    "cause": "operations",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2094553232810922022",
+   "postedAt": "2026-08-31T22:29:40.000Z",
+   "url": "https://x.com/TTCnotices/status/2094553232810922022",
+   "text": "Line 1 Yonge-University: Delays southbound at North York Centre station while we fix a mechanical problem.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "North York Centre"
+    ],
+    "cause": "train",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2098260021477785942",
+   "postedAt": "2026-09-11T03:59:07.000Z",
+   "url": "https://x.com/TTCnotices/status/2098260021477785942",
+   "text": "Line 1 Yonge-University: There is no subway service between St Clair and College stations due to planned track work. Shuttle buses are running.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "St Clair",
+     "College"
+    ],
+    "cause": null,
+    "planned": true
+   },
+   "split": "development"
+  },
+  {
+   "id": "2098449056909451641",
+   "postedAt": "2026-09-11T16:30:17.000Z",
+   "url": "https://x.com/TTCnotices/status/2098449056909451641",
+   "text": "Line 1 Yonge-University: Trains are not stopping southbound at Rosedale station due to a security incident.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "Rosedale"
+    ],
+    "cause": "security",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2098628289820492182",
+   "postedAt": "2026-09-12T04:22:29.000Z",
+   "url": "https://x.com/TTCnotices/status/2098628289820492182",
+   "text": "Line 2 Bloor-Danforth: Delays at Broadview station due to a security incident.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Broadview"
+    ],
+    "cause": "security",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2098631307274211598",
+   "postedAt": "2026-09-12T04:34:28.000Z",
+   "url": "https://x.com/TTCnotices/status/2098631307274211598",
+   "text": "Line 2 Bloor-Danforth: Delays westbound at Chester station due to a security incident.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Chester"
+    ],
+    "cause": "security",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2098631924226891891",
+   "postedAt": "2026-09-12T04:36:56.000Z",
+   "url": "https://x.com/TTCnotices/status/2098631924226891891",
+   "text": "Line 2 Bloor-Danforth: Trains are not stopping westbound at Chester station due to a security incident.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Chester"
+    ],
+    "cause": "security",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2098795202261483615",
+   "postedAt": "2026-09-12T15:25:44.000Z",
+   "url": "https://x.com/TTCnotices/status/2098795202261483615",
+   "text": "Line 1 Yonge-University: Trains are not stopping southbound at College station due to a security incident.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "College"
+    ],
+    "cause": "security",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2098796345754562567",
+   "postedAt": "2026-09-12T15:30:17.000Z",
+   "url": "https://x.com/TTCnotices/status/2098796345754562567",
+   "text": "Line 1 Yonge-University: Delays northbound at College station due to a security incident.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "College"
+    ],
+    "cause": "security",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2099105825159581883",
+   "postedAt": "2026-09-13T12:00:02.000Z",
+   "url": "https://x.com/TTCnotices/status/2099105825159581883",
+   "text": "Line 2 Bloor-Danforth: There is no subway service between St George and Broadview stations due to planned track work.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "St George",
+     "Broadview"
+    ],
+    "cause": null,
+    "planned": true
+   },
+   "split": "development"
+  },
+  {
+   "id": "2099531928542097808",
+   "postedAt": "2026-09-14T16:13:13.000Z",
+   "url": "https://x.com/TTCnotices/status/2099531928542097808",
+   "text": "Line 2 Bloor-Danforth: Delays westbound at Spadina station due to a security incident.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Spadina"
+    ],
+    "cause": "security",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2099925337945575563",
+   "postedAt": "2026-09-15T18:16:29.000Z",
+   "url": "https://x.com/TTCnotices/status/2099925337945575563",
+   "text": "Line 1 Yonge-University: Delays between Vaughan and Finch stations due to a communication issue.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "Vaughan Metropolitan Centre",
+     "Finch"
+    ],
+    "cause": "signals",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2099961842957197644",
+   "postedAt": "2026-09-15T20:41:33.000Z",
+   "url": "https://x.com/TTCnotices/status/2099961842957197644",
+   "text": "Line 2 Bloor-Danforth: No service between Kipling and Islington stations due to a security incident.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Kipling",
+     "Islington"
+    ],
+    "cause": "security",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2100001618292830540",
+   "postedAt": "2026-09-15T23:19:36.000Z",
+   "url": "https://x.com/TTCnotices/status/2100001618292830540",
+   "text": "Line 2 Bloor-Danforth: No service between Broadview and St George stations due to a security incident.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Broadview",
+     "St George"
+    ],
+    "cause": "security",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2105019632650240433",
+   "postedAt": "2026-09-29T19:39:24.000Z",
+   "url": "https://x.com/TTCnotices/status/2105019632650240433",
+   "text": "Line 2 Bloor-Danforth: No service between Woodbine and Victoria Park stations due to a security incident.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Woodbine",
+     "Victoria Park"
+    ],
+    "cause": "security",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2105048768924066169",
+   "postedAt": "2026-09-29T21:35:11.000Z",
+   "url": "https://x.com/TTCnotices/status/2105048768924066169",
+   "text": "Line 1 Yonge-University: No service between St Clair West and St George stations due to a security incident.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "St Clair West",
+     "St George"
+    ],
+    "cause": "security",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2105049010058752461",
+   "postedAt": "2026-09-29T21:36:08.000Z",
+   "url": "https://x.com/TTCnotices/status/2105049010058752461",
+   "text": "Line 2 Bloor-Danforth: No service between St George and Ossington stations due to a security incident.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "St George",
+     "Ossington"
+    ],
+    "cause": "security",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2105130516278030796",
+   "postedAt": "2026-09-30T03:00:01.000Z",
+   "url": "https://x.com/TTCnotices/status/2105130516278030796",
+   "text": "Line 1 Yonge-University: There is limited subway service between Vaughan and Finch West stations due to planned track work.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "Vaughan Metropolitan Centre",
+     "Finch West"
+    ],
+    "cause": null,
+    "planned": true
+   },
+   "split": "development"
+  },
+  {
+   "id": "2105333120593477650",
+   "postedAt": "2026-09-30T16:25:05.000Z",
+   "url": "https://x.com/TTCnotices/status/2105333120593477650",
+   "text": "Line 2 Bloor-Danforth: Trains are not stopping at Castle Frank station due to a security incident.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Castle Frank"
+    ],
+    "cause": "security",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2105381538699309139",
+   "postedAt": "2026-09-30T19:37:29.000Z",
+   "url": "https://x.com/TTCnotices/status/2105381538699309139",
+   "text": "Line 1 Yonge-University: Trains are not stopping at Union station due to a security incident.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "Union"
+    ],
+    "cause": "security",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2105432456753017001",
+   "postedAt": "2026-09-30T22:59:49.000Z",
+   "url": "https://x.com/TTCnotices/status/2105432456753017001",
+   "text": "Line 2 Bloor-Danforth: No service between Warden and Kennedy stations due to a security incident.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Warden",
+     "Kennedy"
+    ],
+    "cause": "security",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2105441670376398935",
+   "postedAt": "2026-09-30T23:36:26.000Z",
+   "url": "https://x.com/TTCnotices/status/2105441670376398935",
+   "text": "Line 1 Yonge-University: Trains are not stopping at Queen station due to a security incident.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "Queen"
+    ],
+    "cause": "security",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2110585280226902080",
+   "postedAt": "2026-10-15T04:15:18.000Z",
+   "url": "https://x.com/TTCnotices/status/2110585280226902080",
+   "text": "Line 1 Yonge-University: Trains are not stopping at Wellesley station due to a TPS investigation.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "Wellesley"
+    ],
+    "cause": "security",
+    "planned": false
+   },
+   "split": "development"
+  },
+  {
+   "id": "2110611465359041022",
+   "postedAt": "2026-10-15T05:59:21.000Z",
+   "url": "https://x.com/TTCnotices/status/2110611465359041022",
+   "text": "Line 1 Yonge-University: Delays northbound at Lawrence West station due to a mechanical issue.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "Lawrence West"
+    ],
+    "cause": "train",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2110764073071628501",
+   "postedAt": "2026-10-15T16:05:45.000Z",
+   "url": "https://x.com/TTCnotices/status/2110764073071628501",
+   "text": "Line 1 Yonge-University: Delays between Finch West and Lawrence West stations due to a trespasser at track level.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "Finch West",
+     "Lawrence West"
+    ],
+    "cause": "track_person",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2110764864553591098",
+   "postedAt": "2026-10-15T16:08:54.000Z",
+   "url": "https://x.com/TTCnotices/status/2110764864553591098",
+   "text": "Line 1 Yonge-University: No service between Lawrence West and Sheppard West stations due to a trespasser at track level.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "Lawrence West",
+     "Sheppard West"
+    ],
+    "cause": "track_person",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2110804812648337782",
+   "postedAt": "2026-10-15T18:47:38.000Z",
+   "url": "https://x.com/TTCnotices/status/2110804812648337782",
+   "text": "Line 2 Bloor-Danforth: Delays westbound at Donlands station due to an emergency alarm on board a train.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Donlands"
+    ],
+    "cause": "alarm",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2110805504343597152",
+   "postedAt": "2026-10-15T18:50:23.000Z",
+   "url": "https://x.com/TTCnotices/status/2110805504343597152",
+   "text": "Line 2 Bloor-Danforth: No service between Woodbine and Broadview stations due to a medical emergency.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Woodbine",
+     "Broadview"
+    ],
+    "cause": "medical",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2110814146090402207",
+   "postedAt": "2026-10-15T19:24:44.000Z",
+   "url": "https://x.com/TTCnotices/status/2110814146090402207",
+   "text": "Line 2 Bloor-Danforth: Delays eastbound at Christie station due to a mechanical issue.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Christie"
+    ],
+    "cause": "train",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2110846873879679258",
+   "postedAt": "2026-10-15T21:34:47.000Z",
+   "url": "https://x.com/TTCnotices/status/2110846873879679258",
+   "text": "Line 1 Yonge-University: Delays northbound at Summerhill station due to an emergency alarm on board a train.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "Summerhill"
+    ],
+    "cause": "alarm",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2110857984830001215",
+   "postedAt": "2026-10-15T22:18:56.000Z",
+   "url": "https://x.com/TTCnotices/status/2110857984830001215",
+   "text": "Line 1 Yonge-University: Delays southbound at Davisville station due to an emergency alarm on board a train.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "Davisville"
+    ],
+    "cause": "alarm",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2110875594271404406",
+   "postedAt": "2026-10-15T23:28:54.000Z",
+   "url": "https://x.com/TTCnotices/status/2110875594271404406",
+   "text": "Line 4 Sheppard: No service between Don Mills and Bayview stations due to a security incident.",
+   "label": {
+    "line": "SHP",
+    "stations": [
+     "Don Mills",
+     "Bayview"
+    ],
+    "cause": "security",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2116237760902131810",
+   "postedAt": "2026-10-30T18:36:14.000Z",
+   "url": "https://x.com/TTCnotices/status/2116237760902131810",
+   "text": "Line 1 Yonge-University: There will be no subway service between Lawrence West and St Andrew stations, starting 11:59 p.m., nightly Monday, November 2 to Friday, November 6, due to planned track work. Shuttle buses will operate between Lawrence West and St George.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "Lawrence West",
+     "St Andrew",
+     "St George"
+    ],
+    "cause": null,
+    "planned": true
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2116247886224597440",
+   "postedAt": "2026-10-30T19:16:28.000Z",
+   "url": "https://x.com/TTCnotices/status/2116247886224597440",
+   "text": "Line 2 Bloor-Danforth: No service between Broadview and Woodbine stations due to a security incident.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Broadview",
+     "Woodbine"
+    ],
+    "cause": "security",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2116328150971912342",
+   "postedAt": "2026-10-31T00:35:25.000Z",
+   "url": "https://x.com/TTCnotices/status/2116328150971912342",
+   "text": "Line 2 Bloor-Danforth: Trains are not stopping at Pape station due to a security incident. Thank you for your patience.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Pape"
+    ],
+    "cause": "security",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2116341412870394200",
+   "postedAt": "2026-10-31T01:28:07.000Z",
+   "url": "https://x.com/TTCnotices/status/2116341412870394200",
+   "text": "Line 2 Bloor-Danforth: Delays westbound at Dundas West station due to an emergency alarm on board a train. Thank you for your patience.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Dundas West"
+    ],
+    "cause": "alarm",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2116356477170471128",
+   "postedAt": "2026-10-31T02:27:58.000Z",
+   "url": "https://x.com/TTCnotices/status/2116356477170471128",
+   "text": "Line 1 Yonge-University: Delays northbound at St George station due to an emergency alarm on board a train. Thank you for your patience.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "St George"
+    ],
+    "cause": "alarm",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2116374612804063545",
+   "postedAt": "2026-10-31T03:40:02.000Z",
+   "url": "https://x.com/TTCnotices/status/2116374612804063545",
+   "text": "Line 1 Yonge-University: Delays northbound at Sheppard West station due to an emergency alarm on board a train. Thank you for your patience.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "Sheppard West"
+    ],
+    "cause": "alarm",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2116504140868129050",
+   "postedAt": "2026-10-31T12:14:44.000Z",
+   "url": "https://x.com/TTCnotices/status/2116504140868129050",
+   "text": "Line 2 Bloor-Danforth: Delays eastbound at Warden station due to an emergency alarm on board a train. Thank you for your patience.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Warden"
+    ],
+    "cause": "alarm",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2116504857175617937",
+   "postedAt": "2026-10-31T12:17:35.000Z",
+   "url": "https://x.com/TTCnotices/status/2116504857175617937",
+   "text": "Line 2 Bloor-Danforth: No service between Warden and Kennedy stations due to a medical emergency. Shuttle buses are on the way. Thank you for your patience.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Warden",
+     "Kennedy"
+    ],
+    "cause": "medical",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2116530211806118396",
+   "postedAt": "2026-10-31T13:58:20.000Z",
+   "url": "https://x.com/TTCnotices/status/2116530211806118396",
+   "text": "Line 1 Yonge-University: Delays northbound at Wellesley station due to an emergency alarm on board a train. Thank you for your patience.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "Wellesley"
+    ],
+    "cause": "alarm",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2116532715709215087",
+   "postedAt": "2026-10-31T14:08:17.000Z",
+   "url": "https://x.com/TTCnotices/status/2116532715709215087",
+   "text": "Line 1 Yonge-University: Delays northbound at Eglinton station due to a security incident. Thank you for your patience.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "Eglinton"
+    ],
+    "cause": "security",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2116584270869221544",
+   "postedAt": "2026-10-31T17:33:09.000Z",
+   "url": "https://x.com/TTCnotices/status/2116584270869221544",
+   "text": "Line 2 Bloor-Danforth: Trains are not stopping at Sherbourne station due to a security incident. Thank you for your patience.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Sherbourne"
+    ],
+    "cause": "security",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2116585255834431689",
+   "postedAt": "2026-10-31T17:37:03.000Z",
+   "url": "https://x.com/TTCnotices/status/2116585255834431689",
+   "text": "Line 1 Yonge-University: Delays southbound at Wellesley station due to an emergency alarm on board a train. Thank you for your patience.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "Wellesley"
+    ],
+    "cause": "alarm",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2116656980039180354",
+   "postedAt": "2026-10-31T22:22:04.000Z",
+   "url": "https://x.com/TTCnotices/status/2116656980039180354",
+   "text": "Line 1 Yonge-University: Delays northbound from St George to Vaughan stations due to a medical emergency. Thank you for your patience.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "St George",
+     "Vaughan Metropolitan Centre"
+    ],
+    "cause": "medical",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2116658677801255046",
+   "postedAt": "2026-10-31T22:28:49.000Z",
+   "url": "https://x.com/TTCnotices/status/2116658677801255046",
+   "text": "Line 1 Yonge-University: No service between St George and Spadina stations due to a medical emergency. Thank you for your patience.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "St George",
+     "Spadina"
+    ],
+    "cause": "medical",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2121405435806658682",
+   "postedAt": "2026-11-14T00:50:44.000Z",
+   "url": "https://x.com/TTCnotices/status/2121405435806658682",
+   "text": "Line 1 Yonge-University: Trains are not stopping at TMU station due to a security incident. Thank you for your patience.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "TMU"
+    ],
+    "cause": "security",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2121408589122150520",
+   "postedAt": "2026-11-14T01:03:16.000Z",
+   "url": "https://x.com/TTCnotices/status/2121408589122150520",
+   "text": "Line 1 Yonge-University: No service between Union and Bloor-Yonge stations due to the power being shut off at track level. Thank you for your patience.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "Union",
+     "Bloor"
+    ],
+    "cause": "power",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2121421021295100356",
+   "postedAt": "2026-11-14T01:52:40.000Z",
+   "url": "https://x.com/TTCnotices/status/2121421021295100356",
+   "text": "Line 1 Yonge-University: No service between St George and Wilson stations due to a trespasser at track level. Thank you for your patience.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "St George",
+     "Wilson"
+    ],
+    "cause": "track_person",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2121436824279089605",
+   "postedAt": "2026-11-14T02:55:27.000Z",
+   "url": "https://x.com/TTCnotices/status/2121436824279089605",
+   "text": "Line 2 Bloor-Danforth: Delays westbound at Jane station due to an emergency alarm on board a train. Thank you for your patience.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Jane"
+    ],
+    "cause": "alarm",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2121437044735922302",
+   "postedAt": "2026-11-14T02:56:20.000Z",
+   "url": "https://x.com/TTCnotices/status/2121437044735922302",
+   "text": "Line 2 Bloor-Danforth: Trains are not stopping eastbound at Jane station due to an emergency alarm on board a train. Thank you for your patience.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Jane"
+    ],
+    "cause": "alarm",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2121448363916746794",
+   "postedAt": "2026-11-14T03:41:19.000Z",
+   "url": "https://x.com/TTCnotices/status/2121448363916746794",
+   "text": "Line 1 Yonge-University: Delays northbound at York Mills station due to an emergency alarm on board a train. Thank you for your patience.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "York Mills"
+    ],
+    "cause": "alarm",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2121543671023587449",
+   "postedAt": "2026-11-14T10:00:02.000Z",
+   "url": "https://x.com/TTCnotices/status/2121543671023587449",
+   "text": "Line 2 Bloor-Danforth: There is no subway service between Victoria Park and Kennedy stations due to planned track work.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Victoria Park",
+     "Kennedy"
+    ],
+    "cause": null,
+    "planned": true
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2121579486479102018",
+   "postedAt": "2026-11-14T12:22:21.000Z",
+   "url": "https://x.com/TTCnotices/status/2121579486479102018",
+   "text": "Line 1 Yonge-University: No service between St George and St Andrew stations due to a medical emergency. Thank you for your patience.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "St George",
+     "St Andrew"
+    ],
+    "cause": "medical",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2121675637714760095",
+   "postedAt": "2026-11-14T18:44:25.000Z",
+   "url": "https://x.com/TTCnotices/status/2121675637714760095",
+   "text": "Line 1 Yonge-University: Delays northbound at St Patrick station due to an emergency alarm on board a train. Thank you for your patience.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "St Patrick"
+    ],
+    "cause": "alarm",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2121713468847902727",
+   "postedAt": "2026-11-14T21:14:45.000Z",
+   "url": "https://x.com/TTCnotices/status/2121713468847902727",
+   "text": "Line 2 Bloor-Danforth: No service between Ossington and St George stations due to a mechanical issue. Thank you for your patience.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Ossington",
+     "St George"
+    ],
+    "cause": "train",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2121714176380784841",
+   "postedAt": "2026-11-14T21:17:33.000Z",
+   "url": "https://x.com/TTCnotices/status/2121714176380784841",
+   "text": "Line 2 Bloor-Danforth: Trains are not stopping at Lansdowne station due to a TPS investigation. Thank you for your patience.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Lansdowne"
+    ],
+    "cause": "security",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2121796561214611935",
+   "postedAt": "2026-11-15T02:44:55.000Z",
+   "url": "https://x.com/TTCnotices/status/2121796561214611935",
+   "text": "Line 2 Bloor-Danforth: Delays eastbound at Pape station due to an emergency alarm on board a train. Thank you for your patience.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Pape"
+    ],
+    "cause": "alarm",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2121816682616311971",
+   "postedAt": "2026-11-15T04:04:53.000Z",
+   "url": "https://x.com/TTCnotices/status/2121816682616311971",
+   "text": "Line 2 Bloor-Danforth: No service between Chester and St George stations due to a TPS investigation. Thank you for your patience.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Chester",
+     "St George"
+    ],
+    "cause": "security",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2121829086091714636",
+   "postedAt": "2026-11-15T04:54:10.000Z",
+   "url": "https://x.com/TTCnotices/status/2121829086091714636",
+   "text": "Line 2 Bloor-Danforth: Delays westbound at Bathurst station due to a trespasser at track level. Thank you for your patience.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Bathurst"
+    ],
+    "cause": "track_person",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2121848064700752121",
+   "postedAt": "2026-11-15T06:09:35.000Z",
+   "url": "https://x.com/TTCnotices/status/2121848064700752121",
+   "text": "Line 1 Yonge-University: Delays northbound at Bloor-Yonge station due to an investigation. Thank you for your patience.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "Bloor"
+    ],
+    "cause": "other",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2121992756478316798",
+   "postedAt": "2026-11-15T15:44:32.000Z",
+   "url": "https://x.com/TTCnotices/status/2121992756478316798",
+   "text": "Line 2 Bloor-Danforth: No service between Christie and Keele stations due to a medical emergency. Thank you for your patience.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Christie",
+     "Keele"
+    ],
+    "cause": "medical",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2122022615942398353",
+   "postedAt": "2026-11-15T17:43:11.000Z",
+   "url": "https://x.com/TTCnotices/status/2122022615942398353",
+   "text": "Line 2 Bloor-Danforth: No service between Victoria Park and Main Street stations due to a trespasser at track level. Thank you for your patience.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Victoria Park",
+     "Main Street"
+    ],
+    "cause": "track_person",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2122022919383474199",
+   "postedAt": "2026-11-15T17:44:23.000Z",
+   "url": "https://x.com/TTCnotices/status/2122022919383474199",
+   "text": "Line 2 Bloor-Danforth: No service between Woodbine and Kennedy stations due to a trespasser at track level. Shuttle buses are running between Woodbine and Kennedy. Thank you for your patience.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Woodbine",
+     "Kennedy"
+    ],
+    "cause": "track_person",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2122053839087964637",
+   "postedAt": "2026-11-15T19:47:15.000Z",
+   "url": "https://x.com/TTCnotices/status/2122053839087964637",
+   "text": "Line 1 Yonge-University: Delays northbound at Museum station due to a medical emergency. Thank you for your patience.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "Museum"
+    ],
+    "cause": "medical",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2122095974298300821",
+   "postedAt": "2026-11-15T22:34:41.000Z",
+   "url": "https://x.com/TTCnotices/status/2122095974298300821",
+   "text": "Line 1 Yonge-University: No service between King and St Andrew stations due to a TPS investigation. Thank you for your patience.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "King",
+     "St Andrew"
+    ],
+    "cause": "security",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2122117903101071729",
+   "postedAt": "2026-11-16T00:01:49.000Z",
+   "url": "https://x.com/TTCnotices/status/2122117903101071729",
+   "text": "Line 1 Yonge-University: Delays northbound at College station due to a medical emergency. Thank you for your patience.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "College"
+    ],
+    "cause": "medical",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2122118525326135643",
+   "postedAt": "2026-11-16T00:04:18.000Z",
+   "url": "https://x.com/TTCnotices/status/2122118525326135643",
+   "text": "Line 1 Yonge-University: No service between Bloor-Yonge and College stations due to a medical emergency. Thank you for your patience.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "Bloor",
+     "College"
+    ],
+    "cause": "medical",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2122125178956066882",
+   "postedAt": "2026-11-16T00:30:44.000Z",
+   "url": "https://x.com/TTCnotices/status/2122125178956066882",
+   "text": "Line 2 Bloor-Danforth: Delays westbound at Chester station due to a medical emergency. Thank you for your patience.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Chester"
+    ],
+    "cause": "medical",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2122125605256695838",
+   "postedAt": "2026-11-16T00:32:26.000Z",
+   "url": "https://x.com/TTCnotices/status/2122125605256695838",
+   "text": "Line 2 Bloor-Danforth: No service between Broadview and Woodbine stations due to a medical emergency. Thank you for your patience.",
+   "label": {
+    "line": "BD",
+    "stations": [
+     "Broadview",
+     "Woodbine"
+    ],
+    "cause": "medical",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2122135655845073245",
+   "postedAt": "2026-11-16T01:12:22.000Z",
+   "url": "https://x.com/TTCnotices/status/2122135655845073245",
+   "text": "Line 1 Yonge-University: There will be limited nightly service starting 11 p.m., between Pioneer Village and Sheppard West stations on Monday, November 16 to Wednesday, November 18, for tunnel improvements.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "Pioneer Village",
+     "Sheppard West"
+    ],
+    "cause": null,
+    "planned": true
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2122137562126987538",
+   "postedAt": "2026-11-16T01:19:56.000Z",
+   "url": "https://x.com/TTCnotices/status/2122137562126987538",
+   "text": "Line 1 Yonge-University: There will be no subway service between York Mills and Eglinton stations, starting 11 p.m., nightly Monday, November 16 to Wednesday, November 18, due to structural maintenance. Shuttle buses will operate.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "York Mills",
+     "Eglinton"
+    ],
+    "cause": null,
+    "planned": true
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2122150440909287726",
+   "postedAt": "2026-11-16T02:11:07.000Z",
+   "url": "https://x.com/TTCnotices/status/2122150440909287726",
+   "text": "Line 1 Yonge-University: Delays northbound at St Andrew station due to an emergency alarm on board a train. Thank you for your patience.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "St Andrew"
+    ],
+    "cause": "alarm",
+    "planned": false
+   },
+   "split": "held out"
+  },
+  {
+   "id": "2122150800155697397",
+   "postedAt": "2026-11-16T02:12:33.000Z",
+   "url": "https://x.com/TTCnotices/status/2122150800155697397",
+   "text": "Line 1 Yonge-University: Delays northbound at St Andrew station due to a medical emergency. Thank you for your patience.",
+   "label": {
+    "line": "YU",
+    "stations": [
+     "St Andrew"
+    ],
+    "cause": "medical",
+    "planned": false
+   },
+   "split": "held out"
+  }
+ ]
+}

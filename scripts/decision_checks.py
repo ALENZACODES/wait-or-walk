@@ -15,6 +15,11 @@
    that costs at most 0.01 minutes per delay there, then scored on the later test period. Rule set in advance: it
    ships only if, as scheduled, it is not worse than the shipped rule on the test periods (point estimate at least
    minus 0.01 minutes per delay and the 95% interval not entirely below zero).
+4b. A late bus check, set in advance with no tuning: switch only if switching still wins when the bus leaves 5 minutes
+   late (the shipped rule with the scheduled bus cost plus 5 minutes). Both this rule and the robust margin of item 3
+   are scored on the earlier windows (where the robust margin was picked) and on the later test periods. Overall means
+   the average over all eight stress scenarios. Rule set in advance: the late bus check ships only if it is not worse
+   than the shipped rule overall on the test periods (point estimate at least 0).
 5. Per period results of the shipped rule, so each evaluation period can be shown on its own.
 Reads the evaluation forecasts train.py saves in the cache (preds.pkl). Writes data/decision_checks.json.
 Run after train.py: python3 scripts/decision_checks.py [cache_dir]
@@ -53,6 +58,7 @@ def candidates():
                         break
     return pb, deps, cands
 
+LATE_SAFE = 5
 SCENARIOS = {'asScheduled': {}, 'busLate5': {'late': 5}, 'busLate10': {'late': 10}, 'missedDeparture': {'miss': 1},
              'walk60': {'speed': 60}, 'board2': {'board': 2}, 'board3': {'board': 3},
              'allBad': {'late': 5, 'miss': 1, 'speed': 60, 'board': 3}}
@@ -119,6 +125,11 @@ def main():
         ew_cb = exp_wait(cs['p5'], cs['p10'], cs['p20'], bm_base)
         m_robust = min(T0.MARGIN_GRID, key=lambda mg: cost(rows_c, Dc, lambda r, x: ew_cb[r] - x >= mg, 'busLate5').mean())
         base_c = cost(rows_c, Dc, lambda r, x: ew_cb[r] - x >= margins[k]).mean()
+        earlier = {}
+        for sc in SCENARIOS:
+            sh = cost(rows_c, Dc, lambda r, x: ew_cb[r] - x >= margins[k], sc)
+            earlier[sc] = {'shipped': float(sh.mean()), 'robust': float(cost(rows_c, Dc, lambda r, x: ew_cb[r] - x >= m_robust, sc).mean()),
+                           'lateSafe': float(cost(rows_c, Dc, lambda r, x: ew_cb[r] - x - LATE_SAFE >= margins[k], sc).mean()), 'n': len(Dc)}
         b_close = 0.0
         for bb in [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5]:
             if cost(rows_c, Dc, lambda r, x: ew_cb[r] - x >= margins[k] + bb).mean() - base_c <= 0.01: b_close = bb
@@ -129,11 +140,12 @@ def main():
         for sc in SCENARIOS:
             C['stress_' + sc] = cost(rows, D, lambda r, x: ew_base[r] - x >= margins[k], sc)
             C['robust_' + sc] = cost(rows, D, lambda r, x: ew_base[r] - x >= m_robust, sc)
+            C['late_' + sc] = cost(rows, D, lambda r, x: ew_base[r] - x - LATE_SAFE >= margins[k], sc)
             C['close_' + sc] = cost(rows, D, lambda r, x: ew_base[r] - x >= margins[k] + b_close, sc)
         drift.append({'test': metrics['folds'][k]['test'], 'binMeansBase': [round(x, 2) for x in bm_base], 'binMeansRecent': [round(x, 2) for x in bm_recent],
                       'loggedMinutesAverage': round(float(D.mean()), 2), 'expectedDelayBase': round(float(ew_base.mean()), 2),
                       'expectedDelayRecent': round(float(ew_recent.mean()), 2), 'recentMargin': m_recent,
-                      'shippedMargin': margins[k], 'robustMargin': m_robust, 'closeBand': b_close})
+                      'shippedMargin': margins[k], 'robustMargin': m_robust, 'closeBand': b_close, 'earlier': earlier})
         tests.append(dict(C, D=D, y=te['y'], date=te['date'], k=np.full(len(D), k)))
     allC = {q: np.concatenate([t[q] for t in tests]) for q in tests[0] if q not in ('D', 'y', 'date', 'k')}
     K = np.concatenate([t['k'] for t in tests])
@@ -167,12 +179,35 @@ def main():
         out['closeCall']['subsets'][name] = row
     cc = out['closeCall']['subsets']['all']['asScheduled']['closeMinusShipped']
     out['closeCall']['ship'] = bool(cc['value'] >= -0.01 and cc['high'] >= 0)
+    # late bus check and robust margin, earlier windows against later test periods
+    ls = {'lateMinutes': LATE_SAFE, 'testPeriods': {}, 'earlierWindows': {}}
+    for name, mask in subsets.items():
+        row = {'delays': int(mask.sum())}
+        for sc in SCENARIOS:
+            row[sc] = {'minutes': round(float(allC['late_' + sc][mask].mean()), 2), 'savedVsWait': ci(allC['alwaysWait'] - allC['late_' + sc], mask),
+                       'lateMinusShipped': ci(allC['stress_' + sc] - allC['late_' + sc], mask)}
+        row['overall'] = {'lateMinusShipped': ci(sum(allC['stress_' + sc] - allC['late_' + sc] for sc in SCENARIOS) / len(SCENARIOS), mask),
+                          'robustMinusShipped': ci(sum(allC['stress_' + sc] - allC['robust_' + sc] for sc in SCENARIOS) / len(SCENARIOS), mask)}
+        ls['testPeriods'][name] = row
+    nE = sum(d['earlier']['asScheduled']['n'] for d in drift)
+    for sc in list(SCENARIOS) + ['overall']:
+        scs = list(SCENARIOS) if sc == 'overall' else [sc]
+        def avg(key):
+            return sum(d['earlier'][q][key] * d['earlier'][q]['n'] for d in drift for q in scs) / (nE * len(scs))
+        ls['earlierWindows'][sc] = {'lateMinusShipped': round(avg('shipped') - avg('lateSafe'), 2), 'robustMinusShipped': round(avg('shipped') - avg('robust'), 2)}
+    ov = ls['testPeriods']['all']['overall']['lateMinusShipped']
+    ls['ship'] = bool(ov['value'] >= 0)
+    ls['reason'] = 'not worse than the timetable only rule averaged over the eight stress scenarios' if ls['ship'] else 'worse than the timetable only rule averaged over the eight stress scenarios'
+    out['lateSafe'] = ls
+    for d in drift: d.pop('earlier')
     out['periods'] = []
     for k in range(len(tests)):
         mk = K == k
         out['periods'].append({'test': drift[k]['test'], 'margin': margins[k], 'delays': int(mk.sum()),
                                'shippedSavedVsWait': ci(allC['alwaysWait'] - allC['shippedRule'], mk),
-                               'shippedSavedVsWait20': ci(allC['alwaysWait'] - allC['shippedRule'], mk & (D >= 20))})
+                               'shippedSavedVsWait20': ci(allC['alwaysWait'] - allC['shippedRule'], mk & (D >= 20)),
+                               'lateSavedVsWait': ci(allC['alwaysWait'] - allC['late_asScheduled'], mk),
+                               'lateSavedVsWait20': ci(allC['alwaysWait'] - allC['late_asScheduled'], mk & (D >= 20))})
     a = out['robust']['subsets']['all']
     sched_ok = a['asScheduled']['robustMinusShipped']['value'] >= 0
     slip_ok = a['busLate5']['robustMinusShipped']['value'] > 0

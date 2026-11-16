@@ -58,7 +58,7 @@ with sync_playwright() as p:
         check(warn.is_visible() and warn.bounding_box()['y'] < lst.bounding_box()['y'], f'{w}: "might not be running" warning sits above the Plan B list')
         check('LRT (light rail)' in pg.inner_text('#planbOut') and 'Line 5 Eglinton streetcar' not in pg.inner_text('#planbOut'), f'{w}: Line 5 Eglinton shown as LRT')
         check('min walk' in pg.inner_text('#planbOut'), f'{w}: Plan B shows walking time')
-        check('Version r9' in pg.inner_text('footer') and 'Not affiliated' in pg.inner_text('footer'), f'{w}: footer shows version r9 and the not affiliated line')
+        check('Version r10' in pg.inner_text('footer') and 'Not affiliated' in pg.inner_text('footer'), f'{w}: footer shows version r10 and the not affiliated line')
         check(pg.is_visible('#pasteBtn') and 'nothing is sent anywhere' in pg.text_content('.pastenote'), f'{w}: paste button and the privacy note')
         check(pg.is_visible('#scope') and pg.inner_text('#scope') == 'Not the chance your alert causes this delay, or your remaining wait.' and 'among comparable recorded TTC delays' in pg.inner_text('#pctlab'), f'{w}: card says which population the number is about')
         pg.click('.meaning summary'); check('Among comparable recorded TTC delays, the model estimates a' in pg.inner_text('#meaning') and 'not the chance your current alert causes that delay, or your remaining wait' in pg.inner_text('#meaning'), f'{w}: full wording in the card details')
@@ -95,7 +95,7 @@ with sync_playwright() as p:
     check(q.inner_text('#verdictShort').startswith('Verdict: waiting looks better'), 'the card shows the short verdict')
     check(q.is_visible('#calnote') and q.inner_text('#calnote') == 'The model is calibrated on recorded delay length, not time since the alert.' and q.inner_text('[data-elapsed="5"]') == 'Delay already reached 5 min', 'underway buttons say the delay already reached 5 or 10 minutes, with the calibration note')
     check('Break even: by the timetable switching loses by about' in q.inner_text('#breakeven'), f'waiting verdict shows the break even ({q.inner_text("#breakeven")[:70]})')
-    check('can still catch' not in q.inner_text('body') and 'Timetable estimates, not real time.' in q.inner_text('#planbClock'), 'no "can still catch" anywhere; Plan B times labelled timetable estimates')
+    check('can still catch' not in q.inner_text('body') and 'Timetable estimates, not real time' in q.inner_text('#planbClock'), 'no "can still catch" anywhere; Plan B times labelled timetable estimates')
     check(q.locator('#periodEval tr').count() == 4 and q.text_content('#periodEval').count('Exploratory') == 3, 'each evaluation period shown on its own, marked exploratory')
     check('no rider testing has been done' in q.inner_text('#verdict').lower(), 'the page says plainly that no rider testing has been done')
     # Already underway
@@ -121,7 +121,9 @@ with sync_playwright() as p:
         k = q.inner_text('#suggest'); check(k.startswith('Schedule comparison: waiting looks better') and '149' in k, f'{label}: Kipling example verdict ({k[:80]})')
         q.locator('[data-contrast]').click(); q.wait_for_timeout(300)
         t = q.inner_text('#suggest')
-        check(q.input_value('#dest') == 'Dupont' and t.startswith('Schedule comparison: switching looks better') and '26 Dupont' in t and 'runs on time' in t and q.locator('#suggest a[href*="ttc.ca/service-alerts"]').count() == 1, f'{label}: contrast example switching, with the catch it and runs on time line and a TTC link ({t[:70]})')
+        check(q.input_value('#dest') == 'Dupont' and t.startswith('Schedule comparison: switching looks better') and '26 Dupont' in t and 'make that bus' in t and 'still wins if the bus leaves 5 minutes late' in t and q.locator('#suggest a[href*="ttc.ca/service-alerts"]').count() == 1, f'{label}: contrast example switching, with the late bus check, the make that bus line and a TTC link ({t[:70]})')
+        rk = q.inner_text('#risk')
+        check('5:35 p.m. bus on time): switching saves about 11 minutes' in rk and 'leaves 5 minutes late: switching saves about 6 minutes' in rk and '(5:58 p.m.): waiting is better by about 12 minutes' in rk, f'{label}: timetable risk for this trip: on time, 5 late, missed ({rk[:60]})')
         be = q.inner_text('#breakeven'); check('Break even: by the timetable switching wins by about' in be and '5:35 p.m. bus' in be and 'the next is 5:58 p.m.' in be, f'{label}: missed bus warning with the break even margin ({be[:110]})')
         if label.startswith('Jan'):
             q.click('#liveTime'); q.wait_for_timeout(300)
@@ -179,39 +181,84 @@ with sync_playwright() as p:
     q.goto(URL + '?alert=' + 'Line%201%3A%20Trains%20are%20bypassing%20St.%20George%20while%20we%20investigate%20a%20fire.&dest=Dupont&in=5'); q.wait_for_selector('#app:not([hidden])'); q.wait_for_timeout(300)
     check(q.input_value('#station') == 'St George' and q.input_value('#dest') == 'Dupont' and q.get_attribute('[data-elapsed="5"]', 'aria-pressed') == 'true', 'a shared link reopens the alert, destination and setting')
     q.close()
-    # Plan B extras: elevator and escalator outages, Bike Share live counts and weather (fixtures, so the check is stable)
+    # Plan B extras: elevator and escalator outages and Bike Share live counts (fixtures, so the check is stable); no weather panel
     acc = {'fetchedAt': 1794774372, 'alerts': [{'id': '9', 'station': 'Kipling', 'kind': 'escalator', 'header': 'Kipling: Escalator 16B3E out of service from Line 2 platform to bus platform while we perform maintenance.'},
                                                {'id': '8', 'station': 'Spadina', 'kind': 'elevator', 'header': 'Spadina: Elevator out of service.'}]}
     near = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data', 'bikeshare_near.json')))
     kid = near['stations']['Kipling'][0]['id']
     status = {'last_updated': '2026-11-15T20:27:05Z', 'ttl': 7, 'data': {'stations': [{'station_id': kid, 'num_vehicles_available': 4, 'num_docks_available': 11, 'is_installed': True, 'is_renting': True, 'is_returning': True}]}}
-    wx = {'properties': {'currentConditions': {'temperature': {'value': {'en': 7.6}}, 'condition': {'en': 'Mostly Cloudy'}, 'station': {'value': {'en': "Toronto Pearson Int'l Airport"}}, 'timestamp': {'en': '2026-11-15T20:00:00Z'}}, 'warnings': []}}
     def fixture(body):
         return lambda r: r.fulfill(status=200, content_type='application/json', headers={'Access-Control-Allow-Origin': '*'}, body=json.dumps(body))
     q = b.new_page(viewport={'width': 1280, 'height': 900}); q.clock.set_fixed_time('2026-11-15T20:30:00Z')
-    q.route('**/data/access_alerts.json*', fixture(acc)); q.route('**/gbfs/v3.0/station_status*', fixture(status)); q.route('https://api.weather.gc.ca/**', fixture(wx))
+    q.route('**/data/access_alerts.json*', fixture(acc)); q.route('**/gbfs/v3.0/station_status*', fixture(status))
     q.goto(URL); q.wait_for_selector('#app:not([hidden])'); q.wait_for_timeout(500); q.get_by_role('button', name='Person at track level, Kipling').click(); q.wait_for_selector('#accessWarn', timeout=8000)
     aw = q.text_content('#accessWarn')
     check('Escalator 16B3E' in aw and 'Spadina' not in aw and 'Open Government Licence Toronto' in aw, 'Plan B shows the elevator or escalator outage at the delay station only')
-    check(q.is_hidden('#bikesFrom') and q.is_hidden('#surfaceRel'), 'route history, Bike Share and weather sit behind a closed fold')
+    check(q.is_hidden('#bikesFrom') and q.is_hidden('#surfaceRel'), 'route history and Bike Share sit behind a closed fold')
     q.click('#planbExtras > summary'); q.wait_for_timeout(200)
-    bf = q.inner_text('#bikesFrom'); bn = q.inner_text('#bikeNote'); wn = q.inner_text('#weatherNow')
+    bf = q.inner_text('#bikesFrom'); bn = q.inner_text('#bikeNote')
     check('4 bikes, 11 open docks' in bf and '3:27 p.m.' in bn and 'CC BY 4.0' in bn, f'Bike Share live counts near Kipling ({bf.splitlines()[0]})')
     sr = q.inner_text('#surfaceRel')
     check('149' in sr and 'scheduled trips' in sr and 'not on time performance' in q.inner_text('#planbExtras'), f'route delay history for the Plan B routes, validated first ({sr.splitlines()[0][:70]})')
-    check('7.6 °C, mostly cloudy' in wn and 'Environment and Climate Change Canada' in wn and 'not part of the forecast' in wn, f'weather is context only and attributed ({wn[:50]})')
+    check(q.locator('#weatherNow').count() == 0 and 'weather' not in q.inner_text('#planbExtras').lower(), 'no weather panel (cut in round 10)')
     q.close()
     q = b.new_page(viewport={'width': 1280, 'height': 900})
-    q.route('**/gbfs/v3.0/station_status*', lambda r: r.abort()); q.route('https://api.weather.gc.ca/**', lambda r: r.abort())
+    q.route('**/gbfs/v3.0/station_status*', lambda r: r.abort())
     q.goto(URL); q.wait_for_selector('#app:not([hidden])'); q.wait_for_timeout(500); q.get_by_role('button', name='Person at track level, Kipling').click(); q.wait_for_selector('#planbExtras', timeout=8000); q.click('#planbExtras > summary')
-    check('could not be read' in q.inner_text('#bikeNote') and 'could not be read' in q.inner_text('#weatherNow') and q.is_visible('#pct'), 'Bike Share and weather failures say so and the rest still works')
+    check('could not be read' in q.inner_text('#bikeNote') and q.is_visible('#pct'), 'a Bike Share failure says so and the rest still works')
+    q.close()
+    # Live predictions from the TTC's NextBus feed on UmoIQ, with fixtures: shown where the feed has them, labelled timetable otherwise
+    nb = {'copyright': 'All data copyright Toronto Transit Commission 2026.', 'predictions': [{'routeTag': '26', 'stopTitle': 'St George Station', 'direction': {'title': 'West - 26 Dupont towards Jane Station', 'prediction': [{'minutes': '4', 'epochTime': '1'}, {'minutes': '22', 'epochTime': '2'}]}}]}
+    for body, want, label in [(nb, 'Live prediction: next bus in 4 min, 22 min', 'shown'), ({'Error': {'content': 'x'}}, 'could not be read; the times here are timetable estimates', 'feed error says timetable only')]:
+        q = b.new_page(viewport={'width': 1280, 'height': 900}); q.clock.set_fixed_time('2026-11-16T22:30:00Z')
+        q.route('https://webservices.umoiq.com/**', fixture(body))
+        q.goto(URL); q.wait_for_selector('#app:not([hidden])'); q.wait_for_timeout(500)
+        q.fill('#alert', 'Line 1: Trains are bypassing St. George while we investigate a fire.'); q.dispatch_event('#alert', 'input'); q.wait_for_timeout(400)
+        q.select_option('#dest', 'Dupont'); q.wait_for_timeout(1200)
+        lv = q.locator('#planbOut .liveeta').first.inner_text() if q.locator('#planbOut .liveeta').count() else ''
+        check(want in lv and 'NextBus feed' in q.inner_text('#planbClock') and 'decommissioned' in q.inner_text('#planbClock'), f'live predictions {label} ({lv[:70]})')
+        q.close()
+    q = b.new_page(viewport={'width': 1280, 'height': 900}); q.route('https://webservices.umoiq.com/**', fixture(nb))
+    q.goto(URL); q.wait_for_selector('#app:not([hidden])'); q.wait_for_timeout(500); q.get_by_role('button', name='Fire at St George, headed to Dupont').click(); q.wait_for_timeout(1000)
+    check(q.locator('#planbOut .liveeta').count() == 0 and 'Live predictions are not shown on the simulated example' in q.inner_text('#planbClock'), 'no live predictions on the simulated example')
+    q.close()
+    # Accessibility regression checks, automated only. No manual screen reader test has been done.
+    q = b.new_page(viewport={'width': 1280, 'height': 900})
+    q.goto(URL); q.wait_for_selector('#app:not([hidden])'); q.wait_for_timeout(500)
+    unnamed = q.evaluate("""[...document.querySelectorAll('select, textarea, input, button')].filter((e) => e.getClientRects().length && !(e.labels && e.labels.length) && !e.getAttribute('aria-label') && !e.textContent.trim()).map((e) => e.id || e.outerHTML.slice(0, 50))""")
+    check(not unnamed, f'every visible form control and button has an accessible name {unnamed}')
+    check(q.get_attribute('#callStatus', 'role') == 'status' and q.get_attribute('#callStatus', 'aria-live') == 'polite' and q.get_attribute('section.result', 'aria-live') is None,
+          'the call is announced by one short polite status, not the whole card')
+    check(q.get_attribute('#readNote', 'aria-live') == 'polite', 'the alert read back is a polite live region')
+    hops = 0
+    while hops < 60 and q.evaluate("document.activeElement && document.activeElement.textContent.trim()") != 'Person at track level, Kipling':
+        q.keyboard.press('Tab'); hops += 1
+    check(hops < 60, f'keyboard only: Tab reaches the Kipling example ({hops} presses)')
+    ring = q.evaluate("getComputedStyle(document.activeElement).outlineStyle + ' ' + getComputedStyle(document.activeElement).outlineWidth")
+    check(ring.startswith('solid') and not ring.endswith(' 0px'), f'keyboard focus is visible ({ring})')
+    q.keyboard.press('Enter'); q.wait_for_timeout(1200)
+    said = q.text_content('#callStatus')
+    check(q.text_content('#pct') == '23%' and '23%' in said and 'waiting looks better' in said, f'Enter on the example shows the call and the status says it ({said[:90]})')
+    q.focus('[data-elapsed="5"]'); q.keyboard.press('Space'); q.wait_for_timeout(400)
+    check(q.get_attribute('[data-elapsed="5"]', 'aria-pressed') == 'true' and q.get_attribute('[data-elapsed="0"]', 'aria-pressed') == 'false' and '58%' in q.text_content('#callStatus'),
+          'Space on "Delay already reached 5 min" presses it (aria-pressed) and the status updates')
+    q.focus('#dest'); q.keyboard.press('Home'); q.wait_for_timeout(300)
+    q.focus('#alert'); q.keyboard.press('Control+a'); q.keyboard.type('Line 1 Yonge-University: No service between King and St Andrew stations due to a TPS investigation.'); q.wait_for_timeout(800)
+    opts = q.locator('#choice button')
+    check(opts.count() >= 2, 'keyboard typed two station alert offers a choice of buttons')
+    if opts.count():
+        opts.first.focus(); q.keyboard.press('Enter'); q.wait_for_timeout(600)
+        check(q.is_visible('#pct') and q.input_value('#station') in ('King', 'St Andrew') and q.evaluate('document.activeElement.id') == 'out-h', 'Enter on a station choice gives the call and moves focus to it')
+    heads = q.evaluate("[...document.querySelectorAll('h1, h2, h3')].map((h) => +h.tagName[1])")
+    check(heads and heads[0] == 1 and all(b2 - a2 <= 1 for a2, b2 in zip(heads, heads[1:])), 'headings start at h1 and never skip a level')
+    check(q.evaluate("document.documentElement.lang") == 'en', 'page language is set')
     q.close()
     # axe-core accessibility rules (WCAG 2.1 A and AA) at both widths, with every fold opened
     axe = os.environ.get('AXE') or os.path.join(os.getcwd(), 'node_modules', 'axe-core', 'axe.min.js')
     if os.path.exists(axe):
         for w, h in [(390, 844), (1440, 900)]:
             q = b.new_page(viewport={'width': w, 'height': h}); q.clock.set_fixed_time('2026-11-15T20:30:00Z')
-            q.route('**/data/access_alerts.json*', fixture(acc)); q.route('**/gbfs/v3.0/station_status*', fixture(status)); q.route('https://api.weather.gc.ca/**', fixture(wx))
+            q.route('**/data/access_alerts.json*', fixture(acc)); q.route('**/gbfs/v3.0/station_status*', fixture(status))
             q.goto(URL); q.wait_for_selector('#app:not([hidden])'); q.wait_for_timeout(500); q.get_by_role('button', name='Person at track level, Kipling').click(); q.wait_for_selector('#planbExtras', timeout=8000); q.wait_for_timeout(300)
             q.evaluate("document.querySelectorAll('details').forEach((d) => { d.open = true; })"); q.wait_for_timeout(200)
             q.add_script_tag(path=axe)

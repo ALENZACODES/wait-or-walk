@@ -12,5 +12,6 @@
  "delays": 2220,
  "averageMinutesAtMargin": 5.806,
  "averageMinutesAlwaysWait": 5.96,
- "closeBand": 0.0
+ "closeBand": 0.0,
+ "lateBusMinutes": 5
 }

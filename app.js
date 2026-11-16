@@ -1,10 +1,10 @@
 (function () {
   const $ = (s) => document.querySelector(s);
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-  const VERSION = 'r9';
+  const VERSION = 'r10';
   let model = null, planb = null, ptimes = null, policy = null, best = null, checks = null, underwayChecks = null;
   // sim: the fixed example clock (WaitOrWalk.SIM) or null for live time; elapsed: the "already underway" setting.
-  let sim = null, elapsed = 0, planned = false, live = null, access = null, bikes = null, weather = null, bikeNear = null, surface = null;
+  let sim = null, elapsed = 0, planned = false, live = null, access = null, bikes = null, bikeNear = null, surface = null;
   let state = { line: '', station: '', group: '', derived: new Set(), pending: null };
   const sync = () => { $('#line').value = state.line; $('#station').value = state.station; $('#group').value = state.group; ['line', 'station', 'group'].forEach((k) => tag(k, state.derived.has(k))); };
   const pct = (p) => Math.round(p * 100) + '%';
@@ -39,7 +39,15 @@
   const current = () => ({ line: state.line, station: state.station, group: state.group, time: $('#time').value, weekend: $('#weekend').checked });
   const tag = (k, on) => { document.querySelector(`.tag[data-for="${k}"]`).hidden = !on; };
 
-  function render() {
+  // One short spoken update when the call changes (a polite live region), instead of the whole card being live.
+  let lastSaid = '';
+  function render() { renderCall(); announce(); }
+  function announce() {
+    const el = $('#callStatus'); if (!el) return;
+    const t = !$('#callBody').hidden ? `${$('#pct').textContent} ${$('#pctlab').textContent}. ${$('#advice').textContent} ${$('#verdictShort').hidden ? '' : $('#verdictShort').textContent.replace(/\s*(Why|Details)$/, '')}`.trim() : $('#empty').textContent;
+    if (t !== lastSaid) { lastSaid = t; el.textContent = t; }
+  }
+  function renderCall() {
     const x = current();
     const s = model.stations.find((t) => t.name === x.station);
     if (s && !x.line && s.lines.length === 1 && !state.pending) { state.line = x.line = s.lines[0]; $('#line').value = x.line; }
@@ -99,7 +107,8 @@
   function verdict(u) {
     const em = !u || u.remaining === null ? null : Math.round(u.remaining);
     const band = checks && checks.closeCall && checks.closeCall.ship ? (policy.closeBand || 0) : 0;
-    const call = em !== null && best && WaitOrWalk.switchCall(u.remaining, best.cost, policy.margin, band);
+    const late = checks && checks.lateSafe && checks.lateSafe.ship ? (policy.lateBusMinutes || 0) : 0;
+    const call = em !== null && best && WaitOrWalk.switchCall(u.remaining, best.cost, policy.margin, band, late);
     const just = !u || !u.elapsed, left = just ? '' : ' left';
     const lead = just ? 'assuming the incident has just begun, delays like this average' : `with the delay already at ${u.elapsed} minutes, comparable delays had on average`;
     const cap = (t) => t.charAt(0).toUpperCase() + t.slice(1);
@@ -110,10 +119,14 @@
       const w = call.close ? 'too close to call' : call.switch ? 'switching looks better' : 'waiting looks better';
       const sl = Math.round(Math.abs(call.slack)), mins = (n) => `${n} ${n === 1 ? 'minute' : 'minutes'}`;
       const be = call.close ? `Too close to call: the difference is inside the ${band} minute band picked on earlier data, so the rule waits; a late or missed bus would erase it.`
-        : call.switch ? `Break even: by the timetable switching wins by about ${mins(sl)}. If the ${clock(best.dep)} bus leaves ${mins(sl)} or more late, or you miss it${best.next ? ` (the next is ${clock(best.next)})` : ''}, waiting would have been better.`
+        : call.switch ? `Break even: by the timetable switching wins by about ${mins(sl)}, so it still wins if the bus leaves ${late || 5} minutes late. If the ${clock(best.dep)} bus leaves ${mins(sl)} or more late, or you miss it${best.next ? ` (the next is ${clock(best.next)})` : ''}, waiting would have been better.`
+        : call.narrow ? `Narrow margin: by the timetable switching would win by ${sl ? `only about ${mins(sl)}` : 'less than a minute'}. The rule switches only when switching still wins with the bus ${late} minutes late, so it says wait: a bus that late would wipe out the gain.`
         : `Break even: by the timetable switching loses by about ${mins(sl)}; it would pay off only if this delay ran about ${mins(sl)} longer than the estimate.`;
-      full = `<b>Schedule comparison: ${w}.</b> ${cap(lead)} about ${em} minutes${left}, against ${Math.round(call.cost)} extra minutes by Plan B (route ${esc(best.route)} to ${esc(best.dest)}, a timetable estimate, not real time).${call.switch ? ` Switching only helps if you make that bus and it runs on time: in the simulation, a missed or late bus erased the gain. ${ttc}.` : ''}${tail}<br><span class="breakeven" id="breakeven">${be}</span>`;
-      short = `<b>Verdict: ${w}</b>, about ${em} min${left} against ${Math.round(call.cost)} by route ${esc(best.route.split(' ')[0])} (timetable)${call.switch ? ', if you catch it on time' : ''}. <a href="#v-h">Why</a>`;
+      const rk = WaitOrWalk.timetableRisk(call.slack, best.next ? best.next - best.dep : null);
+      const say = (v) => { const n = Math.round(Math.abs(v)); return n === 0 ? 'about even' : v > 0 ? `switching saves about ${mins(n)}` : `waiting is better by about ${mins(n)}`; };
+      const risk = `<span class="risklab">Timetable risk for this trip</span><ul class="risk" id="risk"><li>By the timetable (the ${clock(best.dep)} bus on time): ${say(rk.timetable)}</li><li>If that bus leaves 5 minutes late: ${say(rk.late5)}</li><li>${rk.missed === null ? 'If you miss it: no later scheduled bus is listed, so waiting is better' : `If you miss it and take the next one (${clock(best.next)}): ${say(rk.missed)}`}</li></ul>`;
+      full = `<b>Schedule comparison: ${w}.</b> ${cap(lead)} about ${em} minutes${left}, against ${Math.round(call.cost)} extra minutes by Plan B (route ${esc(best.route)} to ${esc(best.dest)}, a timetable estimate, not real time).${call.switch ? ` Switching only helps if you make that bus: in the simulation over the test delays, a missed bus erased the gain. ${ttc}.` : ''}${tail}<br><span class="breakeven" id="breakeven">${be}</span>${risk}`;
+      short = `<b>Verdict: ${w}</b>, about ${em} min${left} against ${Math.round(call.cost)} by route ${esc(best.route.split(' ')[0])} (timetable)${call.switch ? ', if you catch it' : call.narrow ? ', margin too narrow to switch' : ''}. <a href="#v-h">Why</a>`;
     } else if (em !== null) {
       const why = !$('#dest').value ? 'Choose where you are headed under Plan B to compare it with the best scheduled switch.' : ctx && !ctx.covered ? 'The schedule data has ended, so there is no switch to compare.' : 'No scheduled switch you may be able to catch could be compared for that trip (the comparison needs a destination on the same line).';
       full = `<b>Schedule comparison:</b> ${cap(lead)} about ${em} minutes${left}. ${why}${tail}`;
@@ -138,11 +151,49 @@
     return { now: c.minutes, today: a.services, yesterday: b.services, covered: a.covered, ymd: c.ymd, range: WaitOrWalk.scheduleRange(ptimes.calendar) };
   }
   const inMin = (m) => (m - ctx.now <= 0 ? 'now' : 'in ' + (m - ctx.now) + ' min');
+  // Live predictions: the TTC's older NextBus feed on UmoIQ (no key, open to browsers). The City lists that feed as
+  // decommissioned, so it may stop; when it has nothing for a stop and direction, the page says the times are timetable only.
+  const LIVE_URL = 'https://webservices.umoiq.com/service/publicJSONFeed?command=predictions&a=ttc&stopId=';
+  const liveCache = new Map();
+  const arr = (v) => (Array.isArray(v) ? v : v ? [v] : []);
+  const dirKey = (t) => String(t).toLowerCase().replace(/^(\w+)\s+-\s+.*?\s+towards\s+/, '$1 towards ').replace(/\s+/g, ' ').trim();
+  function liveSlot(refs) {
+    if (sim || !refs || !refs.length) return '';
+    const q = planb.patterns[refs[0][0]], v = q.visits[refs[0][1]];
+    if (!v || !v.code) return '';
+    return `<br><span class="meta liveeta" data-stop="${esc(v.code)}" data-route="${esc(q.route)}" data-head="${esc(dirKey(q.heading))}">Checking live predictions…</span>`;
+  }
+  function fillLive(root) {
+    const slots = [...root.querySelectorAll('.liveeta')];
+    const codes = [...new Set(slots.map((x) => x.dataset.stop))];
+    for (const c of codes) {
+      const hit = liveCache.get(c);
+      if (hit && Date.now() - hit.at < 60000) { if (hit.data !== undefined) paintLive(root, c); continue; }
+      liveCache.set(c, { at: Date.now(), data: hit ? hit.data : undefined });
+      fetch(LIVE_URL + encodeURIComponent(c)).then((r) => (r.ok ? r.json() : Promise.reject(r.status))).then((j) => {
+        liveCache.set(c, { at: Date.now(), data: j.Error ? null : arr(j.predictions) }); paintLive($('#planbOut'), c);
+      }).catch(() => { liveCache.set(c, { at: Date.now(), data: null }); paintLive($('#planbOut'), c); });
+    }
+  }
+  function paintLive(root, code) {
+    const hit = liveCache.get(code); if (!root || !hit) return;
+    const at = clock(WaitOrWalk.torontoClock(new Date(hit.at)).minutes);
+    root.querySelectorAll(`.liveeta[data-stop="${code}"]`).forEach((el) => {
+      if (hit.data === null) { el.textContent = 'Live predictions could not be read; the times here are timetable estimates.'; el.className = 'meta liveeta none'; return; }
+      const p = hit.data.find((x) => x.routeTag === el.dataset.route);
+      const d = p && arr(p.direction).find((x) => dirKey(x.title) === el.dataset.head);
+      const mins = d ? arr(d.prediction).map((x) => +x.minutes).filter((n) => n >= 0).slice(0, 3) : [];
+      if (!mins.length) { el.textContent = `No live prediction for this route and direction in the TTC's NextBus feed (checked ${at}); the times here are timetable estimates.`; el.className = 'meta liveeta none'; return; }
+      el.innerHTML = `<b>Live prediction:</b> next bus in ${mins.map((n) => (n === 0 ? 'under a minute' : `${n} min`)).join(', ')} at this stop (TTC NextBus feed, checked ${esc(at)})`;
+      el.className = 'meta liveeta on';
+    });
+  }
   function departures(refs) {
-    if (!ctx.covered) return '';
+    const live = liveSlot(refs);
+    if (!ctx.covered) return live;
     const next = WaitOrWalk.reachable(planb, ptimes.times, refs, ctx.today, ctx.yesterday, ctx.now, 3);
-    if (!next.length) return '<br><span class="meta notnow">No scheduled departure you may be able to catch in the next 3 hours, after walking and 1 minute to board</span>';
-    return `<br><span class="meta deps">Scheduled departures you may be able to catch: ${next.map((x) => `${clock(x.dep)} (${inMin(x.dep)})`).join(', ')}</span>`;
+    if (!next.length) return '<br><span class="meta notnow">No scheduled departure you may be able to catch in the next 3 hours, after walking and 1 minute to board</span>' + live;
+    return `<br><span class="meta deps">Scheduled departures you may be able to catch: ${next.map((x) => `${clock(x.dep)} (${inMin(x.dep)})`).join(', ')}</span>${live}`;
   }
   function arrival(r, destLabel) {
     if (!ctx.covered || !r.first || r.estimate === null) return '';
@@ -168,7 +219,7 @@
     let shown = [];
     let html = `<p class="warn" id="planbWarn"><b>A scheduled alternative might not be running right now.</b> Routes can be detoured, short turned or replaced by shuttle buses. Check <a href="https://www.ttc.ca/service-alerts">TTC service alerts</a> before you walk.</p>`;
     const rg = ctx.range;
-    if (ctx.covered) html += `<p class="small" id="planbClock"><b>Timetable estimates, not real time.</b> ${sim ? `<b>${esc(sim.label)}.</b> Scheduled departures you might have caught then` : `Scheduled departures you may be able to catch from now (${clock(ctx.now)} Toronto time)`}, allowing the walk at 80 metres a minute in a straight line plus 1 minute to board.${sim ? ' Paste your own alert for live times.' : ' Updated every minute.'} Schedule data ends on ${ymdWords(rg.to)}.</p>`;
+    if (ctx.covered) html += `<p class="small" id="planbClock"><b>Timetable estimates, not real time${sim ? "" : ", unless marked live"}.</b> ${sim ? `<b>${esc(sim.label)}.</b> Scheduled departures you might have caught then` : `Scheduled departures you may be able to catch from now (${clock(ctx.now)} Toronto time)`}, allowing the walk at 80 metres a minute in a straight line plus 1 minute to board.${sim ? ' Live predictions are not shown on the simulated example; paste your own alert to see them.' : ' Updated every minute. Where the TTC\'s older NextBus feed has a live prediction for a stop it is shown as well; the City lists that feed as decommissioned, so it may stop. The verdict uses the timetable.'} Schedule data ends on ${ymdWords(rg.to)}.</p>`;
     else html += `<p class="warn" id="planbClock"><b>Schedule data ends on ${ymdWords(rg.to)}.</b> ${ctx.ymd > rg.to ? 'Today is after that' : `It starts on ${ymdWords(rg.from)}, and today is before that`}, so departure times are not shown. Routes and stops below are from that schedule and may have changed.</p>`;
     if (d && d.name !== s.name) {
       const ranked = ctx.covered ? WaitOrWalk.rankByArrival(planb, ptimes.times, r.direct.concat(r.via), ctx.today, ctx.yesterday, ctx.now, d.name) : r.direct.concat(r.via).map((x) => Object.assign({}, x, { first: null, estimate: null }));
@@ -198,6 +249,7 @@
     if (nights.length && WaitOrWalk.isOvernight(ctx.now)) html += `<p class="small"><b>Overnight:</b> ${nights.length > 1 ? `Blue Night routes ${nights.join(', ')} also stop` : `Blue Night route ${nights[0]} also stops`} here.</p>`;
     const wasOpen = !!($('#planbExtras') && $('#planbExtras').open);
     out.innerHTML = html;
+    fillLive(out);
     if (wasOpen && $('#planbExtras')) $('#planbExtras').open = true;
   }
 
@@ -210,7 +262,7 @@
     if (!hits.length) return '';
     return `<div class="warn access" id="accessWarn"><b>Elevator or escalator out of service:</b><ul>${hits.map((a) => `<li>${esc(a.header)}</li>`).join('')}</ul><span class="small">TTC accessibility alerts, copied ${when(access.fetchedAt)} (Open Government Licence Toronto). Check <a href="https://www.ttc.ca/accessibility" target="_blank" rel="noopener">TTC accessibility</a> before you rely on a step free route.</span></div>`;
   }
-  // Extras behind a fold: Bike Share Toronto near the stations (live counts from GBFS) and current Toronto weather (ECCC).
+  // Extras behind a fold: route delay history and Bike Share Toronto near the stations (live counts from GBFS).
   function bikeLine(list, want) {
     return list.map((b) => {
       const st = bikes && bikes.st[b.id];
@@ -233,20 +285,15 @@
   }
   function extras(s, d, routes) {
     if (!bikeNear && !surface) return '';
-    let h = '<details class="extras" id="planbExtras"><summary>More: route delay history, Bike Share and weather</summary>';
+    let h = '<details class="extras" id="planbExtras"><summary>More: route delay history and Bike Share</summary>';
     h += reliability(routes || []);
-    if (!bikeNear) return h + weatherBlock() + '</details>';
+    if (!bikeNear) return h + '</details>';
     const from = bikeNear.stations[s.name] || [], to = d ? bikeNear.stations[d.name] || [] : [];
     h += `<h4>Bike Share Toronto</h4>`;
     h += from.length ? `<p class="small">Stations within ${bikeNear.radiusMetres} m of ${esc(s.label)}:</p><ul class="bikes" id="bikesFrom">${bikeLine(from, 'bikes')}</ul>` : `<p class="small">No Bike Share station within ${bikeNear.radiusMetres} m of ${esc(s.label)}.</p>`;
     if (d) h += to.length ? `<p class="small">Docks within ${bikeNear.radiusMetres} m of ${esc(d.label)}:</p><ul class="bikes" id="bikesTo">${bikeLine(to, 'docks')}</ul>` : `<p class="small">No Bike Share station within ${bikeNear.radiusMetres} m of ${esc(d.label)}.</p>`;
     h += `<p class="small" id="bikeNote">${bikes ? `Live counts from Bike Share Toronto at ${clock(WaitOrWalk.torontoClock(new Date(bikes.at * 1000)).minutes)} Toronto time${sim ? ', now, not at the simulated time' : ''}. They change by the minute.` : 'Live counts could not be read; station names only.'} No ride time is estimated. Snow, ice, luggage or a stroller can make cycling the wrong choice. Data: Bike Share Toronto (Open Government Licence Toronto; live feed CC BY 4.0).</p>`;
-    return h + weatherBlock() + '</details>';
-  }
-  function weatherBlock() {
-    let h = '<h4>Toronto weather now</h4>';
-    h += weather ? `<p class="small" id="weatherNow">${weather.temp !== null ? `${weather.temp} °C` : ''}${weather.cond ? `, ${esc(weather.cond.toLowerCase())}` : ''}, reported at ${esc(weather.station)}${weather.at ? ` at ${clock(WaitOrWalk.torontoClock(new Date(weather.at)).minutes).replace(/\.$/, '')}` : ''}.${weather.warnings ? ` <b>${esc(weather.warnings)}</b>` : ''} Context only: weather is not part of the forecast above. Data Source: Environment and Climate Change Canada.</p>` : '<p class="small" id="weatherNow">Current conditions could not be read. See <a href="https://weather.gc.ca/en/location/index.html?coords=43.65,-79.38" target="_blank" rel="noopener">weather.gc.ca</a>.</p>';
-    return h;
+    return h + '</details>';
   }
   function listAll(r) {
     if (!r.all.length) return '<p>No daytime bus, streetcar or LRT stop within 300 metres in the schedule data.</p>';
@@ -258,7 +305,7 @@
     box.hidden = !c;
     if (!c) { box.innerHTML = ''; return; }
     box.innerHTML = `<p><b>${esc(c.text)}</b></p><div class="opts">${c.options.map((o, i) => `<button type="button" data-opt="${i}">${esc(o.label)}</button>`).join('')}</div>`;
-    box.querySelectorAll('[data-opt]').forEach((b) => b.addEventListener('click', () => { state = WaitOrWalk.chooseOption(state, c.options[+b.dataset.opt]); sync(); render(); }));
+    box.querySelectorAll('[data-opt]').forEach((b) => b.addEventListener('click', () => { state = WaitOrWalk.chooseOption(state, c.options[+b.dataset.opt]); sync(); render(); $('#out-h').focus(); }));
   }
 
   function readAlert() {
@@ -322,7 +369,7 @@
     $('#stationSimNote').textContent = `${ss.directionsWithAlternative.toLocaleString('en-CA')} of ${ss.directions.toLocaleString('en-CA')} delay and direction pairs had a scheduled alternative leaving within 3 hours; the median switch cost was ${ss.medianSwitchCost} extra minutes.`;
     $('#foldTable').innerHTML = `<table><thead><tr><th scope="col">Test period</th><th scope="col">Base model trained on</th><th scope="col">Recalibrated on</th><th scope="col">Test delays</th></tr></thead><tbody>${m.folds.map((f) => `<tr><td>${span(f.test)}</td><td>Jan 1, 2025 to ${day(f.baseTrainedThrough)}</td><td>${span(f.calibratedOn)}</td><td>${f.testDelays.toLocaleString('en-CA')}</td></tr>`).join('')}<tr class="ours"><td>None: the shipped model</td><td>Jan 1, 2025 to ${day(model.baseTrainedThrough)}</td><td>${span(model.calibratedOn)}</td><td>not scored</td></tr></tbody></table>`;
     const PS = ['Exploratory: looked at while the rules were chosen', 'Exploratory: looked at while the rules were chosen', 'Exploratory: looked at while the rules were chosen, and it informed the approach'];
-    $('#periodEval').innerHTML = `<table><thead><tr><th scope="col">Evaluation period (scored on, later)</th><th scope="col">Settings picked on (earlier window)</th><th scope="col">Delays</th><th scope="col">AUC, Wait or Walk (cause only)</th><th scope="col">10+ forecast vs actual</th><th scope="col">Rule against always wait: all delays / 20+ minutes</th><th scope="col">Status</th></tr></thead><tbody>${m.folds.map((f, i) => { const P = ev.periods[i].methods, c = checks.periods[i]; return `<tr><td>${span(f.test)}</td><td>${span(ev.decisionPolicy.chosen[i].chosenOn)} (margin ${mg(c.margin)}; recalibration on the same window)</td><td>${f.testDelays.toLocaleString('en-CA')}</td><td>${P.waitOrWalk.auc.value.toFixed(3)} (${P.causeOnly.auc.value.toFixed(3)})</td><td>${pct(f.waitOrWalk.meanPredicted)} vs ${pct(f.actualShareLong)}</td><td>${saved(c.shippedSavedVsWait)} / ${saved(c.shippedSavedVsWait20)}</td><td>${PS[i]}</td></tr>`; }).join('')}</tbody></table>`;
+    $('#periodEval').innerHTML = `<table><thead><tr><th scope="col">Evaluation period (scored on, later)</th><th scope="col">Settings picked on (earlier window)</th><th scope="col">Delays</th><th scope="col">AUC, Wait or Walk (cause only)</th><th scope="col">10+ forecast vs actual</th><th scope="col">Late bus check (shipped) against always wait: all delays / 20+ minutes</th><th scope="col">Timetable only rule: all / 20+</th><th scope="col">Status</th></tr></thead><tbody>${m.folds.map((f, i) => { const P = ev.periods[i].methods, c = checks.periods[i]; return `<tr><td>${span(f.test)}</td><td>${span(ev.decisionPolicy.chosen[i].chosenOn)} (margin ${mg(c.margin)}; recalibration on the same window)</td><td>${f.testDelays.toLocaleString('en-CA')}</td><td>${P.waitOrWalk.auc.value.toFixed(3)} (${P.causeOnly.auc.value.toFixed(3)})</td><td>${pct(f.waitOrWalk.meanPredicted)} vs ${pct(f.actualShareLong)}</td><td>${saved(c.lateSavedVsWait)} / ${saved(c.lateSavedVsWait20)}</td><td>${saved(c.shippedSavedVsWait)} / ${saved(c.shippedSavedVsWait20)}</td><td>${PS[i]}</td></tr>`; }).join('')}</tbody></table>`;
     $('#firstTwoTable').innerHTML = tbl(MHEAD, methodRows(ev.pooledFirstTwo.byDelay)) + tbl(DHEAD, diffRows(ev.pooledFirstTwo.byDelay));
     const dp = ev.decisionPolicy;
     $('#policyTable').innerHTML = `<table><thead><tr><th scope="col">Delays</th><th scope="col">Always wait</th><th scope="col">Cause only at 35%</th><th scope="col">Old rule: 35%</th><th scope="col">20+ chance rule</th><th scope="col">Expected cost rule (shipped)</th><th scope="col">Expected cost against always wait (95% interval)</th><th scope="col">Expected cost against the old rule</th><th scope="col">Expected cost against cause only</th></tr></thead><tbody>${['all', 'under10', 'atLeast20', 'atLeast30'].map((k) => { const r = dp.subsets[k]; return `<tr><td>${SN[k]} (${r.delays.toLocaleString('en-CA')})</td><td>${mins2(r.alwaysWait)}</td><td>${mins2(r.causeOnly35)}</td><td>${mins2(r.current35)}</td><td>${mins2(r.p20Rule)}</td><td><b>${mins2(r.expectedCost)}</b></td><td>${saved(r.expectedCost_savedVsWait)}</td><td>${saved(r.expectedCost_savedVsCurrent)}</td><td>${saved(r.expectedCost_savedVsCause)}</td></tr>`; }).join('')}</tbody></table>`;
@@ -333,7 +380,7 @@
     const rb = checks.robust.subsets;
     $('#robustTable').innerHTML = `<table><thead><tr><th scope="col">What really happens</th><th scope="col">Shipped rule against always wait</th><th scope="col">Late bus rule against always wait</th><th scope="col">Late bus rule against shipped (95% interval)</th></tr></thead><tbody>${Object.keys(SC).map((k) => `<tr class="${k === 'asScheduled' || k === 'busLate5' ? 'ours' : ''}"><td>${SC[k]}</td><td>${saved(st.all[k].savedVsWait)}</td><td>${saved(rb.all[k].savedVsWait)}</td><td>${saved(rb.all[k].robustMinusShipped)}</td></tr>`).join('')}</tbody></table>`;
     const r0 = rb.all.asScheduled.robustMinusShipped, r5 = rb.all.busLate5.robustMinusShipped;
-    $('#robustNote').textContent = `All delays. Read honestly: it loses ${Math.abs(r0.value).toFixed(2)} minutes per delay as scheduled against the shipped rule (${Math.abs(r0.high).toFixed(2)} to ${Math.abs(r0.low).toFixed(2)}) and saves ${r5.value.toFixed(2)} when buses run 5 minutes late (${r5.low.toFixed(2)} to ${r5.high.toFixed(2)}); on delays of 20 minutes or more it gives up ${Math.abs(rb.atLeast20.asScheduled.robustMinusShipped.value).toFixed(2)} minutes as scheduled. It is ${checks.robust.ship ? 'shipped' : 'not shipped, because it is worse as scheduled'}. The card instead says to switch only if you make that bus and it runs on time.`;
+    $('#robustNote').textContent = `All delays. Read honestly: it loses ${Math.abs(r0.value).toFixed(2)} minutes per delay as scheduled against the shipped rule (${Math.abs(r0.high).toFixed(2)} to ${Math.abs(r0.low).toFixed(2)}) and saves ${r5.value.toFixed(2)} when buses run 5 minutes late (${r5.low.toFixed(2)} to ${r5.high.toFixed(2)}); on delays of 20 minutes or more it gives up ${Math.abs(rb.atLeast20.asScheduled.robustMinusShipped.value).toFixed(2)} minutes as scheduled. It is ${checks.robust.ship ? 'shipped' : 'not shipped, because it is worse as scheduled'}. Its numbers are close to the late bus check above, which failed the same test as scheduled; the late bus check was then judged on the average of all eight scenarios instead, a rule set after this result was known.`;
     const U = underwayChecks, UH = '<thead><tr><th scope="col">Given the delay reached</th><th scope="col">Test delays</th><th scope="col">Forecast on average</th><th scope="col">Actual share</th><th scope="col">AUC, Wait or Walk (95% interval)</th><th scope="col">AUC, cause only</th><th scope="col">Calibration error</th></tr></thead>';
     const urow = (lab, c) => `<tr><td>${lab}</td><td>${c.delays.toLocaleString('en-CA')}</td><td>${pct(c.meanForecast)}</td><td>${pct(c.actualShare)}</td><td>${ci(c.methods.waitOrWalk.auc, 3)}</td><td>${c.methods.causeOnly.auc.value.toFixed(3)}</td><td>${(c.methods.waitOrWalk.calError.value * 100).toFixed(1)} pts</td></tr>`;
     $('#underwayTable').innerHTML = `<table>${UH}<tbody>${urow('5 minutes: chance of 10+ in total', U.tenGivenFive)}${urow('10 minutes: chance of 20+ in total', U.twentyGivenTen)}</tbody></table>`;
@@ -382,7 +429,6 @@
   const RUNS = 'https://api.github.com/repos/ALENZACODES/wait-or-walk/actions/workflows/alerts.yml/runs?status=success&per_page=1';
   const STALE_MIN = 90;
   const BIKE_STATUS = 'https://toronto.publicbikesystem.net/customer/gbfs/v3.0/station_status';
-  const WEATHER = 'https://api.weather.gc.ca/collections/citypageweather-realtime/items/on-143?f=json';
   function loadLive(get) {
     const lastRun = fetch(RUNS).then((r) => (r.ok ? r.json() : null)).then((j) => (j && j.workflow_runs && j.workflow_runs[0] ? Date.parse(j.workflow_runs[0].updated_at) / 1000 : null)).catch(() => null);
     Promise.all([get('data/live_alerts.json?t=' + Math.floor(Date.now() / 60000)), lastRun]).then(([L, ran]) => {
@@ -408,12 +454,6 @@
       bikes = { at: Date.parse(j.last_updated) / 1000 || Date.now() / 1000, st }; if (model) render();
     }).catch(() => {});
     readBikes(); setInterval(readBikes, 120000);
-    fetch(WEATHER).then((r) => (r.ok ? r.json() : Promise.reject(r.status))).then((j) => {
-      const c = j.properties.currentConditions || {}, en = (v) => (v && v.en !== undefined ? v.en : null);
-      const warn = (j.properties.warnings || []).map((w) => en(w.description) || en(w.type) || '').filter(Boolean).join('; ');
-      weather = { temp: en(c.temperature && c.temperature.value), cond: en(c.condition), station: en(c.station && c.station.value) || 'Toronto', at: en(c.timestamp) ? Date.parse(en(c.timestamp)) : null, warnings: warn };
-      if (model) render();
-    }).catch(() => { weather = null; });
     get('data/access_alerts.json?t=' + Math.floor(Date.now() / 60000)).then((A) => { access = A; if (model) render(); }).catch(() => { access = null; });
     get('data/alert_history.json?t=' + Math.floor(Date.now() / 60000)).then(history).catch(() => { $('#historyStrip').hidden = true; });
   }
@@ -430,6 +470,36 @@
     $('#historyStrip').hidden = false;
   }
 
+  // Evidence added in round 10: the late bus check, alert reading accuracy, the fresher recalibration check and the
+  // alert time forecast log. Each loads on its own; a missing file leaves its table empty.
+  function moreEvidence(get) {
+    const SC = { asScheduled: 'As scheduled', busLate5: 'Bus 5 minutes late', busLate10: 'Bus 10 minutes late', missedDeparture: 'First departure missed', walk60: 'Walking at 1.0 m/s', board2: '2 minutes to board', board3: '3 minutes to board', allBad: 'All of these at once', overall: 'Average of the eight' };
+    const ls = checks && checks.lateSafe;
+    if (ls) {
+      const T = ls.testPeriods, E = ls.earlierWindows, d2 = (v) => (v >= 0 ? `${v.toFixed(2)} better` : `${(-v).toFixed(2)} worse`);
+      $('#lateTable').innerHTML = `<table><thead><tr><th scope="col">What really happens</th><th scope="col">Late bus check against always wait, all delays</th><th scope="col">Late bus check against timetable only rule, test periods (95% interval)</th><th scope="col">Same, earlier windows</th><th scope="col">Same, 20+ minute delays, test periods</th></tr></thead><tbody>${Object.keys(SC).map((k) => k === 'overall'
+        ? `<tr class="ours"><td>${SC[k]}</td><td></td><td>${saved(T.all.overall.lateMinusShipped)}</td><td>${d2(E.overall.lateMinusShipped)}</td><td>${saved(T.atLeast20.overall.lateMinusShipped)}</td></tr>`
+        : `<tr class="${k === 'asScheduled' ? 'ours' : ''}"><td>${SC[k]}</td><td>${saved(T.all[k].savedVsWait)}</td><td>${saved(T.all[k].lateMinusShipped)}</td><td>${d2(E[k].lateMinusShipped)}</td><td>${saved(T.atLeast20[k].lateMinusShipped)}</td></tr>`).join('')}</tbody></table>`;
+      const a0 = T.all.asScheduled.lateMinusShipped, a20 = T.atLeast20.asScheduled.lateMinusShipped;
+      $('#lateNote').textContent = `Minutes per delay. Read honestly: when buses run on time it gives up ${Math.abs(a0.value).toFixed(2)} minutes per delay against the timetable only rule (${Math.abs(a20.value).toFixed(2)} on delays of 20 minutes or more), because it switches less. In return it loses far less when the bus is late, boarding is slow or a departure is missed, and on the earlier windows the trade is the same. It is ${ls.ship ? 'shipped' : 'not shipped'}: ${ls.reason}. It keeps the Kipling call (wait) and the St George call (switch, winning by about 11 minutes).`;
+    }
+    get('data/parser_eval.json?v=' + VERSION).then((P) => {
+      const row = (lab, x) => `<tr><td>${lab}</td><td>${x.alerts}</td><td>${x.line.accuracy}%</td><td>${x.station.recall}% <span class="ci">(${x.station.wrong} wrong)</span></td><td>${x.cause.precision}% / ${x.cause.recall}%</td><td>${x.plannedWork.precision}% / ${x.plannedWork.recall}%</td></tr>`;
+      return get('data/parser_eval_history.json?v=' + VERSION).then((H) => {
+        $('#parserTable').innerHTML = `<table><thead><tr><th scope="col">Alerts and parser version</th><th scope="col">Alerts</th><th scope="col">Line right</th><th scope="col">Station right</th><th scope="col">Cause precision / recall</th><th scope="col">Planned work precision / recall</th></tr></thead><tbody>${row('All 102, first version', H.before.all)}${row('Older 51, first version', H.before.development)}${row('Newer 51 (held out), first version', H.before.heldOut)}${row('Newer 51 (held out), after fixes from the older half', H.afterStep1.heldOut)}<tr class="ours"><td colspan="6">After the last three fixes (not independent):</td></tr>${row('All 102, shipped version', P.all)}</tbody></table>`;
+      });
+    }).catch(() => {});
+    get('data/calibration_check.json?v=' + VERSION).then((C) => {
+      const pc = (x) => (x * 100).toFixed(1) + '%';
+      const rows = Object.entries(C.windows).map(([d, w]) => w['10'].periods.map((r, i) => `<tr><td>${i ? '' : `Last ${d} days`}</td><td>${span(r.test)}</td><td>${pc(r.actual)}</td><td>${pc(r.shipped)}</td><td>${pc(r.shifted)}</td><td>${r.calErrorShipped.toFixed(2)} to ${r.calErrorShifted.toFixed(2)}</td><td>${i ? '' : (w.ship ? 'passes' : 'did not pass')}</td></tr>`).join('')).join('');
+      $('#calCheckTable').innerHTML = `<table><thead><tr><th scope="col">Shift fitted on</th><th scope="col">Test period</th><th scope="col">Actual 10+ share</th><th scope="col">Shipped forecast, average</th><th scope="col">Shifted forecast, average</th><th scope="col">Calibration error, points</th><th scope="col">Result</th></tr></thead><tbody>${rows}</tbody></table>`;
+    }).catch(() => {});
+    fetch('data/alert_forecasts.jsonl?t=' + Math.floor(Date.now() / 60000)).then((r) => (r.ok ? r.text() : Promise.reject(r.status))).then((t) => {
+      const L = t.split('\n').filter(Boolean).map((l) => JSON.parse(l)), live = L.filter((x) => !x.backfilled), fc = live.filter((x) => x.forecasts);
+      $('#logCount').textContent = `So far: ${L.length} alert${L.length === 1 ? '' : 's'} logged, ${live.length} at alert time (${fc.length} with a forecast), ${L.length - live.length} backfilled.`;
+    }).catch(() => {});
+  }
+
   let wired = false;
   function load() {
     $('#loading').hidden = false; $('#loadError').hidden = true;
@@ -438,7 +508,7 @@
     Promise.all([v('data/model.json'), v('data/metrics.json'), v('data/planb.json'), v('data/planb_times.json'), v('data/policy.json'), v('data/decision_checks.json'), v('data/underway_checks.json')]).then(([mo, me, pb, pt, po, dc, uc]) => {
       model = mo; planb = pb; ptimes = pt; policy = po; checks = dc; underwayChecks = uc;
       $('#baseThrough').textContent = day(mo.baseTrainedThrough); $('#calOn').textContent = span(mo.calibratedOn);
-      fillSelects(); metrics(me);
+      fillSelects(); metrics(me); moreEvidence(get);
       $('#loading').hidden = true; $('#app').hidden = false;
       if (!wired) {
         wired = true;

@@ -87,7 +87,7 @@ def main():
             for k, sid in enumerate(seq):
                 if sid in near:
                     n, d = near[sid]
-                    v = {'station': n, 'stop': clean(stops.at[sid, 'stop_name']), 'metres': int(round(d / 10) * 10), 'access': int(stops.at[sid, 'wheelchair_boarding']) if not pd.isna(stops.at[sid, 'wheelchair_boarding']) else 0, 'k': k, 'end': int(k >= len(seq) - 2)}
+                    v = {'station': n, 'stop': clean(stops.at[sid, 'stop_name']), 'code': str(stops.at[sid, 'stop_code']), 'metres': int(round(d / 10) * 10), 'access': int(stops.at[sid, 'wheelchair_boarding']) if not pd.isna(stops.at[sid, 'wheelchair_boarding']) else 0, 'k': k, 'end': int(k >= len(seq) - 2)}
                     if visits and visits[-1]['station'] == n:
                         if d < visits[-1]['metres']: visits[-1].update(v)
                         continue
