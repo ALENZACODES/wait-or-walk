@@ -104,3 +104,44 @@ console.log('test_freshness.mjs ok');
   assert.equal(r.workflow.text, '');
 }
 console.log('test_freshness.mjs pending ok');
+
+// Malformed checkedAt (NaN): unknown and stale, never fresh
+{
+  const r = F.alertFreshness({ checkedAt: NaN, fetchedAt: NOW - 10 * 60 }, [], NOW, 90);
+  assert.equal(r.checkedAt, null);
+  assert.equal(r.ageMinutes, null);
+  assert.equal(r.stale, true);
+}
+
+// Unreadable checkedAt string: same, and it does not fall back to a valid fetchedAt
+{
+  const r = F.alertFreshness({ checkedAt: 'not-a-date', fetchedAt: NOW - 10 * 60 }, [], NOW, 90);
+  assert.equal(r.checkedAt, null);
+  assert.equal(r.ageMinutes, null);
+  assert.equal(r.stale, true);
+}
+
+// Infinity is unreadable
+{
+  const r = F.alertFreshness({ checkedAt: Infinity }, [], NOW, 90);
+  assert.equal(r.checkedAt, null);
+  assert.equal(r.stale, true);
+  assert.equal(r.ageMinutes, null);
+}
+
+// A checkedAt in the future must read unknown/stale, never a negative age
+{
+  const r = F.alertFreshness({ checkedAt: NOW + HOUR, fetchedAt: NOW - 10 * 60 }, [], NOW, 90);
+  assert.equal(r.checkedAt, null);
+  assert.equal(r.ageMinutes, null);
+  assert.equal(r.stale, true);
+}
+
+// A slightly future time is still stale, not fresh
+{
+  const r = F.alertFreshness({ checkedAt: NOW + 1 }, [], NOW, 90);
+  assert.equal(r.stale, true);
+  assert.equal(r.ageMinutes, null);
+}
+
+console.log('test_freshness.mjs invalid and future times ok');

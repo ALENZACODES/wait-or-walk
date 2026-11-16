@@ -58,7 +58,7 @@ with sync_playwright() as p:
         check(warn.is_visible() and warn.bounding_box()['y'] < lst.bounding_box()['y'], f'{w}: "might not be running" warning sits above the Plan B list')
         check('LRT (light rail)' in pg.inner_text('#planbOut') and 'Line 5 Eglinton streetcar' not in pg.inner_text('#planbOut'), f'{w}: Line 5 Eglinton shown as LRT')
         check('min walk' in pg.inner_text('#planbOut'), f'{w}: Plan B shows walking time')
-        check('Version r15' in pg.inner_text('footer') and 'Not affiliated' in pg.inner_text('footer'), f'{w}: footer shows version r15 and the not affiliated line')
+        check('Version r16' in pg.inner_text('footer') and 'Not affiliated' in pg.inner_text('footer'), f'{w}: footer shows version r16 and the not affiliated line')
         check(pg.is_visible('#pasteBtn') and 'nothing is sent anywhere' in pg.text_content('.pastenote'), f'{w}: paste button and the privacy note')
         check(pg.is_visible('#scope') and pg.inner_text('#scope') == 'Not the chance your alert causes this delay, or your remaining wait.' and 'among comparable TTC incidents with a recorded delay of 1 minute or more' in pg.inner_text('#pctlab'), f'{w}: card says which population the number is about')
         pg.click('.meaning summary'); check('Among comparable TTC incidents with a recorded delay of 1 minute or more, the model estimates a' in pg.inner_text('#meaning') and re.search(r'all incidents view shown beside it \(\d+% instead of \d+% here\)', pg.inner_text('#meaning')) and 'not the chance your current alert causes that delay, or your remaining wait' in pg.inner_text('#meaning'), f'{w}: full wording in the card details')

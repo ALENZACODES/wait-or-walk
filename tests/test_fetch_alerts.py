@@ -49,6 +49,32 @@ class Copy(unittest.TestCase):
         self.assertIn('fetchedAt', L); self.assertIn('checkedAt', L); self.assertTrue(all('header' in a for a in L['alerts']))
         self.assertTrue(all(h['firstSeen'] <= h['lastSeen'] and (not h.get('goneBy') or h['lastSeen'] <= h['goneBy']) for h in H['alerts'].values()))
 
+
+    def test_empty_or_error_body_does_not_write_checked_at(self):
+        # A 200 with an empty or error body must not bump checkedAt, even if a parsed list is offered.
+        self.assertEqual(F.update(1000, 1000, [A], self.d), 'changed')
+        before = json.loads(self.files()['live_alerts.json'])
+        bodies = [b'', b'   ', b'<html>Internal Server Error</html>', b'{"error":"unavailable"}', b'Error: service unavailable']
+        for body in bodies:
+            self.assertFalse(F.usable_body(200, body), msg=repr(body))
+            self.assertEqual(F.apply_if_usable(2800, 200, body, 2800, [A], self.d), 'rejected')
+            L = json.loads(self.files()['live_alerts.json'])
+            self.assertEqual(L['checkedAt'], 1000)
+            self.assertEqual(L['fetchedAt'], 1000)
+            self.assertEqual(L['alerts'], before['alerts'])
+        proto = bytes([10, 8, 1])
+        self.assertFalse(F.usable_body(500, proto))
+        self.assertEqual(F.apply_if_usable(2800, 500, proto, 2800, [A], self.d), 'rejected')
+        self.assertEqual(json.loads(self.files()['live_alerts.json'])['checkedAt'], 1000)
+
+    def test_usable_200_body_still_writes_checked_at(self):
+        # A 200 with a non-empty binary body (a stand-in for a protobuf feed) may write.
+        proto = bytes([10, 8, 1, 18, 3, 8, 210, 9])
+        self.assertTrue(F.usable_body(200, proto))
+        self.assertEqual(F.apply_if_usable(1000, 200, proto, 1000, [A], self.d), 'changed')
+        self.assertEqual(F.apply_if_usable(2800, 200, proto, 2800, [A], self.d), 'checked')
+        self.assertEqual(json.loads(self.files()['live_alerts.json'])['checkedAt'], 2800)
+
 class Access(unittest.TestCase):
     def test_unchanged_access_feed_bumps_checked_at(self):
         d = tempfile.mkdtemp(); X = [{'id': '9', 'station': 'Kipling', 'kind': 'escalator', 'header': 'Kipling: Escalator out of service.'}]

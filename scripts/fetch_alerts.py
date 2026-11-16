@@ -21,6 +21,41 @@ ACCESS_URL = 'https://gtfsrt.ttc.ca/alerts/accessibility?format=binary'
 DATA = os.path.join(os.path.dirname(__file__), '..', 'data')
 LINES = {'1': 'YU', '2': 'BD', '4': 'SHP'}
 
+def usable_body(status, body):
+    """True only for an HTTP 200 with a non-empty body that is not an HTML, JSON or text error page.
+    An empty or error body must not be written as a successful check (no checkedAt)."""
+    if status != 200 or body is None:
+        return False
+    raw = body if isinstance(body, (bytes, bytearray)) else str(body).encode('utf-8', 'replace')
+    if not raw.strip():
+        return False
+    head = raw.lstrip()[:64]
+    if head.startswith(b'<') or head.startswith(b'{') or head.startswith(b'['):
+        return False
+    try:
+        text_head = raw[:200].decode('utf-8')
+    except UnicodeDecodeError:
+        return True  # binary, likely a protobuf feed
+    low = text_head.lstrip().lower()
+    if low.startswith(('error', 'not found', 'service unavailable', 'unauthorized', 'forbidden')):
+        return False
+    return True
+
+def fetch_response(url):
+    req = urllib.request.Request(url, headers={'User-Agent': 'wait-or-walk alerts copy (github.com/ALENZACODES/wait-or-walk)'})
+    with urllib.request.urlopen(req, timeout=30) as res:
+        status = getattr(res, 'status', 200)
+        body = res.read()
+    return status, body
+
+def apply_if_usable(now, status, body, feed_ts, items, data=DATA, kind='subway'):
+    """Write checkedAt only after a usable 200 body. Returns 'rejected' and leaves files unchanged otherwise."""
+    if not usable_body(status, body):
+        return 'rejected'
+    if kind == 'access':
+        return update_access(now, feed_ts, items, data)
+    return update(now, feed_ts, items, data)
+
 def text(t):
     for tr in t.translation:
         if tr.language in ('', 'en'): return ' '.join(tr.text.split())
@@ -28,8 +63,10 @@ def text(t):
 
 def feed_of(url):
     from google.transit import gtfs_realtime_pb2 as rt   # imported here so the tests run without it
-    req = urllib.request.Request(url, headers={'User-Agent': 'wait-or-walk alerts copy (github.com/ALENZACODES/wait-or-walk)'})
-    feed = rt.FeedMessage(); feed.ParseFromString(urllib.request.urlopen(req, timeout=30).read())
+    status, body = fetch_response(url)
+    if not usable_body(status, body):
+        raise ValueError('feed response is empty or not a usable body; not writing checkedAt')
+    feed = rt.FeedMessage(); feed.ParseFromString(body)
     return rt, feed
 
 def active(a, now):
