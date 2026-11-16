@@ -8,19 +8,23 @@ import json, os, re, sys
 HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.join(HERE, '..')
 HERO = 'Subway stopped? Paste the TTC alert to see the chance a comparable recorded delay lasts 10+ minutes, and timetabled buses nearby.'
 # The figures line: how often the verdict says switch and what it gains, at the same prominence as the hero.
-FIGS = 'It also gives a cautious wait or switch call. Simulated on 7,455 past delays, it said switch on 107 of 13,174 trips (a delay and a direction of travel, 0.8%): about 8 minutes saved on each (5.5 to 10.4) with buses on schedule, about 3 with the bus 5 minutes late, and about 15 lost when the first bus was missed. Overall that is 0.06 minutes per delay, and 0.95 on delays of 20 minutes or more. No rider testing has been done.'
+FIGS = 'It also gives a cautious wait or switch call, and it rarely says switch: on 107 of 13,174 simulated trips (a past delay and a direction of travel), about 1 in 120. When it does, it saves about 8 minutes if the bus is on time and loses about 15 if you miss it. No rider testing has been done.'
+# The one place a dash is allowed: the attribution statement the Open Government Licence Toronto asks for, verbatim.
+ATTR = 'Contains information licensed under the Open Government Licence – Toronto.'
 RETIRED = [r'can still catch', r'you can catch', r'\bcatchable\b', r'about (5|10) minutes in\b', r'About (5|10) min in', r'not been tested with riders', r'and it runs on time', r'Bike Share and weather', r'Toronto weather now',
            # retired headline figures of the timetable only rule (round 10): 3.08 anywhere, 0.16 as a headline
            r'\b3\.08\b', r'\b0\.16( min)? saved \(0\.11', r'\b0\.16,? and\b', r'\(0\.16[,)]', r'0\.16 minutes',
            # the chance is conditional on a recorded positive delay; the old unconditional wording is retired
-           r'comparable recorded TTC delays', r'to Nov(ember)? 16, 2026', r'whether to wait\.']
+           r'comparable recorded TTC delays', r'to Nov(ember)? 16, 2026', r'whether to wait\.',
+           # round 11 figures line (mixed units) and the privacy line that left out the IP address
+           r'Overall that is 0\.06 minutes per delay', r'Only the stop code is sent to the NextBus host\.( |$)']
 NEED_ALL = ['No rider testing has been done', 'not real time', 'No manual screen reader test has been done', 'late bus check', 'NextBus',
-            'with a recorded delay of 1 minute or more', 'Only the stop code is sent to the NextBus host', 'rider-check.md', '107 of 13,174', 'not a rider benefit', '98%']
+            'with a recorded delay of 1 minute or more', 'Only the stop code is sent to the NextBus host', 'also sees your IP address', 'about 1 in 120', 'Next to existing transit apps', 'rider-check.md', '107 of 13,174', 'not a rider benefit', '98%']
 NEED_DOCS = ['23%', '0.751', '7,455', '2 minute judge path', 'slay-hacks-submission', 'zero_minute_check.py', 'Zero minute records', 'freeze_check.mjs', 'parser_fresh', 'alerts-backup.yml', 'Scheduled runs so far', 'liveCheck', 'check_forecast_log.mjs', 'Delay already reached 5 min', 'The model is calibrated on recorded delay length, not time since the alert',
              'Copy TTC subway alerts', 'Exploratory: looked at while the rules were chosen', 'alerts seen this month',
              'Bike Share Toronto', 'axe-core', 'Open Government Licence Toronto',
              '0.06', '0.95', '0.63', 'alert_forecasts.jsonl', '102 real TTC alerts', 'calibration in the large', 'Narrow margin', 'Timetable risk for this trip',
-             'run 43777263323', '15% instead of 23%', 'not the headline', '7 of the 102']
+             'run 43777263323', '15% instead of 23%', 'not the headline', '7 of the 102', '0.06 minutes per trip', 'Same simulation, two units', 'Live check', 'Contains information licensed under the Open Government Licence']
 
 def text_of(p):
     s = open(p, encoding='utf-8').read()
@@ -38,7 +42,7 @@ def main(extra):
     for k, s in T.items():
         for r in RETIRED:
             if re.search(r, s, re.I): fails.append(f'{k}: retired wording /{r}/')
-        if re.search('[\u2013\u2014]', s): fails.append(f'{k}: contains a dash character')
+        if re.search('[\u2013\u2014]', s.replace(ATTR, '')): fails.append(f'{k}: contains a dash character')
     for k in ('index.html', 'README.md', 'DEVPOST.md'):
         for n in NEED_ALL:
             if n not in T[k]: fails.append(f'{k}: missing "{n}"')

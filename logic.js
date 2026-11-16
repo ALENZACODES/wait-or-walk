@@ -46,14 +46,23 @@
   // Live safety gate: does a live prediction contradict the timetabled bus the verdict relies on? No new rule: the
   // verdict is unchanged, the page only warns. schedIn: minutes until that scheduled departure; reach: walk plus boarding
   // minutes; live: predicted minutes for that stop, route and direction (null or empty when there is nothing to compare).
-  // Contradicts when the first live bus you could reach leaves at least tol (5) minutes after the scheduled one.
+  // Contradicts when that bus is predicted before you could reach the stop, or when the first live bus you could reach
+  // leaves at least tol (5) minutes after the scheduled one.
   function liveCheck(schedIn, reach, live, tol) {
-    if (!Array.isArray(live) || !live.length || schedIn === null || schedIn === undefined) return null;
+    // The live prediction nearest the timetabled departure is taken as that bus (a tie goes to the earlier one).
+    // early: that bus is predicted before you could reach the stop; late: the first live bus you could reach leaves
+    // tol or more minutes after the timetabled time (the timetabled bus is late, cancelled or short turned, or the list
+    // is sparse); agrees: otherwise. Returns null when there is no prediction to compare, which is never a confirmation.
+    if (!Array.isArray(live) || schedIn === null || schedIn === undefined) return null;
     const t = tol === undefined ? 5 : tol;
-    const ok = live.filter((m) => Number.isFinite(m) && m >= reach).sort((a, b) => a - b);
-    if (!ok.length) return null;
-    const later = ok[0] - schedIn;
-    return { contradicts: later >= t, liveIn: ok[0], later };
+    const all = live.filter((m) => Number.isFinite(m) && m >= 0).sort((a, b) => a - b);
+    if (!all.length) return null;
+    let match = all[0];
+    for (const m of all) if (Math.abs(m - schedIn) < Math.abs(match - schedIn)) match = m;
+    const next = all.find((m) => m >= reach);
+    const liveIn = next === undefined ? null : next, later = liveIn === null ? null : liveIn - schedIn;
+    const state = match < reach ? 'early' : later >= t ? 'late' : 'agrees';
+    return { state, contradicts: state !== 'agrees', matchIn: match, liveIn, later };
   }
 
   // "Already underway": condition the same calibrated bands on the delay having reached 5 or 10 minutes, with no refit.

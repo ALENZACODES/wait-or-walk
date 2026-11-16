@@ -1,7 +1,7 @@
 (function () {
   const $ = (s) => document.querySelector(s);
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-  const VERSION = 'r11';
+  const VERSION = 'r12';
   let model = null, planb = null, ptimes = null, policy = null, best = null, checks = null, underwayChecks = null;
   // sim: the fixed example clock (WaitOrWalk.SIM) or null for live time; elapsed: the "already underway" setting.
   let sim = null, elapsed = 0, planned = false, live = null, access = null, bikes = null, bikeNear = null, surface = null;
@@ -125,14 +125,30 @@
       const rk = WaitOrWalk.timetableRisk(call.slack, best.next ? best.next - best.dep : null);
       const say = (v) => { const n = Math.round(Math.abs(v)); return n === 0 ? 'about even' : v > 0 ? `switching saves about ${mins(n)}` : `waiting is better by about ${mins(n)}`; };
       const risk = `<span class="risklab">Timetable risk for this trip</span><ul class="risk" id="risk"><li>By the timetable (the ${clock(best.dep)} bus on time): ${say(rk.timetable)}</li><li>If that bus leaves 5 minutes late: ${say(rk.late5)}</li><li>${rk.missed === null ? 'If you miss it: no later scheduled bus is listed, so waiting is better' : `If you miss it and take the next one (${clock(best.next)}): ${say(rk.missed)}`}</li></ul>`;
-      const lc = best.code ? WaitOrWalk.liveCheck(best.dep - best.now, best.reach, liveMinutes(best.code, best.routeTag, best.head)) : null;
+      const ls = liveState(), rt = esc(best.route.split(' ')[0]), tt = ttc.replace('Check', 'check');
+      const atT = ls.at ? clock(WaitOrWalk.torontoClock(new Date(ls.at)).minutes) : '';
+      const notConf = 'The verdict is timetable only and has not been checked against live times.';
+      const STATE = {
+        off: `<b>Live check: off.</b> Live predictions are not used on simulated examples. ${notConf}`,
+        nostop: `<b>Live check: unavailable.</b> This stop has no code for the TTC's NextBus feed. ${notConf}`,
+        loading: `<b>Live check: loading.</b> Asking the TTC's NextBus feed for route ${rt}. Until it answers, the verdict is timetable only and has not been checked against live times.`,
+        unavailable: `<b>Live check: unavailable.</b> The TTC's NextBus feed could not be read (the City lists it as decommissioned, so it may stop). ${notConf}`,
+        none: `<b>Live check: no live prediction.</b> The TTC's NextBus feed has no prediction for route ${rt} in this direction at this stop (checked ${atT}). ${notConf}`,
+        stale: `<b>Live check: out of date.</b> The last live prediction read is ${ls.age} minutes old (checked ${atT}), too old to compare. ${notConf}`,
+        agrees: `<b>Live check: no conflict found.</b> The TTC's NextBus feed shows a route ${rt} bus in ${ls.matchIn === 0 ? 'under a minute' : `${ls.matchIn} minutes`} at this stop, within 5 minutes of the ${clock(best.dep)} bus the verdict uses (checked ${atT}). Live predictions can change, and this is not a guarantee.`,
+      };
       let gate = '';
-      if (lc && lc.contradicts) {
-        const ls = Math.round(call.slack - lc.later);
-        gate = `<p class="warn livegate" id="liveGate"><b>Live feed disagrees with the timetable.</b> The TTC's NextBus feed shows the next route ${esc(best.route.split(' ')[0])} bus you could reach in ${lc.liveIn} minutes, about ${mins(lc.later)} after the ${clock(best.dep)} bus this verdict assumes. ${call.switch ? `With that bus, ${ls > 0 ? `switching would save only about ${mins(ls)}` : ls === 0 ? 'switching would be about even' : `waiting would be better by about ${mins(-ls)}`}. Do not rely on the switch verdict; ${ttc.replace('Check', 'check')}.` : 'That only makes waiting look better.'} The verdict itself is still worked out from the timetable.</p>`;
+      if (ls.s === 'late' || ls.s === 'early') {
+        const lsl = ls.later === null ? null : Math.round(call.slack - ls.later);
+        const what = ls.s === 'early'
+          ? `The TTC's NextBus feed shows the route ${rt} bus nearest the ${clock(best.dep)} timetabled time in ${ls.matchIn === 0 ? 'under a minute' : `${ls.matchIn} minutes`}, before you could reach the stop (about ${mins(best.reach)}), so it may leave without you. ${ls.liveIn === null ? 'No later live bus is listed.' : `The next live bus you could reach is in ${ls.liveIn} minutes, about ${mins(ls.later)} after the timetabled time.`}`
+          : `The TTC's NextBus feed shows the next route ${rt} bus you could reach in ${ls.liveIn} minutes, about ${mins(ls.later)} after the ${clock(best.dep)} bus this verdict assumes (it may be late, cancelled or short turned).`;
+        const effect = call.switch ? `${lsl === null ? 'With no live bus you could reach, waiting looks better' : `With that bus, ${lsl > 0 ? `switching would save only about ${mins(lsl)}` : lsl === 0 ? 'switching would be about even' : `waiting would be better by about ${mins(-lsl)}`}`}. Do not rely on the switch verdict; ${tt}.` : 'That only makes waiting look better.';
+        gate = `<p class="warn livegate" id="liveGate"><b>Live feed disagrees with the timetable.</b> ${what} ${effect} The verdict itself is still worked out from the timetable (live times checked ${atT}).</p>`;
       }
-      full = `<b>Schedule comparison: ${w}.</b> ${cap(lead)} about ${em} minutes${left}, against ${Math.round(call.cost)} extra minutes by Plan B (route ${esc(best.route)} to ${esc(best.dest)}, a timetable estimate, not real time).${call.switch ? ` Switching only helps if you make that bus: in the simulation over the test delays, a missed bus erased the gain. ${ttc}.` : ''}${tail}<br><span class="breakeven" id="breakeven">${be}</span>${risk}${gate}`;
-      short = `<b>Verdict: ${w}</b>, about ${em} min${left} against ${Math.round(call.cost)} by route ${esc(best.route.split(' ')[0])} (timetable)${call.switch ? ', if you catch it' : call.narrow ? ', margin too narrow to switch' : ''}.${gate ? ` <b>Live feed disagrees with the timetable bus${call.switch ? ': do not rely on switching' : ''}.</b>` : ''} <a href="#v-h">Why</a>`;
+      const stateLine = gate ? '' : `<p class="small livestate" id="liveState" data-state="${ls.s}">${STATE[ls.s]}</p>`;
+      full = `<b>Schedule comparison: ${w}.</b> ${cap(lead)} about ${em} minutes${left}, against ${Math.round(call.cost)} extra minutes by Plan B (route ${esc(best.route)} to ${esc(best.dest)}, a timetable estimate, not real time).${call.switch ? ` Switching only helps if you make that bus: in the simulation over the test delays, a missed bus erased the gain. ${ttc}.` : ''}${tail}<br><span class="breakeven" id="breakeven">${be}</span>${risk}${gate}${stateLine}`;
+      short = `<b>Verdict: ${w}</b>, about ${em} min${left} against ${Math.round(call.cost)} by route ${esc(best.route.split(' ')[0])} (timetable)${call.switch ? ', if you catch it' : call.narrow ? ', margin too narrow to switch' : ''}.${gate ? ` <b>Live feed disagrees with the timetable bus${call.switch ? ': do not rely on switching' : ''}.</b>` : ls.s === 'agrees' ? ' Live check: no conflict found.' : ' Not checked against live times.'} <a href="#v-h">Why</a>`;
     } else if (em !== null) {
       const why = !$('#dest').value ? 'Choose where you are headed under Plan B to compare it with the best scheduled switch.' : ctx && !ctx.covered ? 'The schedule data has ended, so there is no switch to compare.' : 'No scheduled switch you may be able to catch could be compared for that trip (the comparison needs a destination on the same line).';
       full = `<b>Schedule comparison:</b> ${cap(lead)} about ${em} minutes${left}. ${why}${tail}`;
@@ -175,11 +191,16 @@
     for (const c of codes) {
       const hit = liveCache.get(c);
       if (hit && Date.now() - hit.at < 60000) { if (hit.data !== undefined) paintLive(root, c); continue; }
-      liveCache.set(c, { at: Date.now(), data: hit ? hit.data : undefined });
-      fetch(LIVE_URL + encodeURIComponent(c)).then((r) => (r.ok ? r.json() : Promise.reject(r.status))).then((j) => {
-        liveCache.set(c, { at: Date.now(), data: j.Error ? null : arr(j.predictions) }); paintLive($('#planbOut'), c);
-        if (best && best.code === c) render();   // the live safety gate under the verdict
-      }).catch(() => { liveCache.set(c, { at: Date.now(), data: null }); paintLive($('#planbOut'), c); });
+      // at: last attempt; okAt: last good read (its age is shown, and old data is never used for the live check)
+      liveCache.set(c, { at: Date.now(), okAt: hit ? hit.okAt : null, data: hit ? hit.data : undefined, pending: true });
+      const done = (data, ok) => {
+        const h = liveCache.get(c) || {};
+        liveCache.set(c, ok ? { at: Date.now(), okAt: Date.now(), data, pending: false } : { at: Date.now(), okAt: h.okAt || null, data: h.data ? h.data : null, pending: false, failed: true });
+        paintLive($('#planbOut'), c);
+        if (best && best.code === c) render();   // the live check under the verdict
+      };
+      fetch(LIVE_URL + encodeURIComponent(c)).then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
+        .then((j) => (j.Error ? done(null, false) : done(arr(j.predictions), true))).catch(() => done(null, false));
     }
   }
   // Live minutes for one stop, route and direction: null when not read (yet), [] when the feed has none.
@@ -190,8 +211,8 @@
     return d ? arr(d.prediction).map((x) => +x.minutes).filter((n) => n >= 0) : [];
   }
   function paintLive(root, code) {
-    const hit = liveCache.get(code); if (!root || !hit) return;
-    const at = clock(WaitOrWalk.torontoClock(new Date(hit.at)).minutes);
+    const hit = liveCache.get(code); if (!root || !hit || hit.data === undefined) return;
+    const at = clock(WaitOrWalk.torontoClock(new Date(hit.okAt || hit.at)).minutes);
     root.querySelectorAll(`.liveeta[data-stop="${code}"]`).forEach((el) => {
       if (hit.data === null) { el.textContent = 'Live predictions could not be read; the times here are timetable estimates.'; el.className = 'meta liveeta none'; return; }
       const mins = (liveMinutes(code, el.dataset.route, el.dataset.head) || []).slice(0, 3);
@@ -199,6 +220,23 @@
       el.innerHTML = `<b>Live prediction:</b> next bus in ${mins.map((n) => (n === 0 ? 'under a minute' : `${n} min`)).join(', ')} at this stop (TTC NextBus feed, checked ${esc(at)})`;
       el.className = 'meta liveeta on';
     });
+  }
+  // The live check under the verdict, always in one of these states, so missing live data never reads as a confirmation:
+  // off (simulated example), nostop, loading, unavailable, none (no prediction for this route and direction),
+  // stale (last good read too old), agrees, late, early.
+  const LIVE_STALE_MS = 150000;
+  function liveState() {
+    if (sim) return { s: 'off' };
+    if (!best || !best.code) return { s: 'nostop' };
+    const hit = liveCache.get(best.code);
+    if (!hit || hit.data === undefined) return { s: 'loading' };
+    if (!hit.data) return { s: 'unavailable' };
+    const age = Date.now() - (hit.okAt || 0);
+    if (age > LIVE_STALE_MS) return { s: 'stale', age: Math.round(age / 60000), at: hit.okAt };
+    // minutes in the feed count from when it was read, so take off the whole minutes since then
+    const gone = Math.floor(age / 60000), m = liveMinutes(best.code, best.routeTag, best.head);
+    const lc = WaitOrWalk.liveCheck(best.dep - best.now, best.reach, m && m.map((x) => x - gone));
+    return lc ? Object.assign({ s: lc.state, at: hit.okAt }, lc) : { s: 'none', at: hit.okAt };
   }
   function departures(refs) {
     const live = liveSlot(refs);
@@ -231,7 +269,7 @@
     let shown = [];
     let html = `<p class="warn" id="planbWarn"><b>A scheduled alternative might not be running right now.</b> Routes can be detoured, short turned or replaced by shuttle buses. Check <a href="https://www.ttc.ca/service-alerts">TTC service alerts</a> before you walk.</p>`;
     const rg = ctx.range;
-    if (ctx.covered) html += `<p class="small" id="planbClock"><b>Timetable estimates, not real time${sim ? "" : ", unless marked live"}.</b> ${sim ? `<b>${esc(sim.label)}.</b> Scheduled departures you might have caught then` : `Scheduled departures you may be able to catch from now (${clock(ctx.now)} Toronto time)`}, allowing the walk at 80 metres a minute in a straight line plus 1 minute to board.${sim ? ' Live predictions are not shown on the simulated example; paste your own alert to see them.' : ' Updated every minute. Where the TTC\'s older NextBus feed has a live prediction for a stop it is shown as well; the City lists that feed as decommissioned, so it may stop. Only the stop code is sent to the NextBus host (webservices.umoiq.com), never your alert or destination. The verdict uses the timetable; if a live prediction shows the bus it relies on leaving 5 or more minutes late, a warning appears under the verdict.'} Schedule data ends on ${ymdWords(rg.to)}.</p>`;
+    if (ctx.covered) html += `<p class="small" id="planbClock"><b>Timetable estimates, not real time${sim ? "" : ", unless marked live"}.</b> ${sim ? `<b>${esc(sim.label)}.</b> Scheduled departures you might have caught then` : `Scheduled departures you may be able to catch from now (${clock(ctx.now)} Toronto time)`}, allowing the walk at 80 metres a minute in a straight line plus 1 minute to board.${sim ? ' Live predictions are not shown on the simulated example; paste your own alert to see them.' : ' Updated every minute. Where the TTC\'s older NextBus feed has a live prediction for a stop it is shown as well; the City lists that feed as decommissioned, so it may stop. Only the stop code is sent to the NextBus host (webservices.umoiq.com), never your alert or destination; like any web host, it also sees your IP address and the time of the request. The verdict uses the timetable; if a live prediction shows the bus it relies on leaving 5 or more minutes late, or before you could reach the stop, a warning appears under the verdict; otherwise a live check line says whether live times were read at all.'} Schedule data ends on ${ymdWords(rg.to)}.</p>`;
     else html += `<p class="warn" id="planbClock"><b>Schedule data ends on ${ymdWords(rg.to)}.</b> ${ctx.ymd > rg.to ? 'Today is after that' : `It starts on ${ymdWords(rg.from)}, and today is before that`}, so departure times are not shown. Routes and stops below are from that schedule and may have changed.</p>`;
     if (d && d.name !== s.name) {
       const ranked = ctx.covered ? WaitOrWalk.rankByArrival(planb, ptimes.times, r.direct.concat(r.via), ctx.today, ctx.yesterday, ctx.now, d.name) : r.direct.concat(r.via).map((x) => Object.assign({}, x, { first: null, estimate: null }));
@@ -448,20 +486,22 @@
   // The TTC's open subway alerts, copied into this site every 30 minutes by a scheduled job (data/live_alerts.json).
   const when = (sec) => { const d = new Date(sec * 1000), c = WaitOrWalk.torontoClock(d); return `${clock(c.minutes)} on ${ymdWords(c.ymd)}`; };
   // When the alerts job last ran without error, from GitHub's public API (the copy itself changes only when alerts do).
-  const RUNS = 'https://api.github.com/repos/ALENZACODES/wait-or-walk/actions/workflows/alerts.yml/runs?status=success&per_page=1';
+  // Both schedules count: alerts.yml and alerts-backup.yml (which calls the same job, so its runs are listed under it).
+  const RUNS = ['alerts.yml', 'alerts-backup.yml'].map((w) => `https://api.github.com/repos/ALENZACODES/wait-or-walk/actions/workflows/${w}/runs?status=success&per_page=1`);
   const STALE_MIN = 90;
   const BIKE_STATUS = 'https://toronto.publicbikesystem.net/customer/gbfs/v3.0/station_status';
   function loadLive(get) {
-    const lastRun = fetch(RUNS).then((r) => (r.ok ? r.json() : null)).then((j) => (j && j.workflow_runs && j.workflow_runs[0] ? Date.parse(j.workflow_runs[0].updated_at) / 1000 : null)).catch(() => null);
+    const lastRun = Promise.all(RUNS.map((u) => fetch(u).then((r) => (r.ok ? r.json() : null)).then((j) => (j && j.workflow_runs && j.workflow_runs[0] ? Date.parse(j.workflow_runs[0].updated_at) / 1000 : null)).catch(() => null)))
+      .then((a) => { const v = a.filter((x) => x); return v.length ? Math.max(...v) : null; });
     Promise.all([get('data/live_alerts.json?t=' + Math.floor(Date.now() / 60000)), lastRun]).then(([L, ran]) => {
       live = L; const now = Date.now() / 1000;
       const act = L.alerts.filter((a) => !a.end || a.end > now);
       const checked = Math.max(L.fetchedAt, ran || 0), age = Math.round((now - checked) / 60);
       const ago = age < 120 ? `${age} minutes ago` : `${Math.round(age / 60)} hours ago`;
-      $('#liveSum').textContent = `TTC subway alerts (${act.length}), copied ${when(L.fetchedAt)}`;
+      $('#liveSum').textContent = `TTC subway alerts (${act.length}), copied ${when(L.fetchedAt)}, last checked ${ago}`;
       $('#liveList').innerHTML = act.length ? act.map((a, i) => `<li><span>${esc(a.header)}</span> <button type="button" data-live="${i}">Use this alert</button></li>`).join('') : '<li>No subway alerts in the latest copy.</li>';
       $('#liveList').querySelectorAll('[data-live]').forEach((b) => b.addEventListener('click', () => { setSim(false); $('#alert').value = act[+b.dataset.live].header; readAlert(); savedDest(); }));
-      $('#liveNote').textContent = `Copied from the TTC's open GTFS Realtime feed (Open Government Licence Toronto) by a job that checks every 30 minutes and saves a new copy only when the alerts change. Last checked ${ago}${ran ? '' : ' (from the copy itself; the job status could not be read)'}. Scheduled runs can be late. For the newest alert, paste it from the TTC.`;
+      $('#liveNote').textContent = `Copied from the TTC's open GTFS Realtime feed (Open Government Licence Toronto) by a job that checks every 30 minutes and saves a new copy only when the alerts change. Last checked ${ago}${ran ? '' : ' (from the copy itself; the job status could not be read)'}.${L.feedTimestamp ? ` The TTC feed's own timestamp on this copy: ${when(L.feedTimestamp)}.` : ''} Shown as out of date after ${STALE_MIN} minutes. Scheduled runs can be late. For the newest alert, paste it from the TTC.`;
       const stale = age > STALE_MIN;
       $('#liveStale').hidden = !stale; $('#live').classList.toggle('isstale', stale);
       if (stale) $('#liveSum').textContent = `Copied TTC alerts may be out of date: last checked ${ago}`;
@@ -515,7 +555,7 @@
       const p1 = (x) => (x * 100).toFixed(1) + '%', cell = (x) => `${p1(x.forecast)} vs ${p1(x.actual)} <span class="ci">(AUC ${x.auc.toFixed(3)})</span>`;
       const B = Z.bands, K = Z.kipling;
       $('#zeroTable').innerHTML = `<table><thead><tr><th scope="col">Chance of</th><th scope="col">Shipped, among incidents with a recorded delay (what the page shows; ${B['10'].shippedOnPositive.delays.toLocaleString('en-CA')} test incidents)</th><th scope="col">Shipped, read as a chance per logged incident, 0 minute records included (${B['10'].shippedOnAllRecords.delays.toLocaleString('en-CA')})</th><th scope="col">Refit with 0 minute records kept, per logged incident</th><th scope="col">Kipling example: shipped / refit</th></tr></thead><tbody>${['5', '10', '20'].map((k) => `<tr class="${k === '10' ? 'ours' : ''}"><td>${k}+ minutes</td><td>${cell(B[k].shippedOnPositive)}</td><td>${cell(B[k].shippedOnAllRecords)}</td><td>${cell(B[k].refitOnAllRecords)}</td><td>${Math.round(100 * K[k].positiveOnly)}% / ${Math.round(100 * K[k].allRecords)}%</td></tr>`).join('')}</tbody></table>`;
-      $('#zeroNote').textContent = `Read honestly: the page's chances are right only as chances among incidents with a recorded delay. Read as a chance for any logged incident they run far too high (${p1(B['10'].shippedOnAllRecords.forecast)} forecast against ${p1(B['10'].shippedOnAllRecords.actual)} actual for 10+). The refit answers that other question well (${p1(B['10'].refitOnAllRecords.forecast)} against ${p1(B['10'].refitOnAllRecords.actual)}). ${Z.records.zeroMinute.toLocaleString('en-CA')} of ${Z.records.all.toLocaleString('en-CA')} records on Lines 1, 2 and 4 have 0 minutes; for a person at track level, ${Z.kiplingCause.zeroMinute} of ${Z.kiplingCause.records}. The page keeps the positive delay model and says so on the card, on the assumption that a rider reading a delay alert is usually in an incident that delays service; that assumption has not been tested.`;
+      $('#zeroNote').textContent = `In short: the page's chance is for incidents that delay service. Counting the 0 minute incidents too (${Z.records.zeroMinute.toLocaleString('en-CA')} of ${Z.records.all.toLocaleString('en-CA')} records), far fewer reach 10 minutes (${p1(B['10'].refitOnAllRecords.actual)} against ${p1(B['10'].shippedOnPositive.actual)}), so the shipped chance read that way runs far too high (${p1(B['10'].shippedOnAllRecords.forecast)} forecast against ${p1(B['10'].shippedOnAllRecords.actual)}); a refit with them gets ${p1(B['10'].refitOnAllRecords.forecast)} against ${p1(B['10'].refitOnAllRecords.actual)}. How much lower depends on the cause (Kipling: ${Math.round(K['10'].allRecords * 100)}% instead of ${Math.round(K['10'].positiveOnly * 100)}%). The frozen model is kept, with its assumption stated: someone reading a delay alert is usually in an incident that delays service. That has not been tested.`;
     }).catch(() => {});
     get('data/parser_fresh.json?t=' + Math.floor(Date.now() / 60000)).then((F) => {
       const t = F.alertsSinceFreeze ? `${F.alertsSinceFreeze} alert${F.alertsSinceFreeze === 1 ? '' : 's'} so far, ${F.labelled} labelled${F.score ? `: station ${F.score.station.recall}%, cause ${F.score.cause.recall}%` : ', not scored yet'}` : 'none yet';

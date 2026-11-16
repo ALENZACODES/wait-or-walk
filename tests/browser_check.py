@@ -58,7 +58,7 @@ with sync_playwright() as p:
         check(warn.is_visible() and warn.bounding_box()['y'] < lst.bounding_box()['y'], f'{w}: "might not be running" warning sits above the Plan B list')
         check('LRT (light rail)' in pg.inner_text('#planbOut') and 'Line 5 Eglinton streetcar' not in pg.inner_text('#planbOut'), f'{w}: Line 5 Eglinton shown as LRT')
         check('min walk' in pg.inner_text('#planbOut'), f'{w}: Plan B shows walking time')
-        check('Version r11' in pg.inner_text('footer') and 'Not affiliated' in pg.inner_text('footer'), f'{w}: footer shows version r11 and the not affiliated line')
+        check('Version r12' in pg.inner_text('footer') and 'Not affiliated' in pg.inner_text('footer'), f'{w}: footer shows version r12 and the not affiliated line')
         check(pg.is_visible('#pasteBtn') and 'nothing is sent anywhere' in pg.text_content('.pastenote'), f'{w}: paste button and the privacy note')
         check(pg.is_visible('#scope') and pg.inner_text('#scope') == 'Not the chance your alert causes this delay, or your remaining wait.' and 'among comparable TTC incidents with a recorded delay of 1 minute or more' in pg.inner_text('#pctlab'), f'{w}: card says which population the number is about')
         pg.click('.meaning summary'); check('Among comparable TTC incidents with a recorded delay of 1 minute or more, the model estimates a' in pg.inner_text('#meaning') and '15% instead of 23%' in pg.inner_text('#meaning') and 'not the chance your current alert causes that delay, or your remaining wait' in pg.inner_text('#meaning'), f'{w}: full wording in the card details')
@@ -112,7 +112,11 @@ with sync_playwright() as p:
     check(q.is_hidden('#callBody') and 'planned service work' in q.inner_text('#empty') and q.locator('#planbOut .planb').count() >= 1, 'a planned slow zone at one station: no forecast, Plan B still shown')
     check(q.locator('#evidence').count() == 1 and q.get_attribute('#evidence', 'open') is None and q.locator('#robustTable table').count() == 1 and q.locator('#underwayTable tr').count() == 3 and q.locator('#stressTable table').count() == 1, 'evidence sits behind an Evidence section; late bus rule and underway tables render')
     hf = q.text_content('#heroFigures')
-    check(q.locator('#heroFigures').count() == 1 and '107 of 13,174 trips' in hf and '0.06 minutes per delay' in hf and 'No rider testing has been done' in hf, 'the figures line under the hero gives the switch rate and the per call gain')
+    check(q.locator('#heroFigures').count() == 1 and '107 of 13,174 simulated trips' in hf and 'about 1 in 120' in hf and 'loses about 15 if you miss it' in hf and 'per delay' not in hf and 'No rider testing has been done' in hf, 'the figures line gives the switch rate and the per call gain on one unit (trips)')
+    check('0.06 minutes per trip (0.04 to 0.09)' in q.text_content('#switchUnits') and 'Same simulation, two units' in q.text_content('#switchUnits'), 'the switch table says which denominator each figure uses')
+    check('65% of logged incidents record 0 minutes' in q.text_content('#zeroLine') and 'In short' in q.text_content('#zeroNote') and '15% instead of 23%' in q.text_content('#zeroNote'), 'the zero minute limitation is on the card and summed up under the table')
+    check('also sees your IP address' in q.text_content('footer') and 'Contains information licensed under the Open Government Licence' in q.text_content('footer'), 'footer: the NextBus host sees the IP address and time; licence attribution statement')
+    check('Next to existing transit apps' in q.text_content('#verdict') and 'bustime.ttc.ca' in q.text_content('#verdict'), 'how it differs from Transit and the TTC tools')
     check('How often it says switch' in q.text_content('#stressTable') and '107 of 13,174 trips' in q.text_content('#stressTable') and q.locator('#zeroTable tr').count() == 4 and '23% / 15%' in q.text_content('#zeroTable'), 'switch call table and zero minute sensitivity table render')
     import re as _re
     body = q.text_content('body')
@@ -158,7 +162,7 @@ with sync_playwright() as p:
     q = b.new_page(viewport={'width': 1280, 'height': 900}); q.clock.set_fixed_time('2026-11-15T20:30:00Z')
     q.route('**/data/live_alerts.json*', lambda r: r.fulfill(status=200, content_type='application/json', body=json.dumps(fx)))
     q.goto(URL); q.wait_for_selector('#live:not([hidden])', timeout=8000); q.click('#liveSum')
-    check('copied 2:49 p.m. on Nov 15, 2026' in q.inner_text('#liveSum') and 'Open Government Licence Toronto' in q.inner_text('#liveNote'), f'alerts copy shows when it was copied ({q.inner_text("#liveSum")})')
+    check('copied 2:49 p.m. on Nov 15, 2026' in q.inner_text('#liveSum') and 'last checked' in q.inner_text('#liveSum') and "The TTC feed's own timestamp on this copy: 2:49 p.m." in q.inner_text('#liveNote') and 'Open Government Licence Toronto' in q.inner_text('#liveNote'), f'alerts copy shows when it was copied ({q.inner_text("#liveSum")})')
     q.click('[data-live="0"]'); q.wait_for_timeout(300)
     check(q.input_value('#station') == 'Museum' and q.input_value('#group') == 'medical' and q.is_visible('#pct'), 'one tap on a copied alert fills it and shows a number')
     q.close()
@@ -223,9 +227,54 @@ with sync_playwright() as p:
         q.fill('#alert', 'Line 1: Trains are bypassing St. George while we investigate a fire.'); q.dispatch_event('#alert', 'input'); q.wait_for_timeout(400)
         q.select_option('#dest', 'Dupont'); q.wait_for_timeout(1200)
         lv = q.locator('#planbOut .liveeta').first.inner_text() if q.locator('#planbOut .liveeta').count() else ''
-        check(want in lv and 'NextBus feed' in q.inner_text('#planbClock') and 'decommissioned' in q.inner_text('#planbClock') and 'Only the stop code is sent' in q.inner_text('#planbClock'), f'live predictions {label} ({lv[:70]})')
+        check(want in lv and 'NextBus feed' in q.inner_text('#planbClock') and 'decommissioned' in q.inner_text('#planbClock') and 'Only the stop code is sent' in q.inner_text('#planbClock') and 'also sees your IP address' in q.inner_text('#planbClock'), f'live predictions {label} ({lv[:70]})')
         check(q.locator('#liveGate').count() == 0 and 'switching looks better' in q.inner_text('#suggest'), f'no live warning when the live feed agrees or cannot be read ({label})')
+        st = q.get_attribute('#liveState', 'data-state') if q.locator('#liveState').count() else None
+        lt = q.inner_text('#liveState') if st else ''
+        if label == 'shown': check(st == 'agrees' and 'no conflict found' in lt and 'not a guarantee' in lt and 'Live check: no conflict found' in q.inner_text('#verdictShort'), f'live check state: agrees ({lt[:70]})')
+        else: check(st == 'unavailable' and 'has not been checked against live times' in lt and 'Not checked against live times' in q.inner_text('#verdictShort') and 'no conflict' not in lt, f'live check state: unavailable, never read as a confirmation ({lt[:70]})')
         q.close()
+    # More live check states: no prediction for this route and direction, and still loading (the feed has not answered)
+    none = {'copyright': nb['copyright'], 'predictions': [{'routeTag': '26', 'stopTitle': 'St George Station', 'dirTitleBecauseNoPredictions': 'West - 26 Dupont towards Jane Station'}]}
+    held = []
+    for handler, want, words in [(fixture(none), 'none', 'no live prediction'), (lambda r: held.append(r), 'loading', 'Live check: loading')]:
+        q = b.new_page(viewport={'width': 1280, 'height': 900}); q.clock.set_fixed_time('2026-11-16T22:30:00Z')
+        q.route('https://webservices.umoiq.com/**', handler)
+        q.goto(URL); q.wait_for_selector('#app:not([hidden])'); q.wait_for_timeout(500)
+        q.fill('#alert', 'Line 1: Trains are bypassing St. George while we investigate a fire.'); q.dispatch_event('#alert', 'input'); q.wait_for_timeout(400)
+        q.select_option('#dest', 'Dupont'); q.wait_for_timeout(1200)
+        st = q.get_attribute('#liveState', 'data-state') if q.locator('#liveState').count() else None
+        lt = q.inner_text('#liveState') if st else ''
+        check(st == want and words in lt and 'has not been checked against live times' in lt and 'Not checked against live times' in q.inner_text('#verdictShort'), f'live check state: {want} ({lt[:70]})')
+        for r in held: r.abort()
+        held.clear(); q.wait_for_timeout(200); q.close()
+    # Stale: one good read, then the feed stops answering; after 2.5 minutes the old prediction is not used and its age is shown
+    calls = []
+    def flaky(r):
+        calls.append(1)
+        if len(calls) == 1: r.fulfill(status=200, content_type='application/json', headers={'Access-Control-Allow-Origin': '*'}, body=json.dumps(nb))
+        else: r.abort()
+    q = b.new_page(viewport={'width': 1280, 'height': 900}); q.clock.install(time='2026-11-16T22:30:00Z')
+    q.route('https://webservices.umoiq.com/**', flaky)
+    q.goto(URL); q.wait_for_selector('#app:not([hidden])'); q.wait_for_timeout(500)
+    q.fill('#alert', 'Line 1: Trains are bypassing St. George while we investigate a fire.'); q.dispatch_event('#alert', 'input'); q.wait_for_timeout(400)
+    q.select_option('#dest', 'Dupont'); q.wait_for_timeout(1200)
+    first = q.get_attribute('#liveState', 'data-state') if q.locator('#liveState').count() else None
+    q.clock.run_for(200000); q.wait_for_timeout(800)
+    st = q.get_attribute('#liveState', 'data-state') if q.locator('#liveState').count() else None
+    lt = q.inner_text('#liveState') if st else ''
+    check(first == 'agrees' and st == 'stale' and 'minutes old' in lt and 'checked 5:30 p.m.' in lt and 'has not been checked against live times' in lt, f'live check state: out of date after the feed stops answering ({first} then {st}: {lt[:80]})')
+    q.close()
+    # Early bus (review round 11): the feed has the 26 at under a minute, before you could reach the stop, and the next at 17
+    early = {'copyright': nb['copyright'], 'predictions': [{'routeTag': '26', 'stopTitle': 'St George Station', 'direction': {'title': 'West - 26 Dupont towards Jane Station', 'prediction': [{'minutes': '0', 'epochTime': '1'}, {'minutes': '17', 'epochTime': '2'}]}}]}
+    q = b.new_page(viewport={'width': 1280, 'height': 900}); q.clock.set_fixed_time('2026-11-16T22:30:00Z')
+    q.route('https://webservices.umoiq.com/**', fixture(early))
+    q.goto(URL); q.wait_for_selector('#app:not([hidden])'); q.wait_for_timeout(500)
+    q.fill('#alert', 'Line 1: Trains are bypassing St. George while we investigate a fire.'); q.dispatch_event('#alert', 'input'); q.wait_for_timeout(400)
+    q.select_option('#dest', 'Dupont'); q.wait_for_timeout(1500)
+    g = q.inner_text('#liveGate') if q.locator('#liveGate').count() else ''
+    check('Live feed disagrees with the timetable' in g and 'before you could reach the stop' in g and 'next live bus you could reach is in 17 minutes' in g and 'after its timetabled time' not in g and 'Do not rely on the switch verdict' in g, f'live safety gate: an early bus is reported as early, not as late ({g[:140]})')
+    q.close()
     # Live safety gate: the first live 26 you could reach is 12 minutes after the 5:35 p.m. bus the switch verdict assumes
     late = {'copyright': nb['copyright'], 'predictions': [{'routeTag': '26', 'stopTitle': 'St George Station', 'direction': {'title': 'West - 26 Dupont towards Jane Station', 'prediction': [{'minutes': '17', 'epochTime': '1'}, {'minutes': '30', 'epochTime': '2'}]}}]}
     q = b.new_page(viewport={'width': 1280, 'height': 900}); q.clock.set_fixed_time('2026-11-16T22:30:00Z')
@@ -234,7 +283,7 @@ with sync_playwright() as p:
     q.fill('#alert', 'Line 1: Trains are bypassing St. George while we investigate a fire.'); q.dispatch_event('#alert', 'input'); q.wait_for_timeout(400)
     q.select_option('#dest', 'Dupont'); q.wait_for_timeout(1500)
     g = q.inner_text('#liveGate') if q.locator('#liveGate').count() else ''
-    check('Live feed disagrees with the timetable' in g and 'in 17 minutes' in g and '12 minutes after the 5:35 p.m. bus' in g and 'waiting would be better by about 1 minute' in g and 'Do not rely on the switch verdict' in g, f'live safety gate warns when the live bus is later than the timetabled one ({g[:120]})')
+    check('Live feed disagrees with the timetable' in g and 'in 17 minutes' in g and '12 minutes after the 5:35 p.m. bus' in g and 'live times checked 5:30 p.m.' in g and 'waiting would be better by about 1 minute' in g and 'Do not rely on the switch verdict' in g, f'live safety gate warns when the live bus is later than the timetabled one ({g[:120]})')
     check('Live feed disagrees with the timetable bus: do not rely on switching' in q.inner_text('#verdictShort'), 'the short verdict carries the live warning too')
     q.close()
     q = b.new_page(viewport={'width': 1280, 'height': 900}); q.route('https://webservices.umoiq.com/**', fixture(nb))

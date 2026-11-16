@@ -344,10 +344,20 @@ assert.ok(!W.readAlert('Line 1 Yonge-University: Delays northbound at Museum sta
 { // live safety gate: warn when the first live bus you could reach leaves 5+ minutes after the timetabled one
   assert.equal(W.liveCheck(5, 2, null), null);                 // feed not read: nothing to compare
   assert.equal(W.liveCheck(5, 2, []), null);                   // no prediction for this route and direction
-  assert.equal(W.liveCheck(5, 2, [1]), null);                  // only a bus you cannot reach
-  assert.deepEqual(W.liveCheck(5, 2, [4, 22]), { contradicts: false, liveIn: 4, later: -1 });
-  assert.deepEqual(W.liveCheck(5, 2, [9]), { contradicts: false, liveIn: 9, later: 4 });
-  assert.deepEqual(W.liveCheck(5, 2, [30, 17]), { contradicts: true, liveIn: 17, later: 12 });
-  assert.equal(W.liveCheck(5, 2, [10]).contradicts, true);     // exactly 5 later: warns
+  assert.deepEqual(W.liveCheck(5, 2, [4, 22]), { state: 'agrees', contradicts: false, matchIn: 4, liveIn: 4, later: -1 });
+  assert.deepEqual(W.liveCheck(5, 2, [9]), { state: 'agrees', contradicts: false, matchIn: 9, liveIn: 9, later: 4 });
+  assert.deepEqual(W.liveCheck(5, 2, [30, 17]), { state: 'late', contradicts: true, matchIn: 17, liveIn: 17, later: 12 });
+  assert.equal(W.liveCheck(5, 2, [10]).state, 'late');         // exactly 5 later: warns
+  // early bus (review round 11): timetabled in 6, you need 5 to reach it, the feed has it at 4 and the next at 16.
+  // That is the same bus leaving early, not a bus 10 minutes late.
+  assert.deepEqual(W.liveCheck(6, 5, [4, 16]), { state: 'early', contradicts: true, matchIn: 4, liveIn: 16, later: 10 });
+  assert.deepEqual(W.liveCheck(5, 2, [1]), { state: 'early', contradicts: true, matchIn: 1, liveIn: null, later: null }); // only a bus you cannot reach: warns, never silent
+  assert.equal(W.liveCheck(10, 5, [7, 20]).state, 'agrees');   // early but still reachable
+  assert.equal(W.liveCheck(10, 8, [7, 13]).state, 'early');    // tie between 7 and 13: the earlier is taken, the cautious reading
+  // cancelled or short turned timetabled bus: the nearest prediction is the next one, 12 minutes later
+  assert.equal(W.liveCheck(5, 2, [17]).state, 'late');
+  // sparse list: one prediction far ahead
+  assert.deepEqual(W.liveCheck(5, 2, [45]), { state: 'late', contradicts: true, matchIn: 45, liveIn: 45, later: 40 });
+  assert.equal(W.liveCheck(5, 2, [NaN, -1, 6]).state, 'agrees'); // unreadable or negative minutes are ignored
 }
 console.log('Wait or Walk tests passed.');

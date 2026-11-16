@@ -15,6 +15,8 @@
    that costs at most 0.01 minutes per delay there, then scored on the later test period. Rule set in advance: it
    ships only if, as scheduled, it is not worse than the shipped rule on the test periods (point estimate at least
    minus 0.01 minutes per delay and the 95% interval not entirely below zero).
+4c. Per trip: data/switch_per_trip.json gives the gain over all trips (delay and direction), the same unit as the
+   switch rate, so the two can be read together.
 4b. A late bus check, set in advance with no tuning: switch only if switching still wins when the bus leaves 5 minutes
    late (the shipped rule with the scheduled bus cost plus 5 minutes). Both this rule and the robust margin of item 3
    are scored on the earlier windows (where the robust margin was picked) and on the later test periods. Overall means
@@ -225,6 +227,15 @@ def main():
                        'shareLosing': round(float(allC['swLose_' + sc][mask].sum() / max(allC['swN_' + sc][mask].sum(), 1)), 3)}
         sw['subsets'][name] = row
     out['switchCalls'] = sw
+    # the same switch calls on one denominator: minutes gained per trip (delay and direction), switch or not,
+    # so the switch rate and the overall gain share a unit (written to its own file; decision_checks.json is frozen)
+    pt = {'unit': 'delay and direction', 'note': 'minutes gained against always waiting, summed over switch calls and divided by all trips; a trip with a wait call gains 0', 'subsets': {}}
+    for name, mask in subsets.items():
+        row = {'delays': int(mask.sum()), 'trips': int(allC['swDirs_asScheduled'][mask].sum()), 'switchCalls': int(allC['swN_asScheduled'][mask].sum())}
+        for sc in SCENARIOS:
+            row[sc] = {'gainPerTrip': ratio(allC['swGain_' + sc], allC['swDirs_' + sc], mask)}
+        pt['subsets'][name] = row
+    json.dump(pt, open(os.path.join(ROOT, 'data', 'switch_per_trip.json'), 'w'), indent=1)
     ls['reason'] = 'not worse than the timetable only rule averaged over the eight stress scenarios' if ls['ship'] else 'worse than the timetable only rule averaged over the eight stress scenarios'
     out['lateSafe'] = ls
     for d in drift: d.pop('earlier')
