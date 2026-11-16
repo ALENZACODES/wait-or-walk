@@ -2,9 +2,18 @@
  "tag": "slay-hacks-submission",
  "frozenAt": "2026-11-16T04:02:00Z",
  "parserMatchesFreeze": true,
- "alertsSinceFreeze": 0,
+ "alertsSinceFreeze": 2,
  "labelled": 0,
- "firstSeen": [],
+ "firstSeen": [
+  {
+   "id": "80439",
+   "firstSeen": "2026-11-16T11:03:04.000Z"
+  },
+  {
+   "id": "80440",
+   "firstSeen": "2026-11-16T11:03:04.000Z"
+  }
+ ],
  "score": null,
  "note": "Alerts first seen by the alerts job after the parser was frozen. Not used to write or fix the parser. Unscored until labelled by hand."
 }
