@@ -5,7 +5,8 @@ name: Copy TTC subway alerts
 # changed, and saves the forecast for each new alert at that time in data/alert_forecasts.jsonl (scripts/log_forecasts.mjs),
 # to be scored later, and counts the alerts first seen since the parser freeze in data/parser_fresh.json
 # (scripts/parser_fresh.mjs). These automated commits change only those five files.
-# Triggers: this schedule, a second schedule at a different offset in alerts-backup.yml (GitHub can delay or drop
+# Triggers: this schedule, a second schedule at a different offset in alerts-backup.yml, a self restarting relay in
+# alerts-chain.yml (GitHub can delay or drop
 # scheduled runs, so two independent schedules make a missed copy less likely), and by hand.
 on:
   schedule:

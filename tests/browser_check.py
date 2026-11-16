@@ -8,7 +8,7 @@ Set CHROME=/path/to/chrome to use a specific browser binary.
 Accessibility: set AXE=/path/to/axe.min.js (axe-core, Mozilla Public License 2.0, used unmodified and not stored in this
 repo); CI installs it with npm. With REQUIRE_AXE=1 a missing axe-core is a failure.
 """
-import os, sys
+import os, re, sys
 from playwright.sync_api import sync_playwright
 
 URL = sys.argv[1] if len(sys.argv) > 1 else 'http://localhost:8080/'
@@ -58,10 +58,10 @@ with sync_playwright() as p:
         check(warn.is_visible() and warn.bounding_box()['y'] < lst.bounding_box()['y'], f'{w}: "might not be running" warning sits above the Plan B list')
         check('LRT (light rail)' in pg.inner_text('#planbOut') and 'Line 5 Eglinton streetcar' not in pg.inner_text('#planbOut'), f'{w}: Line 5 Eglinton shown as LRT')
         check('min walk' in pg.inner_text('#planbOut'), f'{w}: Plan B shows walking time')
-        check('Version r12' in pg.inner_text('footer') and 'Not affiliated' in pg.inner_text('footer'), f'{w}: footer shows version r12 and the not affiliated line')
+        check('Version r13' in pg.inner_text('footer') and 'Not affiliated' in pg.inner_text('footer'), f'{w}: footer shows version r13 and the not affiliated line')
         check(pg.is_visible('#pasteBtn') and 'nothing is sent anywhere' in pg.text_content('.pastenote'), f'{w}: paste button and the privacy note')
         check(pg.is_visible('#scope') and pg.inner_text('#scope') == 'Not the chance your alert causes this delay, or your remaining wait.' and 'among comparable TTC incidents with a recorded delay of 1 minute or more' in pg.inner_text('#pctlab'), f'{w}: card says which population the number is about')
-        pg.click('.meaning summary'); check('Among comparable TTC incidents with a recorded delay of 1 minute or more, the model estimates a' in pg.inner_text('#meaning') and '15% instead of 23%' in pg.inner_text('#meaning') and 'not the chance your current alert causes that delay, or your remaining wait' in pg.inner_text('#meaning'), f'{w}: full wording in the card details')
+        pg.click('.meaning summary'); check('Among comparable TTC incidents with a recorded delay of 1 minute or more, the model estimates a' in pg.inner_text('#meaning') and re.search(r'all incidents view shown beside it \(\d+% instead of \d+% here\)', pg.inner_text('#meaning')) and 'not the chance your current alert causes that delay, or your remaining wait' in pg.inner_text('#meaning'), f'{w}: full wording in the card details')
         check(pg.is_visible('.estlab') and 'estimated chance' in pg.inner_text('.estlab').lower() and pg.locator('#bands span').count() == 3, f'{w}: card says Estimated chance and shows 5+, 10+ and 20+')
         check(pg.inner_text('#reconcile').startswith('Why '), f'{w}: card explains the estimate against the raw share for the cause')
         check(pg.is_visible('.safety') and 'follow TTC staff' in pg.inner_text('.safety'), f'{w}: safety line visible')
@@ -98,8 +98,11 @@ with sync_playwright() as p:
     check('can still catch' not in q.inner_text('body') and 'Timetable estimates, not real time' in q.inner_text('#planbClock'), 'no "can still catch" anywhere; Plan B times labelled timetable estimates')
     check(q.locator('#periodEval tr').count() == 4 and q.text_content('#periodEval').count('Exploratory') == 3, 'each evaluation period shown on its own, marked exploratory')
     check('no rider testing has been done' in q.inner_text('#verdict').lower(), 'the page says plainly that no rider testing has been done')
+    pa = q.inner_text('#pctAll'); bt = q.inner_text('#bands')
+    check('15%' in pa and 'all incidents view' in pa and 'the verdict uses 23%' in pa and '(26% all incidents)' in bt and '(7% all incidents)' in bt, f'Kipling: the all incidents chance sits beside every shipped chance ({pa[:60]} / {bt[:60]})')
     # Already underway
     p10 = q.inner_text('#pct'); q.click('[data-elapsed="5"]'); q.wait_for_timeout(200)
+    check('not shown' in q.inner_text('#pctAll') and 'all incidents' not in q.inner_text('#bands'), 'delay already underway: the all incidents view says why it is not shown')
     check(q.inner_text('#pct') != p10 and q.locator('#bands span').count() == 2 and 'reached 5' in q.inner_text('#pctlab') and q.inner_text('#suggest').count('the delay already at 5 minutes') == 1 and q.get_attribute('[data-elapsed="5"]', 'aria-pressed') == 'true', f'delay already reached 5 min: conditional chance {q.inner_text("#pct")} replaces {p10}, verdict uses the remaining minutes')
     q.click('[data-elapsed="10"]'); q.wait_for_timeout(200)
     check(q.locator('#bands span').count() == 1 and '20 minutes or more in total' in q.inner_text('#pctlab') and 'Already a long delay' in q.inner_text('#advice'), f'about 10 minutes in: chance of 20+ in total ({q.inner_text("#pct")})')
@@ -112,9 +115,10 @@ with sync_playwright() as p:
     check(q.is_hidden('#callBody') and 'planned service work' in q.inner_text('#empty') and q.locator('#planbOut .planb').count() >= 1, 'a planned slow zone at one station: no forecast, Plan B still shown')
     check(q.locator('#evidence').count() == 1 and q.get_attribute('#evidence', 'open') is None and q.locator('#robustTable table').count() == 1 and q.locator('#underwayTable tr').count() == 3 and q.locator('#stressTable table').count() == 1, 'evidence sits behind an Evidence section; late bus rule and underway tables render')
     hf = q.text_content('#heroFigures')
-    check(q.locator('#heroFigures').count() == 1 and '107 of 13,174 simulated trips' in hf and 'about 1 in 120' in hf and 'loses about 15 if you miss it' in hf and 'per delay' not in hf and 'No rider testing has been done' in hf, 'the figures line gives the switch rate and the per call gain on one unit (trips)')
+    check(q.locator('#heroFigures').count() == 1 and '107 of 13,174 simulated trips' in hf and 'about 1 in 120' in hf and 'In the simulation those calls saved about 8 minutes' in hf and 'lost about 15 each when the first bus was missed' in hf and 'per delay' not in hf and 'No rider testing has been done' in hf, 'the figures line gives the switch rate and the simulated per call gain on one unit (trips)')
     check('0.06 minutes per trip (0.04 to 0.09)' in q.text_content('#switchUnits') and 'Same simulation, two units' in q.text_content('#switchUnits'), 'the switch table says which denominator each figure uses')
     check('65% of logged incidents record 0 minutes' in q.text_content('#zeroLine') and 'In short' in q.text_content('#zeroNote') and '15% instead of 23%' in q.text_content('#zeroNote'), 'the zero minute limitation is on the card and summed up under the table')
+    check(q.evaluate('document.characterSet') == 'UTF-8' and 'Open Government Licence \u2013 Toronto' in q.text_content('footer') and '\u00e2\u20ac' not in q.content() and '\u00e2\u20ac' not in q.text_content('body'), 'the page is UTF 8: the licence en dash renders as a real en dash, no mojibake anywhere')
     check('also sees your IP address' in q.text_content('footer') and 'Contains information licensed under the Open Government Licence' in q.text_content('footer'), 'footer: the NextBus host sees the IP address and time; licence attribution statement')
     check('Next to existing transit apps' in q.text_content('#verdict') and 'bustime.ttc.ca' in q.text_content('#verdict'), 'how it differs from Transit and the TTC tools')
     check('How often it says switch' in q.text_content('#stressTable') and '107 of 13,174 trips' in q.text_content('#stressTable') and q.locator('#zeroTable tr').count() == 4 and '23% / 15%' in q.text_content('#zeroTable'), 'switch call table and zero minute sensitivity table render')
@@ -231,7 +235,7 @@ with sync_playwright() as p:
         check(q.locator('#liveGate').count() == 0 and 'switching looks better' in q.inner_text('#suggest'), f'no live warning when the live feed agrees or cannot be read ({label})')
         st = q.get_attribute('#liveState', 'data-state') if q.locator('#liveState').count() else None
         lt = q.inner_text('#liveState') if st else ''
-        if label == 'shown': check(st == 'agrees' and 'no conflict found' in lt and 'not a guarantee' in lt and 'Live check: no conflict found' in q.inner_text('#verdictShort'), f'live check state: agrees ({lt[:70]})')
+        if label == 'shown': check(st == 'agrees' and 'no conflict found' in lt and 'not a guarantee' in lt and 'does not confirm it is the same vehicle' in lt and 'Live check: no conflict found' in q.inner_text('#verdictShort'), f'live check state: agrees ({lt[:70]})')
         else: check(st == 'unavailable' and 'has not been checked against live times' in lt and 'Not checked against live times' in q.inner_text('#verdictShort') and 'no conflict' not in lt, f'live check state: unavailable, never read as a confirmation ({lt[:70]})')
         q.close()
     # More live check states: no prediction for this route and direction, and still loading (the feed has not answered)
@@ -283,12 +287,13 @@ with sync_playwright() as p:
     q.fill('#alert', 'Line 1: Trains are bypassing St. George while we investigate a fire.'); q.dispatch_event('#alert', 'input'); q.wait_for_timeout(400)
     q.select_option('#dest', 'Dupont'); q.wait_for_timeout(1500)
     g = q.inner_text('#liveGate') if q.locator('#liveGate').count() else ''
-    check('Live feed disagrees with the timetable' in g and 'in 17 minutes' in g and '12 minutes after the 5:35 p.m. bus' in g and 'live times checked 5:30 p.m.' in g and 'waiting would be better by about 1 minute' in g and 'Do not rely on the switch verdict' in g, f'live safety gate warns when the live bus is later than the timetabled one ({g[:120]})')
+    check('Live feed disagrees with the timetable' in g and 'in 17 minutes' in g and '12 minutes after the 5:35 p.m. bus' in g and 'live times checked 5:30 p.m.' in g and 'waiting would be better by about 1 minute' in g and 'does not confirm it is the same vehicle' in g and 'Do not rely on the switch verdict' in g, f'live safety gate warns when the live bus is later than the timetabled one ({g[:120]})')
     check('Live feed disagrees with the timetable bus: do not rely on switching' in q.inner_text('#verdictShort'), 'the short verdict carries the live warning too')
     q.close()
     q = b.new_page(viewport={'width': 1280, 'height': 900}); q.route('https://webservices.umoiq.com/**', fixture(nb))
     q.goto(URL); q.wait_for_selector('#app:not([hidden])'); q.wait_for_timeout(500); q.get_by_role('button', name='Fire at St George, headed to Dupont').click(); q.wait_for_timeout(1000)
     check(q.locator('#planbOut .liveeta').count() == 0 and 'Live predictions are not shown on the simulated example' in q.inner_text('#planbClock'), 'no live predictions on the simulated example')
+    check(q.inner_text('#pct').strip() == '66%' and '4%' in q.inner_text('#pctAll') and 'the verdict uses 66%' in q.inner_text('#pctAll'), f'St George fire: 66% shown beside the 4% all incidents view ({q.inner_text("#pctAll")[:60]})')
     q.close()
     # Accessibility regression checks, automated only. No manual screen reader test has been done.
     q = b.new_page(viewport={'width': 1280, 'height': 900})

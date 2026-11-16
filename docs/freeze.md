@@ -17,3 +17,8 @@ Any change to a frozen file after the tag must be a bug fix, listed here with th
 - **Effect on the verdict:** none. The verdict is still worked out from the timetable; the live check only warns.
 - **Hashes:** `logic.js` from `caa553000196416a569f38b2592a4a1882eb75543a71129fc090bc4747801601` to `6e624931957ba95b7309a39de36b0ed44c45d888896a27ad7b13673046cea1da` (recorded in `data/freeze.json` under `changes`). The other three frozen files are unchanged.
 - **Tag:** `slay-hacks-submission` was moved to the commit with this fix after its checks passed. The first tagged commit, `0fb2fe8`, keeps the tag `slay-hacks-submission-r11`. `parser-freeze-r11` stays on `0fb2fe8`, since the parser did not change; the fresh parser test set still starts at `frozenAt`.
+
+### November 16, 2026: round 13, tag move only (no frozen file changed)
+- **Frozen files:** `logic.js`, `data/model.json`, `data/policy.json` and `data/decision_checks.json` are byte for byte the same as at `543f06f`; `scripts/freeze_check.mjs` passes with no new entry under `changes`.
+- **What changed outside the freeze:** the page shows the all incidents view beside every shipped chance, read from a new unfrozen lookup table (`data/all_incidents.json`, written by `scripts/all_incidents_table.py`) that the verdict never reads; wording (the live check says matching by time does not confirm it is the same vehicle, and switch saving figures say they are simulated); a shorter DEVPOST; a self restarting relay for the alerts copy (`.github/workflows/alerts-chain.yml`).
+- **Tag:** `slay-hacks-submission` was moved to the round 13 commit after its checks passed. `543f06f` keeps the tag `slay-hacks-submission-r12`.

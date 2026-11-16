@@ -1,0 +1,34 @@
+name: Copy TTC subway alerts (relay)
+# GitHub started only a few of the scheduled runs in alerts.yml and alerts-backup.yml. This relay does not depend on
+# the scheduler: each run copies the alerts (the same job, through workflow_call), waits about 25 minutes, then starts
+# the next relay run with workflow_dispatch, one of the events GitHub lets a workflow's own token start. It is started
+# once by hand. It stops by itself after the judging period (December 16, 2026, UTC), or at once if the repository
+# variable ALERTS_RELAY is set to off. Only one relay waits at a time (the newest wins), and the copy job shares the
+# "alerts" concurrency group with both schedules, so copies never overlap.
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: write
+jobs:
+  copy:
+    uses: ./.github/workflows/alerts.yml
+  next:
+    needs: copy
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    concurrency:
+      group: alerts-relay
+      cancel-in-progress: true
+    steps:
+      - name: Wait, then start the next relay run
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELAY: ${{ vars.ALERTS_RELAY }}
+        run: |
+          if [ "$(date -u +%Y%m%d)" -ge 20261216 ] || [ "$RELAY" = "off" ]; then echo "Relay stopped"; exit 0; fi
+          sleep 1500
+          if [ "$(date -u +%Y%m%d)" -ge 20261216 ]; then echo "Relay stopped"; exit 0; fi
+          gh workflow run alerts-chain.yml --repo "$GITHUB_REPOSITORY" --ref main
+          echo "Started the next relay run"
