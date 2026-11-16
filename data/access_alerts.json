@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1794842991,
- "checkedAt": 1794842991,
- "feedTimestamp": 1794842991,
+ "fetchedAt": 1794843800,
+ "checkedAt": 1794843800,
+ "feedTimestamp": 1794843800,
  "alerts": [
   {
    "id": "71415",
@@ -166,6 +166,12 @@
    "station": "Spadina",
    "kind": "escalator",
    "header": "Spadina: Escalator 2B2E out of service from Line 2 Kennedy platform to south concourse due to a technical problem."
+  },
+  {
+   "id": "80458",
+   "station": "Dufferin",
+   "kind": "elevator",
+   "header": "Dufferin: Elevator 6B1L out of service between Dufferin St west side entrance and concourse while we perform maintenance."
   }
  ]
 }
