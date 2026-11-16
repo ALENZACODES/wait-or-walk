@@ -1,8 +1,8 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1794799001,
- "feedTimestamp": 1794799001,
+ "fetchedAt": 1794808727,
+ "feedTimestamp": 1794808728,
  "alerts": [
   {
    "id": "71415",
@@ -47,12 +47,6 @@
    "header": "Finch: Elevator out of service between GO and YRT bus platform and fares concourse while we perform maintenance."
   },
   {
-   "id": "80244",
-   "station": "Bloor-Yonge",
-   "kind": "escalator",
-   "header": "Bloor-Yonge: Escalator 3D5E out of service from Line 1 Finch platform to Line 2 platform while we perform maintenance. Escalator is expected to be back in service November 15, 2026."
-  },
-  {
    "id": "80249",
    "station": "Oakwood",
    "kind": "elevator",
@@ -83,52 +77,10 @@
    "header": "Dundas West: Escalator 8B3E out of service from concourse to Dundas St W entrance and bus and Streetcar platform while we perform maintenance. Escalator is expected to be back in service March 30, 2027."
   },
   {
-   "id": "80338",
-   "station": "Bayview",
-   "kind": "escalator",
-   "header": "Bayview: Escalator 55P3E out of service from Line 4 platform to west concourse while we perform maintenance."
-  },
-  {
    "id": "80342",
    "station": "Fairbank",
    "kind": "elevator",
    "header": "Fairbank: Elevator ELV02-B out of service between Eglinton Avenue south east side entrance and concourse while we perform maintenance."
-  },
-  {
-   "id": "80363",
-   "station": "Queen",
-   "kind": "escalator",
-   "header": "Queen: Escalator 9Y6E out of service from north underpass to Line 1 Finch platform while we perform maintenance."
-  },
-  {
-   "id": "80369",
-   "station": "Royal York",
-   "kind": "escalator",
-   "header": "Royal York: Escalator 14B3E out of service from Line 2 Kipling platform to west concourse while we perform maintenance."
-  },
-  {
-   "id": "80371",
-   "station": "Keele",
-   "kind": "escalator",
-   "header": "Keele: Escalator 9B2E out of service from Keele St entrance to Line 2 Kennedy platform while we perform maintenance."
-  },
-  {
-   "id": "80373",
-   "station": "Sheppard-Yonge",
-   "kind": "escalator",
-   "header": "Sheppard-Yonge: Escalator 51P1E out of service from Line 4 Don Mills platform to Line 1 platform while we perform maintenance."
-  },
-  {
-   "id": "80374",
-   "station": "Davisville",
-   "kind": "escalator",
-   "header": "Davisville: Escalator 17Y4E out of service from concourse to Davisville Ave entrance while we perform maintenance."
-  },
-  {
-   "id": "80378",
-   "station": "Cedarvale",
-   "kind": "elevator",
-   "header": "Cedarvale: Elevator ELV01-A out of service between Line 5 platform, Line 1 southbound platform/west concourse, and upper concourse while we perform maintenance."
   },
   {
    "id": "80388",
@@ -137,10 +89,10 @@
    "header": "Downsview Park: Escalator 10S4E out of service from Vitti St east side entrance to concourse due to a technical problem."
   },
   {
-   "id": "80414",
-   "station": "Cedarvale",
+   "id": "80421",
+   "station": "Caledonia",
    "kind": "elevator",
-   "header": "Cedarvale: Elevator ELV02-B out of service between Line 5 platform, Line 1 northbound platform/east concourse, and upper concourse while we perform maintenance."
+   "header": "Caledonia: Elevator ELV01-A out of service between concourse and Line 5 centre platform while we perform maintenance."
   }
  ]
 }
