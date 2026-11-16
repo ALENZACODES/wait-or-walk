@@ -21,7 +21,7 @@ RETIRED = [r'can still catch', r'you can catch', r'\bcatchable\b', r'about (5|10
            # round 12 figures line and switch saving figures that did not say they were simulated
            r'When it does, it saves about 8 minutes', r'On those calls it saved', r'does not rescale its number']
 # Mojibake: UTF 8 read as Windows 1252 (an en dash becomes a, euro sign, en dash). Fails anywhere.
-MOJIBAKE = re.compile('\u00e2\u20ac|\u00c3[\u0080-\u00bf]|\ufffd')
+MOJIBAKE = re.compile('\u00e2\u20ac|\u00c3[\u0080-\u00bf]|\u00c2[\u00a0-\u00bf]|\ufffd')
 # Every sentence giving minutes saved or gained by switching must say they are simulated or timetable figures.
 SAVED = re.compile(r'\b(saved?|saves|saving|gains?|gained)\b', re.I)
 MINS = re.compile(r'\b\d+(\.\d+)? (minutes?|min)\b')
@@ -88,7 +88,7 @@ def main(extra):
         if b.startswith('PASTE') and HERO not in T[b]: fails.append(f'{b}: pitch differs from the hero line')
         if b.startswith('PASTE') and FIGS not in T[b]: fails.append(f'{b}: figures line missing')
     page = T['index.html'] + ' ' + T['app.js']
-    for n in NEED_BOTH + ['Delay already reached 5 min', 'Delay already reached 10 min', 'calibrated on recorded delay length', 'Scheduled departures you may be able to catch', 'Timetable estimate']:
+    for n in NEED_BOTH + ['Delay already reached 5 min', 'Delay already reached 10 min', 'calibrated on recorded delay length', 'Scheduled departures you may be able to catch', 'Timetable estimate', 'This switch call uses the first chance']:
         if n not in page: fails.append(f'page: missing "{n}"')
     print('\n'.join(fails) if fails else f'Consistent: {", ".join(sorted(T))}')
     return 1 if fails else 0

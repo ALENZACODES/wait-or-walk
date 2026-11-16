@@ -35,12 +35,17 @@ jobs:
       - run: node scripts/log_forecasts.mjs
       - run: node scripts/check_forecast_log.mjs
       - run: node scripts/parser_fresh.mjs
-      - name: Commit if the alerts changed
+      - name: Commit if the alerts or the last checked time changed
         run: |
           if git diff --quiet -- data/live_alerts.json data/alert_history.json data/access_alerts.json data/alert_forecasts.jsonl data/parser_fresh.json; then echo "No change"; exit 0; fi
           git config user.name "John Khan"
           git config user.email "309250657+ALENZACODES@users.noreply.github.com"
           git add data/live_alerts.json data/alert_history.json data/access_alerts.json data/alert_forecasts.jsonl data/parser_fresh.json
           git commit -m "Copy TTC subway alerts"
-          git pull --rebase origin main
-          git push origin HEAD:main
+          i=0
+          while [ "$i" -lt 3 ]; do
+            git pull --rebase origin main && git push origin HEAD:main && exit 0
+            i=$((i + 1))
+            sleep 2
+          done
+          exit 1

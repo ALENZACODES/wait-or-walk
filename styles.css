@@ -137,8 +137,9 @@ ul.bikes { margin: 4px 0 6px 18px; padding: 0; }
 /* r12: the live check state under every verdict (never a confirmation when live data is missing or old) */
 .livestate { margin: 10px 0 0; padding: 6px 10px; border-left: 3px solid #011F5B; background: #f4f6fa; }
 .livestate[data-state="agrees"] { border-left-color: #2e6b3a; }
-/* r13: the all incidents view beside the shipped chance */
+/* r14: switch assumption line under the two chances */
 .pctall { margin: 4px 0 6px; color: #333; }
 @media (max-width: 600px) { .pctall { font-size: .85rem; margin: 2px 0 4px; } }
 .pctall b { color: #011F5B; }
+#switchAssume { margin: 4px 0 8px; }
 .bands .allv { color: #555; font-weight: normal; font-style: normal; }

@@ -1,0 +1,25 @@
+name: Copy TTC subway alerts (watchdog)
+# Short job, no long wait. If the relay is on and no relay run is queued or in progress, start it again, so a
+# cancelled wait does not leave the chain stopped. The relay copies first, then waits. This schedule can also be
+# delayed or dropped by GitHub; it is a backup, not a replacement for the two copy schedules or the relay itself.
+on:
+  schedule:
+    - cron: '4,14,24,34,44,54 * * * *'
+  workflow_dispatch:
+permissions:
+  actions: write
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Restart the relay if it is not running
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELAY: ${{ vars.ALERTS_RELAY }}
+        run: |
+          if [ "$(date -u +%Y%m%d)" -ge 20261216 ] || [ "$RELAY" = "off" ]; then echo "Watchdog stopped"; exit 0; fi
+          n=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow alerts-chain.yml --limit 10 --json status --jq '[.[] | select(.status == "in_progress" or .status == "queued" or .status == "pending" or .status == "waiting")] | length')
+          if [ "$n" -gt 0 ]; then echo "Relay already running or queued ($n)"; exit 0; fi
+          gh workflow run alerts-chain.yml --repo "$GITHUB_REPOSITORY" --ref main
+          echo "Started the relay"

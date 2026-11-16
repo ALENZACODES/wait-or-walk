@@ -2,9 +2,12 @@ name: Copy TTC subway alerts (relay)
 # GitHub started only a few of the scheduled runs in alerts.yml and alerts-backup.yml. This relay does not depend on
 # the scheduler: each run copies the alerts (the same job, through workflow_call), waits about 25 minutes, then starts
 # the next relay run with workflow_dispatch, one of the events GitHub lets a workflow's own token start. It is started
-# once by hand. It stops by itself after the judging period (December 16, 2026, UTC), or at once if the repository
-# variable ALERTS_RELAY is set to off. Only one relay waits at a time (the newest wins), and the copy job shares the
-# "alerts" concurrency group with both schedules, so copies never overlap.
+# once by hand or by the watchdog. It stops by itself after the judging period (December 16, 2026, UTC), or at once if
+# the repository variable ALERTS_RELAY is set to off. The 25 minute wait is in the "next" job, in the "alerts-relay"
+# concurrency group, not in the "alerts" group, so the wait cannot block or cancel a scheduled copy. Only one relay
+# waits at a time (the newest wins). The copy job shares the "alerts" group with both schedules, so copies never
+# overlap. The next job runs even if the copy failed (if: always()), and starting the next run is retried. Writes are
+# the same idempotent copy job (commit only if the files changed, rebase and retry the push).
 on:
   workflow_dispatch:
 permissions:
@@ -30,5 +33,10 @@ jobs:
           if [ "$(date -u +%Y%m%d)" -ge 20261216 ] || [ "$RELAY" = "off" ]; then echo "Relay stopped"; exit 0; fi
           sleep 1500
           if [ "$(date -u +%Y%m%d)" -ge 20261216 ]; then echo "Relay stopped"; exit 0; fi
-          gh workflow run alerts-chain.yml --repo "$GITHUB_REPOSITORY" --ref main
-          echo "Started the next relay run"
+          i=0
+          while [ "$i" -lt 3 ]; do
+            gh workflow run alerts-chain.yml --repo "$GITHUB_REPOSITORY" --ref main && echo "Started the next relay run" && exit 0
+            i=$((i + 1))
+            sleep 5
+          done
+          exit 1

@@ -4,8 +4,9 @@ and keep a log of when each alert was seen in data/alert_history.json. Also copi
 
 Source: the TTC GTFS Realtime alerts feed (https://gtfsrt.ttc.ca/alerts/subway), published on City of Toronto Open Data
 ("TTC GTFS Realtime (GTFS-RT)") under the Open Government Licence Toronto. The page cannot read the feed directly
-(no cross origin headers), so a scheduled GitHub Action runs this every 30 minutes and commits only when the alerts
-changed. Those automated commits are titled "Copy TTC subway alerts" and change only these data files and the alert time forecast log (data/alert_forecasts.jsonl, written by scripts/log_forecasts.mjs).
+(no cross origin headers), so a scheduled GitHub Action runs this every 30 minutes. fetchedAt is when the alert list last
+changed; checkedAt is written on every successful check, even when the list is unchanged, so the page can show last
+checked from the file. Those automated commits are titled "Copy TTC subway alerts" and change only these data files and the alert time forecast log (data/alert_forecasts.jsonl, written by scripts/log_forecasts.mjs).
 Keeps the alerts active at fetch time: id, line, cause, effect, text, start and end (Unix seconds).
 
 History: firstSeen is the first saved copy with the alert; lastSeen is the latest saved copy that still had it; goneBy
@@ -47,12 +48,14 @@ def read_access(now):
     return int(feed.header.timestamp), sorted(out, key=lambda x: x['id'])
 
 def update_access(now, feed_ts, items, data=DATA):
+    """Write the accessibility copy. Always bumps checkedAt; fetchedAt changes only with the list. Returns 'changed' or 'checked'."""
     p = os.path.join(data, 'access_alerts.json')
     old = json.load(open(p)) if os.path.exists(p) else None
-    if old and old.get('alerts') == items: return 'unchanged'
+    changed = not (old and old.get('alerts') == items)
     json.dump({'source': 'TTC GTFS Realtime alerts, accessibility feed (' + ACCESS_URL.split('?')[0] + ')', 'licence': 'Open Government Licence Toronto',
-               'fetchedAt': now, 'feedTimestamp': feed_ts, 'alerts': items}, open(p, 'w'), indent=1, ensure_ascii=False)
-    return 'changed'
+               'fetchedAt': now if changed else old.get('fetchedAt', now), 'checkedAt': now,
+               'feedTimestamp': feed_ts if changed else old.get('feedTimestamp', feed_ts), 'alerts': items}, open(p, 'w'), indent=1, ensure_ascii=False)
+    return 'changed' if changed else 'checked'
 
 def read(now):
     rt, feed = feed_of(URL)
@@ -70,25 +73,31 @@ def read(now):
     return int(feed.header.timestamp), sorted(out, key=lambda x: x['id'])
 
 def update(now, feed_ts, alerts, data=DATA):
-    """Write the copy and the history only if the alert list changed. Returns 'changed' or 'unchanged'."""
+    """Always write checkedAt on the live copy. Rewrite history and fetchedAt only if the alert list changed.
+    Returns 'changed' or 'checked'."""
     live_p, hist_p = os.path.join(data, 'live_alerts.json'), os.path.join(data, 'alert_history.json')
     old = json.load(open(live_p)) if os.path.exists(live_p) else None
-    if old and old.get('alerts') == alerts: return 'unchanged'
-    hist = json.load(open(hist_p)) if os.path.exists(hist_p) else {'since': now, 'alerts': {}}
-    ids = {a['id'] for a in alerts}
-    for a in alerts:
-        h = hist['alerts'].get(a['id'])
-        if not h or h.get('goneBy'):
-            h = {'firstSeen': now}
-        h.update({'lastSeen': now, 'header': a['header'], 'lines': a['lines'], 'cause': a['cause'], 'effect': a['effect']})
-        h.pop('goneBy', None); hist['alerts'][a['id']] = h
-    for i, h in hist['alerts'].items():
-        if i not in ids and not h.get('goneBy'): h['goneBy'] = now
+    changed = not (old and old.get('alerts') == alerts)
+    if changed:
+        hist = json.load(open(hist_p)) if os.path.exists(hist_p) else {'since': now, 'alerts': {}}
+        ids = {a['id'] for a in alerts}
+        for a in alerts:
+            h = hist['alerts'].get(a['id'])
+            if not h or h.get('goneBy'):
+                h = {'firstSeen': now}
+            h.update({'lastSeen': now, 'header': a['header'], 'lines': a['lines'], 'cause': a['cause'], 'effect': a['effect']})
+            h.pop('goneBy', None); hist['alerts'][a['id']] = h
+        for i, h in hist['alerts'].items():
+            if i not in ids and not h.get('goneBy'): h['goneBy'] = now
+        json.dump(hist, open(hist_p, 'w'), indent=1, ensure_ascii=False)
+        fetchedAt, stamp = now, feed_ts
+    else:
+        fetchedAt, stamp = old.get('fetchedAt', now), old.get('feedTimestamp', feed_ts)
     json.dump({'source': 'TTC GTFS Realtime alerts, subway feed (' + URL.split('?')[0] + ')',
-               'licence': 'Open Government Licence Toronto', 'fetchedAt': now, 'feedTimestamp': feed_ts, 'alerts': alerts},
+               'licence': 'Open Government Licence Toronto', 'fetchedAt': fetchedAt, 'checkedAt': now,
+               'feedTimestamp': stamp, 'alerts': alerts},
               open(live_p, 'w'), indent=1, ensure_ascii=False)
-    json.dump(hist, open(hist_p, 'w'), indent=1, ensure_ascii=False)
-    return 'changed'
+    return 'changed' if changed else 'checked'
 
 def main():
     now = int(time.time())

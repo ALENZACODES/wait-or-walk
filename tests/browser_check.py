@@ -58,7 +58,7 @@ with sync_playwright() as p:
         check(warn.is_visible() and warn.bounding_box()['y'] < lst.bounding_box()['y'], f'{w}: "might not be running" warning sits above the Plan B list')
         check('LRT (light rail)' in pg.inner_text('#planbOut') and 'Line 5 Eglinton streetcar' not in pg.inner_text('#planbOut'), f'{w}: Line 5 Eglinton shown as LRT')
         check('min walk' in pg.inner_text('#planbOut'), f'{w}: Plan B shows walking time')
-        check('Version r13' in pg.inner_text('footer') and 'Not affiliated' in pg.inner_text('footer'), f'{w}: footer shows version r13 and the not affiliated line')
+        check('Version r14' in pg.inner_text('footer') and 'Not affiliated' in pg.inner_text('footer'), f'{w}: footer shows version r14 and the not affiliated line')
         check(pg.is_visible('#pasteBtn') and 'nothing is sent anywhere' in pg.text_content('.pastenote'), f'{w}: paste button and the privacy note')
         check(pg.is_visible('#scope') and pg.inner_text('#scope') == 'Not the chance your alert causes this delay, or your remaining wait.' and 'among comparable TTC incidents with a recorded delay of 1 minute or more' in pg.inner_text('#pctlab'), f'{w}: card says which population the number is about')
         pg.click('.meaning summary'); check('Among comparable TTC incidents with a recorded delay of 1 minute or more, the model estimates a' in pg.inner_text('#meaning') and re.search(r'all incidents view shown beside it \(\d+% instead of \d+% here\)', pg.inner_text('#meaning')) and 'not the chance your current alert causes that delay, or your remaining wait' in pg.inner_text('#meaning'), f'{w}: full wording in the card details')
@@ -294,6 +294,8 @@ with sync_playwright() as p:
     q.goto(URL); q.wait_for_selector('#app:not([hidden])'); q.wait_for_timeout(500); q.get_by_role('button', name='Fire at St George, headed to Dupont').click(); q.wait_for_timeout(1000)
     check(q.locator('#planbOut .liveeta').count() == 0 and 'Live predictions are not shown on the simulated example' in q.inner_text('#planbClock'), 'no live predictions on the simulated example')
     check(q.inner_text('#pct').strip() == '66%' and '4%' in q.inner_text('#pctAll') and 'the verdict uses 66%' in q.inner_text('#pctAll'), f'St George fire: 66% shown beside the 4% all incidents view ({q.inner_text("#pctAll")[:60]})')
+    sa = q.inner_text('#switchAssume')
+    check((not q.locator('#switchAssume').get_attribute('hidden') and 'This switch call uses the first chance' in sa and '1,478 of 1,572' in sa and 'Plan B times from the timetable' in sa and 'fire or smoke delays service' in sa), f'St George fire: switch call states the first chance assumption and the 1,478 of 1,572 fire figure ({sa[:120]})')
     q.close()
     # Accessibility regression checks, automated only. No manual screen reader test has been done.
     q = b.new_page(viewport={'width': 1280, 'height': 900})
@@ -312,6 +314,7 @@ with sync_playwright() as p:
     q.keyboard.press('Enter'); q.wait_for_timeout(1200)
     said = q.text_content('#callStatus')
     check(q.text_content('#pct') == '23%' and '23%' in said and 'waiting looks better' in said, f'Enter on the example shows the call and the status says it ({said[:90]})')
+    check(q.locator('#switchAssume').get_attribute('hidden') is not None, 'Kipling wait: the switch assumption line stays hidden')
     q.focus('[data-elapsed="5"]'); q.keyboard.press('Space'); q.wait_for_timeout(400)
     check(q.get_attribute('[data-elapsed="5"]', 'aria-pressed') == 'true' and q.get_attribute('[data-elapsed="0"]', 'aria-pressed') == 'false' and '58%' in q.text_content('#callStatus'),
           'Space on "Delay already reached 5 min" presses it (aria-pressed) and the status updates')

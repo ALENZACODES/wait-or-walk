@@ -1,7 +1,7 @@
 (function () {
   const $ = (s) => document.querySelector(s);
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-  const VERSION = 'r13';
+  const VERSION = 'r14';
   let allInc = null, model = null, planb = null, ptimes = null, policy = null, best = null, checks = null, underwayChecks = null;
   // sim: the fixed example clock (WaitOrWalk.SIM) or null for live time; elapsed: the "already underway" setting.
   let sim = null, elapsed = 0, planned = false, live = null, access = null, bikes = null, bikeNear = null, surface = null;
@@ -52,7 +52,7 @@
   }
   function announce() {
     const el = $('#callStatus'); if (!el) return;
-    const t = !$('#callBody').hidden ? `${$('#pct').textContent} ${$('#pctlab').textContent}. ${$('#pctAll').textContent} ${$('#advice').textContent} ${$('#verdictShort').hidden ? '' : $('#verdictShort').textContent.replace(/\s*(Why|Details)$/, '')}`.trim() : $('#empty').textContent;
+    const t = !$('#callBody').hidden ? `${$('#pct').textContent} ${$('#pctlab').textContent}. ${$('#pctAll').textContent} ${$('#advice').textContent} ${$('#verdictShort').hidden ? '' : $('#verdictShort').textContent.replace(/\s*(Why|Details)$/, '')} ${$('#switchAssume') && !$('#switchAssume').hidden ? $('#switchAssume').textContent : ''}`.trim() : $('#empty').textContent;
     if (t !== lastSaid) { lastSaid = t; el.textContent = t; }
   }
   function renderCall() {
@@ -168,6 +168,16 @@
     }
     $('#suggest').innerHTML = full || 'Paste an alert to see the comparison.';
     $('#verdictShort').innerHTML = short; $('#verdictShort').hidden = !short;
+    const assume = $('#switchAssume');
+    if (assume) {
+      if (em !== null && call && call.switch) {
+        const fire = $('#group') && $('#group').value === 'fire';
+        assume.hidden = false;
+        assume.textContent = fire
+          ? 'This switch call uses the first chance, which assumes the fire or smoke delays service, and Plan B times from the timetable. 1,478 of 1,572 logged fire and smoke incidents on Lines 1, 2 and 4 record 0 minutes (the all incidents view).'
+          : 'This switch call uses the first chance, which assumes the incident delays service, and Plan B times from the timetable.';
+      } else { assume.hidden = true; assume.textContent = ''; }
+    }
     const bmn = policy && policy.binMeans, sh = (q) => Math.round(q * 100) + '%';
     if (!u || !bmn || em === null) { $('#mix').textContent = ''; return; }
     const b = u.bands;
@@ -497,23 +507,33 @@
   }
   // The TTC's open subway alerts, copied into this site every 30 minutes by a scheduled job (data/live_alerts.json).
   const when = (sec) => { const d = new Date(sec * 1000), c = WaitOrWalk.torontoClock(d); return `${clock(c.minutes)} on ${ymdWords(c.ymd)}`; };
-  // When the alerts job last ran without error, from GitHub's public API (the copy itself changes only when alerts do).
-  // Both schedules count: alerts.yml and alerts-backup.yml (which calls the same job, so its runs are listed under it).
-  const RUNS = ['alerts.yml', 'alerts-backup.yml'].map((w) => `https://api.github.com/repos/ALENZACODES/wait-or-walk/actions/workflows/${w}/runs?status=success&per_page=1`);
+  // Last checked: prefer checkedAt from the copy (written on every successful fetch). Also ask GitHub's public API
+  // for recent runs of the two schedules and the relay (the page still works if this request fails). For the relay,
+  // use created_at: the copy runs first, then the job waits about 25 minutes, so updated_at is later than the copy.
+  const RUNS = [
+    { w: 'alerts.yml', field: 'updated_at' },
+    { w: 'alerts-backup.yml', field: 'updated_at' },
+    { w: 'alerts-chain.yml', field: 'created_at' },
+  ].map((r) => ({ ...r, url: `https://api.github.com/repos/ALENZACODES/wait-or-walk/actions/workflows/${r.w}/runs?per_page=5` }));
   const STALE_MIN = 90;
   const BIKE_STATUS = 'https://toronto.publicbikesystem.net/customer/gbfs/v3.0/station_status';
   function loadLive(get) {
-    const lastRun = Promise.all(RUNS.map((u) => fetch(u).then((r) => (r.ok ? r.json() : null)).then((j) => (j && j.workflow_runs && j.workflow_runs[0] ? Date.parse(j.workflow_runs[0].updated_at) / 1000 : null)).catch(() => null)))
+    const lastRun = Promise.all(RUNS.map((r) => fetch(r.url).then((res) => (res.ok ? res.json() : null)).then((j) => {
+        const runs = (j && j.workflow_runs) || [];
+        const bad = { failure: 1, cancelled: 1, timed_out: 1, startup_failure: 1, action_required: 1 };
+        const times = runs.filter((x) => !bad[x.conclusion]).map((x) => Date.parse(x[r.field] || x.updated_at || x.created_at) / 1000).filter((t) => t);
+        return times.length ? Math.max(...times) : null;
+      }).catch(() => null)))
       .then((a) => { const v = a.filter((x) => x); return v.length ? Math.max(...v) : null; });
     Promise.all([get('data/live_alerts.json?t=' + Math.floor(Date.now() / 60000)), lastRun]).then(([L, ran]) => {
       live = L; const now = Date.now() / 1000;
       const act = L.alerts.filter((a) => !a.end || a.end > now);
-      const checked = Math.max(L.fetchedAt, ran || 0), age = Math.round((now - checked) / 60);
+      const checked = Math.max(L.checkedAt || 0, L.fetchedAt || 0, ran || 0), age = Math.round((now - checked) / 60);
       const ago = age < 120 ? `${age} minutes ago` : `${Math.round(age / 60)} hours ago`;
       $('#liveSum').textContent = `TTC subway alerts (${act.length}), copied ${when(L.fetchedAt)}, last checked ${ago}`;
       $('#liveList').innerHTML = act.length ? act.map((a, i) => `<li><span>${esc(a.header)}</span> <button type="button" data-live="${i}">Use this alert</button></li>`).join('') : '<li>No subway alerts in the latest copy.</li>';
       $('#liveList').querySelectorAll('[data-live]').forEach((b) => b.addEventListener('click', () => { setSim(false); $('#alert').value = act[+b.dataset.live].header; readAlert(); savedDest(); }));
-      $('#liveNote').textContent = `Copied from the TTC's open GTFS Realtime feed (Open Government Licence Toronto) by a job that checks every 30 minutes and saves a new copy only when the alerts change. Last checked ${ago}${ran ? '' : ' (from the copy itself; the job status could not be read)'}.${L.feedTimestamp ? ` The TTC feed's own timestamp on this copy: ${when(L.feedTimestamp)}.` : ''} Shown as out of date after ${STALE_MIN} minutes. Scheduled runs can be late. For the newest alert, paste it from the TTC.`;
+      $('#liveNote').textContent = `Copied from the TTC's open GTFS Realtime feed (Open Government Licence Toronto) by a job that checks about every 25 to 30 minutes and writes the last checked time on every successful check; the alert list is saved again only when it changes. Last checked ${ago}${ran || L.checkedAt ? '' : ' (from the copy itself; the job status could not be read)'}.${L.feedTimestamp ? ` The TTC feed's own timestamp on this copy: ${when(L.feedTimestamp)}.` : ''} Shown as out of date after ${STALE_MIN} minutes. Scheduled runs can be late. For the newest alert, paste it from the TTC.`;
       const stale = age > STALE_MIN;
       $('#liveStale').hidden = !stale; $('#live').classList.toggle('isstale', stale);
       if (stale) $('#liveSum').textContent = `Copied TTC alerts may be out of date: last checked ${ago}`;

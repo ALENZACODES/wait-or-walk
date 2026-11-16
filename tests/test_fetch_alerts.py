@@ -1,5 +1,5 @@
 """Regression tests for the alerts copy (scripts/fetch_alerts.py), without the network or the protobuf library.
-An unchanged feed must not rewrite either file (so no commit); a changed feed rewrites both, logs first seen, last seen
+An unchanged feed bumps checkedAt on the live copy and leaves history and fetchedAt as they were; a changed feed rewrites both, logs first seen, last seen
 and gone by times; a late run (the schedule delayed for hours) still only records what it saw, with its own time.
 Run: python3 -m unittest discover -s tests -p 'test_*.py'
 """
@@ -15,12 +15,15 @@ class Copy(unittest.TestCase):
         self.d = tempfile.mkdtemp()
     def files(self):
         return {f: open(os.path.join(self.d, f), 'rb').read() for f in ('live_alerts.json', 'alert_history.json')}
-    def test_unchanged_feed_writes_nothing(self):
+    def test_unchanged_feed_bumps_checked_at(self):
         self.assertEqual(F.update(1000, 1000, [A, B], self.d), 'changed')
         before = self.files()
-        self.assertEqual(F.update(2800, 2800, [A, B], self.d), 'unchanged')
-        self.assertEqual(self.files(), before)          # byte for byte: no commit, fetchedAt stays 1000
-        self.assertEqual(json.loads(before['live_alerts.json'])['fetchedAt'], 1000)
+        self.assertEqual(F.update(2800, 2800, [A, B], self.d), 'checked')
+        self.assertEqual(self.files()['alert_history.json'], before['alert_history.json'])  # history unchanged
+        L = json.loads(self.files()['live_alerts.json'])
+        self.assertEqual(L['fetchedAt'], 1000)
+        self.assertEqual(L['checkedAt'], 2800)
+        self.assertEqual([a['id'] for a in L['alerts']], ['1', '2'])
     def test_change_logs_first_last_and_gone(self):
         F.update(1000, 1000, [A, B], self.d)
         self.assertEqual(F.update(4600, 4600, [B], self.d), 'changed')
@@ -43,16 +46,16 @@ class Copy(unittest.TestCase):
     def test_repo_files_have_the_shape_the_page_reads(self):
         root = os.path.join(os.path.dirname(__file__), '..', 'data')
         L = json.load(open(os.path.join(root, 'live_alerts.json'))); H = json.load(open(os.path.join(root, 'alert_history.json')))
-        self.assertIn('fetchedAt', L); self.assertTrue(all('header' in a for a in L['alerts']))
+        self.assertIn('fetchedAt', L); self.assertIn('checkedAt', L); self.assertTrue(all('header' in a for a in L['alerts']))
         self.assertTrue(all(h['firstSeen'] <= h['lastSeen'] and (not h.get('goneBy') or h['lastSeen'] <= h['goneBy']) for h in H['alerts'].values()))
 
 class Access(unittest.TestCase):
-    def test_unchanged_access_feed_writes_nothing(self):
+    def test_unchanged_access_feed_bumps_checked_at(self):
         d = tempfile.mkdtemp(); X = [{'id': '9', 'station': 'Kipling', 'kind': 'escalator', 'header': 'Kipling: Escalator out of service.'}]
         self.assertEqual(F.update_access(1000, 1000, X, d), 'changed')
-        before = open(os.path.join(d, 'access_alerts.json'), 'rb').read()
-        self.assertEqual(F.update_access(2800, 2800, X, d), 'unchanged')
-        self.assertEqual(open(os.path.join(d, 'access_alerts.json'), 'rb').read(), before)
+        self.assertEqual(F.update_access(2800, 2800, X, d), 'checked')
+        L = json.load(open(os.path.join(d, 'access_alerts.json')))
+        self.assertEqual((L['fetchedAt'], L['checkedAt'], L['alerts']), (1000, 2800, X))
         self.assertEqual(F.update_access(3600, 3600, [], d), 'changed')
         self.assertEqual(json.load(open(os.path.join(d, 'access_alerts.json')))['alerts'], [])
 
