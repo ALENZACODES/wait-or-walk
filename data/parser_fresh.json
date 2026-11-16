@@ -1,0 +1,10 @@
+{
+ "tag": "slay-hacks-submission",
+ "frozenAt": "2026-11-16T04:02:00Z",
+ "parserMatchesFreeze": true,
+ "alertsSinceFreeze": 0,
+ "labelled": 0,
+ "firstSeen": [],
+ "score": null,
+ "note": "Alerts first seen by the alerts job after the parser was frozen. Not used to write or fix the parser. Unscored until labelled by hand."
+}

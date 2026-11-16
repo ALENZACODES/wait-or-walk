@@ -16,5 +16,7 @@ jobs:
           node-version: 20
       - run: for t in tests/*.mjs; do node "$t"; done
       - run: node scripts/parser_eval.mjs --check
+      - run: node scripts/freeze_check.mjs
+      - run: node scripts/check_forecast_log.mjs
       - run: python3 -m unittest discover -s tests -p 'test_*.py' -v
       - run: python3 scripts/consistency_check.py

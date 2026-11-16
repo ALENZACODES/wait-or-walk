@@ -43,6 +43,18 @@
   function timetableRisk(slack, nextGap) {
     return { timetable: slack, late5: slack - 5, missed: nextGap === null || nextGap === undefined ? null : slack - nextGap };
   }
+  // Live safety gate: does a live prediction contradict the timetabled bus the verdict relies on? No new rule: the
+  // verdict is unchanged, the page only warns. schedIn: minutes until that scheduled departure; reach: walk plus boarding
+  // minutes; live: predicted minutes for that stop, route and direction (null or empty when there is nothing to compare).
+  // Contradicts when the first live bus you could reach leaves at least tol (5) minutes after the scheduled one.
+  function liveCheck(schedIn, reach, live, tol) {
+    if (!Array.isArray(live) || !live.length || schedIn === null || schedIn === undefined) return null;
+    const t = tol === undefined ? 5 : tol;
+    const ok = live.filter((m) => Number.isFinite(m) && m >= reach).sort((a, b) => a - b);
+    if (!ok.length) return null;
+    const later = ok[0] - schedIn;
+    return { contradicts: later >= t, liveIn: ok[0], later };
+  }
 
   // "Already underway": condition the same calibrated bands on the delay having reached 5 or 10 minutes, with no refit.
   // P(10+ | 5+) = P(10+) / P(5+) and P(20+ | 10+) = P(20+) / P(10+); the bands are kept in order (p5 >= p10 >= p20),
@@ -369,5 +381,5 @@
     return { hour, weekend: wd === 'Sat' || wd === 'Sun' };
   }
 
-  return { predict, underway, SIM, isOvernight, expectedDelay, switchCall, timetableRisk, predictBands, reachable, rankByArrival, subwayMinutes, scheduleRange, BOARD_MINUTES, explain, advice, readAlert, planB, applyAlert, chooseOption, canForecast, mismatch, activeServices, decodeTimes, nextDepartures, torontoClock, walkMinutes, timeBucket, torontoNow, labelFor, LABELS };
+  return { predict, underway, SIM, isOvernight, expectedDelay, switchCall, timetableRisk, liveCheck, predictBands, reachable, rankByArrival, subwayMinutes, scheduleRange, BOARD_MINUTES, explain, advice, readAlert, planB, applyAlert, chooseOption, canForecast, mismatch, activeServices, decodeTimes, nextDepartures, torontoClock, walkMinutes, timeBucket, torontoNow, labelFor, LABELS };
 });

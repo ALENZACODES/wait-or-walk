@@ -1,7 +1,7 @@
 {
- "source": "Real TTC subway alerts posted by @TTCnotices on X (TTC Service Alerts), Aug 8 to Nov 16, 2026, one per distinct alert (updates with only a time stamp or a closing line removed). Labels set by hand from the alert text alone, before comparing with the parser.",
+ "source": "Real TTC subway alerts posted by @TTCnotices on X (TTC Service Alerts), Aug 8 to Nov 15, 2026, Toronto time (the last was posted at 9:12 p.m. on Nov 15, which is Nov 16 in UTC; postedAt is in UTC), one per distinct alert (updates with only a time stamp or a closing line removed). Labels set by hand from the alert text alone, before comparing with the parser.",
  "labelRules": "line: the line named. stations: every station named, in model names (Bloor-Yonge is Bloor on Line 1 and Yonge on Line 2; Vaughan is Vaughan Metropolitan Centre). cause: the model cause group the text describes (security incident and police or TPS investigation: security; emergency alarm: alarm; mechanical issue: train; door problem: doors; operational problem: operations; communication issue: signals, as the TTC signal codes include train control communication; power shut off: power; trespasser at track level or on the tracks: track_person; an unspecified investigation: other). planned: planned work or maintenance, which gets no forecast.",
- "split": "development: the 51 older alerts (Aug 8 to Oct 15, 2026), used to find and fix parser errors; held out: the 51 newer alerts (Oct 15 to Nov 16, 2026), not used for fixes",
+ "split": "development: the 51 older alerts (Aug 8 to Oct 15, 2026), used to find and fix parser errors; held out: the 51 newer alerts (Oct 15 to Nov 15, 2026, Toronto time), not used for fixes",
  "alerts": [
   {
    "id": "2086118782745911400",

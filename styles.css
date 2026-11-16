@@ -131,3 +131,6 @@ ul.bikes { margin: 4px 0 6px 18px; padding: 0; }
 .liveeta.on { color: var(--blue); }
 .liveeta.none { color: #555; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+/* r11: how often the verdict says switch, the same figures as the README and Devpost text */
+.figures { margin: 0 0 8px; color: #333; }
+.livegate { margin-top: 10px; }

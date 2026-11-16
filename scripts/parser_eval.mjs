@@ -44,11 +44,13 @@ export function score(alerts) {
     errors
   };
 }
-const out = { source: L.source, labelRules: L.labelRules, split: L.split };
-for (const s of ['development', 'held out']) out[s === 'held out' ? 'heldOut' : s] = score(L.alerts.filter((a) => a.split === s));
-out.all = score(L.alerts);
-if (process.argv.includes('--write')) writeFileSync(new URL('../data/parser_eval.json', import.meta.url), JSON.stringify(out, null, 1));
-const brief = (k) => { const x = out[k]; return `${k}: ${x.alerts} alerts; line ${x.line.accuracy}%; station precision ${x.station.precision}% recall ${x.station.recall}% (${x.station.wrong} wrong, ${x.station.missed} missed); cause precision ${x.cause.precision}% recall ${x.cause.recall}% (${x.cause.wrong} wrong); planned precision ${x.plannedWork.precision}% recall ${x.plannedWork.recall}%; ready ${x.readyWithoutHelp.count}/${x.readyWithoutHelp.of}`; };
-console.log(['development', 'heldOut', 'all'].map(brief).join('\n'));
-if (process.argv.includes('--errors')) for (const e of out.all.errors) console.log(' -', e.errors.join('; '), '|', e.text.slice(0, 110));
-if (process.argv.includes('--check') && out.all.errors.filter((e) => !(e.errors.length === 1 && /^no cause \(label other\)/.test(e.errors[0]))).length) { console.error('Parser errors on labelled alerts'); process.exit(1); }
+if (import.meta.url === `file://${process.argv[1]}`) {
+  const out = { source: L.source, labelRules: L.labelRules, split: L.split };
+  for (const s of ['development', 'held out']) out[s === 'held out' ? 'heldOut' : s] = score(L.alerts.filter((a) => a.split === s));
+  out.all = score(L.alerts);
+  if (process.argv.includes('--write')) writeFileSync(new URL('../data/parser_eval.json', import.meta.url), JSON.stringify(out, null, 1));
+  const brief = (k) => { const x = out[k]; return `${k}: ${x.alerts} alerts; line ${x.line.accuracy}%; station precision ${x.station.precision}% recall ${x.station.recall}% (${x.station.wrong} wrong, ${x.station.missed} missed); cause precision ${x.cause.precision}% recall ${x.cause.recall}% (${x.cause.wrong} wrong); planned precision ${x.plannedWork.precision}% recall ${x.plannedWork.recall}%; ready ${x.readyWithoutHelp.count}/${x.readyWithoutHelp.of}`; };
+  console.log(['development', 'heldOut', 'all'].map(brief).join('\n'));
+  if (process.argv.includes('--errors')) for (const e of out.all.errors) console.log(' -', e.errors.join('; '), '|', e.text.slice(0, 110));
+  if (process.argv.includes('--check') && out.all.errors.filter((e) => !(e.errors.length === 1 && /^no cause \(label other\)/.test(e.errors[0]))).length) { console.error('Parser errors on labelled alerts'); process.exit(1); }
+}

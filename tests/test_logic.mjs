@@ -341,4 +341,13 @@ assert.ok(!W.readAlert('Line 1 Yonge-University: Delays northbound at Museum sta
   assert.deepEqual(W.timetableRisk(11, 23), { timetable: 11, late5: 6, missed: -12 });
   assert.equal(W.timetableRisk(-11, null).missed, null);
 }
+{ // live safety gate: warn when the first live bus you could reach leaves 5+ minutes after the timetabled one
+  assert.equal(W.liveCheck(5, 2, null), null);                 // feed not read: nothing to compare
+  assert.equal(W.liveCheck(5, 2, []), null);                   // no prediction for this route and direction
+  assert.equal(W.liveCheck(5, 2, [1]), null);                  // only a bus you cannot reach
+  assert.deepEqual(W.liveCheck(5, 2, [4, 22]), { contradicts: false, liveIn: 4, later: -1 });
+  assert.deepEqual(W.liveCheck(5, 2, [9]), { contradicts: false, liveIn: 9, later: 4 });
+  assert.deepEqual(W.liveCheck(5, 2, [30, 17]), { contradicts: true, liveIn: 17, later: 12 });
+  assert.equal(W.liveCheck(5, 2, [10]).contradicts, true);     // exactly 5 later: warns
+}
 console.log('Wait or Walk tests passed.');

@@ -1,0 +1,98 @@
+{
+ "bands": {
+  "5": {
+   "shippedOnPositive": {
+    "delays": 7455,
+    "forecast": 0.503,
+    "actual": 0.479,
+    "auc": 0.702,
+    "logLoss": 0.6279
+   },
+   "shippedOnAllRecords": {
+    "delays": 21771,
+    "forecast": 0.534,
+    "actual": 0.164,
+    "auc": 0.566,
+    "logLoss": 0.8229
+   },
+   "refitOnAllRecords": {
+    "delays": 21771,
+    "forecast": 0.185,
+    "actual": 0.164,
+    "auc": 0.665,
+    "logLoss": 0.4234
+   }
+  },
+  "10": {
+   "shippedOnPositive": {
+    "delays": 7455,
+    "forecast": 0.164,
+    "actual": 0.146,
+    "auc": 0.751,
+    "logLoss": 0.3628
+   },
+   "shippedOnAllRecords": {
+    "delays": 21771,
+    "forecast": 0.194,
+    "actual": 0.05,
+    "auc": 0.667,
+    "logLoss": 0.3044
+   },
+   "refitOnAllRecords": {
+    "delays": 21771,
+    "forecast": 0.058,
+    "actual": 0.05,
+    "auc": 0.729,
+    "logLoss": 0.1815
+   }
+  },
+  "20": {
+   "shippedOnPositive": {
+    "delays": 7455,
+    "forecast": 0.046,
+    "actual": 0.041,
+    "auc": 0.773,
+    "logLoss": 0.1465
+   },
+   "shippedOnAllRecords": {
+    "delays": 21771,
+    "forecast": 0.062,
+    "actual": 0.014,
+    "auc": 0.715,
+    "logLoss": 0.1054
+   },
+   "refitOnAllRecords": {
+    "delays": 21771,
+    "forecast": 0.016,
+    "actual": 0.014,
+    "auc": 0.763,
+    "logLoss": 0.0665
+   }
+  }
+ },
+ "kipling": {
+  "5": {
+   "positiveOnly": 0.396,
+   "allRecords": 0.264
+  },
+  "10": {
+   "positiveOnly": 0.233,
+   "allRecords": 0.148
+  },
+  "20": {
+   "positiveOnly": 0.099,
+   "allRecords": 0.065
+  }
+ },
+ "kiplingCause": {
+  "records": 999,
+  "zeroMinute": 436
+ },
+ "records": {
+  "all": 47063,
+  "zeroMinute": 30515,
+  "positive": 16548,
+  "zeroShareTestPeriods": 0.658
+ },
+ "note": "The page reports the chance among recorded positive delays. Keeping 0 minute records answers a different question (the chance per logged record), and many 0 minute records are entries that never stopped service. Nothing in the app changed."
+}

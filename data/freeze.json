@@ -1,0 +1,12 @@
+{
+ "tag": "slay-hacks-submission",
+ "parserTag": "parser-freeze-r11",
+ "frozenAt": "2026-11-16T04:02:00Z",
+ "note": "Model, wait or switch rule, live safety gate and alert parser frozen for judging. Any later change to these files must be a bug fix listed in docs/freeze.md. Alerts first seen after frozenAt form the fresh parser test set (data/parser_fresh.json).",
+ "files": {
+  "logic.js": "caa553000196416a569f38b2592a4a1882eb75543a71129fc090bc4747801601",
+  "data/model.json": "4083390a39d174a40e03b4501fd32eb1aee9f5333ece3a5cd82648d37bcee1cd",
+  "data/policy.json": "66266dc24cd5475234757dce5c14de5fbfe0c36c002265ef0ada2f21b04b3b06",
+  "data/decision_checks.json": "2e83e6069e752171884a03ccc97bf53573b68c80c54aae7252af72046af71387"
+ }
+}

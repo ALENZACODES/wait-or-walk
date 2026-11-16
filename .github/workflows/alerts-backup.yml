@@ -1,0 +1,13 @@
+name: Copy TTC subway alerts (second schedule)
+# A second, independent schedule for the same job in alerts.yml, offset by 15 minutes. GitHub can delay or drop
+# scheduled runs; with two schedules a dropped run is more likely to be covered. Both share one concurrency group, so
+# they never run at the same time, and the job commits only when the alerts changed.
+on:
+  schedule:
+    - cron: '22,52 * * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  copy:
+    uses: ./.github/workflows/alerts.yml

@@ -20,7 +20,9 @@
    are scored on the earlier windows (where the robust margin was picked) and on the later test periods. Overall means
    the average over all eight stress scenarios. Rule set in advance: the late bus check ships only if it is not worse
    than the shipped rule overall on the test periods (point estimate at least 0).
-5. Per period results of the shipped rule, so each evaluation period can be shown on its own.
+5. Switch calls of the shipped late bus check: how often it says switch (per delay and direction) and the minutes
+   gained on those calls, as scheduled and in each stress scenario. A recomputation, no new rule.
+6. Per period results of the shipped rule, so each evaluation period can be shown on its own.
 Reads the evaluation forecasts train.py saves in the cache (preds.pkl). Writes data/decision_checks.json.
 Run after train.py: python3 scripts/decision_checks.py [cache_dir]
 """
@@ -142,6 +144,17 @@ def main():
             C['robust_' + sc] = cost(rows, D, lambda r, x: ew_base[r] - x >= m_robust, sc)
             C['late_' + sc] = cost(rows, D, lambda r, x: ew_base[r] - x - LATE_SAFE >= margins[k], sc)
             C['close_' + sc] = cost(rows, D, lambda r, x: ew_base[r] - x >= margins[k] + b_close, sc)
+        # what a rider sees: how often the shipped late bus check says switch, and what it gains on those calls
+        late_dec = lambda r, x: ew_base[r] - x - LATE_SAFE >= margins[k]
+        for sc in SCENARIOS:
+            n_sw = np.zeros(len(D)); g_sw = np.zeros(len(D)); n_lose = np.zeros(len(D)); n_dir = np.zeros(len(D))
+            for r, dirs in enumerate(rows):
+                n_dir[r] = len(dirs)
+                for d in dirs:
+                    if d is None or not late_dec(r, d[0]): continue
+                    x = d[1][sc]; g = D[r] - (D[r] + 2 if x is None else x)
+                    n_sw[r] += 1; g_sw[r] += g; n_lose[r] += g < 0
+            C['swN_' + sc], C['swGain_' + sc], C['swLose_' + sc], C['swDirs_' + sc] = n_sw, g_sw, n_lose, n_dir
         drift.append({'test': metrics['folds'][k]['test'], 'binMeansBase': [round(x, 2) for x in bm_base], 'binMeansRecent': [round(x, 2) for x in bm_recent],
                       'loggedMinutesAverage': round(float(D.mean()), 2), 'expectedDelayBase': round(float(ew_base.mean()), 2),
                       'expectedDelayRecent': round(float(ew_recent.mean()), 2), 'recentMargin': m_recent,
@@ -152,7 +165,7 @@ def main():
     D = np.concatenate([t['D'] for t in tests])
     parts = [{'y': t['y'], 'date': t['date']} for t in tests]
     draw = T0.resampler(parts, 'day', rng); idxs = [draw() for _ in range(T0.BOOT)]
-    subsets = {'all': np.ones(len(D), bool), 'under10': D < 10, 'atLeast20': D >= 20}
+    subsets = {'all': np.ones(len(D), bool), 'under10': D < 10, 'atLeast20': D >= 20, 'atLeast30': D >= 30}
     def ci(diff, mask):
         vals = [diff[i][mask[i]].mean() for i in idxs]
         return {'value': round(float(diff[mask].mean()), 2), 'low': round(float(np.percentile(vals, 2.5)), 2), 'high': round(float(np.percentile(vals, 97.5)), 2)}
@@ -169,7 +182,8 @@ def main():
         rob = {'delays': int(mask.sum())}
         for sc in SCENARIOS:
             rob[sc] = {'minutes': round(float(allC['robust_' + sc][mask].mean()), 2), 'savedVsWait': ci(allC['alwaysWait'] - allC['robust_' + sc], mask),
-                       'robustMinusShipped': ci(allC['stress_' + sc] - allC['robust_' + sc], mask)}
+                       'robustMinusShipped': ci(allC['stress_' + sc] - allC['robust_' + sc], mask),
+                       'robustMinusLate': ci(allC['late_' + sc] - allC['robust_' + sc], mask)}
         out['robust']['subsets'][name] = rob
     out['closeCall'] = {'bands': [d['closeBand'] for d in drift], 'subsets': {}}
     for name, mask in subsets.items():
@@ -197,6 +211,20 @@ def main():
         ls['earlierWindows'][sc] = {'lateMinusShipped': round(avg('shipped') - avg('lateSafe'), 2), 'robustMinusShipped': round(avg('shipped') - avg('robust'), 2)}
     ov = ls['testPeriods']['all']['overall']['lateMinusShipped']
     ls['ship'] = bool(ov['value'] >= 0)
+    # switch rate and gain per switch call (per delay and direction, as the simulation scores both directions)
+    def ratio(num, den, mask):
+        vals = [num[i][mask[i]].sum() / max(den[i][mask[i]].sum(), 1) for i in idxs]
+        return {'value': round(float(num[mask].sum() / max(den[mask].sum(), 1)), 3), 'low': round(float(np.percentile(vals, 2.5)), 3), 'high': round(float(np.percentile(vals, 97.5)), 3)}
+    sw = {'unit': 'delay and direction', 'subsets': {}}
+    for name, mask in subsets.items():
+        row = {'delays': int(mask.sum()), 'directions': int(allC['swDirs_asScheduled'][mask].sum()),
+               'switchCalls': int(allC['swN_asScheduled'][mask].sum()),
+               'switchRate': ratio(allC['swN_asScheduled'], allC['swDirs_asScheduled'], mask)}
+        for sc in SCENARIOS:
+            row[sc] = {'gainPerSwitch': ratio(allC['swGain_' + sc], allC['swN_' + sc], mask),
+                       'shareLosing': round(float(allC['swLose_' + sc][mask].sum() / max(allC['swN_' + sc][mask].sum(), 1)), 3)}
+        sw['subsets'][name] = row
+    out['switchCalls'] = sw
     ls['reason'] = 'not worse than the timetable only rule averaged over the eight stress scenarios' if ls['ship'] else 'worse than the timetable only rule averaged over the eight stress scenarios'
     out['lateSafe'] = ls
     for d in drift: d.pop('earlier')

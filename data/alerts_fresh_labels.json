@@ -1,0 +1,4 @@
+{
+ "rules": "Fresh test set for the frozen parser: alerts first seen by the alerts job after the freeze time in data/freeze.json (listed in data/parser_fresh.json). Label each from its header text alone, without looking at what the page or data/alert_forecasts.jsonl read: line (YU, BD, SHP), every station named, cause group (as in data/alerts_labelled.json) and whether it is planned work. Note who labelled it.",
+ "alerts": []
+}
