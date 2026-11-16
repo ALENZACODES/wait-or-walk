@@ -85,7 +85,7 @@
     const ai = allIncidents(x), aiOf = { 5: ai && ai.p5, 10: ai && ai.p10, 20: ai && ai.p20 };
     $('#pctAll').innerHTML = u && u.elapsed
       ? `<b>All incidents view: not shown</b> once the delay has reached ${u.elapsed} minutes, since an incident already delaying service is not one of the 0 minute incidents.`
-      : ai ? `<b>${pct(ai.p10)}</b> if incidents logged with 0 minutes of delay count too (all incidents view, a separate fit; the verdict uses ${pct(p)}).` : '<b>All incidents view:</b> not available for this combination.';
+      : ai ? `<b>${pct(ai.p10)}</b> counting incidents logged with 0 minutes too (all incidents view; the verdict uses ${pct(p)}).` : '<b>All incidents view:</b> not available for this combination.';
     $('#bands').innerHTML = !u ? '' : u.chips.map(([k, q]) => `<span class="${k === u.target ? 'on' : ''}"><b>${pct(q)}</b> ${k}+ min${u.elapsed ? ' total' : ''}${!u.elapsed && aiOf[k] != null ? ` <em class="allv">(${pct(aiOf[k])} all incidents)</em>` : ''}</span>`).join('');
     document.querySelectorAll('[data-elapsed]').forEach((b) => b.setAttribute('aria-pressed', String(+b.dataset.elapsed === (u ? u.elapsed : 0))));
     $('#meaning').textContent = !u || !u.elapsed
