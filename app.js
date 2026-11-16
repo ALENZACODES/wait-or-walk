@@ -232,7 +232,7 @@
       if (ranked.length) {
         shown = ranked;
         html += `<h3>From ${esc(s.label)} towards ${esc(d.label)}${ctx.covered ? ', earliest scheduled arrival first' : ''}</h3>`;
-        if (ctx.covered) html += '<p class="small">Ordered by the first scheduled departure you may be able to catch plus the scheduled ride (and the scheduled subway time onward where you change). These are schedule estimates, not live times and not a promise of the quickest way.</p>';
+        if (ctx.covered) html += '<p class="small">Ordered by the first scheduled departure you may be able to catch plus the scheduled ride (and the scheduled subway time onward where you change). These are schedule estimates, not a promise of the quickest way; live predictions, where shown, do not change the order.</p>';
         html += `<ul class="planb">${ranked.map((x) => routeLine(x, (x.transfer ? `<br><span class="meta">Ride past the delay, then change to ${LINE[x.line]} at ${esc(WaitOrWalk.labelFor(model, x.transfer))}</span>` : `<br><span class="meta">Goes to near ${esc(d.label)}: get off at ${esc(x.alight)}</span>`) + arrival(x, d.label), departures(x.refs))).join('')}</ul>`;
       }
       if (!ranked.length) {
