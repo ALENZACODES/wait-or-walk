@@ -14,13 +14,33 @@
   },
   "80241": {
    "firstSeen": 1794772174,
-   "lastSeen": 1794773282,
+   "lastSeen": 1794799001,
    "header": "Line 2 Bloor-Danforth: There is no subway service between Victoria Park and Kennedy stations due to planned track work. Shuttle buses are running.",
    "lines": [
     "BD"
    ],
    "cause": "MAINTENANCE",
    "effect": "NO_SERVICE"
+  },
+  "80402": {
+   "firstSeen": 1794799001,
+   "lastSeen": 1794799001,
+   "header": "Line 1 Yonge-University: There will be limited nightly service starting 11 p.m., between Pioneer Village and Sheppard West stations on Monday, November 16 to Wednesday, November 18, for tunnel improvements.",
+   "lines": [
+    "YU"
+   ],
+   "cause": "MAINTENANCE",
+   "effect": "REDUCED_SERVICE"
+  },
+  "80406": {
+   "firstSeen": 1794799001,
+   "lastSeen": 1794799001,
+   "header": "Line 1 Yonge-University: There will be no subway service between York Mills and Eglinton stations, starting 11 p.m., nightly Monday, November 16 to Wednesday, November 18, due to structural maintenance. Shuttle buses will operate.",
+   "lines": [
+    "YU"
+   ],
+   "cause": "MAINTENANCE",
+   "effect": "REDUCED_SERVICE"
   }
  }
 }

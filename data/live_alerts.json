@@ -1,8 +1,8 @@
 {
  "source": "TTC GTFS Realtime alerts, subway feed (https://gtfsrt.ttc.ca/alerts/subway)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1794773282,
- "feedTimestamp": 1794773283,
+ "fetchedAt": 1794799001,
+ "feedTimestamp": 1794799001,
  "alerts": [
   {
    "id": "80241",
@@ -15,6 +15,30 @@
    "description": "",
    "start": 1794650400,
    "end": 1794817800
+  },
+  {
+   "id": "80402",
+   "lines": [
+    "YU"
+   ],
+   "cause": "MAINTENANCE",
+   "effect": "REDUCED_SERVICE",
+   "header": "Line 1 Yonge-University: There will be limited nightly service starting 11 p.m., between Pioneer Village and Sheppard West stations on Monday, November 16 to Wednesday, November 18, for tunnel improvements.",
+   "description": "",
+   "start": 1794791542,
+   "end": 1795060800
+  },
+  {
+   "id": "80406",
+   "lines": [
+    "YU"
+   ],
+   "cause": "MAINTENANCE",
+   "effect": "REDUCED_SERVICE",
+   "header": "Line 1 Yonge-University: There will be no subway service between York Mills and Eglinton stations, starting 11 p.m., nightly Monday, November 16 to Wednesday, November 18, due to structural maintenance. Shuttle buses will operate.",
+   "description": "",
+   "start": 1794791996,
+   "end": 1795060800
   }
  ]
 }

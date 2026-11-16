@@ -1,8 +1,8 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1794786841,
- "feedTimestamp": 1794786842,
+ "fetchedAt": 1794799001,
+ "feedTimestamp": 1794799001,
  "alerts": [
   {
    "id": "71415",
@@ -59,6 +59,18 @@
    "header": "Oakwood: Elevator ELV02-B out of service between concourse and Eglinton Avenue north side entrance while we perform maintenance. Elevator is expected to be back in service November 16, 2026."
   },
   {
+   "id": "80250",
+   "station": "Keelesdale",
+   "kind": "elevator",
+   "header": "Keelesdale: Elevator ELV01-A out of service between concourse and Line 5 centre platform while we perform maintenance. Elevator is expected to be back in service November 16, 2026."
+  },
+  {
+   "id": "80251",
+   "station": "Fairbank",
+   "kind": "escalator",
+   "header": "Fairbank: Escalator 5 out of service between below grade level and grade (main entrance) while we perform maintenance. Escalator is expected to be back in service November 16, 2026."
+  },
+  {
    "id": "80308",
    "station": "Bloor-Yonge",
    "kind": "escalator",
@@ -81,18 +93,6 @@
    "station": "Fairbank",
    "kind": "elevator",
    "header": "Fairbank: Elevator ELV02-B out of service between Eglinton Avenue south east side entrance and concourse while we perform maintenance."
-  },
-  {
-   "id": "80357",
-   "station": "Mount Dennis",
-   "kind": "escalator",
-   "header": "Mount Dennis: Escalator 9 out of service between concourse and TTC bus platform due to a technical problem."
-  },
-  {
-   "id": "80360",
-   "station": "Laird",
-   "kind": "elevator",
-   "header": "Laird: Elevator ELV01-A out of service between concourse and Line 5 centre platform due to a technical problem."
   },
   {
    "id": "80363",
@@ -135,6 +135,12 @@
    "station": "Downsview Park",
    "kind": "escalator",
    "header": "Downsview Park: Escalator 10S4E out of service from Vitti St east side entrance to concourse due to a technical problem."
+  },
+  {
+   "id": "80414",
+   "station": "Cedarvale",
+   "kind": "elevator",
+   "header": "Cedarvale: Elevator ELV02-B out of service between Line 5 platform, Line 1 northbound platform/east concourse, and upper concourse while we perform maintenance."
   }
  ]
 }
