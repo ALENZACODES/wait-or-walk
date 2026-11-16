@@ -1,8 +1,8 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1794808727,
- "feedTimestamp": 1794808728,
+ "fetchedAt": 1794811665,
+ "feedTimestamp": 1794811666,
  "alerts": [
   {
    "id": "71415",
@@ -59,10 +59,10 @@
    "header": "Keelesdale: Elevator ELV01-A out of service between concourse and Line 5 centre platform while we perform maintenance. Elevator is expected to be back in service November 16, 2026."
   },
   {
-   "id": "80251",
+   "id": "80252",
    "station": "Fairbank",
    "kind": "escalator",
-   "header": "Fairbank: Escalator 5 out of service between below grade level and grade (main entrance) while we perform maintenance. Escalator is expected to be back in service November 16, 2026."
+   "header": "Fairbank: Escalator 6 out of service between below grade level and grade (main entrance) while we perform maintenance. Escalator is expected to be back in service November 16, 2026."
   },
   {
    "id": "80308",
