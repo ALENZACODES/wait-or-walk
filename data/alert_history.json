@@ -25,7 +25,7 @@
   },
   "80402": {
    "firstSeen": 1794799001,
-   "lastSeen": 1794849925,
+   "lastSeen": 1794865272,
    "header": "Line 1 Yonge-University: There will be limited nightly service starting 11 p.m., between Pioneer Village and Sheppard West stations on Monday, November 16 to Wednesday, November 18, for tunnel improvements.",
    "lines": [
     "YU"
@@ -35,7 +35,7 @@
   },
   "80406": {
    "firstSeen": 1794799001,
-   "lastSeen": 1794849925,
+   "lastSeen": 1794865272,
    "header": "Line 1 Yonge-University: There will be no subway service between York Mills and Eglinton stations, starting 11 p.m., nightly Monday, November 16 to Wednesday, November 18, due to structural maintenance. Shuttle buses will operate.",
    "lines": [
     "YU"
@@ -86,6 +86,26 @@
    "cause": "MEDICAL_EMERGENCY",
    "effect": "NO_SERVICE",
    "goneBy": 1794849925
+  },
+  "80473": {
+   "firstSeen": 1794865272,
+   "lastSeen": 1794865272,
+   "header": "Line 1 Yonge-University: Trains are not stopping at Sheppard-Yonge station due to a TPS investigation. Thank you for your patience.",
+   "lines": [
+    "YU"
+   ],
+   "cause": "POLICE_ACTIVITY",
+   "effect": "NO_SERVICE"
+  },
+  "80474": {
+   "firstSeen": 1794865272,
+   "lastSeen": 1794865272,
+   "header": "Line 4 Sheppard: No service between Sheppard-Yonge and Bayview stations due to a TPS investigation Thank you for your patience.",
+   "lines": [
+    "SHP"
+   ],
+   "cause": "POLICE_ACTIVITY",
+   "effect": "NO_SERVICE"
   }
  }
 }
