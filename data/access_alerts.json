@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1794946447,
- "checkedAt": 1794946447,
- "feedTimestamp": 1794946448,
+ "fetchedAt": 1794947978,
+ "checkedAt": 1794947978,
+ "feedTimestamp": 1794947978,
  "alerts": [
   {
    "id": "71415",
@@ -42,18 +42,6 @@
    "header": "Kipling: Escalator 16B3E out of service from Line 2 platform to bus platform while we perform maintenance. Escalator is expected to be back in service February 19, 2027."
   },
   {
-   "id": "80231",
-   "station": "York University",
-   "kind": "escalator",
-   "header": "York University: Escalator 12S3E out of service from Line 1 platform to concourse while we perform maintenance. Escalator is expected to be back in service November 17, 2026."
-  },
-  {
-   "id": "80232",
-   "station": "Finch West",
-   "kind": "escalator",
-   "header": "Finch West: Escalator 11S7E out of service from concourse to Keele St east side entrance and bus platform while we perform maintenance. Escalator is expected to be back in service November 17, 2026."
-  },
-  {
    "id": "80246",
    "station": "Highway 407",
    "kind": "escalator",
@@ -90,58 +78,16 @@
    "header": "Sheppard West: Escalator 9S1E out of service from Line 1 platform to concourse while we perform maintenance. Escalator is expected to be back in service November 20, 2026."
   },
   {
-   "id": "80489",
-   "station": "St Clair",
-   "kind": "escalator",
-   "header": "St Clair: Escalator 16Y5E out of service from Streetcar platform to south concourse due to a technical problem."
-  },
-  {
-   "id": "80498",
-   "station": "Wellesley",
-   "kind": "escalator",
-   "header": "Wellesley: Escalator 12Y2E out of service from Line 1 Finch platform to Wellesley St entrance while we perform maintenance."
-  },
-  {
-   "id": "80499",
-   "station": "Union",
-   "kind": "escalator",
-   "header": "Union: Escalator 7Y1E out of service from Line 1 Vaughan platform to concourse due to a technical problem."
-  },
-  {
-   "id": "80501",
-   "station": "St Clair",
-   "kind": "escalator",
-   "header": "St Clair: Escalator 16Y6E out of service from Line 1 Vaughan via Union platform to south concourse while we perform maintenance."
-  },
-  {
    "id": "80504",
    "station": "Fairbank",
    "kind": "escalator",
    "header": "Fairbank: Escalator 3 out of service between concourse and below grade level due to a technical problem."
   },
   {
-   "id": "80508",
-   "station": "Finch West",
-   "kind": "escalator",
-   "header": "Finch West: Escalator 11S4E out of service from Line 1 platform to concourse due to a technical problem."
-  },
-  {
    "id": "80513",
    "station": "Osgoode",
    "kind": "escalator",
    "header": "Osgoode: Escalator 5Y2E out of service from concourse to Line 1 platform while we perform maintenance."
-  },
-  {
-   "id": "80526",
-   "station": "St Clair West",
-   "kind": "escalator",
-   "header": "St Clair West: Escalator 3S8E out of service from south concourse to Line 1 Finch via Union platform while we perform maintenance."
-  },
-  {
-   "id": "80528",
-   "station": "Dundas West",
-   "kind": "elevator",
-   "header": "Dundas West: Elevator 8B1L out of service between Dundas St W entrance and bus platform, concourse and Line 2 eastbound platform while we perform maintenance."
   },
   {
    "id": "80529",
