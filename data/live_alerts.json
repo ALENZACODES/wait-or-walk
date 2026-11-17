@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, subway feed (https://gtfsrt.ttc.ca/alerts/subway)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1794905061,
- "checkedAt": 1794921932,
- "feedTimestamp": 1794905062,
+ "fetchedAt": 1794923459,
+ "checkedAt": 1794923459,
+ "feedTimestamp": 1794923460,
  "alerts": [
   {
    "id": "80402",
@@ -28,6 +28,18 @@
    "description": "",
    "start": 1794791996,
    "end": 1795060800
+  },
+  {
+   "id": "80509",
+   "lines": [
+    "YU"
+   ],
+   "cause": "MAINTENANCE",
+   "effect": "REDUCED_SERVICE",
+   "header": "Line 1 Yonge-University: There will be no subway service between Finch West and Wilson stations, starting 11:59 p.m., nightly Thursday, November 19 to Friday, November 20, due to planned track work. Shuttle buses will operate.",
+   "description": "",
+   "start": 1794922183,
+   "end": 1795237140
   }
  ]
 }
