@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1794875984,
- "checkedAt": 1794875984,
- "feedTimestamp": 1794875985,
+ "fetchedAt": 1794877520,
+ "checkedAt": 1794877520,
+ "feedTimestamp": 1794877520,
  "alerts": [
   {
    "id": "71415",
@@ -160,6 +160,12 @@
    "station": "Osgoode",
    "kind": "escalator",
    "header": "Osgoode: Escalator 5Y1E out of service from Line 1 platform to concourse while we perform maintenance."
+  },
+  {
+   "id": "80484",
+   "station": "Cedarvale",
+   "kind": "escalator",
+   "header": "Cedarvale: Escalator 9 out of service between upper concourse and grade (main entrance) due to a technical problem."
   }
  ]
 }
