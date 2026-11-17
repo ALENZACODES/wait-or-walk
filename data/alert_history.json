@@ -25,7 +25,7 @@
   },
   "80402": {
    "firstSeen": 1794799001,
-   "lastSeen": 1794888242,
+   "lastSeen": 1794889771,
    "header": "Line 1 Yonge-University: There will be limited nightly service starting 11 p.m., between Pioneer Village and Sheppard West stations on Monday, November 16 to Wednesday, November 18, for tunnel improvements.",
    "lines": [
     "YU"
@@ -35,7 +35,7 @@
   },
   "80406": {
    "firstSeen": 1794799001,
-   "lastSeen": 1794888242,
+   "lastSeen": 1794889771,
    "header": "Line 1 Yonge-University: There will be no subway service between York Mills and Eglinton stations, starting 11 p.m., nightly Monday, November 16 to Wednesday, November 18, due to structural maintenance. Shuttle buses will operate.",
    "lines": [
     "YU"
@@ -111,7 +111,7 @@
   },
   "80403": {
    "firstSeen": 1794888242,
-   "lastSeen": 1794888242,
+   "lastSeen": 1794889771,
    "header": "Line 1 Yonge-University: There is limited subway service between Pioneer Village and Sheppard West stations for tunnel improvements Thank you for your patience.",
    "lines": [
     "YU"
@@ -121,7 +121,7 @@
   },
   "80407": {
    "firstSeen": 1794888242,
-   "lastSeen": 1794888242,
+   "lastSeen": 1794889771,
    "header": "Line 1 Yonge-University: There is no subway service between York Mills and Eglinton stations due to structural maintenance. Shuttle buses are running.",
    "lines": [
     "YU"
@@ -137,7 +137,8 @@
     "SHP"
    ],
    "cause": "OTHER_CAUSE",
-   "effect": "SIGNIFICANT_DELAYS"
+   "effect": "SIGNIFICANT_DELAYS",
+   "goneBy": 1794889771
   }
  }
 }
