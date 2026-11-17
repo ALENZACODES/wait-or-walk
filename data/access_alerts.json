@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1794885182,
- "checkedAt": 1794885182,
- "feedTimestamp": 1794885182,
+ "fetchedAt": 1794886718,
+ "checkedAt": 1794886718,
+ "feedTimestamp": 1794886718,
  "alerts": [
   {
    "id": "71415",
@@ -118,12 +118,6 @@
    "station": "Pape",
    "kind": "escalator",
    "header": "Pape: Escalator 8D3E out of service from concourse to Pape Ave entrance due to an investigation."
-  },
-  {
-   "id": "80468",
-   "station": "Avenue",
-   "kind": "escalator",
-   "header": "Avenue: Escalator 3 out of service between lower concourse and upper concourse due to a technical problem."
   },
   {
    "id": "80470",
