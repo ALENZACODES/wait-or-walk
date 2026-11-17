@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1794944911,
- "checkedAt": 1794944911,
- "feedTimestamp": 1794944911,
+ "fetchedAt": 1794946447,
+ "checkedAt": 1794946447,
+ "feedTimestamp": 1794946448,
  "alerts": [
   {
    "id": "71415",
@@ -118,18 +118,6 @@
    "station": "Fairbank",
    "kind": "escalator",
    "header": "Fairbank: Escalator 3 out of service between concourse and below grade level due to a technical problem."
-  },
-  {
-   "id": "80505",
-   "station": "High Park",
-   "kind": "escalator",
-   "header": "High Park: Escalator 10B1E out of service from Line 2 Kipling platform to concourse while we perform maintenance. Escalator is expected to be back in service November 17, 2026."
-  },
-  {
-   "id": "80506",
-   "station": "Dufferin",
-   "kind": "escalator",
-   "header": "Dufferin: Escalator 6B3E out of service from Line 2 Kennedy platform to concourse while we perform maintenance. Escalator is expected to be back in service November 17, 2026."
   },
   {
    "id": "80508",
