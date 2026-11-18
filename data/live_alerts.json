@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, subway feed (https://gtfsrt.ttc.ca/alerts/subway)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1794987794,
- "checkedAt": 1795009136,
- "feedTimestamp": 1794987794,
+ "fetchedAt": 1795010659,
+ "checkedAt": 1795010659,
+ "feedTimestamp": 1795010659,
  "alerts": [
   {
    "id": "80402",
@@ -40,6 +40,18 @@
    "description": "",
    "start": 1794922183,
    "end": 1795237140
+  },
+  {
+   "id": "80569",
+   "lines": [
+    "BD"
+   ],
+   "cause": "MEDICAL_EMERGENCY",
+   "effect": "NO_SERVICE",
+   "header": "Line 2 Bloor-Danforth: No service between Keele and Ossington stations due to a medical emergency at Lansdowne station. Thank you for your patience.",
+   "description": "",
+   "start": 1795010597,
+   "end": 0
   }
  ]
 }

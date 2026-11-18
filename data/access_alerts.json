@@ -1,15 +1,15 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795009136,
- "checkedAt": 1795009136,
- "feedTimestamp": 1795009137,
+ "fetchedAt": 1795010659,
+ "checkedAt": 1795010659,
+ "feedTimestamp": 1795010659,
  "alerts": [
   {
    "id": "71415",
    "station": "Museum",
    "kind": "escalator",
-   "header": "Museum: Escalator 2Y1E out of service from concourse to Line 1 platform while we perform maintenance. Escalator is expected to be back in service November 30, 2026."
+   "header": "Museum: Escalator 2Y1E out of service from concourse to Line 1 platform while we perform maintenance. Escalator is expected to be back in service December 31, 2026."
   },
   {
    "id": "71416",
@@ -132,16 +132,16 @@
    "header": "Forest Hill: Escalator 2 out of service between platform and upper concourse while we perform maintenance."
   },
   {
-   "id": "80565",
-   "station": "Mount Pleasant",
-   "kind": "escalator",
-   "header": "Mount Pleasant: Escalator 5 out of service between upper concourse and grade level (main entrance) while we perform maintenance."
-  },
-  {
    "id": "80567",
    "station": "St Clair",
    "kind": "escalator",
    "header": "St Clair: Escalator 16Y2E out of service from Line 1 Finch platform to north concourse due to an investigation."
+  },
+  {
+   "id": "80568",
+   "station": "York University",
+   "kind": "escalator",
+   "header": "York University: Escalator 12S3E out of service from Line 1 platform to concourse while we perform maintenance."
   }
  ]
 }
