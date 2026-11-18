@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, subway feed (https://gtfsrt.ttc.ca/alerts/subway)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795013715,
- "checkedAt": 1795013715,
- "feedTimestamp": 1795013715,
+ "fetchedAt": 1795015235,
+ "checkedAt": 1795015235,
+ "feedTimestamp": 1795015236,
  "alerts": [
   {
    "id": "80402",
@@ -40,18 +40,6 @@
    "description": "",
    "start": 1794922183,
    "end": 1795237140
-  },
-  {
-   "id": "80570",
-   "lines": [
-    "BD"
-   ],
-   "cause": "TECHNICAL_PROBLEM",
-   "effect": "SIGNIFICANT_DELAYS",
-   "header": "Line 2 Bloor-Danforth: Delays westbound from Kennedy to Broadview stations while we fix a signal problem at Chester station. Thank you for your patience.",
-   "description": "",
-   "start": 1795012383,
-   "end": 0
   }
  ]
 }

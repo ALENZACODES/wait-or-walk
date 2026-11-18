@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795010659,
- "checkedAt": 1795013715,
- "feedTimestamp": 1795010659,
+ "fetchedAt": 1795015235,
+ "checkedAt": 1795015235,
+ "feedTimestamp": 1795015236,
  "alerts": [
   {
    "id": "71415",
@@ -96,12 +96,6 @@
    "header": "Broadview: Elevator 6D2L out of service between concourse and Line 2 eastbound platform while we perform maintenance."
   },
   {
-   "id": "80536",
-   "station": "Davisville",
-   "kind": "elevator",
-   "header": "Davisville: Elevator 17Y2L out of service between concourse and Line 1 southbound platform while we perform maintenance."
-  },
-  {
    "id": "80542",
    "station": "Cedarvale",
    "kind": "escalator",
@@ -132,16 +126,16 @@
    "header": "Forest Hill: Escalator 2 out of service between platform and upper concourse while we perform maintenance."
   },
   {
-   "id": "80567",
-   "station": "St Clair",
-   "kind": "escalator",
-   "header": "St Clair: Escalator 16Y2E out of service from Line 1 Finch platform to north concourse due to an investigation."
-  },
-  {
    "id": "80568",
    "station": "York University",
    "kind": "escalator",
    "header": "York University: Escalator 12S3E out of service from Line 1 platform to concourse while we perform maintenance."
+  },
+  {
+   "id": "80571",
+   "station": "York University",
+   "kind": "escalator",
+   "header": "York University: Escalator 12S5E out of service from concourse to York Boulevard entrance while we perform maintenance."
   }
  ]
 }
