@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1794975558,
- "checkedAt": 1794977091,
- "feedTimestamp": 1794975559,
+ "fetchedAt": 1794978614,
+ "checkedAt": 1794978614,
+ "feedTimestamp": 1794978615,
  "alerts": [
   {
    "id": "71415",
@@ -76,12 +76,6 @@
    "station": "Sheppard West",
    "kind": "escalator",
    "header": "Sheppard West: Escalator 9S1E out of service from Line 1 platform to concourse while we perform maintenance. Escalator is expected to be back in service November 20, 2026."
-  },
-  {
-   "id": "80504",
-   "station": "Fairbank",
-   "kind": "escalator",
-   "header": "Fairbank: Escalator 3 out of service between concourse and below grade level due to a technical problem."
   },
   {
    "id": "80513",
