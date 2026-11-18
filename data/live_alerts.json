@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, subway feed (https://gtfsrt.ttc.ca/alerts/subway)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1794923459,
- "checkedAt": 1794974096,
- "feedTimestamp": 1794923460,
+ "fetchedAt": 1794975558,
+ "checkedAt": 1794975558,
+ "feedTimestamp": 1794975559,
  "alerts": [
   {
    "id": "80402",
@@ -18,6 +18,18 @@
    "end": 1795060800
   },
   {
+   "id": "80404",
+   "lines": [
+    "YU"
+   ],
+   "cause": "MAINTENANCE",
+   "effect": "REDUCED_SERVICE",
+   "header": "Line 1 Yonge-University: There is limited subway service between Pioneer Village and Sheppard West stations for tunnel improvements Thank you for your patience.",
+   "description": "",
+   "start": 1794974400,
+   "end": 1794990600
+  },
+  {
    "id": "80406",
    "lines": [
     "YU"
@@ -28,6 +40,18 @@
    "description": "",
    "start": 1794791996,
    "end": 1795060800
+  },
+  {
+   "id": "80408",
+   "lines": [
+    "YU"
+   ],
+   "cause": "MAINTENANCE",
+   "effect": "NO_SERVICE",
+   "header": "Line 1 Yonge-University: There is no subway service between York Mills and Eglinton stations due to structural maintenance. Shuttle buses are running.",
+   "description": "",
+   "start": 1794974400,
+   "end": 1794990600
   },
   {
    "id": "80509",
