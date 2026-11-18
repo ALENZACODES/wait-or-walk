@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795016757,
- "checkedAt": 1795016757,
- "feedTimestamp": 1795016758,
+ "fetchedAt": 1795018277,
+ "checkedAt": 1795018277,
+ "feedTimestamp": 1795018278,
  "alerts": [
   {
    "id": "71415",
@@ -46,12 +46,6 @@
    "station": "Yorkdale",
    "kind": "escalator",
    "header": "Yorkdale: Escalator 7S2E out of service from south concourse to Line 1 platform while we perform maintenance. Escalator is expected to be back in service November 18, 2026."
-  },
-  {
-   "id": "80234",
-   "station": "Pioneer Village",
-   "kind": "escalator",
-   "header": "Pioneer Village: Escalator 13S7E out of service from lower south concourse to upper south concourse while we perform maintenance. Escalator is expected to be back in service November 18, 2026."
   },
   {
    "id": "80235",
@@ -100,12 +94,6 @@
    "station": "Osgoode",
    "kind": "escalator",
    "header": "Osgoode: Escalator 5Y2E out of service from concourse to Line 1 platform while we perform maintenance."
-  },
-  {
-   "id": "80534",
-   "station": "Broadview",
-   "kind": "elevator",
-   "header": "Broadview: Elevator 6D2L out of service between concourse and Line 2 eastbound platform while we perform maintenance."
   },
   {
    "id": "80556",
