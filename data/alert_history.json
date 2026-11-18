@@ -25,7 +25,7 @@
   },
   "80402": {
    "firstSeen": 1794799001,
-   "lastSeen": 1795012187,
+   "lastSeen": 1795013715,
    "header": "Line 1 Yonge-University: There will be limited nightly service starting 11 p.m., between Pioneer Village and Sheppard West stations on Monday, November 16 to Wednesday, November 18, for tunnel improvements.",
    "lines": [
     "YU"
@@ -35,7 +35,7 @@
   },
   "80406": {
    "firstSeen": 1794799001,
-   "lastSeen": 1795012187,
+   "lastSeen": 1795013715,
    "header": "Line 1 Yonge-University: There will be no subway service between York Mills and Eglinton stations, starting 11 p.m., nightly Monday, November 16 to Wednesday, November 18, due to structural maintenance. Shuttle buses will operate.",
    "lines": [
     "YU"
@@ -144,7 +144,7 @@
   },
   "80509": {
    "firstSeen": 1794923459,
-   "lastSeen": 1795012187,
+   "lastSeen": 1795013715,
    "header": "Line 1 Yonge-University: There will be no subway service between Finch West and Wilson stations, starting 11:59 p.m., nightly Thursday, November 19 to Friday, November 20, due to planned track work. Shuttle buses will operate.",
    "lines": [
     "YU"
@@ -184,6 +184,16 @@
    "cause": "MEDICAL_EMERGENCY",
    "effect": "NO_SERVICE",
    "goneBy": 1795012187
+  },
+  "80570": {
+   "firstSeen": 1795013715,
+   "lastSeen": 1795013715,
+   "header": "Line 2 Bloor-Danforth: Delays westbound from Kennedy to Broadview stations while we fix a signal problem at Chester station. Thank you for your patience.",
+   "lines": [
+    "BD"
+   ],
+   "cause": "TECHNICAL_PROBLEM",
+   "effect": "SIGNIFICANT_DELAYS"
   }
  }
 }
