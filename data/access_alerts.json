@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1794959761,
- "checkedAt": 1794959761,
- "feedTimestamp": 1794959762,
+ "fetchedAt": 1794960238,
+ "checkedAt": 1794960238,
+ "feedTimestamp": 1794960239,
  "alerts": [
   {
    "id": "71415",
@@ -124,6 +124,12 @@
    "station": "Mount Dennis",
    "kind": "escalator",
    "header": "Mount Dennis: Escalator 6 out of service between Kodak lower level and bus terminal while we perform maintenance."
+  },
+  {
+   "id": "80542",
+   "station": "Cedarvale",
+   "kind": "escalator",
+   "header": "Cedarvale: Escalator 4 out of service between platform and lower concourse while we perform maintenance."
   }
  ]
 }
