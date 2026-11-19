@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795129542,
- "checkedAt": 1795129542,
- "feedTimestamp": 1795129542,
+ "fetchedAt": 1795131065,
+ "checkedAt": 1795131065,
+ "feedTimestamp": 1795131065,
  "alerts": [
   {
    "id": "71415",
@@ -94,6 +94,12 @@
    "station": "Queen",
    "kind": "escalator",
    "header": "Queen: Escalator 9Y6E out of service from north underpass to Line 1 Finch platform due to a technical problem."
+  },
+  {
+   "id": "80654",
+   "station": "Avenue",
+   "kind": "escalator",
+   "header": "Avenue: Escalator 10 out of service between mezzanine level and grade (main entrance) due to a technical problem."
   }
  ]
 }

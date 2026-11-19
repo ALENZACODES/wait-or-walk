@@ -146,7 +146,7 @@
   },
   "80509": {
    "firstSeen": 1794923459,
-   "lastSeen": 1795123157,
+   "lastSeen": 1795131065,
    "header": "Line 1 Yonge-University: There will be no subway service between Finch West and Wilson stations, starting 11:59 p.m., nightly Thursday, November 19 to Friday, November 20, due to planned track work. Shuttle buses will operate.",
    "lines": [
     "YU"
@@ -285,6 +285,16 @@
    "cause": "POLICE_ACTIVITY",
    "effect": "NO_SERVICE",
    "goneBy": 1795123157
+  },
+  "80655": {
+   "firstSeen": 1795131065,
+   "lastSeen": 1795131065,
+   "header": "Line 2 Bloor-Danforth: No service between Victoria Park and Kennedy stations due to a TPS investigation at Warden station. Thank you for your patience.",
+   "lines": [
+    "BD"
+   ],
+   "cause": "POLICE_ACTIVITY",
+   "effect": "NO_SERVICE"
   }
  }
 }
