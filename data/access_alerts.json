@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795074662,
- "checkedAt": 1795083816,
- "feedTimestamp": 1795074662,
+ "fetchedAt": 1795085342,
+ "checkedAt": 1795085342,
+ "feedTimestamp": 1795085342,
  "alerts": [
   {
    "id": "71415",
@@ -88,6 +88,12 @@
    "station": "Highway 407",
    "kind": "escalator",
    "header": "Highway 407: Escalator 14S3E out of service from Line 1 platform to concourse while we perform maintenance."
+  },
+  {
+   "id": "80620",
+   "station": "Caledonia",
+   "kind": "escalator",
+   "header": "Caledonia: Escalator 1 out of service between platform and lower concourse due to a technical problem."
   }
  ]
 }
