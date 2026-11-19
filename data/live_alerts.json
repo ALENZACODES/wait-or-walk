@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, subway feed (https://gtfsrt.ttc.ca/alerts/subway)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795121935,
- "checkedAt": 1795121935,
- "feedTimestamp": 1795121936,
+ "fetchedAt": 1795123157,
+ "checkedAt": 1795123157,
+ "feedTimestamp": 1795123157,
  "alerts": [
   {
    "id": "80509",
@@ -16,18 +16,6 @@
    "description": "",
    "start": 1794922183,
    "end": 1795237140
-  },
-  {
-   "id": "80652",
-   "lines": [
-    "BD"
-   ],
-   "cause": "POLICE_ACTIVITY",
-   "effect": "NO_SERVICE",
-   "header": "Line 2 Bloor-Danforth: No service between Jane and Keele stations due to a security incident at High Park station. Thank you for your patience.",
-   "description": "All surface routes diverting away from High Park Station.",
-   "start": 1795120953,
-   "end": 0
   }
  ]
 }
