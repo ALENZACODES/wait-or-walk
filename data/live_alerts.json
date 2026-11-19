@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, subway feed (https://gtfsrt.ttc.ca/alerts/subway)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795054863,
- "checkedAt": 1795054863,
- "feedTimestamp": 1795054864,
+ "fetchedAt": 1795056385,
+ "checkedAt": 1795056385,
+ "feedTimestamp": 1795056385,
  "alerts": [
   {
    "id": "80402",
@@ -40,30 +40,6 @@
    "description": "",
    "start": 1794922183,
    "end": 1795237140
-  },
-  {
-   "id": "80603",
-   "lines": [
-    "BD"
-   ],
-   "cause": "OTHER_CAUSE",
-   "effect": "NO_SERVICE",
-   "header": "Line 2 Bloor-Danforth: No service between Woodbine and Broadview stations due to an operational issue at Greenwood station. Shuttle buses are on the way. Thank you for your patience.",
-   "description": "",
-   "start": 1795054219,
-   "end": 0
-  },
-  {
-   "id": "80604",
-   "lines": [
-    "YU"
-   ],
-   "cause": "MEDICAL_EMERGENCY",
-   "effect": "NO_SERVICE",
-   "header": "Line 1 Yonge-University: No service between Eglinton and Lawrence stations due to a medical emergency at Eglinton station. Thank you for your patience.",
-   "description": "",
-   "start": 1795054706,
-   "end": 0
   }
  ]
 }
