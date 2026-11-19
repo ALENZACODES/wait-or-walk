@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795048766,
- "checkedAt": 1795051818,
- "feedTimestamp": 1795048766,
+ "fetchedAt": 1795053337,
+ "checkedAt": 1795053337,
+ "feedTimestamp": 1795053337,
  "alerts": [
   {
    "id": "71415",
@@ -96,16 +96,16 @@
    "header": "Queen: Escalator 9Y6E out of service from north underpass to Line 1 Finch platform while we perform maintenance."
   },
   {
-   "id": "80590",
-   "station": "Chaplin",
-   "kind": "escalator",
-   "header": "Chaplin: Escalator 5 out of service between platform and concourse due to a technical problem."
-  },
-  {
    "id": "80591",
    "station": "Wilson",
    "kind": "elevator",
    "header": "Wilson: Elevator 8S1L out of service between Line 1 platform and street while we perform maintenance."
+  },
+  {
+   "id": "80601",
+   "station": "Highway 407",
+   "kind": "escalator",
+   "header": "Highway 407: Escalator 14S1E out of service from Line 1 platform to concourse while we perform maintenance."
   }
  ]
 }
