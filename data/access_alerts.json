@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795097521,
- "checkedAt": 1795097521,
- "feedTimestamp": 1795097521,
+ "fetchedAt": 1795099043,
+ "checkedAt": 1795099043,
+ "feedTimestamp": 1795099043,
  "alerts": [
   {
    "id": "71415",
@@ -100,12 +100,6 @@
    "station": "Queen",
    "kind": "escalator",
    "header": "Queen: Escalator 9Y6E out of service from north underpass to Line 1 Finch platform while we perform maintenance."
-  },
-  {
-   "id": "80629",
-   "station": "Finch West",
-   "kind": "elevator",
-   "header": "Finch West: Elevator 11S2L out of service between Keele St west side entrance and concourse while we perform maintenance."
   },
   {
    "id": "80630",
