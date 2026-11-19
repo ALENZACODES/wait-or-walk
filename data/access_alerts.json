@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795100567,
- "checkedAt": 1795100567,
- "feedTimestamp": 1795100567,
+ "fetchedAt": 1795102103,
+ "checkedAt": 1795102103,
+ "feedTimestamp": 1795102104,
  "alerts": [
   {
    "id": "71415",
@@ -118,6 +118,12 @@
    "station": "Cedarvale",
    "kind": "escalator",
    "header": "Cedarvale: Escalator 4 out of service between platform and lower concourse while we perform maintenance."
+  },
+  {
+   "id": "80635",
+   "station": "King",
+   "kind": "escalator",
+   "header": "King: Escalator 8Y7E out of service from Scotia Plaza entrance to north concourse due to a technical problem."
   }
  ]
 }
