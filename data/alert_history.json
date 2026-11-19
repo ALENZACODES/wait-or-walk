@@ -146,7 +146,7 @@
   },
   "80509": {
    "firstSeen": 1794923459,
-   "lastSeen": 1795077705,
+   "lastSeen": 1795121935,
    "header": "Line 1 Yonge-University: There will be no subway service between Finch West and Wilson stations, starting 11:59 p.m., nightly Thursday, November 19 to Friday, November 20, due to planned track work. Shuttle buses will operate.",
    "lines": [
     "YU"
@@ -274,6 +274,16 @@
    "cause": "MEDICAL_EMERGENCY",
    "effect": "SIGNIFICANT_DELAYS",
    "goneBy": 1795064007
+  },
+  "80652": {
+   "firstSeen": 1795121935,
+   "lastSeen": 1795121935,
+   "header": "Line 2 Bloor-Danforth: No service between Jane and Keele stations due to a security incident at High Park station. Thank you for your patience.",
+   "lines": [
+    "BD"
+   ],
+   "cause": "POLICE_ACTIVITY",
+   "effect": "NO_SERVICE"
   }
  }
 }
