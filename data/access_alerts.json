@@ -2,7 +2,7 @@
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
  "fetchedAt": 1795131065,
- "checkedAt": 1795141748,
+ "checkedAt": 1795141915,
  "feedTimestamp": 1795131065,
  "alerts": [
   {
