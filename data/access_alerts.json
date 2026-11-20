@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795204199,
- "checkedAt": 1795204199,
- "feedTimestamp": 1795204200,
+ "fetchedAt": 1795205722,
+ "checkedAt": 1795205722,
+ "feedTimestamp": 1795205722,
  "alerts": [
   {
    "id": "71415",
@@ -64,30 +64,6 @@
    "station": "Finch West",
    "kind": "escalator",
    "header": "Finch West: Escalator 11S5E out of service from Keele St west side entrance to concourse while we perform maintenance."
-  },
-  {
-   "id": "80693",
-   "station": "Queen",
-   "kind": "escalator",
-   "header": "Queen: Escalator 9Y6E out of service from north underpass to Line 1 Finch platform due to a technical problem."
-  },
-  {
-   "id": "80696",
-   "station": "Keele",
-   "kind": "escalator",
-   "header": "Keele: Escalator 9B1E out of service from Keele St entrance to Line 2 Kipling platform due to a technical problem."
-  },
-  {
-   "id": "80700",
-   "station": "Union",
-   "kind": "escalator",
-   "header": "Union: Escalator 7Y1E out of service from Line 1 Vaughan platform to concourse while we perform maintenance."
-  },
-  {
-   "id": "80703",
-   "station": "King",
-   "kind": "escalator",
-   "header": "King: Escalator 8Y4E out of service from Line 1 Vaughan via Union platform to north concourse while we perform maintenance."
   },
   {
    "id": "80714",
