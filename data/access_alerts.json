@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795176739,
- "checkedAt": 1795176739,
- "feedTimestamp": 1795176739,
+ "fetchedAt": 1795178266,
+ "checkedAt": 1795178266,
+ "feedTimestamp": 1795178266,
  "alerts": [
   {
    "id": "71415",
@@ -102,12 +102,6 @@
    "header": "King: Escalator 8Y4E out of service from Line 1 Vaughan via Union platform to north concourse while we perform maintenance."
   },
   {
-   "id": "80706",
-   "station": "Eglinton",
-   "kind": "escalator",
-   "header": "Eglinton: Escalator 4 out of service between LRT platform and LRT lower concourse while we perform maintenance."
-  },
-  {
    "id": "80707",
    "station": "Eglinton",
    "kind": "escalator",
@@ -118,6 +112,12 @@
    "station": "Spadina",
    "kind": "escalator",
    "header": "Spadina: Escalator 2B2E out of service from Line 2 Kennedy platform to south concourse while we perform maintenance."
+  },
+  {
+   "id": "80710",
+   "station": "Kennedy",
+   "kind": "elevator",
+   "header": "Kennedy: Elevator 16D3L out of service between bus platform A, concourse, and Transway Crescent entrance and bus platform B while we perform maintenance."
   }
  ]
 }
