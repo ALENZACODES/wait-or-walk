@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795208768,
- "checkedAt": 1795208768,
- "feedTimestamp": 1795208768,
+ "fetchedAt": 1795210294,
+ "checkedAt": 1795210294,
+ "feedTimestamp": 1795210294,
  "alerts": [
   {
    "id": "71415",
@@ -60,12 +60,6 @@
    "header": "Kipling: Escalator 16B4E out of service from Line 2 platform to concourse while we perform maintenance."
   },
   {
-   "id": "80729",
-   "station": "St Clair West",
-   "kind": "elevator",
-   "header": "St Clair West: Elevator 3S1L out of service between Heath St W north side entrance and north concourse due to a technical problem."
-  },
-  {
    "id": "80730",
    "station": "Finch",
    "kind": "elevator",
@@ -100,6 +94,24 @@
    "station": "Don Mills",
    "kind": "escalator",
    "header": "Don Mills: Escalator 61P5E out of service from concourse to Line 4 platform due to a technical problem."
+  },
+  {
+   "id": "80743",
+   "station": "Kennedy",
+   "kind": "escalator",
+   "header": "Kennedy: Escalator 16D4E out of service from Line 2 platform to bus platform due to an investigation."
+  },
+  {
+   "id": "80744",
+   "station": "Kennedy",
+   "kind": "escalator",
+   "header": "Kennedy: Escalator 16D4E out of service from Line 2 platform to bus platform due to an investigation."
+  },
+  {
+   "id": "80745",
+   "station": "Eglinton",
+   "kind": "escalator",
+   "header": "Eglinton: Escalator 5 out of service between LRT lower concourse and LRT upper concourse while we perform maintenance."
   }
  ]
 }
