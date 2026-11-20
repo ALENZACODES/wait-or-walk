@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795210294,
- "checkedAt": 1795210294,
- "feedTimestamp": 1795210294,
+ "fetchedAt": 1795211813,
+ "checkedAt": 1795211813,
+ "feedTimestamp": 1795211814,
  "alerts": [
   {
    "id": "71415",
@@ -112,6 +112,12 @@
    "station": "Eglinton",
    "kind": "escalator",
    "header": "Eglinton: Escalator 5 out of service between LRT lower concourse and LRT upper concourse while we perform maintenance."
+  },
+  {
+   "id": "80746",
+   "station": "Finch West",
+   "kind": "escalator",
+   "header": "Finch West: Escalator 4 out of service between concourse and line 6 platform due to a technical problem."
   }
  ]
 }
