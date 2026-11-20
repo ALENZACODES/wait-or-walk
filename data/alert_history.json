@@ -146,7 +146,7 @@
   },
   "80509": {
    "firstSeen": 1794923459,
-   "lastSeen": 1795164571,
+   "lastSeen": 1795191995,
    "header": "Line 1 Yonge-University: There will be no subway service between Finch West and Wilson stations, starting 11:59 p.m., nightly Thursday, November 19 to Friday, November 20, due to planned track work. Shuttle buses will operate.",
    "lines": [
     "YU"
@@ -318,6 +318,16 @@
    "cause": "TECHNICAL_PROBLEM",
    "effect": "NO_SERVICE",
    "goneBy": 1795160005
+  },
+  "80722": {
+   "firstSeen": 1795191995,
+   "lastSeen": 1795191995,
+   "header": "Line 2 Bloor-Danforth: On Saturday, November 21, there will be no subway service between St George and Broadview stations, due to for planned signal work. Shuttle buses will operate.",
+   "lines": [
+    "BD"
+   ],
+   "cause": "OTHER_CAUSE",
+   "effect": "REDUCED_SERVICE"
   }
  }
 }

@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795188944,
- "checkedAt": 1795190466,
- "feedTimestamp": 1795188945,
+ "fetchedAt": 1795191995,
+ "checkedAt": 1795191995,
+ "feedTimestamp": 1795191996,
  "alerts": [
   {
    "id": "71415",
@@ -106,12 +106,6 @@
    "station": "Kipling",
    "kind": "escalator",
    "header": "Kipling: Escalator 16B4E out of service from Line 2 platform to concourse while we perform maintenance."
-  },
-  {
-   "id": "80715",
-   "station": "Donlands",
-   "kind": "elevator",
-   "header": "Donlands: Elevator 9D1L out of service between Donlands Ave entrance, concourse and Line 2 eastbound platform while we perform maintenance."
   }
  ]
 }
