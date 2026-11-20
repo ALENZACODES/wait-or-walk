@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795144789,
- "checkedAt": 1795146307,
- "feedTimestamp": 1795144789,
+ "fetchedAt": 1795147827,
+ "checkedAt": 1795147827,
+ "feedTimestamp": 1795147827,
  "alerts": [
   {
    "id": "71415",
@@ -42,12 +42,6 @@
    "header": "Kipling: Escalator 16B3E out of service from Line 2 platform to bus platform while we perform maintenance. Escalator is expected to be back in service February 19, 2027."
   },
   {
-   "id": "80308",
-   "station": "Bloor-Yonge",
-   "kind": "escalator",
-   "header": "Bloor-Yonge: Escalator 3D9E out of service from Line 1 Finch platform to south concourse while we perform maintenance. Escalator is expected to be back in service November 28, 2026."
-  },
-  {
    "id": "80325",
    "station": "Dundas West",
    "kind": "escalator",
@@ -66,34 +60,10 @@
    "header": "Don Mills: Elevator 61P2L out of service between bus platform and concourse while we perform maintenance."
   },
   {
-   "id": "80642",
-   "station": "Royal York",
-   "kind": "escalator",
-   "header": "Royal York: Escalator 14B5E out of service from Line 2 Kennedy platform to west concourse while we perform maintenance."
-  },
-  {
-   "id": "80645",
-   "station": "Union",
-   "kind": "escalator",
-   "header": "Union: Escalator 7Y3E out of service from concourse to Line 1 Finch platform while we perform maintenance."
-  },
-  {
-   "id": "80648",
-   "station": "Finch West",
-   "kind": "escalator",
-   "header": "Finch West: Escalator 11S6E out of service from concourse to Keele St west side entrance while we perform maintenance."
-  },
-  {
    "id": "80650",
    "station": "Finch West",
    "kind": "escalator",
    "header": "Finch West: Escalator 11S5E out of service from Keele St west side entrance to concourse while we perform maintenance."
-  },
-  {
-   "id": "80653",
-   "station": "Queen",
-   "kind": "escalator",
-   "header": "Queen: Escalator 9Y6E out of service from north underpass to Line 1 Finch platform due to a technical problem."
   },
   {
    "id": "80685",
