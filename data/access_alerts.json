@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795181316,
- "checkedAt": 1795182840,
- "feedTimestamp": 1795181316,
+ "fetchedAt": 1795184377,
+ "checkedAt": 1795184377,
+ "feedTimestamp": 1795184377,
  "alerts": [
   {
    "id": "71415",
@@ -84,22 +84,10 @@
    "header": "Union: Escalator 7Y1E out of service from Line 1 Vaughan platform to concourse while we perform maintenance."
   },
   {
-   "id": "80702",
-   "station": "Mount Dennis",
-   "kind": "escalator",
-   "header": "Mount Dennis: Escalator 9 out of service between concourse and TTC bus platform due to a technical problem."
-  },
-  {
    "id": "80703",
    "station": "King",
    "kind": "escalator",
    "header": "King: Escalator 8Y4E out of service from Line 1 Vaughan via Union platform to north concourse while we perform maintenance."
-  },
-  {
-   "id": "80707",
-   "station": "Eglinton",
-   "kind": "escalator",
-   "header": "Eglinton: Escalator 13 out of service between south east entrance, upper concourse and subway concourse connection level while we perform maintenance."
   },
   {
    "id": "80708",
