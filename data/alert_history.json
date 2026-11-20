@@ -146,7 +146,7 @@
   },
   "80509": {
    "firstSeen": 1794923459,
-   "lastSeen": 1795150866,
+   "lastSeen": 1795153913,
    "header": "Line 1 Yonge-University: There will be no subway service between Finch West and Wilson stations, starting 11:59 p.m., nightly Thursday, November 19 to Friday, November 20, due to planned track work. Shuttle buses will operate.",
    "lines": [
     "YU"
@@ -299,12 +299,22 @@
   },
   "80510": {
    "firstSeen": 1795150866,
-   "lastSeen": 1795150866,
+   "lastSeen": 1795153913,
    "header": "Line 1 Yonge-University: There is no subway service between Finch West and Wilson stations due to planned track work. Shuttle buses are running.",
    "lines": [
     "YU"
    ],
    "cause": "MAINTENANCE",
+   "effect": "NO_SERVICE"
+  },
+  "80692": {
+   "firstSeen": 1795153913,
+   "lastSeen": 1795153913,
+   "header": "Line 1 Yonge-University: No service between St George and Union stations due to a mechanical issue at St Andrew station. Thank you for your patience.",
+   "lines": [
+    "YU"
+   ],
+   "cause": "TECHNICAL_PROBLEM",
    "effect": "NO_SERVICE"
   }
  }

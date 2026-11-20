@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, subway feed (https://gtfsrt.ttc.ca/alerts/subway)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795150866,
- "checkedAt": 1795152394,
- "feedTimestamp": 1795150866,
+ "fetchedAt": 1795153913,
+ "checkedAt": 1795153913,
+ "feedTimestamp": 1795153914,
  "alerts": [
   {
    "id": "80509",
@@ -28,6 +28,18 @@
    "description": "",
    "start": 1795150740,
    "end": 1795163400
+  },
+  {
+   "id": "80692",
+   "lines": [
+    "YU"
+   ],
+   "cause": "TECHNICAL_PROBLEM",
+   "effect": "NO_SERVICE",
+   "header": "Line 1 Yonge-University: No service between St George and Union stations due to a mechanical issue at St Andrew station. Thank you for your patience.",
+   "description": "",
+   "start": 1795152562,
+   "end": 0
   }
  ]
 }
