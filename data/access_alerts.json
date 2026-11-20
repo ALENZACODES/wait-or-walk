@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795131065,
- "checkedAt": 1795141915,
- "feedTimestamp": 1795131065,
+ "fetchedAt": 1795143270,
+ "checkedAt": 1795143270,
+ "feedTimestamp": 1795143270,
  "alerts": [
   {
    "id": "71415",
@@ -100,6 +100,12 @@
    "station": "Avenue",
    "kind": "escalator",
    "header": "Avenue: Escalator 10 out of service between mezzanine level and grade (main entrance) due to a technical problem."
+  },
+  {
+   "id": "80685",
+   "station": "Finch West",
+   "kind": "escalator",
+   "header": "Finch West: Escalator 4 out of service between concourse and line 6 platform while we perform maintenance."
   }
  ]
 }
