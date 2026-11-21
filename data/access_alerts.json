@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795280336,
- "checkedAt": 1795280336,
- "feedTimestamp": 1795280336,
+ "fetchedAt": 1795281857,
+ "checkedAt": 1795281857,
+ "feedTimestamp": 1795281858,
  "alerts": [
   {
    "id": "71415",
@@ -112,6 +112,12 @@
    "station": "Highway 407",
    "kind": "escalator",
    "header": "Highway 407: Escalator 14S2E out of service from concourse to Line 1 platform while we perform maintenance."
+  },
+  {
+   "id": "80784",
+   "station": "College",
+   "kind": "elevator",
+   "header": "College: Elevator 11Y2L out of service between concourse and Line 1 Vaughan via Union (Southbound) platform due to a technical problem."
   }
  ]
 }
