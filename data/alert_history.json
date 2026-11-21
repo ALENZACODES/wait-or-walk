@@ -355,7 +355,7 @@
   },
   "80723": {
    "firstSeen": 1795255994,
-   "lastSeen": 1795268169,
+   "lastSeen": 1795297078,
    "header": "Line 2 Bloor-Danforth: There is no subway service between St George and Broadview stations due to for planned signal work. Shuttle buses are running.",
    "lines": [
     "BD"
@@ -373,6 +373,16 @@
    "cause": "TECHNICAL_PROBLEM",
    "effect": "NO_SERVICE",
    "goneBy": 1795268169
+  },
+  "80792": {
+   "firstSeen": 1795297078,
+   "lastSeen": 1795297078,
+   "header": "Line 2 Bloor-Danforth: Delays eastbound at Jane station due to an emergency alarm on board a train Thank you for your patience.",
+   "lines": [
+    "BD"
+   ],
+   "cause": "MEDICAL_EMERGENCY",
+   "effect": "SIGNIFICANT_DELAYS"
   }
  }
 }
