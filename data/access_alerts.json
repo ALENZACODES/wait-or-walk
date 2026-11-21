@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795220953,
- "checkedAt": 1795221846,
- "feedTimestamp": 1795220953,
+ "fetchedAt": 1795222478,
+ "checkedAt": 1795222478,
+ "feedTimestamp": 1795222479,
  "alerts": [
   {
    "id": "71415",
@@ -130,6 +130,12 @@
    "station": "Queen",
    "kind": "escalator",
    "header": "Queen: Escalator 9Y6E out of service from north underpass to Line 1 Finch platform while we perform maintenance."
+  },
+  {
+   "id": "80754",
+   "station": "Spadina",
+   "kind": "escalator",
+   "header": "Spadina: Escalator 2B5E out of service from Spadina Rd east side entrance to south concourse due to a technical problem."
   }
  ]
 }
