@@ -2,7 +2,7 @@
  "tag": "slay-hacks-submission",
  "frozenAt": "2026-11-16T04:02:00Z",
  "parserMatchesFreeze": true,
- "alertsSinceFreeze": 27,
+ "alertsSinceFreeze": 28,
  "labelled": 0,
  "firstSeen": [
   {
@@ -112,6 +112,10 @@
   {
    "id": "80724",
    "firstSeen": "2026-11-20T16:52:03.000Z"
+  },
+  {
+   "id": "80511",
+   "firstSeen": "2026-11-21T05:08:27.000Z"
   }
  ],
  "score": null,
