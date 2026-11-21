@@ -1,22 +1,10 @@
 {
  "source": "TTC GTFS Realtime alerts, subway feed (https://gtfsrt.ttc.ca/alerts/subway)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795237707,
- "checkedAt": 1795248624,
- "feedTimestamp": 1795237708,
+ "fetchedAt": 1795249885,
+ "checkedAt": 1795249885,
+ "feedTimestamp": 1795249885,
  "alerts": [
-  {
-   "id": "80511",
-   "lines": [
-    "YU"
-   ],
-   "cause": "MAINTENANCE",
-   "effect": "NO_SERVICE",
-   "header": "Line 1 Yonge-University: There is no subway service between Finch West and Wilson stations due to planned track work. Shuttle buses are running.",
-   "description": "",
-   "start": 1795237140,
-   "end": 1795249800
-  },
   {
    "id": "80722",
    "lines": [
