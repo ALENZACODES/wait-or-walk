@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, subway feed (https://gtfsrt.ttc.ca/alerts/subway)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795255994,
- "checkedAt": 1795265125,
- "feedTimestamp": 1795255995,
+ "fetchedAt": 1795266646,
+ "checkedAt": 1795266646,
+ "feedTimestamp": 1795266646,
  "alerts": [
   {
    "id": "80723",
@@ -16,6 +16,18 @@
    "description": "",
    "start": 1795255200,
    "end": 1795336200
+  },
+  {
+   "id": "80777",
+   "lines": [
+    "BD"
+   ],
+   "cause": "TECHNICAL_PROBLEM",
+   "effect": "NO_SERVICE",
+   "header": "Line 2 Bloor-Danforth: No service between Kipling and Islington stations while we fix a signal problem at Kipling station. Shuttle buses are on the way. Thank you for your patience.",
+   "description": "",
+   "start": 1795265511,
+   "end": 0
   }
  ]
 }
