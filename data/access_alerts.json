@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795266646,
- "checkedAt": 1795274253,
- "feedTimestamp": 1795266647,
+ "fetchedAt": 1795275644,
+ "checkedAt": 1795275644,
+ "feedTimestamp": 1795275644,
  "alerts": [
   {
    "id": "71415",
@@ -34,12 +34,6 @@
    "station": "Kennedy",
    "kind": "escalator",
    "header": "Kennedy: Escalator 16D2E out of service from Line 2 platform to concourse while we perform maintenance. Escalator is expected to be back in service December 11, 2026."
-  },
-  {
-   "id": "79053",
-   "station": "Kipling",
-   "kind": "escalator",
-   "header": "Kipling: Escalator 16B3E out of service from Line 2 platform to bus platform while we perform maintenance. Escalator is expected to be back in service February 19, 2027."
   },
   {
    "id": "80325",
@@ -112,6 +106,12 @@
    "station": "Donlands",
    "kind": "elevator",
    "header": "Donlands: Elevator 9D1L out of service between Donlands Ave entrance, concourse and Line 2 eastbound platform while we perform maintenance."
+  },
+  {
+   "id": "80781",
+   "station": "Kipling",
+   "kind": "escalator",
+   "header": "Kipling: Escalator 16B3E out of service from Line 2 platform to bus platform due to a technical problem."
   }
  ]
 }
