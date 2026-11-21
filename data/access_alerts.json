@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795297078,
- "checkedAt": 1795303174,
- "feedTimestamp": 1795297078,
+ "fetchedAt": 1795304696,
+ "checkedAt": 1795304696,
+ "feedTimestamp": 1795304696,
  "alerts": [
   {
    "id": "71415",
@@ -100,6 +100,12 @@
    "station": "Bloor-Yonge",
    "kind": "elevator",
    "header": "Bloor-Yonge: Elevator 3D1L out of service between Line 1 northbound platform and Line 2 centre platform while we perform maintenance."
+  },
+  {
+   "id": "80796",
+   "station": "Broadview",
+   "kind": "escalator",
+   "header": "Broadview: Escalator 6D2E out of service from Line 2 Kipling platform to concourse while we perform maintenance."
   }
  ]
 }
