@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795283382,
- "checkedAt": 1795287951,
- "feedTimestamp": 1795283383,
+ "fetchedAt": 1795289471,
+ "checkedAt": 1795289471,
+ "feedTimestamp": 1795289472,
  "alerts": [
   {
    "id": "71415",
@@ -112,6 +112,12 @@
    "station": "Highway 407",
    "kind": "escalator",
    "header": "Highway 407: Escalator 14S2E out of service from concourse to Line 1 platform while we perform maintenance."
+  },
+  {
+   "id": "80786",
+   "station": "Bathurst",
+   "kind": "elevator",
+   "header": "Bathurst: Elevator 3B1L out of service between Bathurst St east side entrance, concourse and Line 2 westbound platform while we perform maintenance."
   }
  ]
 }
