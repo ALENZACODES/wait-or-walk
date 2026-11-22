@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795356442,
- "checkedAt": 1795356442,
- "feedTimestamp": 1795356442,
+ "fetchedAt": 1795357964,
+ "checkedAt": 1795357964,
+ "feedTimestamp": 1795357965,
  "alerts": [
   {
    "id": "71415",
@@ -84,12 +84,6 @@
    "header": "Highway 407: Escalator 14S8E out of service from concourse to Parking Lot entrance due to a technical problem."
   },
   {
-   "id": "80835",
-   "station": "Caledonia",
-   "kind": "elevator",
-   "header": "Caledonia: Elevator ELV02-B out of service between Eglinton Avenue north side entrance and concourse while we perform maintenance."
-  },
-  {
    "id": "80836",
    "station": "Don Valley",
    "kind": "elevator",
@@ -112,6 +106,12 @@
    "station": "Donlands",
    "kind": "elevator",
    "header": "Donlands: Elevator 9D1L out of service between Donlands Ave entrance, concourse and Line 2 eastbound platform due to a technical problem."
+  },
+  {
+   "id": "80842",
+   "station": "Bloor-Yonge",
+   "kind": "escalator",
+   "header": "Bloor-Yonge: Escalator 3D9E out of service from Line 1 Finch platform to south concourse while we perform maintenance."
   }
  ]
 }
