@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795318388,
- "checkedAt": 1795325991,
- "feedTimestamp": 1795318388,
+ "fetchedAt": 1795327513,
+ "checkedAt": 1795327513,
+ "feedTimestamp": 1795327514,
  "alerts": [
   {
    "id": "71415",
@@ -60,12 +60,6 @@
    "header": "Eglinton: Escalator 5 out of service between LRT lower concourse and LRT upper concourse while we perform maintenance."
   },
   {
-   "id": "80775",
-   "station": "Donlands",
-   "kind": "elevator",
-   "header": "Donlands: Elevator 9D1L out of service between Donlands Ave entrance, concourse and Line 2 eastbound platform while we perform maintenance."
-  },
-  {
    "id": "80781",
    "station": "Kipling",
    "kind": "escalator",
@@ -78,28 +72,10 @@
    "header": "Highway 407: Escalator 14S2E out of service from concourse to Line 1 platform while we perform maintenance."
   },
   {
-   "id": "80786",
-   "station": "Bathurst",
-   "kind": "elevator",
-   "header": "Bathurst: Elevator 3B1L out of service between Bathurst St east side entrance, concourse and Line 2 westbound platform while we perform maintenance."
-  },
-  {
-   "id": "80790",
-   "station": "Jane",
-   "kind": "elevator",
-   "header": "Jane: Elevator 12B1L out of service between Jane St entrance and concourse while we perform maintenance."
-  },
-  {
    "id": "80796",
    "station": "Broadview",
    "kind": "escalator",
    "header": "Broadview: Escalator 6D2E out of service from Line 2 Kipling platform to concourse while we perform maintenance."
-  },
-  {
-   "id": "80804",
-   "station": "Lansdowne",
-   "kind": "elevator",
-   "header": "Lansdowne: Elevator 7B2L out of service between concourse and Line 2 (Kipling) westbound while we perform maintenance."
   },
   {
    "id": "80809",
