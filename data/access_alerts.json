@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795312914,
- "checkedAt": 1795312914,
- "feedTimestamp": 1795312914,
+ "fetchedAt": 1795313821,
+ "checkedAt": 1795313821,
+ "feedTimestamp": 1795313821,
  "alerts": [
   {
    "id": "71415",
@@ -106,6 +106,12 @@
    "station": "Spadina",
    "kind": "escalator",
    "header": "Spadina: Escalator 2B2E out of service from Line 2 Kennedy platform to south concourse while we perform maintenance."
+  },
+  {
+   "id": "80804",
+   "station": "Lansdowne",
+   "kind": "elevator",
+   "header": "Lansdowne: Elevator 7B2L out of service between concourse and Line 2 (Kipling) westbound while we perform maintenance."
   }
  ]
 }
