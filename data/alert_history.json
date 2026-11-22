@@ -361,7 +361,8 @@
     "BD"
    ],
    "cause": "OTHER_CAUSE",
-   "effect": "NO_SERVICE"
+   "effect": "NO_SERVICE",
+   "goneBy": 1795335121
   },
   "80777": {
    "firstSeen": 1795266646,

@@ -1,21 +1,8 @@
 {
  "source": "TTC GTFS Realtime alerts, subway feed (https://gtfsrt.ttc.ca/alerts/subway)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795321427,
- "checkedAt": 1795333596,
- "feedTimestamp": 1795321427,
- "alerts": [
-  {
-   "id": "80723",
-   "lines": [
-    "BD"
-   ],
-   "cause": "OTHER_CAUSE",
-   "effect": "NO_SERVICE",
-   "header": "Line 2 Bloor-Danforth: There is no subway service between St George and Broadview stations due to for planned signal work. Shuttle buses are running.",
-   "description": "",
-   "start": 1795255200,
-   "end": 1795336200
-  }
- ]
+ "fetchedAt": 1795335121,
+ "checkedAt": 1795335121,
+ "feedTimestamp": 1795335121,
+ "alerts": []
 }
