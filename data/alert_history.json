@@ -355,7 +355,7 @@
   },
   "80723": {
    "firstSeen": 1795255994,
-   "lastSeen": 1795316868,
+   "lastSeen": 1795318388,
    "header": "Line 2 Bloor-Danforth: There is no subway service between St George and Broadview stations due to for planned signal work. Shuttle buses are running.",
    "lines": [
     "BD"
@@ -404,7 +404,18 @@
     "YU"
    ],
    "cause": "MEDICAL_EMERGENCY",
-   "effect": "SIGNIFICANT_DELAYS"
+   "effect": "SIGNIFICANT_DELAYS",
+   "goneBy": 1795318388
+  },
+  "80814": {
+   "firstSeen": 1795318388,
+   "lastSeen": 1795318388,
+   "header": "Line 1 Yonge-University: No service between Spadina and St Andrew stations due to a trespasser at track level at Queen's Park station. Thank you for your patience.",
+   "lines": [
+    "YU"
+   ],
+   "cause": "OTHER_CAUSE",
+   "effect": "NO_SERVICE"
   }
  }
 }
