@@ -355,7 +355,7 @@
   },
   "80723": {
    "firstSeen": 1795255994,
-   "lastSeen": 1795315350,
+   "lastSeen": 1795316868,
    "header": "Line 2 Bloor-Danforth: There is no subway service between St George and Broadview stations due to for planned signal work. Shuttle buses are running.",
    "lines": [
     "BD"
@@ -393,7 +393,18 @@
     "BD"
    ],
    "cause": "OTHER_CAUSE",
-   "effect": "NO_SERVICE"
+   "effect": "NO_SERVICE",
+   "goneBy": 1795316868
+  },
+  "80812": {
+   "firstSeen": 1795316868,
+   "lastSeen": 1795316868,
+   "header": "Line 1 Yonge-University: Delays northbound at Cedarvale station due to an emergency alarm on board a train Thank you for your patience.",
+   "lines": [
+    "YU"
+   ],
+   "cause": "MEDICAL_EMERGENCY",
+   "effect": "SIGNIFICANT_DELAYS"
   }
  }
 }
