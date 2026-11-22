@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795327513,
- "checkedAt": 1795332075,
- "feedTimestamp": 1795327514,
+ "fetchedAt": 1795333596,
+ "checkedAt": 1795333596,
+ "feedTimestamp": 1795333597,
  "alerts": [
   {
    "id": "71415",
@@ -52,12 +52,6 @@
    "station": "Chester",
    "kind": "escalator",
    "header": "Chester: Escalator 7D2E out of service from Line 2 Kipling platform to Chester Ave west side entrance while we perform maintenance. Escalator is expected to be back in service November 22, 2026."
-  },
-  {
-   "id": "80745",
-   "station": "Eglinton",
-   "kind": "escalator",
-   "header": "Eglinton: Escalator 5 out of service between LRT lower concourse and LRT upper concourse while we perform maintenance."
   },
   {
    "id": "80781",
