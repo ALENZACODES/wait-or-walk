@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795364063,
- "checkedAt": 1795370150,
- "feedTimestamp": 1795364063,
+ "fetchedAt": 1795371675,
+ "checkedAt": 1795371675,
+ "feedTimestamp": 1795371675,
  "alerts": [
   {
    "id": "71415",
@@ -88,12 +88,6 @@
    "station": "King",
    "kind": "escalator",
    "header": "King: Escalator 8Y8E out of service from Scotia Plaza entrance to Yonge and King west entrance, northwest Corner due to a technical problem."
-  },
-  {
-   "id": "80841",
-   "station": "Donlands",
-   "kind": "elevator",
-   "header": "Donlands: Elevator 9D1L out of service between Donlands Ave entrance, concourse and Line 2 eastbound platform due to a technical problem."
   },
   {
    "id": "80842",

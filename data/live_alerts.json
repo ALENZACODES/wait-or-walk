@@ -2,7 +2,7 @@
  "source": "TTC GTFS Realtime alerts, subway feed (https://gtfsrt.ttc.ca/alerts/subway)",
  "licence": "Open Government Licence Toronto",
  "fetchedAt": 1795368629,
- "checkedAt": 1795370150,
+ "checkedAt": 1795371675,
  "feedTimestamp": 1795368630,
  "alerts": [
   {
