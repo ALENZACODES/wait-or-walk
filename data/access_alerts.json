@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795304696,
- "checkedAt": 1795306218,
- "feedTimestamp": 1795304696,
+ "fetchedAt": 1795307739,
+ "checkedAt": 1795307739,
+ "feedTimestamp": 1795307740,
  "alerts": [
   {
    "id": "71415",
@@ -106,6 +106,12 @@
    "station": "Broadview",
    "kind": "escalator",
    "header": "Broadview: Escalator 6D2E out of service from Line 2 Kipling platform to concourse while we perform maintenance."
+  },
+  {
+   "id": "80800",
+   "station": "Spadina",
+   "kind": "escalator",
+   "header": "Spadina: Escalator 2B2E out of service from Line 2 Kennedy platform to south concourse while we perform maintenance."
   }
  ]
 }
