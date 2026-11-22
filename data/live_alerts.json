@@ -1,21 +1,8 @@
 {
  "source": "TTC GTFS Realtime alerts, subway feed (https://gtfsrt.ttc.ca/alerts/subway)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795373201,
- "checkedAt": 1795373201,
- "feedTimestamp": 1795373202,
- "alerts": [
-  {
-   "id": "80845",
-   "lines": [
-    "BD"
-   ],
-   "cause": "ACCIDENT",
-   "effect": "NO_SERVICE",
-   "header": "Line 2 Bloor-Danforth: No service between Broadview and Warden stations due to an injury at track level Shuttle buses are running between Broadview and Warden. Thank you for your patience.",
-   "description": "All surface routes bypassing Main Street Station.",
-   "start": 1795364164,
-   "end": 0
-  }
- ]
+ "fetchedAt": 1795374725,
+ "checkedAt": 1795374725,
+ "feedTimestamp": 1795374725,
+ "alerts": []
 }

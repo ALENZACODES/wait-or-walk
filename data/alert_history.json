@@ -427,7 +427,8 @@
     "BD"
    ],
    "cause": "ACCIDENT",
-   "effect": "NO_SERVICE"
+   "effect": "NO_SERVICE",
+   "goneBy": 1795374725
   }
  }
 }
