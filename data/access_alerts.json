@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795409760,
- "checkedAt": 1795409760,
- "feedTimestamp": 1795409760,
+ "fetchedAt": 1795411291,
+ "checkedAt": 1795411291,
+ "feedTimestamp": 1795411291,
  "alerts": [
   {
    "id": "71415",
@@ -46,12 +46,6 @@
    "station": "Finch",
    "kind": "elevator",
    "header": "Finch: Elevator 22Y3L out of service between bus platform and bus concourse while we perform maintenance."
-  },
-  {
-   "id": "80735",
-   "station": "Chester",
-   "kind": "escalator",
-   "header": "Chester: Escalator 7D2E out of service from Line 2 Kipling platform to Chester Ave west side entrance while we perform maintenance. Escalator is expected to be back in service November 22, 2026."
   },
   {
    "id": "80781",
