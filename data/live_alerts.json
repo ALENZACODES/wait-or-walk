@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, subway feed (https://gtfsrt.ttc.ca/alerts/subway)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795467695,
- "checkedAt": 1795467695,
- "feedTimestamp": 1795467695,
+ "fetchedAt": 1795469214,
+ "checkedAt": 1795469214,
+ "feedTimestamp": 1795469214,
  "alerts": [
   {
    "id": "80914",
@@ -28,18 +28,6 @@
    "description": "",
    "start": 1795435416,
    "end": 1795841940
-  },
-  {
-   "id": "80950",
-   "lines": [
-    "YU"
-   ],
-   "cause": "POLICE_ACTIVITY",
-   "effect": "NO_SERVICE",
-   "header": "Line 1 Yonge-University: No service between Bloor-Yonge and Eglinton stations due to a security incident Thank you for your patience.",
-   "description": "",
-   "start": 1795466904,
-   "end": 0
   }
  ]
 }
