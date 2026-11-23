@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795464651,
- "checkedAt": 1795464651,
- "feedTimestamp": 1795464652,
+ "fetchedAt": 1795466173,
+ "checkedAt": 1795466173,
+ "feedTimestamp": 1795466174,
  "alerts": [
   {
    "id": "71415",
@@ -90,12 +90,6 @@
    "header": "Sheppard-Yonge: Escalator 21Y2E out of service from south concourse to Line 1 platform while we perform maintenance."
   },
   {
-   "id": "80892",
-   "station": "St Andrew",
-   "kind": "escalator",
-   "header": "St Andrew: Escalator 6Y2E out of service from concourse to Line 1 platform due to a technical problem."
-  },
-  {
    "id": "80926",
    "station": "Mount Dennis",
    "kind": "elevator",
@@ -118,12 +112,6 @@
    "station": "Kennedy",
    "kind": "elevator",
    "header": "Kennedy: Elevator 16D3L out of service between bus platform A, concourse, and Transway Crescent entrance and bus platform B while we perform maintenance."
-  },
-  {
-   "id": "80935",
-   "station": "Davisville",
-   "kind": "escalator",
-   "header": "Davisville: Escalator 17Y2E out of service from Line 1 Vaughan via Union platform to concourse while we perform maintenance."
   },
   {
    "id": "80936",
