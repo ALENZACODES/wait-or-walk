@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795463129,
- "checkedAt": 1795463129,
- "feedTimestamp": 1795463129,
+ "fetchedAt": 1795464651,
+ "checkedAt": 1795464651,
+ "feedTimestamp": 1795464652,
  "alerts": [
   {
    "id": "71415",
@@ -40,12 +40,6 @@
    "station": "Dundas West",
    "kind": "escalator",
    "header": "Dundas West: Escalator 8B3E out of service from concourse to Dundas St W entrance and bus and Streetcar platform while we perform maintenance. Escalator is expected to be back in service March 30, 2027."
-  },
-  {
-   "id": "80730",
-   "station": "Finch",
-   "kind": "elevator",
-   "header": "Finch: Elevator 22Y3L out of service between bus platform and bus concourse while we perform maintenance."
   },
   {
    "id": "80737",
@@ -102,22 +96,10 @@
    "header": "St Andrew: Escalator 6Y2E out of service from concourse to Line 1 platform due to a technical problem."
   },
   {
-   "id": "80925",
-   "station": "Old Mill",
-   "kind": "escalator",
-   "header": "Old Mill: Escalator 13B2E out of service from Line 2 Kennedy platform to Old Mill Trail entrance while we perform maintenance. Escalator is expected to be back in service November 23, 2026."
-  },
-  {
    "id": "80926",
    "station": "Mount Dennis",
    "kind": "elevator",
    "header": "Mount Dennis: Elevator ELV03-C out of service between Line 5 concourse and grade (PPUDO entrance) while we perform maintenance. Elevator is expected to be back in service November 25, 2026."
-  },
-  {
-   "id": "80927",
-   "station": "Eglinton",
-   "kind": "escalator",
-   "header": "Eglinton: Escalator 4 out of service between LRT platform and LRT lower concourse while we perform maintenance. Escalator is expected to be back in service November 23, 2026."
   },
   {
    "id": "80932",
@@ -150,12 +132,6 @@
    "header": "Kipling: Escalator 16B6E out of service from concourse to Aukland Rd entrance due to an investigation."
   },
   {
-   "id": "80938",
-   "station": "Bessarion",
-   "kind": "escalator",
-   "header": "Bessarion: Escalator 57P3E out of service from concourse to Line 4 platform due to a technical problem."
-  },
-  {
    "id": "80939",
    "station": "Highway 407",
    "kind": "escalator",
@@ -166,6 +142,18 @@
    "station": "Bloor-Yonge",
    "kind": "elevator",
    "header": "Bloor-Yonge: Elevator 13Y1L out of service between north concourse and Line 1 southbound platform while we perform maintenance."
+  },
+  {
+   "id": "80945",
+   "station": "Bayview",
+   "kind": "escalator",
+   "header": "Bayview: Escalator 55P4E out of service from west concourse to Line 4 platform while we perform maintenance."
+  },
+  {
+   "id": "80948",
+   "station": "York University",
+   "kind": "escalator",
+   "header": "York University: Escalator 12S6E out of service from concourse to Ian MacDonald Blvd entrance while we perform maintenance."
   }
  ]
 }
