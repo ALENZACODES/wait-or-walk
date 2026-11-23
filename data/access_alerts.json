@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795453985,
- "checkedAt": 1795460085,
- "feedTimestamp": 1795453986,
+ "fetchedAt": 1795461605,
+ "checkedAt": 1795461605,
+ "feedTimestamp": 1795461605,
  "alerts": [
   {
    "id": "71415",
@@ -172,6 +172,12 @@
    "station": "Highway 407",
    "kind": "escalator",
    "header": "Highway 407: Escalator 14S4E out of service from concourse to Line 1 platform while we perform maintenance."
+  },
+  {
+   "id": "80943",
+   "station": "Bloor-Yonge",
+   "kind": "elevator",
+   "header": "Bloor-Yonge: Elevator 13Y1L out of service between north concourse and Line 1 southbound platform while we perform maintenance."
   }
  ]
 }
