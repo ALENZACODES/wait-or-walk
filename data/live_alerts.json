@@ -1,8 +1,33 @@
 {
  "source": "TTC GTFS Realtime alerts, subway feed (https://gtfsrt.ttc.ca/alerts/subway)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795374725,
- "checkedAt": 1795434146,
- "feedTimestamp": 1795374725,
- "alerts": []
+ "fetchedAt": 1795435670,
+ "checkedAt": 1795435670,
+ "feedTimestamp": 1795435670,
+ "alerts": [
+  {
+   "id": "80914",
+   "lines": [
+    "YU"
+   ],
+   "cause": "MAINTENANCE",
+   "effect": "REDUCED_SERVICE",
+   "header": "Line 1 Yonge-University: There will be no subway service between Bloor-Yonge and Osgoode stations, starting 11:59 p.m., nightly Monday, November 23 to Thursday, November 26, due to planned track work. Shuttle buses will operate.",
+   "description": "",
+   "start": 1795435135,
+   "end": 1795755540
+  },
+  {
+   "id": "80919",
+   "lines": [
+    "YU"
+   ],
+   "cause": "MAINTENANCE",
+   "effect": "REDUCED_SERVICE",
+   "header": "Line 1 Yonge-University: There will be no subway service between College and Osgoode stations, starting 11:59 p.m., on Friday, November 27, due to planned track work. Shuttle buses will operate.",
+   "description": "",
+   "start": 1795435416,
+   "end": 1795841940
+  }
+ ]
 }
