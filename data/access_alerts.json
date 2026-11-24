@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795553056,
- "checkedAt": 1795553056,
- "feedTimestamp": 1795553057,
+ "fetchedAt": 1795554577,
+ "checkedAt": 1795554577,
+ "feedTimestamp": 1795554577,
  "alerts": [
   {
    "id": "71415",
@@ -100,12 +100,6 @@
    "station": "Kipling",
    "kind": "escalator",
    "header": "Kipling: Escalator 16B6E out of service from concourse to Aukland Rd entrance due to an investigation."
-  },
-  {
-   "id": "80991",
-   "station": "Runnymede",
-   "kind": "elevator",
-   "header": "Runnymede: Elevator 11B2L out of service between concourse and Line 2 westbound platform while we perform maintenance."
   }
  ]
 }
