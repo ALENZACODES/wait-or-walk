@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795557625,
- "checkedAt": 1795557625,
- "feedTimestamp": 1795557626,
+ "fetchedAt": 1795559152,
+ "checkedAt": 1795559152,
+ "feedTimestamp": 1795559152,
  "alerts": [
   {
    "id": "71415",
@@ -94,12 +94,6 @@
    "station": "Kipling",
    "kind": "escalator",
    "header": "Kipling: Escalator 16B6E out of service from concourse to Aukland Rd entrance due to an investigation."
-  },
-  {
-   "id": "81003",
-   "station": "Victoria Park",
-   "kind": "elevator",
-   "header": "Victoria Park: Elevator 14D1L out of service between overpass, Victoria Park Ave entrance and concourse while we perform maintenance."
   },
   {
    "id": "81004",
