@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795484452,
- "checkedAt": 1795485000,
- "feedTimestamp": 1795484452,
+ "fetchedAt": 1795485982,
+ "checkedAt": 1795485982,
+ "feedTimestamp": 1795485983,
  "alerts": [
   {
    "id": "71415",
@@ -136,6 +136,12 @@
    "station": "York University",
    "kind": "escalator",
    "header": "York University: Escalator 12S6E out of service from concourse to Ian MacDonald Blvd entrance while we perform maintenance."
+  },
+  {
+   "id": "80952",
+   "station": "Caledonia",
+   "kind": "escalator",
+   "header": "Caledonia: Escalator 3 out of service between lower concourse and upper concourse while we perform maintenance. Escalator is expected to be back in service November 24, 2026."
   },
   {
    "id": "80962",
