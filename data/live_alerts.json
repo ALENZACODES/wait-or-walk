@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, subway feed (https://gtfsrt.ttc.ca/alerts/subway)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795507302,
- "checkedAt": 1795530186,
- "feedTimestamp": 1795507302,
+ "fetchedAt": 1795531712,
+ "checkedAt": 1795531712,
+ "feedTimestamp": 1795531712,
  "alerts": [
   {
    "id": "80914",
@@ -28,6 +28,18 @@
    "description": "",
    "start": 1795435416,
    "end": 1795841940
+  },
+  {
+   "id": "80990",
+   "lines": [
+    "YU"
+   ],
+   "cause": "POLICE_ACTIVITY",
+   "effect": "NO_SERVICE",
+   "header": "Line 1 Yonge-University: Trains are not stopping at St Andrew station due to a security incident. Thank you for your patience.",
+   "description": "",
+   "start": 1795531699,
+   "end": 0
   }
  ]
 }
