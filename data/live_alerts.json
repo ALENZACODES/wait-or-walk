@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, subway feed (https://gtfsrt.ttc.ca/alerts/subway)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795469214,
- "checkedAt": 1795479881,
- "feedTimestamp": 1795469214,
+ "fetchedAt": 1795481401,
+ "checkedAt": 1795481401,
+ "feedTimestamp": 1795481401,
  "alerts": [
   {
    "id": "80914",
@@ -28,6 +28,18 @@
    "description": "",
    "start": 1795435416,
    "end": 1795841940
+  },
+  {
+   "id": "80959",
+   "lines": [
+    "BD"
+   ],
+   "cause": "TECHNICAL_PROBLEM",
+   "effect": "SIGNIFICANT_DELAYS",
+   "header": "Line 2 Bloor-Danforth: Delays westbound at Victoria Park station due to a mechanical issue Thank you for your patience.",
+   "description": "",
+   "start": 1795481276,
+   "end": 0
   }
  ]
 }
