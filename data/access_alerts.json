@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795516456,
- "checkedAt": 1795516456,
- "feedTimestamp": 1795516456,
+ "fetchedAt": 1795517978,
+ "checkedAt": 1795517978,
+ "feedTimestamp": 1795517978,
  "alerts": [
   {
    "id": "71415",
@@ -130,6 +130,18 @@
    "station": "Dundas West",
    "kind": "escalator",
    "header": "Dundas West: Escalator 8B1E out of service from Line 2 Kipling platform to concourse due to a technical problem."
+  },
+  {
+   "id": "80976",
+   "station": "Keelesdale",
+   "kind": "escalator",
+   "header": "Keelesdale: Escalator 2 out of service between platform and concourse due to a technical problem."
+  },
+  {
+   "id": "80978",
+   "station": "Spadina",
+   "kind": "escalator",
+   "header": "Spadina: Escalator 2B2E out of service from Line 2 Kennedy platform to south concourse due to a technical problem."
   }
  ]
 }
