@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795519499,
- "checkedAt": 1795519499,
- "feedTimestamp": 1795519499,
+ "fetchedAt": 1795521026,
+ "checkedAt": 1795521026,
+ "feedTimestamp": 1795521027,
  "alerts": [
   {
    "id": "71415",
@@ -94,24 +94,6 @@
    "station": "Mount Dennis",
    "kind": "elevator",
    "header": "Mount Dennis: Elevator ELV03-C out of service between Line 5 concourse and grade (PPUDO entrance) while we perform maintenance. Elevator is expected to be back in service November 25, 2026."
-  },
-  {
-   "id": "80932",
-   "station": "Kennedy",
-   "kind": "elevator",
-   "header": "Kennedy: Elevator 16D1L out of service between Transway Cresent entrance and bus platform B and concourse while we perform maintenance."
-  },
-  {
-   "id": "80933",
-   "station": "Kennedy",
-   "kind": "elevator",
-   "header": "Kennedy: Elevator 16D2L out of service between concourse and Line 2 centre platform while we perform maintenance."
-  },
-  {
-   "id": "80934",
-   "station": "Kennedy",
-   "kind": "elevator",
-   "header": "Kennedy: Elevator 16D3L out of service between bus platform A, concourse, and Transway Crescent entrance and bus platform B while we perform maintenance."
   },
   {
    "id": "80936",
