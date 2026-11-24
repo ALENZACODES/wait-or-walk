@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, subway feed (https://gtfsrt.ttc.ca/alerts/subway)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795562208,
- "checkedAt": 1795562208,
- "feedTimestamp": 1795562208,
+ "fetchedAt": 1795563726,
+ "checkedAt": 1795563726,
+ "feedTimestamp": 1795563726,
  "alerts": [
   {
    "id": "80914",
@@ -28,18 +28,6 @@
    "description": "",
    "start": 1795435416,
    "end": 1795841940
-  },
-  {
-   "id": "81011",
-   "lines": [
-    "BD"
-   ],
-   "cause": "MEDICAL_EMERGENCY",
-   "effect": "NO_SERVICE",
-   "header": "Line 2 Bloor-Danforth: No service between St George and Ossington stations due to a medical emergency Thank you for your patience.",
-   "description": "",
-   "start": 1795561277,
-   "end": 0
   }
  ]
 }
