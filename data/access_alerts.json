@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795555406,
- "checkedAt": 1795556098,
- "feedTimestamp": 1795555406,
+ "fetchedAt": 1795557625,
+ "checkedAt": 1795557625,
+ "feedTimestamp": 1795557626,
  "alerts": [
   {
    "id": "71415",
@@ -70,12 +70,6 @@
    "station": "Broadview",
    "kind": "escalator",
    "header": "Broadview: Escalator 6D2E out of service from Line 2 Kipling platform to concourse while we perform maintenance."
-  },
-  {
-   "id": "80877",
-   "station": "Finch",
-   "kind": "elevator",
-   "header": "Finch: Elevator 22Y1L out of service between fares concourse and Line 1 centre platform while we perform maintenance."
   },
   {
    "id": "80883",
