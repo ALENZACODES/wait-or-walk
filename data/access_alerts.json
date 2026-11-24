@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795559152,
- "checkedAt": 1795560677,
- "feedTimestamp": 1795559152,
+ "fetchedAt": 1795562208,
+ "checkedAt": 1795562208,
+ "feedTimestamp": 1795562208,
  "alerts": [
   {
    "id": "71415",
@@ -100,6 +100,12 @@
    "station": "Cedarvale",
    "kind": "elevator",
    "header": "Cedarvale: Elevator ELV02-B out of service between Line 5 platform, Line 1 northbound platform/east concourse, and upper concourse while we perform maintenance."
+  },
+  {
+   "id": "81012",
+   "station": "Highway 407",
+   "kind": "escalator",
+   "header": "Highway 407: Escalator 14S3E out of service from Line 1 platform to concourse while we perform maintenance."
   }
  ]
 }

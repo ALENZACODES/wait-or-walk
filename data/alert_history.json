@@ -432,7 +432,7 @@
   },
   "80914": {
    "firstSeen": 1795435670,
-   "lastSeen": 1795540868,
+   "lastSeen": 1795562208,
    "header": "Line 1 Yonge-University: There will be no subway service between Bloor-Yonge and Osgoode stations, starting 11:59 p.m., nightly Monday, November 23 to Thursday, November 26, due to planned track work. Shuttle buses will operate.",
    "lines": [
     "YU"
@@ -442,7 +442,7 @@
   },
   "80919": {
    "firstSeen": 1795435670,
-   "lastSeen": 1795540868,
+   "lastSeen": 1795562208,
    "header": "Line 1 Yonge-University: There will be no subway service between College and Osgoode stations, starting 11:59 p.m., on Friday, November 27, due to planned track work. Shuttle buses will operate.",
    "lines": [
     "YU"
@@ -504,6 +504,16 @@
    "cause": "MEDICAL_EMERGENCY",
    "effect": "NO_SERVICE",
    "goneBy": 1795540868
+  },
+  "81011": {
+   "firstSeen": 1795562208,
+   "lastSeen": 1795562208,
+   "header": "Line 2 Bloor-Danforth: No service between St George and Ossington stations due to a medical emergency Thank you for your patience.",
+   "lines": [
+    "BD"
+   ],
+   "cause": "MEDICAL_EMERGENCY",
+   "effect": "NO_SERVICE"
   }
  }
 }
