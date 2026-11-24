@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795470736,
- "checkedAt": 1795478361,
- "feedTimestamp": 1795470736,
+ "fetchedAt": 1795479881,
+ "checkedAt": 1795479881,
+ "feedTimestamp": 1795479882,
  "alerts": [
   {
    "id": "71415",
@@ -136,12 +136,6 @@
    "station": "York University",
    "kind": "escalator",
    "header": "York University: Escalator 12S6E out of service from concourse to Ian MacDonald Blvd entrance while we perform maintenance."
-  },
-  {
-   "id": "80953",
-   "station": "Castle Frank",
-   "kind": "elevator",
-   "header": "Castle Frank: Elevator 5D2L out of service between Castle Frank Rd entrance and Line 2 Kennedy (eastbound) platform while we perform maintenance."
   }
  ]
 }
