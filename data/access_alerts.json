@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795603349,
- "checkedAt": 1795604873,
- "feedTimestamp": 1795603349,
+ "fetchedAt": 1795606394,
+ "checkedAt": 1795606394,
+ "feedTimestamp": 1795606394,
  "alerts": [
   {
    "id": "71415",
@@ -100,6 +100,18 @@
    "station": "Finch West",
    "kind": "escalator",
    "header": "Finch West: Escalator 11S4E out of service from Line 1 platform to concourse while we perform maintenance."
+  },
+  {
+   "id": "81044",
+   "station": "Don Valley",
+   "kind": "escalator",
+   "header": "Don Valley: Escalator 3 out of service between concourse and grade (main entrance) while we perform maintenance."
+  },
+  {
+   "id": "81045",
+   "station": "Queen",
+   "kind": "escalator",
+   "header": "Queen: Escalator 9Y6E out of service from north underpass to Line 1 Finch platform due to a technical problem."
   }
  ]
 }
