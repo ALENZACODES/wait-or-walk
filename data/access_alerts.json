@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795641384,
- "checkedAt": 1795641384,
- "feedTimestamp": 1795641384,
+ "fetchedAt": 1795642915,
+ "checkedAt": 1795642915,
+ "feedTimestamp": 1795642916,
  "alerts": [
   {
    "id": "71415",
@@ -118,6 +118,12 @@
    "station": "Lawrence",
    "kind": "escalator",
    "header": "Lawrence: Escalator 19Y6E out of service from Line 1 platform to bus platform due to a technical problem."
+  },
+  {
+   "id": "81087",
+   "station": "King",
+   "kind": "escalator",
+   "header": "King: Escalator 8Y8E out of service from Scotia Plaza entrance to Yonge and King west entrance, northwest Corner while we perform maintenance."
   }
  ]
 }
