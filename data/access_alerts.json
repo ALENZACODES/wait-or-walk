@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795635284,
- "checkedAt": 1795635284,
- "feedTimestamp": 1795635285,
+ "fetchedAt": 1795636814,
+ "checkedAt": 1795636814,
+ "feedTimestamp": 1795636815,
  "alerts": [
   {
    "id": "71415",
@@ -88,24 +88,6 @@
    "station": "Kipling",
    "kind": "escalator",
    "header": "Kipling: Escalator 16B6E out of service from concourse to Aukland Rd entrance due to an investigation."
-  },
-  {
-   "id": "81055",
-   "station": "Royal York",
-   "kind": "escalator",
-   "header": "Royal York: Escalator 14B2E out of service from east concourse to Grenview Blvd entrance while we perform maintenance. Escalator is expected to be back in service November 25, 2026."
-  },
-  {
-   "id": "81056",
-   "station": "Spadina",
-   "kind": "escalator",
-   "header": "Spadina: Escalator 2B2E out of service from Line 2 Kennedy platform to south concourse while we perform an inspection. Escalator is expected to be back in service November 25, 2026."
-  },
-  {
-   "id": "81060",
-   "station": "Eglinton",
-   "kind": "escalator",
-   "header": "Eglinton: Escalator 6 out of service between LRT lower concourse and LRT upper concourse while we perform maintenance. Escalator is expected to be back in service November 25, 2026."
   },
   {
    "id": "81063",
