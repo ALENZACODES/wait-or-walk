@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795645960,
- "checkedAt": 1795645960,
- "feedTimestamp": 1795645960,
+ "fetchedAt": 1795647480,
+ "checkedAt": 1795647480,
+ "feedTimestamp": 1795647480,
  "alerts": [
   {
    "id": "71415",
@@ -124,12 +124,6 @@
    "station": "King",
    "kind": "escalator",
    "header": "King: Escalator 8Y8E out of service from Scotia Plaza entrance to Yonge and King west entrance, northwest Corner while we perform maintenance."
-  },
-  {
-   "id": "81089",
-   "station": "Leaside",
-   "kind": "elevator",
-   "header": "Leaside: Elevator ELV01-A out of service between concourse and Line 5 centre platform while we perform maintenance. Elevator is expected to be back in service November 27, 2026."
   }
  ]
 }
