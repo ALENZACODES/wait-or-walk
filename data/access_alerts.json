@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795615532,
- "checkedAt": 1795615532,
- "feedTimestamp": 1795615532,
+ "fetchedAt": 1795617055,
+ "checkedAt": 1795617055,
+ "feedTimestamp": 1795617056,
  "alerts": [
   {
    "id": "71415",
@@ -90,28 +90,16 @@
    "header": "Kipling: Escalator 16B6E out of service from concourse to Aukland Rd entrance due to an investigation."
   },
   {
-   "id": "81023",
-   "station": "Finch West",
-   "kind": "escalator",
-   "header": "Finch West: Escalator 11S5E out of service from Keele St west side entrance to concourse while we perform maintenance."
-  },
-  {
-   "id": "81024",
-   "station": "Finch West",
-   "kind": "escalator",
-   "header": "Finch West: Escalator 11S4E out of service from Line 1 platform to concourse while we perform maintenance."
-  },
-  {
    "id": "81051",
    "station": "Ossington",
    "kind": "elevator",
    "header": "Ossington: Elevator 5B2L out of service between concourse and Line 2 westbound platform while we perform maintenance."
   },
   {
-   "id": "81052",
-   "station": "Sherbourne",
-   "kind": "elevator",
-   "header": "Sherbourne: Elevator 4D1L out of service between Sherbourne Street entrance, concourse and Line 2 Kennedy (eastbound) while we perform maintenance."
+   "id": "81055",
+   "station": "Royal York",
+   "kind": "escalator",
+   "header": "Royal York: Escalator 14B2E out of service from east concourse to Grenview Blvd entrance while we perform maintenance. Escalator is expected to be back in service November 25, 2026."
   }
  ]
 }
