@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795575925,
- "checkedAt": 1795577446,
- "feedTimestamp": 1795575925,
+ "fetchedAt": 1795578977,
+ "checkedAt": 1795578977,
+ "feedTimestamp": 1795578978,
  "alerts": [
   {
    "id": "71415",
@@ -78,12 +78,6 @@
    "header": "Vaughan Metropolitan Centre: Escalator 15S4E out of service from Line 1 platform to concourse while we perform maintenance. Escalator is expected to be back in service November 26, 2026."
   },
   {
-   "id": "80886",
-   "station": "Sheppard-Yonge",
-   "kind": "escalator",
-   "header": "Sheppard-Yonge: Escalator 21Y2E out of service from south concourse to Line 1 platform while we perform maintenance."
-  },
-  {
    "id": "80926",
    "station": "Mount Dennis",
    "kind": "elevator",
@@ -100,12 +94,6 @@
    "station": "Caledonia",
    "kind": "escalator",
    "header": "Caledonia: Escalator 4 out of service between lower concourse and upper concourse while we perform maintenance. Escalator is expected to be back in service November 25, 2026."
-  },
-  {
-   "id": "81012",
-   "station": "Highway 407",
-   "kind": "escalator",
-   "header": "Highway 407: Escalator 14S3E out of service from Line 1 platform to concourse while we perform maintenance."
   },
   {
    "id": "81023",
