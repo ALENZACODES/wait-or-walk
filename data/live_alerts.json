@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, subway feed (https://gtfsrt.ttc.ca/alerts/subway)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795575925,
- "checkedAt": 1795580500,
- "feedTimestamp": 1795575925,
+ "fetchedAt": 1795581459,
+ "checkedAt": 1795581459,
+ "feedTimestamp": 1795581459,
  "alerts": [
   {
    "id": "80914",
@@ -28,6 +28,18 @@
    "description": "",
    "start": 1795435416,
    "end": 1795841940
+  },
+  {
+   "id": "81035",
+   "lines": [
+    "YU"
+   ],
+   "cause": "OTHER_CAUSE",
+   "effect": "NO_SERVICE",
+   "header": "Line 1 Yonge-University: No service between Eglinton and Bloor-Yonge stations due to a trespasser at track level at Summerhill station. Thank you for your patience.",
+   "description": "",
+   "start": 1795581379,
+   "end": 0
   }
  ]
 }
