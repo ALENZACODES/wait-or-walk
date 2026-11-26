@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795699564,
- "checkedAt": 1795699564,
- "feedTimestamp": 1795699564,
+ "fetchedAt": 1795701083,
+ "checkedAt": 1795701083,
+ "feedTimestamp": 1795701083,
  "alerts": [
   {
    "id": "71415",
@@ -76,12 +76,6 @@
    "station": "Sheppard West",
    "kind": "escalator",
    "header": "Sheppard West: Escalator 9S1E out of service from Line 1 platform to concourse while we perform maintenance."
-  },
-  {
-   "id": "81087",
-   "station": "King",
-   "kind": "escalator",
-   "header": "King: Escalator 8Y8E out of service from Scotia Plaza entrance to Yonge and King west entrance, northwest Corner while we perform maintenance."
   },
   {
    "id": "81095",
