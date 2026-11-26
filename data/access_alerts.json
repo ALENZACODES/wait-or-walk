@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795704131,
- "checkedAt": 1795704131,
- "feedTimestamp": 1795704131,
+ "fetchedAt": 1795705653,
+ "checkedAt": 1795705653,
+ "feedTimestamp": 1795705653,
  "alerts": [
   {
    "id": "71415",
@@ -114,16 +114,28 @@
    "header": "Pioneer Village: Escalator 13S7E out of service from lower south concourse to upper south concourse due to a technical problem."
   },
   {
-   "id": "81132",
-   "station": "Keele",
-   "kind": "elevator",
-   "header": "Keele: Elevator 9B1L out of service between Keele St entrance and bus platform to Line 2 Kipling (Westbound) while we perform maintenance."
+   "id": "81133",
+   "station": "High Park",
+   "kind": "escalator",
+   "header": "High Park: Escalator 10B3E out of service from west concourse to Line 2 Kipling platform while we perform maintenance. Escalator is expected to be back in service November 26, 2026."
+  },
+  {
+   "id": "81134",
+   "station": "Islington",
+   "kind": "escalator",
+   "header": "Islington: Escalator 15B1E out of service from Line 2 platform to concourse while we perform maintenance. Escalator is expected to be back in service November 26, 2026."
   },
   {
    "id": "81141",
    "station": "St Patrick",
    "kind": "elevator",
    "header": "St Patrick: Elevator 4Y1L out of service between concourse and Line 1 centre platform while we perform maintenance."
+  },
+  {
+   "id": "81142",
+   "station": "Keele",
+   "kind": "elevator",
+   "header": "Keele: Elevator 9B2L out of service between Keele St entrance and bus platform to Line 2 Kipling (Eastbound) while we perform maintenance."
   }
  ]
 }
