@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795663005,
- "checkedAt": 1795664528,
- "feedTimestamp": 1795663005,
+ "fetchedAt": 1795666048,
+ "checkedAt": 1795666048,
+ "feedTimestamp": 1795666049,
  "alerts": [
   {
    "id": "71415",
@@ -88,36 +88,6 @@
    "station": "Sheppard West",
    "kind": "escalator",
    "header": "Sheppard West: Escalator 9S1E out of service from Line 1 platform to concourse while we perform maintenance."
-  },
-  {
-   "id": "81076",
-   "station": "Lawrence West",
-   "kind": "escalator",
-   "header": "Lawrence West: Escalator 6S2E out of service from Line 1 platform to Lawrence Ave W south side entrance while we perform maintenance."
-  },
-  {
-   "id": "81078",
-   "station": "Finch",
-   "kind": "escalator",
-   "header": "Finch: Escalator 22Y5E out of service from Fares concourse to bus concourse while we perform maintenance."
-  },
-  {
-   "id": "81080",
-   "station": "Sherbourne",
-   "kind": "escalator",
-   "header": "Sherbourne: Escalator 4D3E out of service from Line 2 Kennedy platform to concourse due to an investigation."
-  },
-  {
-   "id": "81082",
-   "station": "Finch",
-   "kind": "escalator",
-   "header": "Finch: Escalator 22Y11E out of service from Fares concourse to GO and YRT bus platform while we perform maintenance."
-  },
-  {
-   "id": "81083",
-   "station": "Lawrence",
-   "kind": "escalator",
-   "header": "Lawrence: Escalator 19Y6E out of service from Line 1 platform to bus platform due to a technical problem."
   },
   {
    "id": "81087",
