@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795673672,
- "checkedAt": 1795688903,
- "feedTimestamp": 1795673672,
+ "fetchedAt": 1795690424,
+ "checkedAt": 1795690424,
+ "feedTimestamp": 1795690424,
  "alerts": [
   {
    "id": "71415",
@@ -66,12 +66,6 @@
    "header": "Kipling: Escalator 16B6E out of service from concourse to Aukland Rd entrance due to an investigation."
   },
   {
-   "id": "81063",
-   "station": "Runnymede",
-   "kind": "elevator",
-   "header": "Runnymede: Elevator 11B3L out of service between concourse and Line 2 eastbound platform while we perform maintenance."
-  },
-  {
    "id": "81069",
    "station": "Wellesley",
    "kind": "escalator",
@@ -90,12 +84,6 @@
    "header": "King: Escalator 8Y8E out of service from Scotia Plaza entrance to Yonge and King west entrance, northwest Corner while we perform maintenance."
   },
   {
-   "id": "81090",
-   "station": "Caledonia",
-   "kind": "escalator",
-   "header": "Caledonia: Escalator 5 out of service between upper concourse and grade (main entrance) while we perform maintenance. Escalator is expected to be back in service November 26, 2026."
-  },
-  {
    "id": "81095",
    "station": "Vaughan Metropolitan Centre",
    "kind": "escalator",
@@ -112,6 +100,12 @@
    "station": "Downsview Park",
    "kind": "escalator",
    "header": "Downsview Park: Escalator 10S3E out of service from concourse to Vitti St east side entrance due to a technical problem."
+  },
+  {
+   "id": "81125",
+   "station": "Union",
+   "kind": "escalator",
+   "header": "Union: Escalator 7Y4E out of service from Line 1 Finch platform to concourse due to a technical problem."
   }
  ]
 }
