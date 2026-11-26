@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795716324,
- "checkedAt": 1795716324,
- "feedTimestamp": 1795716324,
+ "fetchedAt": 1795717844,
+ "checkedAt": 1795717844,
+ "feedTimestamp": 1795717845,
  "alerts": [
   {
    "id": "71415",
@@ -118,18 +118,6 @@
    "station": "Islington",
    "kind": "escalator",
    "header": "Islington: Escalator 15B1E out of service from Line 2 platform to concourse while we perform maintenance. Escalator is expected to be back in service November 26, 2026."
-  },
-  {
-   "id": "81141",
-   "station": "St Patrick",
-   "kind": "elevator",
-   "header": "St Patrick: Elevator 4Y1L out of service between concourse and Line 1 centre platform while we perform maintenance."
-  },
-  {
-   "id": "81142",
-   "station": "Keele",
-   "kind": "elevator",
-   "header": "Keele: Elevator 9B2L out of service between Keele St entrance and bus platform to Line 2 Kipling (Eastbound) while we perform maintenance."
   },
   {
    "id": "81145",
