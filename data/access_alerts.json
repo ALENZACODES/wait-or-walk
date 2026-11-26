@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795707183,
- "checkedAt": 1795710229,
- "feedTimestamp": 1795707183,
+ "fetchedAt": 1795711749,
+ "checkedAt": 1795711749,
+ "feedTimestamp": 1795711750,
  "alerts": [
   {
    "id": "71415",
@@ -142,6 +142,18 @@
    "station": "Eglinton",
    "kind": "escalator",
    "header": "Eglinton: Escalator 7 out of service between LRT lower concourse and LRT upper concourse while we perform maintenance. Escalator is expected to be back in service November 26, 2026."
+  },
+  {
+   "id": "81146",
+   "station": "Eglinton",
+   "kind": "escalator",
+   "header": "Eglinton: Escalator 18Y5E out of service from concourse to Line 1 Centre platform while we perform maintenance. Escalator is expected to be back in service November 26, 2026."
+  },
+  {
+   "id": "81147",
+   "station": "Lawrence",
+   "kind": "escalator",
+   "header": "Lawrence: Escalator 19Y1E out of service from south concourse to Yonge St west side entrance while we perform maintenance. Escalator is expected to be back in service November 26, 2026."
   }
  ]
 }
