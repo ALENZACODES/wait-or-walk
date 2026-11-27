@@ -1,22 +1,10 @@
 {
  "source": "TTC GTFS Realtime alerts, subway feed (https://gtfsrt.ttc.ca/alerts/subway)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795765095,
- "checkedAt": 1795768135,
- "feedTimestamp": 1795765095,
+ "fetchedAt": 1795769386,
+ "checkedAt": 1795769386,
+ "feedTimestamp": 1795769387,
  "alerts": [
-  {
-   "id": "80918",
-   "lines": [
-    "YU"
-   ],
-   "cause": "MAINTENANCE",
-   "effect": "NO_SERVICE",
-   "header": "Line 1 Yonge-University: There is no subway service between Bloor-Yonge and Osgoode stations due to planned track work. Shuttle buses are running.",
-   "description": "",
-   "start": 1795755540,
-   "end": 1795768200
-  },
   {
    "id": "80919",
    "lines": [
