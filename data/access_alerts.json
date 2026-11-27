@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795818405,
- "checkedAt": 1795819923,
- "feedTimestamp": 1795818405,
+ "fetchedAt": 1795821449,
+ "checkedAt": 1795821449,
+ "feedTimestamp": 1795821450,
  "alerts": [
   {
    "id": "71415",
@@ -112,6 +112,12 @@
    "station": "Eglinton",
    "kind": "escalator",
    "header": "Eglinton: Escalator 14 out of service between LRT upper concourse and TTC subway platform due to a technical problem."
+  },
+  {
+   "id": "81257",
+   "station": "Bayview",
+   "kind": "escalator",
+   "header": "Bayview: Escalator 55P2E out of service from west concourse to Bayview Ave east side entrance while we perform maintenance."
   }
  ]
 }
