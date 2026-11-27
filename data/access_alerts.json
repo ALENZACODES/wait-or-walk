@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795810788,
- "checkedAt": 1795810788,
- "feedTimestamp": 1795810789,
+ "fetchedAt": 1795812313,
+ "checkedAt": 1795812313,
+ "feedTimestamp": 1795812313,
  "alerts": [
   {
    "id": "71415",
@@ -60,12 +60,6 @@
    "header": "Finch West: Escalator 3 out of service between concourse and line 6 platform due to a technical problem."
   },
   {
-   "id": "81148",
-   "station": "Lawrence",
-   "kind": "escalator",
-   "header": "Lawrence: Escalator 19Y2E out of service from Yonge St east side entrance to south concourse while we perform maintenance. Escalator is expected to be back in service November 27, 2026."
-  },
-  {
    "id": "81198",
    "station": "St Clair West",
    "kind": "escalator",
@@ -76,12 +70,6 @@
    "station": "Caledonia",
    "kind": "elevator",
    "header": "Caledonia: Elevator ELV02-B out of service between Eglinton Avenue north side entrance and concourse due to a technical problem."
-  },
-  {
-   "id": "81230",
-   "station": "York University",
-   "kind": "escalator",
-   "header": "York University: Escalator 12S6E out of service from concourse to Ian MacDonald Blvd entrance while we perform maintenance."
   },
   {
    "id": "81232",
@@ -106,6 +94,18 @@
    "station": "Don Mills",
    "kind": "escalator",
    "header": "Don Mills: Escalator 61P4E out of service from Line 4 platform to concourse while we perform maintenance."
+  },
+  {
+   "id": "81246",
+   "station": "King",
+   "kind": "escalator",
+   "header": "King: Escalator 8Y4E out of service from Line 1 Vaughan via Union platform to north concourse while we perform maintenance. Escalator is expected to be back in service November 29, 2026."
+  },
+  {
+   "id": "81247",
+   "station": "Mount Dennis",
+   "kind": "escalator",
+   "header": "Mount Dennis: Escalator 9 out of service between concourse and TTC bus platform due to a technical problem."
   }
  ]
 }
