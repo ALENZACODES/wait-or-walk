@@ -432,7 +432,7 @@
   },
   "80914": {
    "firstSeen": 1795435670,
-   "lastSeen": 1795746819,
+   "lastSeen": 1795748337,
    "header": "Line 1 Yonge-University: There will be no subway service between Bloor-Yonge and Osgoode stations, starting 11:59 p.m., nightly Monday, November 23 to Thursday, November 26, due to planned track work. Shuttle buses will operate.",
    "lines": [
     "YU"
@@ -442,7 +442,7 @@
   },
   "80919": {
    "firstSeen": 1795435670,
-   "lastSeen": 1795746819,
+   "lastSeen": 1795748337,
    "header": "Line 1 Yonge-University: There will be no subway service between College and Osgoode stations, starting 11:59 p.m., on Friday, November 27, due to planned track work. Shuttle buses will operate.",
    "lines": [
     "YU"
@@ -590,7 +590,18 @@
     "BD"
    ],
    "cause": "POLICE_ACTIVITY",
-   "effect": "NO_SERVICE"
+   "effect": "NO_SERVICE",
+   "goneBy": 1795748337
+  },
+  "81183": {
+   "firstSeen": 1795748337,
+   "lastSeen": 1795748337,
+   "header": "Line 1 Yonge-University: Delays northbound at Finch West station due to a medical emergency Thank you for your patience.",
+   "lines": [
+    "YU"
+   ],
+   "cause": "MEDICAL_EMERGENCY",
+   "effect": "SIGNIFICANT_DELAYS"
   }
  }
 }
