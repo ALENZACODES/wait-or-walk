@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795752904,
- "checkedAt": 1795755954,
- "feedTimestamp": 1795752904,
+ "fetchedAt": 1795757474,
+ "checkedAt": 1795757474,
+ "feedTimestamp": 1795757475,
  "alerts": [
   {
    "id": "71415",
@@ -88,6 +88,18 @@
    "station": "Sheppard West",
    "kind": "escalator",
    "header": "Sheppard West: Escalator 9S2E out of service from concourse to Line 1 platform while we perform maintenance."
+  },
+  {
+   "id": "81197",
+   "station": "Don Mills",
+   "kind": "escalator",
+   "header": "Don Mills: Escalator 61P4E out of service from Line 4 platform to concourse while we perform maintenance."
+  },
+  {
+   "id": "81198",
+   "station": "St Clair West",
+   "kind": "escalator",
+   "header": "St Clair West: Escalator 3S10E out of service from south concourse to Line 1 Vaughan platform while we perform maintenance."
   }
  ]
 }
