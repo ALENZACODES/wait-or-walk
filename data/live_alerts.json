@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, subway feed (https://gtfsrt.ttc.ca/alerts/subway)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795757474,
- "checkedAt": 1795763574,
- "feedTimestamp": 1795757475,
+ "fetchedAt": 1795765095,
+ "checkedAt": 1795765095,
+ "feedTimestamp": 1795765095,
  "alerts": [
   {
    "id": "80918",
@@ -28,18 +28,6 @@
    "description": "",
    "start": 1795435416,
    "end": 1795841940
-  },
-  {
-   "id": "81199",
-   "lines": [
-    "YU"
-   ],
-   "cause": "OTHER_CAUSE",
-   "effect": "SIGNIFICANT_DELAYS",
-   "header": "Line 1 Yonge-University: Delays between Finch and Bloor-Yonge stations due to planned track work from Bloor to Osgoode Thank you for your patience.",
-   "description": "",
-   "start": 1795756816,
-   "end": 1795764600
   }
  ]
 }

@@ -443,7 +443,7 @@
   },
   "80919": {
    "firstSeen": 1795435670,
-   "lastSeen": 1795757474,
+   "lastSeen": 1795765095,
    "header": "Line 1 Yonge-University: There will be no subway service between College and Osgoode stations, starting 11:59 p.m., on Friday, November 27, due to planned track work. Shuttle buses will operate.",
    "lines": [
     "YU"
@@ -618,7 +618,7 @@
   },
   "80918": {
    "firstSeen": 1795755954,
-   "lastSeen": 1795757474,
+   "lastSeen": 1795765095,
    "header": "Line 1 Yonge-University: There is no subway service between Bloor-Yonge and Osgoode stations due to planned track work. Shuttle buses are running.",
    "lines": [
     "YU"
@@ -634,7 +634,8 @@
     "YU"
    ],
    "cause": "OTHER_CAUSE",
-   "effect": "SIGNIFICANT_DELAYS"
+   "effect": "SIGNIFICANT_DELAYS",
+   "goneBy": 1795765095
   }
  }
 }
