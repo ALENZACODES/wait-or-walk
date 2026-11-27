@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, subway feed (https://gtfsrt.ttc.ca/alerts/subway)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795752904,
- "checkedAt": 1795752904,
- "feedTimestamp": 1795752904,
+ "fetchedAt": 1795754428,
+ "checkedAt": 1795754428,
+ "feedTimestamp": 1795754428,
  "alerts": [
   {
    "id": "80914",
@@ -28,18 +28,6 @@
    "description": "",
    "start": 1795435416,
    "end": 1795841940
-  },
-  {
-   "id": "81196",
-   "lines": [
-    "BD"
-   ],
-   "cause": "OTHER_CAUSE",
-   "effect": "SIGNIFICANT_DELAYS",
-   "header": "Line 2 Bloor-Danforth: Delays eastbound from Castle Frank to Victoria Park stations due to service adjustments Thank you for your patience.",
-   "description": "",
-   "start": 1795752811,
-   "end": 1795753500
   }
  ]
 }
