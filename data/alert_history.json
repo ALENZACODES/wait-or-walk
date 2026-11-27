@@ -432,7 +432,7 @@
   },
   "80914": {
    "firstSeen": 1795435670,
-   "lastSeen": 1795743756,
+   "lastSeen": 1795746819,
    "header": "Line 1 Yonge-University: There will be no subway service between Bloor-Yonge and Osgoode stations, starting 11:59 p.m., nightly Monday, November 23 to Thursday, November 26, due to planned track work. Shuttle buses will operate.",
    "lines": [
     "YU"
@@ -442,7 +442,7 @@
   },
   "80919": {
    "firstSeen": 1795435670,
-   "lastSeen": 1795743756,
+   "lastSeen": 1795746819,
    "header": "Line 1 Yonge-University: There will be no subway service between College and Osgoode stations, starting 11:59 p.m., on Friday, November 27, due to planned track work. Shuttle buses will operate.",
    "lines": [
     "YU"
@@ -581,6 +581,16 @@
    "cause": "POLICE_ACTIVITY",
    "effect": "NO_SERVICE",
    "goneBy": 1795743756
+  },
+  "81181": {
+   "firstSeen": 1795746819,
+   "lastSeen": 1795746819,
+   "header": "Line 2 Bloor-Danforth: Trains are not stopping at Chester station due to a security incident. Thank you for your patience.",
+   "lines": [
+    "BD"
+   ],
+   "cause": "POLICE_ACTIVITY",
+   "effect": "NO_SERVICE"
   }
  }
 }
