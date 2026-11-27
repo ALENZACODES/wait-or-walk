@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795803170,
- "checkedAt": 1795803170,
- "feedTimestamp": 1795803171,
+ "fetchedAt": 1795804451,
+ "checkedAt": 1795804451,
+ "feedTimestamp": 1795804452,
  "alerts": [
   {
    "id": "71415",
@@ -88,24 +88,6 @@
    "station": "Eglinton",
    "kind": "escalator",
    "header": "Eglinton: Escalator 8 out of service between LRT lower concourse and LRT upper concourse while we perform maintenance. Escalator is expected to be back in service November 27, 2026."
-  },
-  {
-   "id": "81214",
-   "station": "Don Mills",
-   "kind": "escalator",
-   "header": "Don Mills: Escalator 61P1E out of service from concourse to Sheppard Ave E north side entrance while we perform maintenance."
-  },
-  {
-   "id": "81215",
-   "station": "Don Mills",
-   "kind": "escalator",
-   "header": "Don Mills: Escalator 61P4E out of service from Line 4 platform to concourse while we perform maintenance."
-  },
-  {
-   "id": "81216",
-   "station": "Don Mills",
-   "kind": "elevator",
-   "header": "Don Mills: Elevator 61P5L out of service between Sheppard Ave E south side entrance and concourse while we perform maintenance."
   },
   {
    "id": "81218",
