@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, subway feed (https://gtfsrt.ttc.ca/alerts/subway)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795800122,
- "checkedAt": 1795821449,
- "feedTimestamp": 1795800123,
+ "fetchedAt": 1795822979,
+ "checkedAt": 1795822979,
+ "feedTimestamp": 1795822979,
  "alerts": [
   {
    "id": "80919",
@@ -40,6 +40,18 @@
    "description": "",
    "start": 1795798686,
    "end": 1796360340
+  },
+  {
+   "id": "81258",
+   "lines": [
+    "YU"
+   ],
+   "cause": "POLICE_ACTIVITY",
+   "effect": "NO_SERVICE",
+   "header": "Line 1 Yonge-University: No service between Lawrence and Sheppard-Yonge stations due to a TPS investigation at York Mills station. Thank you for your patience.",
+   "description": "",
+   "start": 1795822854,
+   "end": 0
   }
  ]
 }
