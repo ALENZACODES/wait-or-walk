@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795826024,
- "checkedAt": 1795830123,
- "feedTimestamp": 1795826024,
+ "fetchedAt": 1795830590,
+ "checkedAt": 1795830590,
+ "feedTimestamp": 1795830591,
  "alerts": [
   {
    "id": "71415",
@@ -136,6 +136,12 @@
    "station": "Fairbank",
    "kind": "escalator",
    "header": "Fairbank: Escalator 6 out of service between below grade level and grade (main entrance) due to a technical problem."
+  },
+  {
+   "id": "81265",
+   "station": "Bloor-Yonge",
+   "kind": "escalator",
+   "header": "Bloor-Yonge: Escalator 3D1E out of service from Line 1 Finch platform to north concourse while we perform maintenance."
   }
  ]
 }
