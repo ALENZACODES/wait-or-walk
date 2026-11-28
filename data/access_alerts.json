@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795832116,
- "checkedAt": 1795836690,
- "feedTimestamp": 1795832117,
+ "fetchedAt": 1795838211,
+ "checkedAt": 1795838211,
+ "feedTimestamp": 1795838211,
  "alerts": [
   {
    "id": "71415",
@@ -72,24 +72,6 @@
    "header": "Caledonia: Elevator ELV02-B out of service between Eglinton Avenue north side entrance and concourse due to a technical problem."
   },
   {
-   "id": "81232",
-   "station": "High Park",
-   "kind": "escalator",
-   "header": "High Park: Escalator 10B5E out of service from east concourse to Quebec Ave entrance while we perform maintenance."
-  },
-  {
-   "id": "81236",
-   "station": "Finch West",
-   "kind": "escalator",
-   "header": "Finch West: Escalator 11S7E out of service from concourse to Keele St east side entrance and bus platform while we perform maintenance."
-  },
-  {
-   "id": "81242",
-   "station": "Don Mills",
-   "kind": "escalator",
-   "header": "Don Mills: Escalator 61P4E out of service from Line 4 platform to concourse while we perform maintenance."
-  },
-  {
    "id": "81246",
    "station": "King",
    "kind": "escalator",
@@ -102,28 +84,10 @@
    "header": "Mount Dennis: Escalator 9 out of service between concourse and TTC bus platform due to a technical problem."
   },
   {
-   "id": "81248",
-   "station": "Don Mills",
-   "kind": "escalator",
-   "header": "Don Mills: Escalator 61P5E out of service from concourse to Line 4 platform due to a technical problem."
-  },
-  {
    "id": "81250",
    "station": "Eglinton",
    "kind": "escalator",
    "header": "Eglinton: Escalator 14 out of service between LRT upper concourse and TTC subway platform due to a technical problem."
-  },
-  {
-   "id": "81257",
-   "station": "Bayview",
-   "kind": "escalator",
-   "header": "Bayview: Escalator 55P2E out of service from west concourse to Bayview Ave east side entrance while we perform maintenance."
-  },
-  {
-   "id": "81260",
-   "station": "Eglinton",
-   "kind": "escalator",
-   "header": "Eglinton: Escalator 18Y2E out of service from Eglinton Ave south side entrance to concourse while we perform maintenance."
   },
   {
    "id": "81261",
@@ -136,12 +100,6 @@
    "station": "Fairbank",
    "kind": "escalator",
    "header": "Fairbank: Escalator 6 out of service between below grade level and grade (main entrance) due to a technical problem."
-  },
-  {
-   "id": "81265",
-   "station": "Bloor-Yonge",
-   "kind": "escalator",
-   "header": "Bloor-Yonge: Escalator 3D1E out of service from Line 1 Finch platform to north concourse while we perform maintenance."
   },
   {
    "id": "81267",
