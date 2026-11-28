@@ -443,7 +443,7 @@
   },
   "80919": {
    "firstSeen": 1795435670,
-   "lastSeen": 1795826024,
+   "lastSeen": 1795835164,
    "header": "Line 1 Yonge-University: There will be no subway service between College and Osgoode stations, starting 11:59 p.m., on Friday, November 27, due to planned track work. Shuttle buses will operate.",
    "lines": [
     "YU"
@@ -651,7 +651,7 @@
   },
   "81222": {
    "firstSeen": 1795798601,
-   "lastSeen": 1795826024,
+   "lastSeen": 1795835164,
    "header": "Line 2 Bloor-Danforth: This weekend, there will be no subway service between Warden and Kennedy stations due to planned track work. Shuttle buses will operate.",
    "lines": [
     "BD"
@@ -661,7 +661,7 @@
   },
   "81224": {
    "firstSeen": 1795800122,
-   "lastSeen": 1795826024,
+   "lastSeen": 1795835164,
    "header": "Line 1 Yonge-University: There will be no subway service between Bloor-Yonge and Osgoode stations, starting 11:59 p.m., nightly Monday, November 30 to Thursday, December 3, due to planned track work. Shuttle buses will operate.",
    "lines": [
     "YU"
@@ -679,6 +679,16 @@
    "cause": "POLICE_ACTIVITY",
    "effect": "NO_SERVICE",
    "goneBy": 1795826024
+  },
+  "81272": {
+   "firstSeen": 1795835164,
+   "lastSeen": 1795835164,
+   "header": "Line 1 Yonge-University: No service between Lawrence and Eglinton stations due to a medical emergency Thank you for your patience.",
+   "lines": [
+    "YU"
+   ],
+   "cause": "MEDICAL_EMERGENCY",
+   "effect": "NO_SERVICE"
   }
  }
 }
