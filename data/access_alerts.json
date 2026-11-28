@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, accessibility feed (https://gtfsrt.ttc.ca/alerts/accessibility)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795830590,
- "checkedAt": 1795830590,
- "feedTimestamp": 1795830591,
+ "fetchedAt": 1795832116,
+ "checkedAt": 1795832116,
+ "feedTimestamp": 1795832117,
  "alerts": [
   {
    "id": "71415",
@@ -142,6 +142,12 @@
    "station": "Bloor-Yonge",
    "kind": "escalator",
    "header": "Bloor-Yonge: Escalator 3D1E out of service from Line 1 Finch platform to north concourse while we perform maintenance."
+  },
+  {
+   "id": "81267",
+   "station": "Bathurst",
+   "kind": "escalator",
+   "header": "Bathurst: Escalator 3B1E out of service from concourse to Bathurst St east side entrance while we perform maintenance."
   }
  ]
 }
