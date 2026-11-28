@@ -1,21 +1,21 @@
 {
  "source": "TTC GTFS Realtime alerts, subway feed (https://gtfsrt.ttc.ca/alerts/subway)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795838211,
- "checkedAt": 1795841250,
- "feedTimestamp": 1795838211,
+ "fetchedAt": 1795842769,
+ "checkedAt": 1795842769,
+ "feedTimestamp": 1795842769,
  "alerts": [
   {
-   "id": "80919",
+   "id": "80920",
    "lines": [
     "YU"
    ],
    "cause": "MAINTENANCE",
-   "effect": "REDUCED_SERVICE",
-   "header": "Line 1 Yonge-University: There will be no subway service between College and Osgoode stations, starting 11:59 p.m., on Friday, November 27, due to planned track work. Shuttle buses will operate.",
+   "effect": "NO_SERVICE",
+   "header": "Line 1 Yonge-University: There is no subway service between College and Osgoode stations due to planned track work. Shuttle buses are running.",
    "description": "",
-   "start": 1795435416,
-   "end": 1795841940
+   "start": 1795841940,
+   "end": 1795854600
   },
   {
    "id": "81222",
