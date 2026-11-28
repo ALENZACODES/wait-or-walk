@@ -1,21 +1,21 @@
 {
  "source": "TTC GTFS Realtime alerts, subway feed (https://gtfsrt.ttc.ca/alerts/subway)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795854936,
- "checkedAt": 1795859518,
- "feedTimestamp": 1795854936,
+ "fetchedAt": 1795861036,
+ "checkedAt": 1795861036,
+ "feedTimestamp": 1795861036,
  "alerts": [
   {
-   "id": "81222",
+   "id": "81223",
    "lines": [
     "BD"
    ],
    "cause": "MAINTENANCE",
-   "effect": "REDUCED_SERVICE",
-   "header": "Line 2 Bloor-Danforth: This weekend, there will be no subway service between Warden and Kennedy stations due to planned track work. Shuttle buses will operate.",
+   "effect": "NO_SERVICE",
+   "header": "Line 2 Bloor-Danforth: There is no subway service between Warden and Kennedy stations due to planned track work. Shuttle buses are running.",
    "description": "",
-   "start": 1795798471,
-   "end": 1795860000
+   "start": 1795860000,
+   "end": 1796027400
   },
   {
    "id": "81224",
