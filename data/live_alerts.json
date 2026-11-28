@@ -1,9 +1,9 @@
 {
  "source": "TTC GTFS Realtime alerts, subway feed (https://gtfsrt.ttc.ca/alerts/subway)",
  "licence": "Open Government Licence Toronto",
- "fetchedAt": 1795867123,
- "checkedAt": 1795867123,
- "feedTimestamp": 1795867124,
+ "fetchedAt": 1795868649,
+ "checkedAt": 1795868649,
+ "feedTimestamp": 1795868649,
  "alerts": [
   {
    "id": "81223",
@@ -28,18 +28,6 @@
    "description": "",
    "start": 1795798686,
    "end": 1796360340
-  },
-  {
-   "id": "81292",
-   "lines": [
-    "YU"
-   ],
-   "cause": "POLICE_ACTIVITY",
-   "effect": "NO_SERVICE",
-   "header": "Line 1 Yonge-University: Trains are not stopping at St Clair station due to a TPS investigation. Thank you for your patience.",
-   "description": "",
-   "start": 1795866585,
-   "end": 0
   }
  ]
 }
